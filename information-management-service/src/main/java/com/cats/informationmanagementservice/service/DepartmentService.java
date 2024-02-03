@@ -1,2 +1,4 @@
-package com.cats.informationmanagementservice.service;public interface DepartmentService {
+package com.cats.informationmanagementservice.service;
+
+public interface DepartmentService {
 }

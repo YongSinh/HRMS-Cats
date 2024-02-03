@@ -1,9 +1,6 @@
 package com.cats.informationmanagementservice.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -28,13 +25,11 @@ public class Employee {
     @Column(name ="email" )
     private String email;
     @Column(name ="positionid")
-    private Integer positionId;
-    @Column(name ="department_id")
-    private Integer departmentId;
+    private Long positionId;
     @Column(name ="birthDate")
     private LocalDate birthDate;
     @Column(name ="age")
-    private Integer age;
+    private Long age;
     @Column(name ="sex")
     private String sex;
     @Column(name ="Height")
@@ -45,18 +40,38 @@ public class Employee {
     private String address;
     @Column(name ="empDate")
     private LocalDate empDate;
+    @Column(name ="joingDate")
+    private LocalDate joinDate;
     @Column(name ="manager_id")
-    private Integer mangerId;
+    private Long mangerId;
     @Column(name ="location")
     private String  location;
     @Column(name ="marital_stats")
     private String maritalStats;
     @Column(name ="nationality")
     private String  nationality;
+    @Column(name ="workType")
+    private String workType;
+    @Column(name ="religion")
+    private String  religion;
     @Column(name ="id_card")
     private String  idCard;
     @Column(name ="passport_id")
     private String  passport;
     @Column(name ="remark")
     private String  remark;
+    @Column(name ="gov_Officer")
+    private String  govOfficer;
+    @Column(name ="gov_tel")
+    private String  govTel;
+    @Column(name ="gov_officer_address")
+    private String  govAddress;
+    @Column(name ="gov_postion")
+    private String  govPosition;
+
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "department_id")
+    private Department department;
+
+
 }

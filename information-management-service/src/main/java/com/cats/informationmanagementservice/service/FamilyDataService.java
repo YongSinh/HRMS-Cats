@@ -1,2 +1,4 @@
-package com.cats.informationmanagementservice.service;public class FamilyDataService {
+package com.cats.informationmanagementservice.service;
+
+public interface FamilyDataService {
 }

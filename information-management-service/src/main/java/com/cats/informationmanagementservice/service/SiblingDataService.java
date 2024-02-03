@@ -1,2 +1,4 @@
-package com.cats.informationmanagementservice.service;public interface SiblingDataService {
+package com.cats.informationmanagementservice.service;
+
+public interface SiblingDataService {
 }

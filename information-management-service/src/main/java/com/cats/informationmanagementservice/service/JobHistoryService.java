@@ -1,2 +1,4 @@
-package com.cats.informationmanagementservice.service;public interface JobHistoryService {
+package com.cats.informationmanagementservice.service;
+
+public interface JobHistoryService {
 }

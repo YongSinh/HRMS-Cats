@@ -1,2 +1,4 @@
-package com.cats.informationmanagementservice.service;public interface EducationService {
+package com.cats.informationmanagementservice.service;
+
+public interface EducationService {
 }

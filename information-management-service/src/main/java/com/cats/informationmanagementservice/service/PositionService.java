@@ -1,2 +1,5 @@
-package com.cats.informationmanagementservice.service;public interface PositionService {
+package com.cats.informationmanagementservice.service;
+
+public interface PositionService {
+
 }

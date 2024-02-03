@@ -1,2 +1,9 @@
-package com.cats.informationmanagementservice.service;public class PositionServiceImp {
+package com.cats.informationmanagementservice.service;
+
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+@Service
+@RequiredArgsConstructor
+public class PositionServiceImp implements  PositionService{
 }
