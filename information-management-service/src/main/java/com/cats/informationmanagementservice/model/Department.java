@@ -19,5 +19,7 @@ public class Department {
     @Column(name = "depName")
     private String depName;
     @OneToMany(mappedBy = "department", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Employee> books = new ArrayList<>();
+    private List<Employee> employees = new ArrayList<>();
+    @OneToMany(mappedBy = "department", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Position> positions = new ArrayList<>();
 }

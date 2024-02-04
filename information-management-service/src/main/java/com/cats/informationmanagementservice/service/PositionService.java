@@ -1,5 +1,12 @@
 package com.cats.informationmanagementservice.service;
 
-public interface PositionService {
+import com.cats.informationmanagementservice.Dto.PositionDtoReq;
+import com.cats.informationmanagementservice.model.Position;
 
+import java.util.List;
+
+public interface PositionService {
+    Position getPositionById (Long Id);
+    Position addPosition (PositionDtoReq positionDtoReq);
+    List<Position> getListPosition();
 }

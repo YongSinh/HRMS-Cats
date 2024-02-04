@@ -1,8 +1,11 @@
 package com.cats.informationmanagementservice.service;
 
+import com.cats.informationmanagementservice.Dto.EmployeeDtoReq;
+import com.cats.informationmanagementservice.model.Department;
 import com.cats.informationmanagementservice.model.Employee;
+import com.cats.informationmanagementservice.model.Position;
 import com.cats.informationmanagementservice.repository.EmployeeRepo;
-import jakarta.persistence.Entity;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -12,16 +15,18 @@ import java.util.List;
 @RequiredArgsConstructor
 public class EmployeeServiceImp implements EmployeeService{
     private final EmployeeRepo employeeRepo;
+    private final PositionService positionService;
+    private final DepartmentService departmentService;
+
+    @Transactional
     @Override
-    public Employee addPersonalData(Employee employee) {
+    public Employee addPersonalData(EmployeeDtoReq employee) {
         Employee emp = new Employee();
         emp.setEmpId(employee.getEmpId());
         emp.setEmpCode(employee.getEmpCode());
         emp.setFirstName(employee.getFirstName());
         emp.setLastName(employee.getLastName());
         emp.setEmail(employee.getEmail());
-        emp.setPositionId(employee.getPositionId());
-//        emp.setDepartment(employee.getDepartment());
         emp.setBirthDate(employee.getBirthDate());
         emp.setAge(employee.getAge());
         emp.setSex(employee.getSex());
@@ -43,11 +48,21 @@ public class EmployeeServiceImp implements EmployeeService{
         emp.setGovTel(employee.getGovTel());
         emp.setGovPosition(employee.getGovPosition());
         emp.setGovAddress(employee.getGovAddress());
+        if (employee.getPosId() == null){
+            throw new IllegalArgumentException("Employee at least on Position ");
+        }
+        Position position = positionService.getPositionById(employee.getPosId());
+        emp.setPosition(position);
+        if (employee.getDepId() == null){
+            throw new IllegalArgumentException("Employee at least on Position ");
+        }
+        Department department = departmentService.getDepById(employee.getDepId());
+        emp.setDepartment(department);
         return employeeRepo.save(emp);
     }
 
     @Override
-    public Employee editPersonalData(Employee employee, Long Id) {
+    public Employee editPersonalData(EmployeeDtoReq employee, Long Id) {
         return null;
     }
 

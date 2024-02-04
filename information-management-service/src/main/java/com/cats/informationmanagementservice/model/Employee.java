@@ -24,8 +24,6 @@ public class Employee {
     private String lastName;
     @Column(name ="email" )
     private String email;
-    @Column(name ="positionid")
-    private Long positionId;
     @Column(name ="birthDate")
     private LocalDate birthDate;
     @Column(name ="age")
@@ -68,10 +66,11 @@ public class Employee {
     private String  govAddress;
     @Column(name ="gov_postion")
     private String  govPosition;
-
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "department_id")
     private Department department;
-
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "positionid")
+    private Position position;
 
 }

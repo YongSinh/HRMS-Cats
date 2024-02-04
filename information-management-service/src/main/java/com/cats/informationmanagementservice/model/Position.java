@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Setter
 @Getter
 @Entity
@@ -15,6 +18,9 @@ public class Position {
     private Long posId;
     @Column(name = "positionName")
     private String posName;
-    @Column(name = "department_id")
-    private Long DepId;
+    @OneToMany(mappedBy = "position", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Employee> employees = new ArrayList<>();
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "department_id")
+    private Department department;
 }

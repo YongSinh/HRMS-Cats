@@ -1,9 +1,40 @@
 package com.cats.informationmanagementservice.service;
 
+import com.cats.informationmanagementservice.Dto.PositionDtoReq;
+import com.cats.informationmanagementservice.model.Department;
+import com.cats.informationmanagementservice.model.Position;
+import com.cats.informationmanagementservice.repository.PositionRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class PositionServiceImp implements  PositionService{
+    private final PositionRepo positionRepo;
+    private final DepartmentService departmentService;
+    @Override
+    public Position getPositionById(Long Id) {
+        return positionRepo.findById(Id).orElseThrow(() ->
+                new IllegalArgumentException(
+                        "Position with id: " + Id + " could not be found"));
+    }
+
+    @Override
+    public Position addPosition(PositionDtoReq positionDtoReq) {
+        Position position = new Position();
+        position.setPosName(position.getPosName());
+        if(positionDtoReq.getDepId() == null){
+            throw new IllegalArgumentException("Position at least on Department ");
+        }
+        Department department = departmentService.getDepById(positionDtoReq.getDepId());
+        position.setDepartment(department);
+        return positionRepo.save(position);
+    }
+
+    @Override
+    public List<Position> getListPosition() {
+        return positionRepo.findAll();
+    }
 }
