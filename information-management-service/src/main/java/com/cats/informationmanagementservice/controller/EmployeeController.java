@@ -1,16 +1,24 @@
 package com.cats.informationmanagementservice.controller;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import com.cats.informationmanagementservice.base.BaseApi;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
 
 @RestController
 @RequestMapping("/api/employee")
 public class EmployeeController {
-    @RequestMapping("/hello")
-    @ResponseBody
-    public String helloGFG()
-    {
-        return "Hello GeeksForGeeks";
+    //@ResponseStatus(HttpStatus.ACCEPTED)
+    @PostMapping("/hello")
+    public BaseApi<?> findAllAccountTypes() {
+
+        return BaseApi.builder()
+                .status(true)
+                .code(HttpStatus.OK.value())
+                .message("Account types have been found")
+                .timestamp(LocalDateTime.now())
+                .data("Hello world")
+                .build();
     }
 }

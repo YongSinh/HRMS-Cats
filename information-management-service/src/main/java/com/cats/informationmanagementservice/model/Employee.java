@@ -1,7 +1,9 @@
 package com.cats.informationmanagementservice.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
@@ -9,7 +11,7 @@ import java.time.LocalDate;
 
 @Setter
 @Getter
-@RequiredArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "employee")
 public class Employee {
@@ -69,6 +71,7 @@ public class Employee {
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "department_id")
     private Department department;
+    @JsonBackReference
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "positionid")
     private Position position;

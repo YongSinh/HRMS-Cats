@@ -24,7 +24,7 @@ public class PositionServiceImp implements  PositionService{
     @Override
     public Position addPosition(PositionDtoReq positionDtoReq) {
         Position position = new Position();
-        position.setPosName(position.getPosName());
+        position.setPosName(positionDtoReq.getPosName());
         if(positionDtoReq.getDepId() == null){
             throw new IllegalArgumentException("Position at least on Department ");
         }

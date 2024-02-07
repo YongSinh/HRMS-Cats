@@ -22,7 +22,7 @@ public class DepartmentServiceImp implements DepartmentService{
     @Override
     public Department addDepartment(DepartmentDtoReq departmentDtoReq) {
         Department department = new Department();
-        department.setDepName(department.getDepName());
+        department.setDepName(departmentDtoReq.getDepName());
         return departmentRepo.save(department);
     }
 
