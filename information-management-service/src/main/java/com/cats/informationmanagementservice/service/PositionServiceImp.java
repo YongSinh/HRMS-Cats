@@ -37,4 +37,15 @@ public class PositionServiceImp implements  PositionService{
     public List<Position> getListPosition() {
         return positionRepo.findAll();
     }
+
+    @Override
+    public Position editPosition(PositionDtoReq positionDtoReq, Long Id) {
+        Position editPosition = getPositionById(Id);
+        editPosition.setPosName(positionDtoReq.getPosName());
+        if (positionDtoReq.getDepId() != null) {
+            Department department = departmentService.getDepById(positionDtoReq.getDepId());
+            editPosition.setDepartment(department);
+        }
+        return positionRepo.save(editPosition);
+    }
 }

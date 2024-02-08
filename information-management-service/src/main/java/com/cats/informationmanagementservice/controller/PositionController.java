@@ -30,5 +30,38 @@ public class PositionController {
                 .data(position)
                 .build();
     }
+    @GetMapping("/position")
+    public BaseApi<?> Position() {
+        List<Position> position = positionService.getListPosition();
+        return BaseApi.builder()
+                .status(true)
+                .code(HttpStatus.OK.value())
+                .message("Account types have been found")
+                .timestamp(LocalDateTime.now())
+                .data(position)
+                .build();
+    }
+    @GetMapping("/editPosition/{id}")
+    public BaseApi<?> getPositionById( @PathVariable Long id) {
+        Position position = positionService.getPositionById(id);
+        return BaseApi.builder()
+                .status(true)
+                .code(HttpStatus.OK.value())
+                .message("Account types have been found")
+                .timestamp(LocalDateTime.now())
+                .data(position)
+                .build();
+    }
+    @PutMapping("/editPosition/{id}")
+    public BaseApi<?> editPosition(@RequestBody PositionDtoReq positionDtoReq, @PathVariable Long id) {
+        Position position = positionService.editPosition(positionDtoReq, id);
+        return BaseApi.builder()
+                .status(true)
+                .code(HttpStatus.OK.value())
+                .message("Account types have been found")
+                .timestamp(LocalDateTime.now())
+                .data(position)
+                .build();
+    }
 
 }

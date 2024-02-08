@@ -9,4 +9,5 @@ public interface PositionService {
     Position getPositionById (Long Id);
     Position addPosition (PositionDtoReq positionDtoReq);
     List<Position> getListPosition();
+    Position editPosition (PositionDtoReq positionDtoReq, Long Id);
 }
