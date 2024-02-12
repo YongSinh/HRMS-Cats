@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/position")
+@RequestMapping("/api/info")
 @RequiredArgsConstructor
 public class PositionController {
     private final PositionService positionService;
@@ -41,7 +41,7 @@ public class PositionController {
                 .data(position)
                 .build();
     }
-    @GetMapping("/editPosition/{id}")
+    @GetMapping("/getPositionById/{id}")
     public BaseApi<?> getPositionById( @PathVariable Long id) {
         Position position = positionService.getPositionById(id);
         return BaseApi.builder()

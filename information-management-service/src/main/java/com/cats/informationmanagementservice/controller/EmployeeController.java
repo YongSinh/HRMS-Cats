@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 
 @RestController
-@RequestMapping("/api/employee")
+@RequestMapping("/api/info")
 public class EmployeeController {
     //@ResponseStatus(HttpStatus.ACCEPTED)
     @PostMapping("/hello")

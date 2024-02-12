@@ -1,14 +1,13 @@
-package com.cats.informationmanagementservice;
+package com.cats.apigeteway;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-
-public class InformationManagementServiceApplication {
+public class ApiGetewayApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(InformationManagementServiceApplication.class, args);
+		SpringApplication.run(ApiGetewayApplication.class, args);
 	}
 
 }

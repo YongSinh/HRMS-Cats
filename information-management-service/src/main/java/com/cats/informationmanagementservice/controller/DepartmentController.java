@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/department")
+@RequestMapping("/api/info")
 @RequiredArgsConstructor
 public class DepartmentController {
     private final DepartmentService departmentService;
