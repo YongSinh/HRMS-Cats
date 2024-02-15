@@ -7,7 +7,8 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PositionDtoReq {
+public class PositionDtoRep {
+    private Long Id;
     private String posName;
-    private Long depId;
+    private String depName;
 }

@@ -1,9 +1,13 @@
 package com.cats.informationmanagementservice.service;
 
+import com.cats.informationmanagementservice.Dto.PositionDtoRep;
 import com.cats.informationmanagementservice.Dto.PositionDtoReq;
+import com.cats.informationmanagementservice.Dto.mapper;
 import com.cats.informationmanagementservice.model.Department;
 import com.cats.informationmanagementservice.model.Position;
 import com.cats.informationmanagementservice.repository.PositionRepo;
+import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +18,7 @@ import java.util.List;
 public class PositionServiceImp implements  PositionService{
     private final PositionRepo positionRepo;
     private final DepartmentService departmentService;
+
     @Override
     public Position getPositionById(Long Id) {
         return positionRepo.findById(Id).orElseThrow(() ->
@@ -48,4 +53,11 @@ public class PositionServiceImp implements  PositionService{
         }
         return positionRepo.save(editPosition);
     }
+
+    @Override
+    public PositionDtoRep deletePosition(Long Id) {
+        Position editPosition = getPositionById(Id);
+        positionRepo.delete(editPosition);
+        return mapper.PosToPositionResponseDto(editPosition);
+  }
 }

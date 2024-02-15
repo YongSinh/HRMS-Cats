@@ -3,6 +3,7 @@ package com.cats.informationmanagementservice.model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.ArrayList;
@@ -12,6 +13,7 @@ import java.util.List;
 @Getter
 @Entity
 @Table(name = "position")
+@NoArgsConstructor
 public class Position {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
@@ -19,7 +21,7 @@ public class Position {
     private Long posId;
     @Column(name = "positionName")
     private String posName;
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne( fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "department_id")
     @JsonBackReference
     private Department department;

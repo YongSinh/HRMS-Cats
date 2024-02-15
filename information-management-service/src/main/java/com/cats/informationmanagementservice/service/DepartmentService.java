@@ -9,5 +9,7 @@ import java.util.List;
 public interface DepartmentService {
     Department getDepById(Long Id);
     Department addDepartment(DepartmentDtoReq departmentDtoReq);
+    void deleteDepartment(Long Id);
+    Department editDepartment(Long Id, DepartmentDtoReq departmentDtoReq);
     List<Department> getListDepartment();
 }

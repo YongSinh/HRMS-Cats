@@ -27,7 +27,5 @@ public class Education {
     private String  major;
     @Column(name = "GPA")
     private Double  GPA;
-    @Transient
-    @Column(columnDefinition = "varchar(100)")
-    private String token;
+
 }

@@ -1,6 +1,7 @@
 package com.cats.informationmanagementservice.controller;
 
 import com.cats.informationmanagementservice.Dto.DepartmentDtoReq;
+import com.cats.informationmanagementservice.Dto.PositionDtoRep;
 import com.cats.informationmanagementservice.Dto.PositionDtoReq;
 import com.cats.informationmanagementservice.base.BaseApi;
 import com.cats.informationmanagementservice.model.Department;
@@ -9,6 +10,7 @@ import com.cats.informationmanagementservice.service.DepartmentService;
 import com.cats.informationmanagementservice.service.PositionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -51,6 +53,13 @@ public class PositionController {
                 .timestamp(LocalDateTime.now())
                 .data(position)
                 .build();
+    }
+
+    @DeleteMapping("/getDeletePosition/{id}")
+    @ResponseBody
+    public ResponseEntity<?> getDeletePosition(@PathVariable Long id) {
+        PositionDtoRep positionDtoRep = positionService.deletePosition(id);
+        return new ResponseEntity<>(positionDtoRep, HttpStatus.OK);
     }
     @PutMapping("/editPosition/{id}")
     public BaseApi<?> editPosition(@RequestBody PositionDtoReq positionDtoReq, @PathVariable Long id) {
