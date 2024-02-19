@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/info")
+@RequestMapping("/api/info/position")
 @RequiredArgsConstructor
 public class PositionController {
     private final PositionService positionService;

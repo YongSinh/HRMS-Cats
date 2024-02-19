@@ -1,5 +1,6 @@
 package com.cats.informationmanagementservice.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,8 +16,6 @@ public class JobHistory {
     @GeneratedValue(strategy= GenerationType.AUTO)
     @Column(name = "id")
     private Long id;
-    @Column(name = "emid")
-    private Long emId;
     @Column(name = "start_date")
     private LocalDate startDate;
     @Column(name = "end_date")
@@ -25,4 +24,9 @@ public class JobHistory {
     private String jobTitle;
     @Column(name = "department")
     private String department;
+
+    @ManyToOne( fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "emid")
+    @JsonBackReference
+    private Employee employee;
 }

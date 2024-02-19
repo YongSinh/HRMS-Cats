@@ -1,6 +1,8 @@
 package com.cats.informationmanagementservice.service;
 
+import com.cats.informationmanagementservice.Dto.DepartmentDtoRep;
 import com.cats.informationmanagementservice.Dto.DepartmentDtoReq;
+import com.cats.informationmanagementservice.Dto.mapper;
 import com.cats.informationmanagementservice.model.Department;
 import com.cats.informationmanagementservice.repository.DepartmentRepo;
 import lombok.RequiredArgsConstructor;
@@ -27,9 +29,10 @@ public class DepartmentServiceImp implements DepartmentService{
     }
 
     @Override
-    public void deleteDepartment(Long Id) {
+    public DepartmentDtoRep deleteDepartment(Long Id) {
         Department department = getDepById(Id);
         departmentRepo.delete(department);
+        return mapper.DepToDepartmentDtoRep(department);
     }
 
     @Override

@@ -7,13 +7,19 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="attendance-service" />
         <module name="discovery-server" />
         <module name="information-management-service" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="api-geteway" target="17" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="api-geteway" options="-parameters" />
+      <module name="attendance-service" options="-parameters" />
       <module name="discovery-server" options="-parameters" />
       <module name="information-management-service" options="-parameters" />
     </option>

@@ -1,5 +1,6 @@
 package com.cats.informationmanagementservice.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,8 +16,7 @@ public class Education {
     @GeneratedValue(strategy= GenerationType.AUTO)
     @Column(name = "id")
     private Long id;
-    @Column(name = "empid")
-    private Long empId;
+
     @Column(name = "education_level")
     private String  eduLevel;
     @Column(name = "education_institution")
@@ -28,4 +28,8 @@ public class Education {
     @Column(name = "GPA")
     private Double  GPA;
 
+    @ManyToOne( fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "empid")
+    @JsonBackReference
+    private Employee employee;
 }

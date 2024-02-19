@@ -1,5 +1,6 @@
 package com.cats.informationmanagementservice.Dto;
 
+import com.cats.informationmanagementservice.model.Department;
 import com.cats.informationmanagementservice.model.Position;
 
 import java.util.ArrayList;
@@ -21,4 +22,12 @@ public class mapper {
         }
         return positionDtoReps;
     }
+
+    public static DepartmentDtoRep DepToDepartmentDtoRep(Department department){
+        DepartmentDtoRep departmentDtoRep = new DepartmentDtoRep();
+        departmentDtoRep.setId(department.getDepId());
+        departmentDtoRep.setDepName(department.getDepName());
+        return  departmentDtoRep;
+    }
+
 }
