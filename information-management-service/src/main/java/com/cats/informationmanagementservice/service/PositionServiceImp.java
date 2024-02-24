@@ -1,0 +1,63 @@
+package com.cats.informationmanagementservice.service;
+
+import com.cats.informationmanagementservice.Dto.PositionDtoRep;
+import com.cats.informationmanagementservice.Dto.PositionDtoReq;
+import com.cats.informationmanagementservice.Dto.mapper;
+import com.cats.informationmanagementservice.model.Department;
+import com.cats.informationmanagementservice.model.Position;
+import com.cats.informationmanagementservice.repository.PositionRepo;
+import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+@RequiredArgsConstructor
+public class PositionServiceImp implements  PositionService{
+    private final PositionRepo positionRepo;
+    private final DepartmentService departmentService;
+
+    @Override
+    public Position getPositionById(Long Id) {
+        return positionRepo.findById(Id).orElseThrow(() ->
+                new IllegalArgumentException(
+                        "Position with id: " + Id + " could not be found"));
+    }
+
+    @Override
+    public Position addPosition(PositionDtoReq positionDtoReq) {
+        Position position = new Position();
+        position.setPosName(positionDtoReq.getPosName());
+        if(positionDtoReq.getDepId() == null){
+            throw new IllegalArgumentException("Position at least on Department ");
+        }
+        Department department = departmentService.getDepById(positionDtoReq.getDepId());
+        position.setDepartment(department);
+        return positionRepo.save(position);
+    }
+
+    @Override
+    public List<Position> getListPosition() {
+        return positionRepo.findAll();
+    }
+
+    @Override
+    public Position editPosition(PositionDtoReq positionDtoReq, Long Id) {
+        Position editPosition = getPositionById(Id);
+        editPosition.setPosName(positionDtoReq.getPosName());
+        if (positionDtoReq.getDepId() != null) {
+            Department department = departmentService.getDepById(positionDtoReq.getDepId());
+            editPosition.setDepartment(department);
+        }
+        return positionRepo.save(editPosition);
+    }
+
+    @Override
+    public PositionDtoRep deletePosition(Long Id) {
+        Position editPosition = getPositionById(Id);
+        positionRepo.delete(editPosition);
+        return mapper.PosToPositionResponseDto(editPosition);
+  }
+}
