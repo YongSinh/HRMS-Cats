@@ -1,5 +1,6 @@
 package com.cats.informationmanagementservice.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -22,8 +23,11 @@ public class Department {
     private Long depId;
     @Column(name = "depName")
     private String depName;
+    @JsonManagedReference
+    @JsonIgnore
     @OneToMany(mappedBy = "department", cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.LAZY)
     private List<Employee> employees = new ArrayList<>();
+
     @JsonManagedReference
     @OneToMany(mappedBy = "department", cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.LAZY)
     private List<Position> positions = new ArrayList<>();

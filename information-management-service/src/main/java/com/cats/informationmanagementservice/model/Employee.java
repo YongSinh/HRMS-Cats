@@ -4,10 +4,9 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -16,6 +15,7 @@ import java.util.List;
 @Setter
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "employee")
 public class Employee {
@@ -72,13 +72,19 @@ public class Employee {
     private String  govAddress;
     @Column(name ="gov_postion")
     private String  govPosition;
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+
+    @JsonBackReference
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "department_id")
     private Department department;
+
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonBackReference
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY , optional = false, cascade = CascadeType.ALL)
     @JoinColumn(name = "positionid")
     private Position position;
+
     @JsonManagedReference
     @OneToMany(mappedBy = "employee", cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.LAZY)
     private List<JobHistory> jobHistories = new ArrayList<>();
@@ -89,7 +95,10 @@ public class Employee {
     private List<Education> educations = new ArrayList<>();
 
     @JsonManagedReference
-    @JsonIgnore
     @OneToMany(mappedBy = "employee", cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.LAZY)
     private List<EmergencyContact> emergencyContacts = new ArrayList<>();
+
+    @JsonManagedReference
+    @OneToMany(mappedBy = "employee", cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.LAZY)
+    private List<SiblingData> siblingData = new ArrayList<>();
 }

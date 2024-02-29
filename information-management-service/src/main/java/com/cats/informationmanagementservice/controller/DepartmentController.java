@@ -31,6 +31,17 @@ public class DepartmentController {
                 .data(department)
                 .build();
     }
+    @PutMapping ("/editDepartment/{id}")
+    public BaseApi<?> editDepartment(@RequestBody DepartmentDtoReq departmentDtoReq, @PathVariable Long id) {
+        Department department = departmentService.editDepartment(id,departmentDtoReq);
+        return BaseApi.builder()
+                .status(true)
+                .code(HttpStatus.OK.value())
+                .message("Account types have been found")
+                .timestamp(LocalDateTime.now())
+                .data(department)
+                .build();
+    }
     @GetMapping("/department")
     public BaseApi<?> listDepartment() {
         List<Department> department = departmentService.getListDepartment();
