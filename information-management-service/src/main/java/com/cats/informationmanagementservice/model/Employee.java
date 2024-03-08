@@ -22,8 +22,6 @@ public class Employee {
     @Id
     @Column(name ="empid" )
     private Long empId;
-    @Column(name ="employee_code" )
-    private String empCode;
     @Column(name ="firstName" )
     private String firstName;
     @Column(name ="lastName" )
@@ -101,4 +99,8 @@ public class Employee {
     @JsonManagedReference
     @OneToMany(mappedBy = "employee", cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.LAZY)
     private List<SiblingData> siblingData = new ArrayList<>();
+
+    @JsonManagedReference
+    @OneToMany(mappedBy = "employee", cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.LAZY)
+    private List<SpecialAbility> specialAbilities = new ArrayList<>();
 }

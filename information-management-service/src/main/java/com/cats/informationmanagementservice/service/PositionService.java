@@ -7,10 +7,10 @@ import com.cats.informationmanagementservice.model.Position;
 import java.util.List;
 
 public interface PositionService {
-    Position getPositionById (Long Id);
+    Position getPositionById (String Id);
     Position addPosition (PositionDtoReq positionDtoReq);
     List<Position> getListPosition();
-    Position editPosition (PositionDtoReq positionDtoReq, Long Id);
+    Position editPosition (PositionDtoReq positionDtoReq, String Id);
 
-    PositionDtoRep deletePosition(Long Id);
+    PositionDtoRep deletePosition(String Id);
 }

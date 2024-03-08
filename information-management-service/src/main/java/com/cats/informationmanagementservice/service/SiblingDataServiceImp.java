@@ -64,4 +64,10 @@ public class SiblingDataServiceImp implements SiblingDataService{
         }
         return siblingDataRepo.save(siblingData);
     }
+
+    @Override
+    public void delete(Long id) {
+        SiblingData siblingData = getSiblingData(id);
+        siblingDataRepo.delete(siblingData);
+    }
 }

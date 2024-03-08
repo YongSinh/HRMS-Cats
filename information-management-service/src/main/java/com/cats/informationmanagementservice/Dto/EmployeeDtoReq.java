@@ -35,6 +35,6 @@ public class EmployeeDtoReq {
     private String  govAddress;
     private String  govPosition;
     private Long depId;
-    private Long posId;
+    private String posId;
 
 }

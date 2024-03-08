@@ -44,7 +44,7 @@ public class PositionController {
                 .build();
     }
     @GetMapping("/getPositionById/{id}")
-    public BaseApi<?> getPositionById( @PathVariable Long id) {
+    public BaseApi<?> getPositionById( @PathVariable String id) {
         Position position = positionService.getPositionById(id);
         return BaseApi.builder()
                 .status(true)
@@ -57,12 +57,12 @@ public class PositionController {
 
     @DeleteMapping("/getDeletePosition/{id}")
     @ResponseBody
-    public ResponseEntity<?> getDeletePosition(@PathVariable Long id) {
+    public ResponseEntity<?> getDeletePosition(@PathVariable String id) {
         PositionDtoRep positionDtoRep = positionService.deletePosition(id);
         return new ResponseEntity<>(positionDtoRep, HttpStatus.OK);
     }
     @PutMapping("/editPosition/{id}")
-    public BaseApi<?> editPosition(@RequestBody PositionDtoReq positionDtoReq, @PathVariable Long id) {
+    public BaseApi<?> editPosition(@RequestBody PositionDtoReq positionDtoReq, @PathVariable String id) {
         Position position = positionService.editPosition(positionDtoReq, id);
         return BaseApi.builder()
                 .status(true)

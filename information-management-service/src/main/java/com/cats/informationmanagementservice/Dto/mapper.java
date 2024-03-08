@@ -14,6 +14,8 @@ public class mapper {
         PositionDtoRep positionDtoRep = new PositionDtoRep();
         positionDtoRep.setId(position.getPosId());
         positionDtoRep.setPosName(position.getPosName());
+        positionDtoRep.setPoLevel(position.getPoLevel());
+        positionDtoRep.setPoSection(position.getPoSection());
         positionDtoRep.setDepName(position.getDepartment().getDepName());
         return positionDtoRep;
     }
@@ -34,7 +36,6 @@ public class mapper {
     public static EmployeeDtoRep EmployeeDtoRepToEmployeeDtoRep(Employee employee){
         EmployeeDtoRep emp = new EmployeeDtoRep();
         emp.setEmpId(employee.getEmpId());
-        emp.setEmpCode(employee.getEmpCode());
         emp.setFirstName(employee.getFirstName());
         emp.setLastName(employee.getLastName());
         emp.setEmail(employee.getEmail());

@@ -16,7 +16,6 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class EmployeeDtoRep {
     private Long empId;
-    private String empCode;
     private String firstName;
     private String lastName;
     private String email;

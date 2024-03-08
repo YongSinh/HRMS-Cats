@@ -14,9 +14,8 @@ import lombok.Setter;
 @Setter
 public class LeaveType {
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
     @Column(name = "id")
-    private Long id;
+    private String id;
     @Column(name = "leave_title")
     private String leaveTitle;
     @Column(name = "leave_des")

@@ -16,11 +16,14 @@ import java.util.List;
 @NoArgsConstructor
 public class Position {
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
     @Column(name = "positionid")
-    private Long posId;
+    private String posId;
     @Column(name = "positionName")
     private String posName;
+    @Column(name = "poSection")
+    private String poSection;
+    @Column(name = "poLevel")
+    private String poLevel;
     @ManyToOne( fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "department_id")
     @JsonBackReference

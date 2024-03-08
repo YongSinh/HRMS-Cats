@@ -20,7 +20,7 @@ public class PositionServiceImp implements  PositionService{
     private final DepartmentService departmentService;
 
     @Override
-    public Position getPositionById(Long Id) {
+    public Position getPositionById(String Id) {
         return positionRepo.findById(Id).orElseThrow(() ->
                 new IllegalArgumentException(
                         "Position with id: " + Id + " could not be found"));
@@ -30,6 +30,8 @@ public class PositionServiceImp implements  PositionService{
     public Position addPosition(PositionDtoReq positionDtoReq) {
         Position position = new Position();
         position.setPosName(positionDtoReq.getPosName());
+        position.setPoSection(positionDtoReq.getPoSection());
+        position.setPoLevel(positionDtoReq.getPoLevel());
         if(positionDtoReq.getDepId() == null){
             throw new IllegalArgumentException("Position at least on Department ");
         }
@@ -44,7 +46,7 @@ public class PositionServiceImp implements  PositionService{
     }
 
     @Override
-    public Position editPosition(PositionDtoReq positionDtoReq, Long Id) {
+    public Position editPosition(PositionDtoReq positionDtoReq, String Id) {
         Position editPosition = getPositionById(Id);
         editPosition.setPosName(positionDtoReq.getPosName());
         if (positionDtoReq.getDepId() != null) {
@@ -55,7 +57,7 @@ public class PositionServiceImp implements  PositionService{
     }
 
     @Override
-    public PositionDtoRep deletePosition(Long Id) {
+    public PositionDtoRep deletePosition(String Id) {
         Position editPosition = getPositionById(Id);
         positionRepo.delete(editPosition);
         return mapper.PosToPositionResponseDto(editPosition);

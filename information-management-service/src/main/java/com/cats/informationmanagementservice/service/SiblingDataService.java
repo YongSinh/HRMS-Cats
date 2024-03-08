@@ -10,6 +10,8 @@ public interface SiblingDataService {
  SiblingData getSiblingData(Long id);
  SiblingData create(SiblingDataDtoReq siblingDataDtoReq);
  SiblingData edit(SiblingDataDtoReq siblingDataDtoReq, Long id);
+ void delete( Long id);
+
 
 
 }

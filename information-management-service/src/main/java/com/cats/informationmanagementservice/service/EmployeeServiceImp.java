@@ -26,8 +26,6 @@ public class EmployeeServiceImp implements EmployeeService{
     @Override
     public Employee addPersonalData(EmployeeDtoReq employee) {
         Employee emp = new Employee();
-        emp.setEmpId(employee.getEmpId());
-        emp.setEmpCode(employee.getEmpCode());
         emp.setFirstName(employee.getFirstName());
         emp.setLastName(employee.getLastName());
         emp.setEmail(employee.getEmail());
@@ -68,7 +66,6 @@ public class EmployeeServiceImp implements EmployeeService{
     @Override
     public EmployeeDtoRep editPersonalData(EmployeeDtoReq employee, Long Id) {
         Employee emp = getPersonalDataById(Id);
-        emp.setEmpCode(employee.getEmpCode());
         emp.setFirstName(employee.getFirstName());
         emp.setLastName(employee.getLastName());
         emp.setEmail(employee.getEmail());
