@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @Table(name = "leave_balance")
 @Entity
 @NoArgsConstructor
@@ -19,10 +21,11 @@ public class LeaveBalance  {
         private Long id;
         @Column(name = "empid")
         private Long empId;
-        @Column(name = "leave_type_id")
-        private Long leaveTypeId;
         @Column(name = "balance_amount")
         private Long balanceAmount;
         @Column(name = "last_update_date")
-        private Long lastUpdateDate;
+        private LocalDateTime lastUpdateDate;
+        @ManyToOne( fetch = FetchType.LAZY, optional = false)
+        @JoinColumn(name = "leave_type_id")
+        private LeaveType leaveType;
 }

@@ -1,10 +1,14 @@
 package com.cats.attendanceservice.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Table(name = "leave_type")
 @Entity
@@ -22,5 +26,9 @@ public class LeaveType {
     private String leaveDes;
     @Column(name = "leave_day_per_year")
     private Long leaveDayPerYear;
+
+    @JsonManagedReference
+    @OneToMany(mappedBy = "leaveType", cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.LAZY)
+    private List<LeaveBalance> leaveBalances = new ArrayList<>();
 
 }
