@@ -11,4 +11,5 @@ public interface LeaveTypeService {
     LeaveType getLeave(String Id);
     List<LeaveType> getListLeave();
     void delete(String Id);
+    void updateLeaveBalance(String leaveTypeId, Long newValue);
 }

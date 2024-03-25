@@ -1,5 +1,6 @@
 package com.cats.attendanceservice.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -26,6 +27,7 @@ public class LeaveBalance  {
         @Column(name = "last_update_date")
         private LocalDateTime lastUpdateDate;
         @ManyToOne( fetch = FetchType.LAZY, optional = false)
+        @JsonBackReference
         @JoinColumn(name = "leave_type_id")
         private LeaveType leaveType;
 }

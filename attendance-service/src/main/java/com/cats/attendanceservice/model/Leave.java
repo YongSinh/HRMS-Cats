@@ -50,6 +50,4 @@ public class Leave {
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
-
-
 }

@@ -26,7 +26,6 @@ public class LeaveType {
     private String leaveDes;
     @Column(name = "leave_day_per_year")
     private Long leaveDayPerYear;
-
     @JsonManagedReference
     @OneToMany(mappedBy = "leaveType", cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.LAZY)
     private List<LeaveBalance> leaveBalances = new ArrayList<>();
