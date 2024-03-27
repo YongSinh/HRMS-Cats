@@ -7,18 +7,29 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="attendance-service" />
         <module name="discovery-server" />
         <module name="information-management-service" />
+        <module name="attendance-service" />
+      </profile>
+      <profile name="Gradle Imported" enabled="true">
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.projectlombok/lombok/1.18.30/f195ee86e6c896ea47a1d39defbe20eb59cd149d/lombok-1.18.30.jar" />
+        </processorPath>
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="api-gateway" target="17" />
+      <module name="api-gateway.main" target="17" />
+      <module name="api-gateway.test" target="17" />
       <module name="api-geteway" target="17" />
+      <module name="apt-gateway" target="17" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="api-geteway" options="-parameters" />
+      <module name="apt-gateway" options="-parameters" />
       <module name="attendance-service" options="-parameters" />
       <module name="discovery-server" options="-parameters" />
       <module name="information-management-service" options="-parameters" />

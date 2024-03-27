@@ -2,9 +2,11 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/Final.iml" filepath="$PROJECT_DIR$/.idea/Final.iml" />
+      <module fileurl="file://$PROJECT_DIR$/attendance-service/attendance-service.iml" filepath="$PROJECT_DIR$/attendance-service/attendance-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/information-management-service/information-management-service.iml" filepath="$PROJECT_DIR$/information-management-service/information-management-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/api-geteway/src/main/main.iml" filepath="$PROJECT_DIR$/api-geteway/src/main/main.iml" />
       <module fileurl="file://$PROJECT_DIR$/api-geteway/src/main/main1.iml" filepath="$PROJECT_DIR$/api-geteway/src/main/main1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/api-geteway/src/test/test.iml" filepath="$PROJECT_DIR$/api-geteway/src/test/test.iml" />
       <module fileurl="file://$PROJECT_DIR$/api-geteway/src/test/test1.iml" filepath="$PROJECT_DIR$/api-geteway/src/test/test1.iml" />
     </modules>
   </component>
