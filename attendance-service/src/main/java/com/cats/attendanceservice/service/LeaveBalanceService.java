@@ -14,6 +14,8 @@ public interface LeaveBalanceService {
     LeaveBalanceDtoRep getLeaveBalanceById(Long Id);
     List<LeaveBalanceDtoRep> getLeaveBalanceByEmId(Long emId);
     List<LeaveBalanceDtoRep> getListLeaveBalance();
+    LeaveBalanceDtoRep getLeaveBalanceByLeaveTypeAndEmpId(String leaveType, Long emId);
+    LeaveBalance editLeaveBalance(String leaveType, Long emId, Long newBalance);
     void delete(Long Id);
     void deleteByLeaveType(String Id);
 }

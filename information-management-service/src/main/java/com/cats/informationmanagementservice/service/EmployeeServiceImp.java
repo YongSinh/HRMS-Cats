@@ -26,6 +26,7 @@ public class EmployeeServiceImp implements EmployeeService{
     @Override
     public Employee addPersonalData(EmployeeDtoReq employee) {
         Employee emp = new Employee();
+        emp.setEmpId(employee.getEmpId());
         emp.setFirstName(employee.getFirstName());
         emp.setLastName(employee.getLastName());
         emp.setEmail(employee.getEmail());

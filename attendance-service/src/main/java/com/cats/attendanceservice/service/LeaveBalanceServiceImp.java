@@ -71,6 +71,19 @@ public class LeaveBalanceServiceImp implements LeaveBalanceService{
     }
 
     @Override
+    public LeaveBalanceDtoRep getLeaveBalanceByLeaveTypeAndEmpId(String leaveType, Long emId) {
+        return mapper.leaveBalanceToBookResponseDto(leaveBalanceRepo.findLeaveBalanceByLeaveTypeAndEmpId(leaveType, emId));
+    }
+
+    @Override
+    public LeaveBalance editLeaveBalance(String leaveType, Long emId, Long newBalance) {
+        LeaveBalance leaveBalance = leaveBalanceRepo.findLeaveBalanceByLeaveTypeAndEmpId(leaveType, emId);
+        leaveBalance.setBalanceAmount(leaveBalance.getBalanceAmount() - newBalance);
+        leaveBalanceRepo.save(leaveBalance);
+        return leaveBalance;
+    }
+
+    @Override
     public void delete(Long Id) {
         LeaveBalance leaveBalance = getLeaveBalance(Id);
         leaveBalanceRepo.delete(leaveBalance);

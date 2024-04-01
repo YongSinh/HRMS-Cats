@@ -1,5 +1,6 @@
 package com.cats.attendanceservice.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -31,12 +32,18 @@ public class Leave {
     private LocalTime timeOfHaftDay;
     @Column(name = "reason")
     private String reason;
-    @Column(name = "leaveTypeId" )
-    private Integer leaveTypeId;
+
+    @ManyToOne( fetch = FetchType.LAZY, optional = false)
+    @JsonBackReference
+    @JoinColumn(name = "leaveTypeId")
+    private LeaveType leaveType;
+
     @Column(name = "status")
     private Boolean status;
     @Column(name = "approved")
     private Boolean approved;
+    @Column(name = "cancelled")
+    private Boolean cancelled;
     @Column(name = "approvedByManger")
     private Boolean approvedByManger;
     @Column(name = "approvedByHead")

@@ -1,32 +1,12 @@
 package com.cats.attendanceservice.dto;
 
+import com.cats.attendanceservice.model.Leave;
 import com.cats.attendanceservice.model.LeaveBalance;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class mapper {
-//    public static BookResponseDto bookToBookResponseDto(Book book) {
-//    BookResponseDto bookResponseDto = new BookResponseDto();
-//    bookResponseDto.setId(book.getId());
-//    bookResponseDto.setCategoryName(book.getCategory().getName());
-//    List<String> names = new ArrayList<>();
-//    List<Author> authors = book.getAuthors();
-//    for (Author author: authors) {
-//        names.add(author.getName());
-//    }
-//    bookResponseDto.setAuthorNames(names);
-//    return bookResponseDto;
-//}
-//
-//    public static List<BookResponseDto> booksToBookResponseDtos(List<Book> books) {
-//        List<BookResponseDto> bookResponseDtos = new ArrayList<>();
-//        for (Book book: books) {
-//            bookResponseDtos.add(bookToBookResponseDto(book));
-//        }
-//        return bookResponseDtos;
-//    }
-
     public static LeaveBalanceDtoRep leaveBalanceToBookResponseDto(LeaveBalance leaveBalance) {
         LeaveBalanceDtoRep leaveBalanceDtoRep = new LeaveBalanceDtoRep();
         leaveBalanceDtoRep.setId(leaveBalance.getId());
@@ -44,5 +24,34 @@ public class mapper {
            leaveBalanceDtoRep.add(leaveBalanceToBookResponseDto(leaveBalance));
         }
         return leaveBalanceDtoRep;
+    }
+
+    public static LeaveDtoRep leaveToLeaveResponseDto(Leave leave){
+        LeaveDtoRep leaveDtoRep = new LeaveDtoRep();
+        leaveDtoRep.setId(leave.getLeaveId());
+        leaveDtoRep.setEmpId(leave.getEmpId());
+        leaveDtoRep.setStartDate(leave.getStartDate());
+        leaveDtoRep.setEndDate(leave.getEndDate());
+        leaveDtoRep.setLeaveType(leave.getLeaveType().getLeaveTitle());
+        leaveDtoRep.setStatus(leave.getStatus());
+        leaveDtoRep.setApproved(leave.getApproved());
+        leaveDtoRep.setCancelled(leave.getCancelled());
+        leaveDtoRep.setApprovedByManger(leave.getApprovedByManger());
+        leaveDtoRep.setApprovedByHead(leave.getApprovedByHead());
+        leaveDtoRep.setApprovedByHead(leave.getApprovedByHead());
+        leaveDtoRep.setApprovedByHr(leave.getApprovedByHr());
+        leaveDtoRep.setRemark(leave.getRemark());
+        leaveDtoRep.setDayOfLeave(leave.getDayOfLeave());
+        leaveDtoRep.setCreatedAt(leave.getCreatedAt());
+        leaveDtoRep.setTimeOfHaftDay(leave.getTimeOfHaftDay());
+        return leaveDtoRep;
+    }
+    public static List<LeaveDtoRep> leaveToLeaveResponseDtos(List<Leave> leaves) {
+        List<LeaveDtoRep>  leaveDtoReps = new ArrayList<>();
+
+        for (Leave leave: leaves) {
+            leaveDtoReps.add(leaveToLeaveResponseDto(leave));
+        }
+        return leaveDtoReps;
     }
 }

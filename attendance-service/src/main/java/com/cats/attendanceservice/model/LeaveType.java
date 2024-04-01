@@ -30,4 +30,8 @@ public class LeaveType {
     @OneToMany(mappedBy = "leaveType", cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.LAZY)
     private List<LeaveBalance> leaveBalances = new ArrayList<>();
 
+    @JsonManagedReference
+    @OneToMany(mappedBy = "leaveType", cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.LAZY)
+    private List<Leave> leaves = new ArrayList<>();
+
 }

@@ -1,11 +1,9 @@
 package com.cats.attendanceservice.repository;
 
-import com.cats.attendanceservice.model.Leave;
-import com.cats.attendanceservice.model.LeaveType;
+import com.cats.attendanceservice.model.Attachment;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface LeaveTypeRepo extends JpaRepository<LeaveType , String> {
-
+public interface AttachmentRepo extends JpaRepository<Attachment, Long> {
 }
