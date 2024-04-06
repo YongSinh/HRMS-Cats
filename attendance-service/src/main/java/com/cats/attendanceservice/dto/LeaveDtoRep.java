@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
@@ -16,8 +17,8 @@ import java.time.LocalTime;
 public class LeaveDtoRep {
     private Long Id;
     private Long empId;
-    private LocalDateTime startDate;
-    private LocalDateTime endDate;
+    private LocalDate startDate;
+    private LocalDate endDate;
     private LocalTime timeOfHaftDay;
     private String reason;
     private String leaveType;
@@ -29,5 +30,5 @@ public class LeaveDtoRep {
     private Boolean approvedByHr;
     private String remark;
     private Integer dayOfLeave;
-    private LocalDateTime createdAt;
+    private LocalDate createdAt;
 }

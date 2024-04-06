@@ -25,9 +25,9 @@ public class Leave {
     @Column(name = "empid")
     private Long empId;
     @Column(name = "start_date")
-    private LocalDateTime startDate;
+    private LocalDate startDate;
     @Column(name = "end_date")
-    private LocalDateTime endDate;
+    private LocalDate endDate;
     @Column(name = "time")
     private LocalTime timeOfHaftDay;
     @Column(name = "reason")
@@ -55,6 +55,6 @@ public class Leave {
     @Column(name = "day" )
     private Integer dayOfLeave;
     @Column(name = "created_at")
-    private LocalDateTime createdAt;
+    private LocalDate createdAt;
 
 }

@@ -12,6 +12,6 @@ public interface AttendanceService {
     Attendance update(Long Id, AttendanceReqDto attendanceReqDto);
     Attendance create( AttendanceReqDto attendanceReqDto);
     Attendance getAttendanceById( Long id);
-
+    void saveAttendanceToDb();
 
 }
