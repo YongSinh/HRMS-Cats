@@ -8,10 +8,14 @@ import java.util.List;
 
 public interface AttendanceService {
     List<Attendance> getListAttendance();
+    List<Attendance> getListAttendanceOrderByDate();
     List<Attendance> getListAttendanceByEmId(Long emId);
     Attendance update(Long Id, AttendanceReqDto attendanceReqDto);
     Attendance create( AttendanceReqDto attendanceReqDto);
     Attendance getAttendanceById( Long id);
-    void saveAttendanceToDb();
+    Attendance getAttendanceByEmIdAndDateIn( String date, String emId);
+    String manualAsyncTimeIn();
+    String manualAsyncTimeOut();
+
 
 }

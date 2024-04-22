@@ -44,14 +44,25 @@ public class AttendanceServiceImp implements AttendanceService  {
     }
 
     @Override
+    public List<Attendance> getListAttendanceOrderByDate() {
+        return attendanceRepo.findAllOrderByDateIn();
+    }
+
+    @Override
     public List<Attendance> getListAttendanceByEmId(Long emId) {
         return  attendanceRepo.findByEmId(emId);
     }
 
     @Override
     public Attendance update(Long Id, AttendanceReqDto attendanceReqDto) {
-
-        return null;
+        Attendance update = getAttendanceById(Id);
+        update.setEmId(attendanceReqDto.getEmId());
+        update.setTimeIn(attendanceReqDto.getTimeIn());
+        update.setTimeOut(attendanceReqDto.getTimeOut());
+        update.setRemark(attendanceReqDto.getRemark());
+        update.setDateIn(attendanceReqDto.getDateIn());
+        attendanceRepo.save(update);
+        return update;
     }
 
     @Override
@@ -60,16 +71,7 @@ public class AttendanceServiceImp implements AttendanceService  {
     }
 
     @Override
-    public Attendance getAttendanceById(Long id) {
-        return attendanceRepo.findById(id).orElseThrow(() ->
-                new IllegalArgumentException(
-                        "attendance  with id: " + id + " could not be found"));
-    }
-
-
-    //@Scheduled(cron = "10 * * * * *")
-    @Override
-    public void saveAttendanceToDb() {
+    public String manualAsyncTimeIn() {
         // Create a File object representing the directory
         File directory = new File(attendanceText);
         // List all files in the directory
@@ -97,7 +99,135 @@ public class AttendanceServiceImp implements AttendanceService  {
                             // Find and print the time
                             if (matcher.find() && acNoMatcher.find()) {
                                 String time = matcher.group();
-                                System.out.println("Time: " + time);
+                                String emId = acNoMatcher.group();
+                                Date date = dateFormat.parse(time);
+                                LocalTime localTime = date.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalTime();
+                                LocalDate localDate = date.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate();
+                                attendance.setDateIn(localDate);
+                                attendance.setTimeIn(localTime);
+                                attendance.setEmId(Long.valueOf(emId));
+                                attendanceRepo.save(attendance);
+                            }
+
+                        }
+                        Path sourcePath = file.toPath();
+                        Path destinationPath = Paths.get(attendanceFinished, file.getName());
+                        Files.move(sourcePath, destinationPath);
+
+                    } catch (IOException e) {
+                        System.err.println("Error reading file: " + file.getName());
+                        e.printStackTrace();
+                    } catch (ParseException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+            return "Attendance time in have been save to database.";
+        } else {
+            return "Attendance is empty or does not exist.";
+        }
+    }
+
+    @Override
+    public String manualAsyncTimeOut() {
+        // Create a File object representing the directory
+        File directory = new File(attendanceText);
+        // List all files in the directory
+        File[] files = directory.listFiles();
+        if (files != null) {
+            // Iterate over each file in the directory
+            for (File file : files) {
+                if (file.isFile() && file.getName().toLowerCase().endsWith(".txt")) {
+                    // Read the text file
+                    try {
+                        // Using java.nio.file.Files to read file content
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("M/d/yyyy h:mm a");
+                        SimpleDateFormat timeFormat = new SimpleDateFormat("h:mm a");
+                        String content = new String(Files.readAllBytes(file.toPath()));
+                        List<String> storeList = Files.readAllLines(file.toPath());
+                        Pattern pattern = Pattern.compile("\\d{1,2}/\\d{1,2}/\\d{4} \\d{1,2}:\\d{2} [AP]M");
+                        Pattern acNoPattern = Pattern.compile("\\b\\d{4}\\b");
+
+                        for (String data : storeList) {
+                            // Create a Matcher object to find the pattern in the string
+                            Matcher matcher = pattern.matcher(data);
+                            Matcher acNoMatcher = acNoPattern.matcher(data);
+                            // Find and print the time
+                            if (matcher.find() && acNoMatcher.find()) {
+                                String time = matcher.group();
+                                String emId = acNoMatcher.group();
+                                Date date = dateFormat.parse(time);
+                                LocalTime localTime = date.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalTime();
+                                LocalDate localDate = date.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate();
+                                Attendance attendance = getAttendanceByEmIdAndDateIn(localDate.toString(),emId);
+                                attendance.setDateIn(localDate);
+                                attendance.setTimeOut(localTime);
+                                attendance.setEmId(Long.valueOf(emId));
+                                attendanceRepo.save(attendance);
+                            }
+
+                        }
+                        Path sourcePath = file.toPath();
+                        Path destinationPath = Paths.get(attendanceFinished, file.getName());
+                        Files.move(sourcePath, destinationPath);
+
+                    } catch (IOException e) {
+                        System.err.println("Error reading file: " + file.getName());
+                        e.printStackTrace();
+                    } catch (ParseException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+            return "Attendance time out have been save to database.";
+        } else {
+            return "Attendance file is empty or does not exist.";
+        }
+    }
+
+
+    @Override
+    public Attendance getAttendanceById(Long id) {
+        return attendanceRepo.findById(id).orElseThrow(() ->
+                new IllegalArgumentException(
+                        "attendance  with id: " + id + " could not be found"));
+    }
+
+    @Override
+    public Attendance getAttendanceByEmIdAndDateIn(String date, String emId) {
+        return attendanceRepo.findByEmIdAndDateIn(date, emId);
+    }
+
+    @Scheduled(cron = "0 9 * * *")
+    public void autoAsyncTimeIn() {
+        // Create a File object representing the directory
+        File directory = new File(attendanceText);
+        // List all files in the directory
+        File[] files = directory.listFiles();
+        if (files != null) {
+            // Iterate over each file in the directory
+            for (File file : files) {
+                if (file.isFile() && file.getName().toLowerCase().endsWith(".txt")) {
+                    // Read the text file
+                    try {
+                        // Using java.nio.file.Files to read file content
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("M/d/yyyy h:mm a");
+                        SimpleDateFormat timeFormat = new SimpleDateFormat("h:mm a");
+                        String content = new String(Files.readAllBytes(file.toPath()));
+                        List<String> storeList = Files.readAllLines(file.toPath());
+                        System.out.println("File Name: " + file.getName());
+                        Pattern pattern = Pattern.compile("\\d{1,2}/\\d{1,2}/\\d{4} \\d{1,2}:\\d{2} [AP]M");
+                        Pattern acNoPattern = Pattern.compile("\\b\\d{4}\\b");
+
+                        for (String data : storeList) {
+                            // Create a Matcher object to find the pattern in the string
+                            Attendance attendance = new Attendance();
+                            Matcher matcher = pattern.matcher(data);
+                            Matcher acNoMatcher = acNoPattern.matcher(data);
+                            // Find and print the time
+                            if (matcher.find() && acNoMatcher.find()) {
+                                String time = matcher.group();
+                                System.out.println("Time In: " + time);
                                 String acNo = acNoMatcher.group();
                                 System.out.println("Ac-No: " + acNo);
                                 Date date = dateFormat.parse(time);
@@ -107,8 +237,64 @@ public class AttendanceServiceImp implements AttendanceService  {
                                 attendance.setTimeIn(localTime);
                                 attendance.setTimeOut(localTime);
                                 attendance.setEmId(Long.valueOf(acNo));
-                                //attendanceRepo.save(attendance);
-                                System.out.println(attendance);
+                                attendanceRepo.save(attendance);
+
+                            }
+
+                        }
+                        Path sourcePath = file.toPath();
+                        Path destinationPath = Paths.get(attendanceFinished, file.getName());
+                        Files.move(sourcePath, destinationPath);
+                    } catch (IOException e) {
+                        System.err.println("Error reading file: " + file.getName());
+                        e.printStackTrace();
+                    } catch (ParseException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+        } else {
+            System.err.println("Directory is empty or does not exist.");
+        }
+    }
+
+
+    @Scheduled(cron = "0 18 * * *")
+    public void autoAsyncTimeOut() {
+        // Create a File object representing the directory
+        File directory = new File(attendanceText);
+        // List all files in the directory
+        File[] files = directory.listFiles();
+        if (files != null) {
+            // Iterate over each file in the directory
+            for (File file : files) {
+                if (file.isFile() && file.getName().toLowerCase().endsWith(".txt")) {
+                    // Read the text file
+                    try {
+                        // Using java.nio.file.Files to read file content
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("M/d/yyyy h:mm a");
+                        SimpleDateFormat timeFormat = new SimpleDateFormat("h:mm a");
+                        String content = new String(Files.readAllBytes(file.toPath()));
+                        List<String> storeList = Files.readAllLines(file.toPath());
+                        Pattern pattern = Pattern.compile("\\d{1,2}/\\d{1,2}/\\d{4} \\d{1,2}:\\d{2} [AP]M");
+                        Pattern acNoPattern = Pattern.compile("\\b\\d{4}\\b");
+
+                        for (String data : storeList) {
+                            // Create a Matcher object to find the pattern in the string
+                            Matcher matcher = pattern.matcher(data);
+                            Matcher acNoMatcher = acNoPattern.matcher(data);
+                            // Find and print the time
+                            if (matcher.find() && acNoMatcher.find()) {
+                                String time = matcher.group();
+                                String emId = acNoMatcher.group();
+                                Date date = dateFormat.parse(time);
+                                LocalTime localTime = date.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalTime();
+                                LocalDate localDate = date.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate();
+                                Attendance attendance = getAttendanceByEmIdAndDateIn(localDate.toString(),emId);
+                                attendance.setDateIn(localDate);
+                                attendance.setTimeOut(localTime);
+                                attendance.setEmId(Long.valueOf(emId));
+                                attendanceRepo.save(attendance);
                             }
 
                         }

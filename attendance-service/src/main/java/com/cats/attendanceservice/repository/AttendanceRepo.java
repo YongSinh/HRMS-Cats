@@ -11,5 +11,10 @@ import java.util.List;
 public interface AttendanceRepo extends JpaRepository<Attendance, Long> {
     @Query(value = "select * from attendance order by DateIn", nativeQuery = true)
     List<Attendance> findAllOrderByDateIn();
+    @Query(value = "select * from attendance where emId = ?1 order by DateIn", nativeQuery = true)
     List<Attendance> findByEmId(Long emId);
+    @Query(value = "select * from attendance\n" +
+            "where DateIn = ?1 and emId = ?2", nativeQuery = true)
+    Attendance findByEmIdAndDateIn(String date, String emId);
+
 }
