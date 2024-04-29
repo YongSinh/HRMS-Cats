@@ -3,6 +3,7 @@ package com.cats.attendanceservice.service;
 import com.cats.attendanceservice.dto.AttendanceReqDto;
 import com.cats.attendanceservice.model.Attendance;
 import com.cats.attendanceservice.repository.AttendanceRepo;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 

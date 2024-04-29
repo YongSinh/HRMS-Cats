@@ -3,6 +3,7 @@ package com.cats.attendanceservice.service;
 import com.cats.attendanceservice.dto.LeaveDtoRep;
 import com.cats.attendanceservice.dto.LeaveDtoReq;
 import com.cats.attendanceservice.model.Leave;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 

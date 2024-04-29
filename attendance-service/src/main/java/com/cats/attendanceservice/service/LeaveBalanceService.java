@@ -4,6 +4,7 @@ import com.cats.attendanceservice.dto.LeaveBalanceDtoRep;
 import com.cats.attendanceservice.dto.LeaveBalanceListDtoReq;
 import com.cats.attendanceservice.dto.LeaveBalanceRepDto;
 import com.cats.attendanceservice.model.LeaveBalance;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 

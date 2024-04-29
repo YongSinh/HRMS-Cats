@@ -24,10 +24,12 @@ public class Position {
     private String poSection;
     @Column(name = "poLevel")
     private String poLevel;
+
     @ManyToOne( fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "department_id")
     @JsonBackReference
     private Department department;
+
     @OneToMany(mappedBy = "position", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Employee> employees = new ArrayList<>();
 

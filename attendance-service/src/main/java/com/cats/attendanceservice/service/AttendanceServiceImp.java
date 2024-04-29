@@ -198,7 +198,7 @@ public class AttendanceServiceImp implements AttendanceService  {
         return attendanceRepo.findByEmIdAndDateIn(date, emId);
     }
 
-    @Scheduled(cron = "0 9 * * *")
+    @Scheduled(cron = "0 9 * * * *")
     public void autoAsyncTimeIn() {
         // Create a File object representing the directory
         File directory = new File(attendanceText);
@@ -259,7 +259,7 @@ public class AttendanceServiceImp implements AttendanceService  {
     }
 
 
-    @Scheduled(cron = "0 18 * * *")
+    @Scheduled(cron = "0 18 * * * *")
     public void autoAsyncTimeOut() {
         // Create a File object representing the directory
         File directory = new File(attendanceText);

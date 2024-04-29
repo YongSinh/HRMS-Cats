@@ -17,7 +17,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AttendanceController {
     private final AttendanceService attendanceService;
-
     /**
      * listAttendance
      * ListAttendanceOrderByDate
