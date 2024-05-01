@@ -11,7 +11,9 @@ import com.cats.attendanceservice.repository.LeaveRepo;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +24,7 @@ public class LeaveServiceImp implements LeaveSerivce{
     private final LeaveBalanceService leaveBalanceService;
     private final LeaveTypeService leaveTypeService;
     private final AttendanceRepo attendanceRepo;
+    private final FileService fileService;
     @Override
     public List<LeaveDtoRep> getListLeave() {
         return mapper.leaveToLeaveResponseDtos(leaveRepo.findAll());
@@ -40,7 +43,7 @@ public class LeaveServiceImp implements LeaveSerivce{
     //For user create leave and save draft
     @Transactional
     @Override
-    public LeaveDtoRep create(LeaveDtoReq leaveDtoReq) {
+    public LeaveDtoRep create(LeaveDtoReq leaveDtoReq,  MultipartFile file) throws IOException {
         Leave leave = new Leave();
         leave.setEmpId(leaveDtoReq.getEmpId());
         leave.setStartDate(leaveDtoReq.getStartDate());
@@ -60,6 +63,9 @@ public class LeaveServiceImp implements LeaveSerivce{
         leave.setDayOfLeave(leaveDtoReq.getDayOfLeave());
         leave.setCreatedAt(leaveDtoReq.getCreatedAt());
         leave.setTimeOfHaftDay(leaveDtoReq.getTimeOfHaftDay());
+        if (file != null){
+            fileService.store(file,leaveDtoReq.getEmpId(),2);
+        }
         return mapper.leaveToLeaveResponseDto(leaveRepo.save(leave));
     }
 

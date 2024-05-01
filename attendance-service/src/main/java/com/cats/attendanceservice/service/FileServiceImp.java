@@ -52,6 +52,11 @@ public class FileServiceImp implements FileService {
     }
 
     @Override
+    public Stream<Attachment> getAllFileByEmId(Long emId) {
+        return attachmentRepo.findByEmId(emId).stream();
+    }
+
+    @Override
     public Stream<Attachment> getAllFile() {
         return attachmentRepo.findAll().stream();
     }

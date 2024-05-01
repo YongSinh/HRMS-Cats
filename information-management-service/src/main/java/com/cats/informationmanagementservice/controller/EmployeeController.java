@@ -7,9 +7,13 @@ import com.cats.informationmanagementservice.base.BaseApi;
 import com.cats.informationmanagementservice.model.Employee;
 import com.cats.informationmanagementservice.model.FamilyData;
 import com.cats.informationmanagementservice.service.EmployeeService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.codec.multipart.FilePart;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -75,5 +79,16 @@ public class EmployeeController {
                 .data(employee)
                 .build();
     }
-
+    @RequestMapping(value = "/file/upload", method = RequestMethod.POST, consumes = { "multipart/form-data"})
+    public ResponseEntity<?> uploadFile(@RequestPart("file") @Valid MultipartFile file){
+        try {
+            employeeService.uploadFile(file,2431L, 1);
+            String message = "Uploaded the file successfully: " + file.getOriginalFilename();
+            return ResponseEntity.status(HttpStatus.OK).body(message);
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            String message = "Could not upload the file: " + file.getOriginalFilename() + "!";
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(message);
+        }
+    }
 }

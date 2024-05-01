@@ -9,19 +9,37 @@ import com.cats.informationmanagementservice.model.Position;
 import com.cats.informationmanagementservice.repository.EmployeeRepo;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import net.minidev.json.JSONObject;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.client.MultipartBodyBuilder;
+import org.springframework.http.codec.multipart.FilePart;
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.reactive.function.BodyInserters;
+import org.springframework.web.reactive.function.client.WebClient;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 @Service
+@Transactional
+@Slf4j
 @RequiredArgsConstructor
 public class EmployeeServiceImp implements EmployeeService{
     private final EmployeeRepo employeeRepo;
     private final PositionService positionService;
     private final DepartmentService departmentService;
-
+    private final WebClient.Builder webClientBuilder;
     @Transactional
     @Override
     public Employee addPersonalData(EmployeeDtoReq employee) {
@@ -100,6 +118,7 @@ public class EmployeeServiceImp implements EmployeeService{
             emp.setDepartment(department);
         }
         employeeRepo.save(emp);
+
         return mapper.EmployeeDtoRepToEmployeeDtoRep(emp);
     }
 
@@ -114,6 +133,25 @@ public class EmployeeServiceImp implements EmployeeService{
     @Override
     public EmployeeDtoRep getEmployeeDtoRepById(Long Id) {
         return mapper.EmployeeDtoRepToEmployeeDtoRep(getPersonalDataById(Id));
+    }
+
+
+    @Override
+    public String uploadFile(MultipartFile file, Long emId, Integer type) throws IOException {
+        JSONObject jsonBody = new JSONObject();
+        jsonBody.put("emId", emId);
+        jsonBody.put("type", type);
+
+        MultipartBodyBuilder builder = new MultipartBodyBuilder();
+        builder.part("file", file.getResource());
+        builder.part("body", jsonBody);
+        return  webClientBuilder.build().post()
+                .uri("http://attendance-service/api/attendanceLeave/file/upload")
+                .contentType(MediaType.MULTIPART_FORM_DATA)
+                .body(BodyInserters.fromMultipartData(builder.build()))
+                .retrieve()
+                .bodyToMono(String.class)
+                .block();
     }
 
     @Override

@@ -11,7 +11,9 @@ import jakarta.websocket.server.PathParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -23,8 +25,8 @@ public class LeaveController {
 
     //for first create leave only
     @PostMapping("/leave/add")
-    public BaseApi<?> addLeave(@RequestBody LeaveDtoReq leaveDtoReq) {
-        LeaveDtoRep leave = leaveSerivce.create(leaveDtoReq);
+    public BaseApi<?> addLeave(@RequestPart("body") LeaveDtoReq leaveDtoReq, @RequestPart("body")MultipartFile file) throws IOException {
+        LeaveDtoRep leave = leaveSerivce.create(leaveDtoReq, file);
         return BaseApi.builder()
                 .status(true)
                 .code(HttpStatus.OK.value())

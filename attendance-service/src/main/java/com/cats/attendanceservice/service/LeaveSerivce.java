@@ -4,7 +4,9 @@ import com.cats.attendanceservice.dto.LeaveDtoRep;
 import com.cats.attendanceservice.dto.LeaveDtoReq;
 import com.cats.attendanceservice.model.Leave;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface LeaveSerivce {
@@ -12,7 +14,7 @@ public interface LeaveSerivce {
     List<LeaveDtoRep> getListLeave();
     List<LeaveDtoRep> getLeaveByEmId(Long EmId);
     List<LeaveDtoRep> getLeaveByEmIdAndOrderByDate(Long EmId);
-    LeaveDtoRep create(LeaveDtoReq leaveDtoReq);
+    LeaveDtoRep create(LeaveDtoReq leaveDtoReq, MultipartFile file) throws IOException;
     LeaveDtoRep appleLeave(LeaveDtoReq leaveDtoRep, Long Id);
     LeaveDtoRep edit(Long Id, LeaveDtoReq leaveDtoRep);
     LeaveDtoRep editLeave(Long Id, LeaveDtoReq leaveDtoReq);

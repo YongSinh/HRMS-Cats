@@ -11,7 +11,9 @@ import java.util.stream.Stream;
 public interface FileService {
 
     void store(MultipartFile file, Long emId, Integer type) throws IOException;
+
     void store2(MultipartFile file) throws IOException;
     Attachment getFile(String id);
+    Stream<Attachment> getAllFileByEmId(Long emId);
     Stream<Attachment> getAllFile();
 }
