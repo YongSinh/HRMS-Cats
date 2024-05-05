@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
+import java.time.LocalDate;
+
 @Data
 @RequiredArgsConstructor
 @AllArgsConstructor
@@ -15,9 +17,7 @@ public class ResponseFile {
     private long size;
     private Long emId;
     private String fileType;
-
-
-
+    private LocalDate dateCreated;
 
 }
 

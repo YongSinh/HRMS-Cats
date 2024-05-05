@@ -15,6 +15,7 @@ import org.springframework.http.codec.multipart.FilePart;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -82,7 +83,8 @@ public class EmployeeController {
     @RequestMapping(value = "/file/upload", method = RequestMethod.POST, consumes = { "multipart/form-data"})
     public ResponseEntity<?> uploadFile(@RequestPart("file") @Valid MultipartFile file){
         try {
-            employeeService.uploadFile(file,2431L, 1);
+            LocalDate localDate = LocalDate.now();
+            employeeService.uploadFile(file,2431L, 1, localDate);
             String message = "Uploaded the file successfully: " + file.getOriginalFilename();
             return ResponseEntity.status(HttpStatus.OK).body(message);
         }catch (Exception e){

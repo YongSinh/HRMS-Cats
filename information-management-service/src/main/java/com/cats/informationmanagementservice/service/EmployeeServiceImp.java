@@ -27,6 +27,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -137,16 +138,17 @@ public class EmployeeServiceImp implements EmployeeService{
 
 
     @Override
-    public String uploadFile(MultipartFile file, Long emId, Integer type) throws IOException {
+    public String uploadFile(MultipartFile file, Long emId, Integer type, LocalDate date) throws IOException {
         JSONObject jsonBody = new JSONObject();
         jsonBody.put("emId", emId);
         jsonBody.put("type", type);
+        jsonBody.put("dateCreated", date);
 
         MultipartBodyBuilder builder = new MultipartBodyBuilder();
         builder.part("file", file.getResource());
         builder.part("body", jsonBody);
         return  webClientBuilder.build().post()
-                .uri("http://attendance-service/api/attendanceLeave/file/upload")
+                .uri("http://attendance-service/api/files/upload")
                 .contentType(MediaType.MULTIPART_FORM_DATA)
                 .body(BodyInserters.fromMultipartData(builder.build()))
                 .retrieve()

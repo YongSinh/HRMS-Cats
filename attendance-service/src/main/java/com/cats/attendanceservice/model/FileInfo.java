@@ -7,13 +7,15 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
+import java.time.LocalDate;
+
 @Table(name = "attachment")
 @Entity
 @Setter
 @Getter
 @AllArgsConstructor
 @RequiredArgsConstructor
-public class Attachment {
+public class FileInfo {
     @Id
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid",strategy = "uuid2")
@@ -31,6 +33,9 @@ public class Attachment {
 
     @Column(name = "file_type" , columnDefinition = "varchar(50)")
     private String fileType;
+
+    @Column(name = "dateCreated")
+    private LocalDate dateCreated;
 
     @Column(name = "file" , columnDefinition = "longblob")
     @Lob

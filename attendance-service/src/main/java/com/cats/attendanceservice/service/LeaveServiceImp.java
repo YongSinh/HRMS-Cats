@@ -64,7 +64,7 @@ public class LeaveServiceImp implements LeaveSerivce{
         leave.setCreatedAt(leaveDtoReq.getCreatedAt());
         leave.setTimeOfHaftDay(leaveDtoReq.getTimeOfHaftDay());
         if (file != null){
-            fileService.store(file,leaveDtoReq.getEmpId(),2);
+            fileService.store(file,leaveDtoReq.getEmpId(),2, leaveDtoReq.getCreatedAt());
         }
         return mapper.leaveToLeaveResponseDto(leaveRepo.save(leave));
     }

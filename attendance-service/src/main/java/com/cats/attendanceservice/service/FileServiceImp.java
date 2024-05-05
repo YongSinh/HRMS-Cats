@@ -1,7 +1,6 @@
 package com.cats.attendanceservice.service;
 
-import com.cats.attendanceservice.dto.RequestFile;
-import com.cats.attendanceservice.model.Attachment;
+import com.cats.attendanceservice.model.FileInfo;
 import com.cats.attendanceservice.repository.AttachmentRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -9,6 +8,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.Objects;
 import java.util.stream.Stream;
 
@@ -19,45 +19,55 @@ public class FileServiceImp implements FileService {
     private final AttachmentRepo attachmentRepo;
 
     @Override
-    public void store(MultipartFile file, Long emId, Integer type) throws IOException {
-        Attachment attachment = new Attachment();
+    public void store(MultipartFile file, Long emId, Integer type, LocalDate dateCreated) throws IOException {
+        FileInfo fileInfo = new FileInfo();
         String fileName = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
-        attachment.setType(type);
-        attachment.setFileType(file.getContentType());
-        attachment.setFileName(fileName);
-        attachment.setFile(file.getBytes());
-        attachment.setEmId(emId);
+        fileInfo.setType(type);
+        fileInfo.setFileType(file.getContentType());
+        fileInfo.setFileName(fileName);
+        fileInfo.setFile(file.getBytes());
+        fileInfo.setEmId(emId);
+        fileInfo.setDateCreated(dateCreated);
         System.out.println("Hello");
-        attachmentRepo.save(attachment);
+        attachmentRepo.save(fileInfo);
     }
 
 
 
     @Override
     public void store2(MultipartFile file) throws IOException {
-        Attachment attachment = new Attachment();
+        FileInfo fileInfo = new FileInfo();
         String fileName = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
-        attachment.setType(1);
-        attachment.setFileType(file.getContentType());
-        attachment.setFileName(fileName);
-        attachment.setFile(file.getBytes());
-        attachment.setEmId(2431L);
-        System.out.println("Hello");
-        attachmentRepo.save(attachment);
+        fileInfo.setType(1);
+        fileInfo.setFileType(file.getContentType());
+        fileInfo.setFileName(fileName);
+        fileInfo.setFile(file.getBytes());
+        fileInfo.setEmId(2431L);
+        attachmentRepo.save(fileInfo);
     }
 
     @Override
-    public Attachment getFile(String id) {
+    public FileInfo getFile(String id) {
         return attachmentRepo.findById(id).get();
     }
 
     @Override
-    public Stream<Attachment> getAllFileByEmId(Long emId) {
+    public Stream<FileInfo> getAllFileByEmId(Long emId) {
         return attachmentRepo.findByEmId(emId).stream();
     }
 
     @Override
-    public Stream<Attachment> getAllFile() {
+    public Stream<FileInfo> getAllFile() {
         return attachmentRepo.findAll().stream();
+    }
+
+    @Override
+    public Stream<FileInfo> getListFileByEmIdAndType(Long emId, Integer type) {
+        return attachmentRepo.findByEmIdAndType(emId,type).stream();
+    }
+
+    @Override
+    public Stream<FileInfo> getListFileByEmIdAndTypeAndDate(LocalDate date, Long emId, Integer type) {
+        return attachmentRepo.findByDateCreatedAndEmIdAndType(date,emId,type).stream();
     }
 }
