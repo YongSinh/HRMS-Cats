@@ -43,7 +43,7 @@ public class EmployeeServiceImp implements EmployeeService{
     private final WebClient.Builder webClientBuilder;
     @Transactional
     @Override
-    public Employee addPersonalData(EmployeeDtoReq employee) {
+    public Employee addPersonalData(EmployeeDtoReq employee, MultipartFile file) throws IOException {
         Employee emp = new Employee();
         emp.setEmpId(employee.getEmpId());
         emp.setFirstName(employee.getFirstName());
@@ -80,6 +80,9 @@ public class EmployeeServiceImp implements EmployeeService{
         }
         Department department = departmentService.getDepById(employee.getDepId());
         emp.setDepartment(department);
+        if(!file.isEmpty()){
+            uploadFile(file, employee.getEmpId(),1,employee.getEmpDate());
+        }
         return employeeRepo.save(emp);
     }
 

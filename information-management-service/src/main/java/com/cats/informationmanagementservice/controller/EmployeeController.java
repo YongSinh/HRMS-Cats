@@ -7,21 +7,30 @@ import com.cats.informationmanagementservice.base.BaseApi;
 import com.cats.informationmanagementservice.model.Employee;
 import com.cats.informationmanagementservice.model.FamilyData;
 import com.cats.informationmanagementservice.service.EmployeeService;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.retry.annotation.Retry;
+import io.github.resilience4j.timelimiter.annotation.TimeLimiter;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.codec.multipart.FilePart;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
-@AllArgsConstructor
+
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/info/employee")
+@Slf4j
 public class EmployeeController {
     private final EmployeeService employeeService;
     //@ResponseStatus(HttpStatus.ACCEPTED)
@@ -37,8 +46,8 @@ public class EmployeeController {
                 .build();
     }
     @PostMapping("/addEmployee")
-    public BaseApi<?> addFamilyData(@RequestBody EmployeeDtoReq employeeDtoReq) {
-        Employee employee = employeeService.addPersonalData(employeeDtoReq);
+    public BaseApi<?> addFamilyData(@RequestPart("body") EmployeeDtoReq employeeDtoReq, @RequestPart("file") MultipartFile file) throws IOException {
+        Employee employee = employeeService.addPersonalData(employeeDtoReq, file);
         return BaseApi.builder()
                 .status(true)
                 .code(HttpStatus.OK.value())
@@ -80,17 +89,20 @@ public class EmployeeController {
                 .data(employee)
                 .build();
     }
+    @CircuitBreaker(name = "attendance",fallbackMethod = "fallbackMethod")
+    @TimeLimiter(name = "attendance")
+    @Retry(name = "attendance")
     @RequestMapping(value = "/file/upload", method = RequestMethod.POST, consumes = { "multipart/form-data"})
-    public ResponseEntity<?> uploadFile(@RequestPart("file") @Valid MultipartFile file){
-        try {
+    public CompletableFuture<?> uploadFile(@RequestPart("file") @Valid MultipartFile file) throws IOException {
+
             LocalDate localDate = LocalDate.now();
             employeeService.uploadFile(file,2431L, 1, localDate);
             String message = "Uploaded the file successfully: " + file.getOriginalFilename();
-            return ResponseEntity.status(HttpStatus.OK).body(message);
-        }catch (Exception e){
-            System.out.println(e.getMessage());
-            String message = "Could not upload the file: " + file.getOriginalFilename() + "!";
-            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(message);
-        }
+        return CompletableFuture.supplyAsync(() ->message);
+
+    }
+    public CompletableFuture<?>  fallbackMethod(MultipartFile file, RuntimeException runtimeException) {
+        System.out.println("Cannot Place Order Executing Fallback logic");
+        return  CompletableFuture.supplyAsync(() -> "Oops! Something went wrong, please order after some time!");
     }
 }

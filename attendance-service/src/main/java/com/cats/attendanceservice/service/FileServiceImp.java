@@ -3,6 +3,7 @@ package com.cats.attendanceservice.service;
 import com.cats.attendanceservice.model.FileInfo;
 import com.cats.attendanceservice.repository.AttachmentRepo;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;

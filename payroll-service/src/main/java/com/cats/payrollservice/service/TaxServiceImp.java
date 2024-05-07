@@ -1,17 +1,18 @@
 package com.cats.payrollservice.service;
 
+import com.cats.payrollservice.dto.request.TaxReqDto;
 import com.cats.payrollservice.model.Tax;
 import com.cats.payrollservice.repository.TaxRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+@Service
 @RequiredArgsConstructor
 public class TaxServiceImp implements TaxService{
     private final TaxRepo taxRepo;
     @Override
-    public Tax addTax(Tax tax) {
+    public Tax addTax(TaxReqDto tax) {
         Tax add = new Tax();
         add.setTaxableSalary(tax.getTaxableSalary());
         add.setRate(tax.getRate());
@@ -19,7 +20,7 @@ public class TaxServiceImp implements TaxService{
     }
 
     @Override
-    public Tax updateTax(Tax tax, Long taxId) {
+    public Tax updateTax(TaxReqDto tax, Long taxId) {
         Tax update = getTaxById(taxId);
         update.setRate(tax.getRate());
         update.setTaxableSalary(tax.getTaxableSalary());

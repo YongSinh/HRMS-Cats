@@ -11,7 +11,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface EmployeeService {
-    Employee addPersonalData(EmployeeDtoReq employee);
+    Employee addPersonalData(EmployeeDtoReq employee, MultipartFile file) throws IOException;
     EmployeeDtoRep editPersonalData(EmployeeDtoReq employee, Long Id);
     List<EmployeeDtoRep> listEmployee();
     EmployeeDtoRep getEmployeeDtoRepById(Long Id);
