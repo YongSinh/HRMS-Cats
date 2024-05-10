@@ -19,8 +19,9 @@ public class Payslip {
     @GeneratedValue(strategy= GenerationType.AUTO)
     @Column(name ="id")
     private Long Id;
-    @Column(name ="payroll_id")
-    private Long payrollId;
+    @OneToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.LAZY)
+    @JoinColumn( name ="payroll_id")
+    private Payroll payroll;
     @Column(name ="employee_id")
     private Long empId;
     @Column(name ="present")
