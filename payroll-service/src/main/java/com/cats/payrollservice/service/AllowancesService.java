@@ -1,7 +1,17 @@
 package com.cats.payrollservice.service;
 
-import org.springframework.stereotype.Service;
+import com.cats.payrollservice.dto.request.AllowancesReqDto;
+import com.cats.payrollservice.model.Allowances;
+
+import java.util.List;
 
 
 public interface AllowancesService {
+
+    Allowances create (AllowancesReqDto allowancesReqDto);
+    Allowances update (AllowancesReqDto allowancesReqDto, Long Id);
+
+    Allowances getAllowancesBytId(Long id);
+
+    List<Allowances> getListAllowances();
 }

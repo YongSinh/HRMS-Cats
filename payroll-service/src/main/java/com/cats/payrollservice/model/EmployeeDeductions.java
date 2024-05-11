@@ -1,5 +1,6 @@
 package com.cats.payrollservice.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,8 +22,10 @@ public class EmployeeDeductions {
     private Long empDedId;
     @Column(name ="employee_id")
     private Long empId;
-    @Column(name ="deductions_id")
-    private Long dedId;
+    @ManyToOne( fetch = FetchType.LAZY, optional = false)
+    @JsonBackReference
+    @JoinColumn(name = "deductions_id")
+    private Deductions deductions;
     @Column(name ="type")
     private Integer type;
     @Column(name ="amount")

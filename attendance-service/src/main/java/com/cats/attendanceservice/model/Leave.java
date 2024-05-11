@@ -35,7 +35,7 @@ public class Leave {
 
     @ManyToOne( fetch = FetchType.LAZY, optional = false)
     @JsonBackReference
-    @JoinColumn(name = "leaveTypeId")
+    @JoinColumn(name = "leave_type_id")
     private LeaveType leaveType;
 
     @Column(name = "status")
