@@ -65,6 +65,12 @@ public class FamilyDataServiceImp implements FamilyDataService{
     }
 
     @Override
+    public List<FamilyData> getListFamilyDataByEmId(Long emId) {
+        Employee employee = employeeService.getPersonalDataById(emId);
+        return familyDataRepo.findByEmployee(employee);
+    }
+
+    @Override
     public void delete(Long Id) {
         FamilyData familyData = getFamilyDataById(Id);
         familyDataRepo.delete(familyData);

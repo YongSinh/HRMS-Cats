@@ -57,6 +57,12 @@ public class EmergencyServiceImp implements EmergencyService {
     }
 
     @Override
+    public List<EmergencyContact> getListEmergencyContactByEmId(Long emId) {
+        Employee employee = employeeService.getPersonalDataById(emId);
+        return emergencyContactRepo.findByEmployee(employee);
+    }
+
+    @Override
     public EmergencyContact getEmergencyContactById(Long Id) {
         return emergencyContactRepo.findById(Id).orElseThrow(() ->
                 new IllegalArgumentException("cannot find Emergency Contact with id: " + Id));

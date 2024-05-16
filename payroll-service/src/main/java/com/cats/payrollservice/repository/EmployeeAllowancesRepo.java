@@ -4,6 +4,9 @@ import com.cats.payrollservice.model.EmployeeAllowances;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface EmployeeAllowancesRepo extends JpaRepository<EmployeeAllowances, Long> {
+    List<EmployeeAllowances> findByEmpId(Long emId);
 }

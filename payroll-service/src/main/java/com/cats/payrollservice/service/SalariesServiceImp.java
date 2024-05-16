@@ -25,7 +25,7 @@ public class SalariesServiceImp implements SalariesService {
         salaries.setFromDate(salariesReqDto.getFromDate());
         salaries.setToDate(salariesReqDto.getToDate());
         if (salariesReqDto.getTaxId() == null) {
-            throw new IllegalArgumentException("Tax atleast on category");
+            throw new IllegalArgumentException("Tax atleast on");
         }
         Tax tax = taxService.getTaxById(salariesReqDto.getTaxId());
         salaries.setTax(tax);

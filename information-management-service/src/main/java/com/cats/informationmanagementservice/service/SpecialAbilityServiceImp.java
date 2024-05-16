@@ -58,9 +58,15 @@ public class SpecialAbilityServiceImp implements SpecialAbilityService{
         SpecialAbility specialAbility = getSpecialAbilityById(id);
         specialAbilityRepo.delete(specialAbility);
     }
-
     @Override
     public List<SpecialAbility> getListSpecialAbility() {
         return specialAbilityRepo.findAll();
     }
+
+    @Override
+    public List<SpecialAbility> getListSpecialAbilityByEmId(Long emId) {
+        Employee employee = employeeService.getPersonalDataById(emId);
+        return specialAbilityRepo.findByEmployee(employee);
+    }
+
 }

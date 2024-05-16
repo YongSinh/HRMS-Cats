@@ -43,8 +43,8 @@ public class FamilyDataController {
                 .data(familyData)
                 .build();
     }
-    @GetMapping("/familyData")
-    public BaseApi<?> listDepartment() {
+    @GetMapping("/getListFamilyData")
+    public BaseApi<?> getListFamilyData() {
         List<FamilyData> familyData = familyDataService.getListFamilyData();
         return BaseApi.builder()
                 .status(true)
@@ -55,7 +55,20 @@ public class FamilyDataController {
                 .build();
     }
 
-    @GetMapping("/familyDataById/{id}")
+    @GetMapping("/getListFamilyDataByEmId")
+    public BaseApi<?> getListFamilyDataByEmId(@RequestParam Long emId) {
+        List<FamilyData> familyData = familyDataService.getListFamilyDataByEmId(emId);
+        return BaseApi.builder()
+                .status(true)
+                .code(HttpStatus.OK.value())
+                .message("Family data have been found")
+                .timestamp(LocalDateTime.now())
+                .data(familyData)
+                .build();
+    }
+
+
+    @GetMapping("/getFamilyDataById/{id}")
     public BaseApi<?> listDepartment(@PathVariable Long id) {
         FamilyData familyData = familyDataService.getFamilyDataById(id);
         return BaseApi.builder()

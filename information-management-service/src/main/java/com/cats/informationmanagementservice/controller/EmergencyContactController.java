@@ -1,9 +1,8 @@
 package com.cats.informationmanagementservice.controller;
 
-import com.cats.informationmanagementservice.Dto.EducationDtoReq;
+import com.cats.informationmanagementservice.Dto.EmergencyContactDtoReq;
 import com.cats.informationmanagementservice.base.BaseApi;
-import com.cats.informationmanagementservice.model.Education;
-import com.cats.informationmanagementservice.service.EducationService;
+import com.cats.informationmanagementservice.model.EmergencyContact;
 import com.cats.informationmanagementservice.service.EmergencyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,58 +17,70 @@ import java.util.List;
 @RequiredArgsConstructor
 public class EmergencyContactController {
 
-    private final EducationService educationService;
+
     private final EmergencyService emergencyService;
-    @PostMapping("/addEducation")
-    public BaseApi<?> addEducation(@RequestBody EducationDtoReq educationDtoReq ) {
-      Education education = educationService.create(educationDtoReq);
-        return BaseApi.builder()
+    @PostMapping("/add")
+    public BaseApi<?> addEmergencyContact(@RequestBody EmergencyContactDtoReq emergencyContactDtoReq) {
+
+        EmergencyContact emergencyContact = emergencyService.create(emergencyContactDtoReq);
+      return BaseApi.builder()
                 .status(true)
                 .code(HttpStatus.OK.value())
-                .message("Education have been created")
+                .message("Emergency Contact have been created")
                 .timestamp(LocalDateTime.now())
-                .data(education)
+                .data(emergencyContact)
                 .build();
     }
 
-    @PutMapping("/editJobHistory/{Id}")
-    public BaseApi<?> editJobHistory(@RequestBody EducationDtoReq educationDtoReq , @PathVariable Long Id) {
-        Education education = educationService.edit(educationDtoReq, Id);
+    @GetMapping("/getEmergencyContactByEmId")
+    public BaseApi<?> getEmergencyContactByEmId(@RequestParam Long emId) {
+        List<EmergencyContact> emergencyContacts = emergencyService.getListEmergencyContactByEmId(emId);
         return BaseApi.builder()
                 .status(true)
                 .code(HttpStatus.OK.value())
-                .message("Education have been updated")
+                .message("Emergency Contact have been found")
                 .timestamp(LocalDateTime.now())
-                .data(education)
+                .data(emergencyContacts)
+                .build();
+    }
+    @PutMapping("/edit")
+    public BaseApi<?> editJobHistory(@RequestBody EmergencyContactDtoReq emergencyContactDtoReq, @RequestParam Long Id) {
+        EmergencyContact emergencyContact = emergencyService.edit(emergencyContactDtoReq, Id);
+        return BaseApi.builder()
+                .status(true)
+                .code(HttpStatus.OK.value())
+                .message("Emergency Contact have been updated")
+                .timestamp(LocalDateTime.now())
+                .data(emergencyContact)
                 .build();
     }
 
-    @GetMapping("/education")
-    public BaseApi<?> jobHistories() {
-        List<Education> educations = educationService.getEducation();
+    @GetMapping("/getListEmergencyContact")
+    public BaseApi<?> getListEmergencyContact() {
+        List<EmergencyContact> emergencyContacts = emergencyService.getList();
         return BaseApi.builder()
                 .status(true)
                 .code(HttpStatus.OK.value())
-                .message("Job history have been found")
+                .message("Emergency Contact have been found")
                 .timestamp(LocalDateTime.now())
-                .data(educations)
+                .data(emergencyContacts)
                 .build();
     }
-    @DeleteMapping("/deleteEducation/{id}")
+    @DeleteMapping("/delete")
     @ResponseBody
-    public ResponseEntity<?> deleteEducation(@PathVariable Long id) {
-        educationService.delete(id);
-        return new ResponseEntity<>("This Education with Id: "+id +" have been deleted", HttpStatus.OK);
+    public ResponseEntity<?> deleteEmergencyContact(@RequestParam Long id) {
+        emergencyService.delete(id);
+        return new ResponseEntity<>("This Emergency Contact  with Id: "+id +" have been deleted", HttpStatus.OK);
     }
-    @GetMapping("/educationById/{Id}")
-    public BaseApi<?> educationById(@PathVariable Long Id) {
-        Education education = educationService.getEducationById(Id);
+    @GetMapping("/getEmergencyContactById")
+    public BaseApi<?> getEmergencyContactById(@RequestParam Long Id) {
+        EmergencyContact emergencyContact = emergencyService.getEmergencyContactById(Id);
         return BaseApi.builder()
                 .status(true)
                 .code(HttpStatus.OK.value())
-                .message("Education have been found")
+                .message("Emergency Contact have been found")
                 .timestamp(LocalDateTime.now())
-                .data(education)
+                .data(emergencyContact)
                 .build();
     }
 }

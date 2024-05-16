@@ -62,4 +62,10 @@ public class JobHistoryServiceImp implements JobHistoryService{
     public List<JobHistory> getListJobHistory() {
         return jobHistoryRepo.findAll();
     }
+
+    @Override
+    public List<JobHistory> getListJobHistoryBy(Long emId) {
+        Employee employee = employeeService.getPersonalDataById(emId);
+        return jobHistoryRepo.findByEmployee(employee);
+    }
 }

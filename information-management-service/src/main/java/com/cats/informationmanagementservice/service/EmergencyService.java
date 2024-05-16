@@ -11,6 +11,7 @@ public interface EmergencyService {
     EmergencyContact create(EmergencyContactDtoReq emergencyContactDtoReq);
     EmergencyContact edit(EmergencyContactDtoReq emergencyContactDtoReq, Long Id);
     List<EmergencyContact> getList();
+    List<EmergencyContact> getListEmergencyContactByEmId(Long emId);
     EmergencyContact getEmergencyContactById( Long Id);
     void delete( Long Id);
 

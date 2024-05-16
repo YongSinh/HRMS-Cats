@@ -1,9 +1,7 @@
 package com.cats.informationmanagementservice.controller;
 
-import com.cats.informationmanagementservice.Dto.DepartmentDtoReq;
 import com.cats.informationmanagementservice.Dto.SiblingDataDtoReq;
 import com.cats.informationmanagementservice.base.BaseApi;
-import com.cats.informationmanagementservice.model.Department;
 import com.cats.informationmanagementservice.model.SiblingData;
 import com.cats.informationmanagementservice.service.SiblingDataService;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +27,7 @@ public class SiblingDataController {
                 .data(siblingData)
                 .build();
     }
-    @GetMapping("/listSiblingData")
+    @GetMapping("/getListSiblingData")
     public BaseApi<?> getListSiblingData() {
        List<SiblingData> siblingData = siblingDataService.getListSiblingData();
         return BaseApi.builder()
@@ -40,7 +38,17 @@ public class SiblingDataController {
                 .data(siblingData)
                 .build();
     }
-
+    @GetMapping("/getListSiblingDataByEmId")
+    public BaseApi<?> getListSiblingDataByEmId(@RequestParam Long emId) {
+        List<SiblingData> siblingData = siblingDataService.getListSiblingDataByEmId(emId);
+        return BaseApi.builder()
+                .status(true)
+                .code(HttpStatus.OK.value())
+                .message("Sibling Data have been found")
+                .timestamp(LocalDateTime.now())
+                .data(siblingData)
+                .build();
+    }
     @GetMapping("/getSiblingDataById/{id}")
     public BaseApi<?> getListSiblingDataById(@PathVariable Long id) {
         SiblingData siblingData = siblingDataService.getSiblingData(id);

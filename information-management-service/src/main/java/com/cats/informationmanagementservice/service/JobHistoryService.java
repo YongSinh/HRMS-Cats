@@ -12,6 +12,6 @@ public interface JobHistoryService {
     JobHistory getById( Long Id);
     void delete(Long Id);
     List<JobHistory> getListJobHistory();
-
+    List<JobHistory> getListJobHistoryBy(Long emId);
 
 }

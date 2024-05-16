@@ -15,4 +15,6 @@ public class ApiGetewayApplication {
 		SpringApplication.run(ApiGetewayApplication.class, args);
 	}
 
+
+
 }

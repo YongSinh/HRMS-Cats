@@ -71,36 +71,35 @@ public class Employee {
     @Column(name ="gov_postion")
     private String  govPosition;
     @OnDelete(action = OnDeleteAction.CASCADE)
-
     @JsonBackReference
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JoinColumn(name = "department_id")
     private Department department;
 
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonBackReference
-    @ManyToOne(fetch = FetchType.LAZY , optional = false, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY , optional = false, cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE })
     @JoinColumn(name = "positionid")
     private Position position;
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "employee", cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "employee", cascade = { CascadeType.PERSIST, CascadeType.MERGE ,CascadeType.REMOVE}, fetch = FetchType.LAZY)
     private List<JobHistory> jobHistories = new ArrayList<>();
 
     @JsonManagedReference
     @JsonIgnore
-    @OneToMany(mappedBy = "employee", cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "employee", cascade = { CascadeType.PERSIST, CascadeType.MERGE,CascadeType.REMOVE }, fetch = FetchType.LAZY)
     private List<Education> educations = new ArrayList<>();
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "employee", cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "employee", cascade = { CascadeType.PERSIST, CascadeType.MERGE , CascadeType.REMOVE}, fetch = FetchType.LAZY)
     private List<EmergencyContact> emergencyContacts = new ArrayList<>();
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "employee", cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "employee", cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE }, fetch = FetchType.LAZY)
     private List<SiblingData> siblingData = new ArrayList<>();
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "employee", cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "employee", cascade = { CascadeType.PERSIST, CascadeType.MERGE , CascadeType.REMOVE}, fetch = FetchType.LAZY)
     private List<SpecialAbility> specialAbilities = new ArrayList<>();
 }

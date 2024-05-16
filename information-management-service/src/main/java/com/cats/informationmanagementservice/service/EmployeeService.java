@@ -14,10 +14,16 @@ public interface EmployeeService {
     Employee addPersonalData(EmployeeDtoReq employee, MultipartFile file) throws IOException;
     EmployeeDtoRep editPersonalData(EmployeeDtoReq employee, Long Id);
     List<EmployeeDtoRep> listEmployee();
+
+    List<EmployeeDtoRep> getEmployeeByDep(Long depId);
+    List<EmployeeDtoRep> getEmployeeByDepAndPos(Long depId, String posId);
     EmployeeDtoRep getEmployeeDtoRepById(Long Id);
 
     String uploadFile(MultipartFile file, Long emId, Integer type,  LocalDate date) throws IOException;
 
     Employee getPersonalDataById (Long Id);
+
+    void deleteEmpInfo(Long emId);
+
 }
 ;

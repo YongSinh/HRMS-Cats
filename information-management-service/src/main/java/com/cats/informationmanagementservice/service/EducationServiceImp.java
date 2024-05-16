@@ -54,6 +54,12 @@ public class EducationServiceImp implements EducationService{
     }
 
     @Override
+    public List<Education> getEducationByEmId(Long emId) {
+        Employee employee = employeeService.getPersonalDataById(emId);
+        return educationRepo.findByEmployee(employee);
+    }
+
+    @Override
     public Education getEducationById(Long Id) {
         return educationRepo.findById(Id).orElseThrow(() ->
                 new IllegalArgumentException("cannot find Education with id: " + Id));

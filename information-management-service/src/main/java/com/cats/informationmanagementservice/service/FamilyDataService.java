@@ -10,6 +10,7 @@ public interface FamilyDataService {
     FamilyData edit (FamilyDataDtoReq familyDataDtoReq, Long Id);
     FamilyData getFamilyDataById (Long Id);
     List<FamilyData> getListFamilyData();
+    List<FamilyData> getListFamilyDataByEmId(Long emId);
     void delete (Long Id);
 
 }

@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface SiblingDataService {
  List<SiblingData> getListSiblingData();
+ List<SiblingData> getListSiblingDataByEmId(Long emId);
  SiblingData getSiblingData(Long id);
  SiblingData create(SiblingDataDtoReq siblingDataDtoReq);
  SiblingData edit(SiblingDataDtoReq siblingDataDtoReq, Long id);

@@ -4,6 +4,7 @@ import com.cats.informationmanagementservice.Dto.DepartmentDtoRep;
 import com.cats.informationmanagementservice.Dto.JobHistoryDtoReq;
 import com.cats.informationmanagementservice.Dto.PositionDtoReq;
 import com.cats.informationmanagementservice.base.BaseApi;
+import com.cats.informationmanagementservice.model.FamilyData;
 import com.cats.informationmanagementservice.model.JobHistory;
 import com.cats.informationmanagementservice.model.Position;
 import com.cats.informationmanagementservice.service.JobHistoryService;
@@ -44,8 +45,19 @@ public class JobHistoryController {
                 .data(jobHistory)
                 .build();
     }
+    @GetMapping("/getListJobHistoryByEmId")
+    public BaseApi<?> getListJobHistoryByEmId(@RequestParam Long emId) {
+        List<JobHistory> jobHistories = jobHistoryService.getListJobHistoryBy(emId);
+        return BaseApi.builder()
+                .status(true)
+                .code(HttpStatus.OK.value())
+                .message("Job history have been found")
+                .timestamp(LocalDateTime.now())
+                .data(jobHistories)
+                .build();
+    }
 
-    @GetMapping("/jobHistory")
+    @GetMapping("/getListJobHistory")
     public BaseApi<?> jobHistories() {
         List<JobHistory> jobHistories = jobHistoryService.getListJobHistory();
         return BaseApi.builder()
@@ -62,7 +74,7 @@ public class JobHistoryController {
         jobHistoryService.delete(id);
         return new ResponseEntity<>("This Job History with Id: "+id +" have been deleted", HttpStatus.OK);
     }
-    @GetMapping("/jobHistoryById/{Id}")
+    @GetMapping("/getJobHistoryById/{Id}")
     public BaseApi<?> jobHistoryById(@PathVariable Long Id) {
         JobHistory jobHistories = jobHistoryService.getById(Id);
         return BaseApi.builder()

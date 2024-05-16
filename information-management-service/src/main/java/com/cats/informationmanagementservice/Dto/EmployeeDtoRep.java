@@ -3,6 +3,7 @@ package com.cats.informationmanagementservice.Dto;
 import com.cats.informationmanagementservice.model.EmergencyContact;
 import com.cats.informationmanagementservice.model.JobHistory;
 import com.cats.informationmanagementservice.model.SiblingData;
+import com.cats.informationmanagementservice.model.SpecialAbility;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -43,8 +44,9 @@ public class EmployeeDtoRep {
     private String depId;
     private String posId;
     private List<EducationDtoRep> educationDtoReps;
-    private  List<JobHistory> jobHistoryDtoReps;
+    private List<JobHistory> jobHistoryDtoReps;
     private List<EmergencyContact> emergencyContacts;
     private List<SiblingData> siblingData;
+    private List<SpecialAbility> specialAbilities;
 
 }

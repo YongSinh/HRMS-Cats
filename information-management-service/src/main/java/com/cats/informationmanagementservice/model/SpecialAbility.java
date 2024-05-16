@@ -9,7 +9,7 @@ import lombok.Setter;
 @Table(name = "special_ability")
 @Getter
 @Setter
-public class    SpecialAbility {
+public class  SpecialAbility {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     @Column(name = "id")

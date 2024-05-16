@@ -5,6 +5,7 @@ import com.cats.informationmanagementservice.Dto.JobHistoryDtoReq;
 import com.cats.informationmanagementservice.base.BaseApi;
 import com.cats.informationmanagementservice.model.Education;
 import com.cats.informationmanagementservice.model.JobHistory;
+import com.cats.informationmanagementservice.model.SpecialAbility;
 import com.cats.informationmanagementservice.service.EducationService;
 import com.cats.informationmanagementservice.service.JobHistoryService;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +34,7 @@ public class EducationController {
                 .build();
     }
 
+
     @PutMapping("/editJobHistory/{Id}")
     public BaseApi<?> editJobHistory(@RequestBody EducationDtoReq educationDtoReq , @PathVariable Long Id) {
         Education education = educationService.edit(educationDtoReq, Id);
@@ -45,7 +47,7 @@ public class EducationController {
                 .build();
     }
 
-    @GetMapping("/education")
+    @GetMapping("/getListEducation")
     public BaseApi<?> jobHistories() {
         List<Education> educations = educationService.getEducation();
         return BaseApi.builder()
@@ -56,13 +58,14 @@ public class EducationController {
                 .data(educations)
                 .build();
     }
+
     @DeleteMapping("/deleteEducation/{id}")
     @ResponseBody
     public ResponseEntity<?> deleteEducation(@PathVariable Long id) {
         educationService.delete(id);
         return new ResponseEntity<>("This Education with Id: "+id +" have been deleted", HttpStatus.OK);
     }
-    @GetMapping("/educationById/{Id}")
+    @GetMapping("/getEducationById/{Id}")
     public BaseApi<?> educationById(@PathVariable Long Id) {
         Education education = educationService.getEducationById(Id);
         return BaseApi.builder()
@@ -71,6 +74,17 @@ public class EducationController {
                 .message("Education have been found")
                 .timestamp(LocalDateTime.now())
                 .data(education)
+                .build();
+    }
+    @GetMapping("/getListEducationByEmId")
+    public BaseApi<?> getListEducationByEmId(@RequestParam Long emId) {
+        List<Education> educations = educationService.getEducationByEmId(emId);
+        return BaseApi.builder()
+                .status(true)
+                .code(HttpStatus.OK.value())
+                .message("Educations Data have been found")
+                .timestamp(LocalDateTime.now())
+                .data(educations)
                 .build();
     }
 }

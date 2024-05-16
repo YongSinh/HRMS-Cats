@@ -13,7 +13,6 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SpecialAbilityDtoReq {
-    private Long id;
     private String foreignLanguages;
     private String speaking;
     private String listening;

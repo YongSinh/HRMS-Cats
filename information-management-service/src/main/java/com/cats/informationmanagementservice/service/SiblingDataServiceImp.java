@@ -21,6 +21,12 @@ public class SiblingDataServiceImp implements SiblingDataService{
     }
 
     @Override
+    public List<SiblingData> getListSiblingDataByEmId(Long emId) {
+        Employee employee = employeeService.getPersonalDataById(emId);
+        return siblingDataRepo.findByEmployee(employee);
+    }
+
+    @Override
     public SiblingData getSiblingData(Long id) {
         return siblingDataRepo.findById(id).orElseThrow(() ->
                 new IllegalArgumentException("cannot find Education with id: " + id));

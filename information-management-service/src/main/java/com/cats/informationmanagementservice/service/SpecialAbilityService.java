@@ -11,4 +11,5 @@ public interface SpecialAbilityService {
     SpecialAbility getSpecialAbilityById (Long id);
     void delete(Long id);
     List<SpecialAbility> getListSpecialAbility();
+    List<SpecialAbility> getListSpecialAbilityByEmId(Long emId);
 }

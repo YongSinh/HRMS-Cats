@@ -34,24 +34,49 @@ import java.util.concurrent.CompletableFuture;
 public class EmployeeController {
     private final EmployeeService employeeService;
     //@ResponseStatus(HttpStatus.ACCEPTED)
-    @PostMapping("/hello")
-    public BaseApi<?> findAllAccountTypes() {
-
+    @DeleteMapping("/delete")
+    public BaseApi<?> findAllAccountTypes(@RequestParam Long emId) {
+        employeeService.deleteEmpInfo(emId);
         return BaseApi.builder()
                 .status(true)
                 .code(HttpStatus.OK.value())
-                .message("Account types have been found")
+                .message("Employee have been delete")
                 .timestamp(LocalDateTime.now())
                 .data("Hello world")
                 .build();
     }
+
+    @GetMapping("/listEmployeeByDep")
+    public BaseApi<?> listEmployeeByDep(@RequestParam Long depId) {
+        List<EmployeeDtoRep> employee = employeeService.getEmployeeByDep(depId);
+        return BaseApi.builder()
+                .status(true)
+                .code(HttpStatus.OK.value())
+                .message("list Employee have been created")
+                .timestamp(LocalDateTime.now())
+                .data(employee)
+                .build();
+    }
+
+    @GetMapping("/listEmployeeByDepAndPos")
+    public BaseApi<?> listEmployeeByDep(@RequestParam Long depId, @RequestParam String posId) {
+        List<EmployeeDtoRep> employee = employeeService.getEmployeeByDepAndPos(depId, posId);
+        return BaseApi.builder()
+                .status(true)
+                .code(HttpStatus.OK.value())
+                .message("list Employee data have been created")
+                .timestamp(LocalDateTime.now())
+                .data(employee)
+                .build();
+    }
+
     @PostMapping("/addEmployee")
     public BaseApi<?> addFamilyData(@RequestPart("body") EmployeeDtoReq employeeDtoReq, @RequestPart("file") MultipartFile file) throws IOException {
         Employee employee = employeeService.addPersonalData(employeeDtoReq, file);
         return BaseApi.builder()
                 .status(true)
                 .code(HttpStatus.OK.value())
-                .message("Family data have been created")
+                .message("Employee data have been created")
                 .timestamp(LocalDateTime.now())
                 .data(employee)
                 .build();
@@ -62,7 +87,7 @@ public class EmployeeController {
         return BaseApi.builder()
                 .status(true)
                 .code(HttpStatus.OK.value())
-                .message("Family data have been created")
+                .message("Employee data have been found")
                 .timestamp(LocalDateTime.now())
                 .data(employee)
                 .build();
@@ -73,7 +98,7 @@ public class EmployeeController {
         return BaseApi.builder()
                 .status(true)
                 .code(HttpStatus.OK.value())
-                .message("Family data have been created")
+                .message("Employee data have been found")
                 .timestamp(LocalDateTime.now())
                 .data(employee)
                 .build();
@@ -84,7 +109,7 @@ public class EmployeeController {
         return BaseApi.builder()
                 .status(true)
                 .code(HttpStatus.OK.value())
-                .message("Family data have been created")
+                .message("Employee data have been updated")
                 .timestamp(LocalDateTime.now())
                 .data(employee)
                 .build();

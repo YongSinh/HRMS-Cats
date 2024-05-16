@@ -135,6 +135,20 @@ public class EmployeeServiceImp implements EmployeeService{
     }
 
     @Override
+    public List<EmployeeDtoRep> getEmployeeByDep(Long depId) {
+        Department department = departmentService.getDepById(depId);
+        return mapper.EmployeeDtoRepToEmployeeDtoReps(employeeRepo.findByDepartment(department));
+    }
+
+    @Override
+    public List<EmployeeDtoRep> getEmployeeByDepAndPos(Long depId, String posId) {
+        Position position = positionService.getPositionById(posId);
+        Department department = departmentService.getDepById(depId);
+        return mapper.EmployeeDtoRepToEmployeeDtoReps(employeeRepo.findByDepartmentAndPosition(department, position));
+    }
+
+
+    @Override
     public EmployeeDtoRep getEmployeeDtoRepById(Long Id) {
         return mapper.EmployeeDtoRepToEmployeeDtoRep(getPersonalDataById(Id));
     }
@@ -164,6 +178,12 @@ public class EmployeeServiceImp implements EmployeeService{
         return employeeRepo.findById(Id).orElseThrow(() ->
                 new IllegalArgumentException(
                         "Employee with id: " + Id + " could not be found"));
+    }
+
+    @Override
+    public void deleteEmpInfo(Long emId) {
+        Employee employee = getPersonalDataById(emId);
+        employeeRepo.delete(employee);
     }
 }
 
