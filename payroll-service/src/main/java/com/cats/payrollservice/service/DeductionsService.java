@@ -12,4 +12,6 @@ public interface DeductionsService {
     Deductions update(DeductionsReqDto deductionsReqDto, Long Id);
     Deductions getDeductionsById(Long Id);
     List<Deductions> getListDeduction();
+
+    void  delete(Long Id);
 }

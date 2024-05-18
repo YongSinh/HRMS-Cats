@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/payrolls")
+@RequestMapping("/api/payrolls/tax")
 @RequiredArgsConstructor
 public class TaxController {
 

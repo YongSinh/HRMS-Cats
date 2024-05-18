@@ -44,4 +44,10 @@ public class DeductionsServiceImp implements DeductionsService{
     public List<Deductions> getListDeduction() {
         return deductionsRepo.findAll();
     }
+
+    @Override
+    public void delete(Long Id) {
+        Deductions deductions = getDeductionsById(Id);
+        deductionsRepo.delete(deductions);
+    }
 }

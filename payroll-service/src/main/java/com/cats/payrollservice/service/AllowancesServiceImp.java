@@ -33,6 +33,12 @@ public class AllowancesServiceImp implements AllowancesService{
     }
 
     @Override
+    public void delete(Long id) {
+        Allowances allowances = getAllowancesBytId(id);
+        allowancesRepo.delete(allowances);
+    }
+
+    @Override
     public Allowances getAllowancesBytId(Long id) {
         return allowancesRepo.findById(id).orElseThrow(() ->
                 new IllegalArgumentException(

@@ -10,7 +10,7 @@ public interface AllowancesService {
 
     Allowances create (AllowancesReqDto allowancesReqDto);
     Allowances update (AllowancesReqDto allowancesReqDto, Long Id);
-
+    void delete(Long id);
     Allowances getAllowancesBytId(Long id);
 
     List<Allowances> getListAllowances();
