@@ -3,7 +3,6 @@ package com.cats.payrollservice.service;
 import com.cats.payrollservice.dto.request.SalariesReqDto;
 import com.cats.payrollservice.dto.response.SalariesRepDto;
 import com.cats.payrollservice.model.Salaries;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -15,6 +14,7 @@ public interface SalariesService {
     SalariesRepDto getSalaryById(Long id);
     List<SalariesRepDto> getListSalary();
     Salaries getSalary(Long id);
+    SalariesRepDto getSalaryByEmId(Long emId);
     void deleteSalary(Long id);
 
 }

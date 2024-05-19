@@ -53,7 +53,7 @@ public class AllowanceController {
                 .build();
     }
 
-    @GetMapping("/allowances")
+    @GetMapping("/allowancesById")
     public BaseApi<?> getListAllowancesById(@RequestParam Long id) {
         Allowances allowances = allowancesService.getAllowancesBytId(id);
         return BaseApi.builder()

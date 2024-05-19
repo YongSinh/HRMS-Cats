@@ -58,7 +58,7 @@ public class LeaveController {
                 .build();
     }
     @PutMapping("/leave/approvedByManger")
-    public BaseApi<?> approvedByManger(@RequestBody LeaveDtoReq leaveDtoReq, @RequestParam List<Long> id) {
+    public BaseApi<?> approvedByManger(@RequestPart(name = "body") LeaveDtoReq leaveDtoReq, @RequestPart(name = "id") List<Long> id) {
         List<LeaveDtoRep> leave = leaveSerivce.ApprovedByManger(id, leaveDtoReq);
         return BaseApi.builder()
                 .status(true)
@@ -70,7 +70,7 @@ public class LeaveController {
     }
 
     @PutMapping("/leave/approvedByHead")
-    public BaseApi<?> approvedByHead(@RequestBody LeaveDtoReq leaveDtoReq, @RequestParam List<Long> id) {
+    public BaseApi<?> approvedByHead(@RequestPart(name = "body") LeaveDtoReq leaveDtoReq, @RequestPart(name = "id") List<Long> id) {
         List<LeaveDtoRep> leave = leaveSerivce.ApprovedByHead(id, leaveDtoReq);
         return BaseApi.builder()
                 .status(true)
@@ -81,7 +81,7 @@ public class LeaveController {
                 .build();
     }
     @PutMapping("/leave/approvedByHr")
-    public BaseApi<?> approvedByHr(@RequestBody LeaveDtoReq leaveDtoReq, @RequestParam List<Long> id) {
+    public BaseApi<?> approvedByHr(@RequestPart(name = "body") LeaveDtoReq leaveDtoReq, @RequestPart(name = "id") List<Long> id) {
         List<LeaveDtoRep> leave = leaveSerivce.ApprovedByHr(id, leaveDtoReq);
         return BaseApi.builder()
                 .status(true)

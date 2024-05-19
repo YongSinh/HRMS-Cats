@@ -10,5 +10,5 @@ public interface PayrollService {
     Payroll getPayrollById(Long id);
     Payroll update(Long id, PayrollReqDto payrollReqDto);
     Payroll create(PayrollReqDto payrollReqDto);
-
+    String generatePayrollReference();
 }

@@ -5,6 +5,9 @@ import com.cats.payrollservice.model.Salaries;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface SalariesRepo extends JpaRepository<Salaries, Long> {
+    Salaries findByEmpId(Long empId);
 }

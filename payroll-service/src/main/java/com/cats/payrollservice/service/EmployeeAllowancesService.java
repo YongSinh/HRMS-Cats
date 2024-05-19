@@ -1,16 +1,19 @@
 package com.cats.payrollservice.service;
 
 import com.cats.payrollservice.dto.request.EmployeeAllowancesReqDto;
+import com.cats.payrollservice.dto.response.EmployeeAllowancesRepDto;
 import com.cats.payrollservice.model.EmployeeAllowances;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 
 public interface EmployeeAllowancesService {
-    EmployeeAllowances create(EmployeeAllowancesReqDto employeeAllowancesReqDto);
-    EmployeeAllowances update(EmployeeAllowancesReqDto employeeAllowancesReqDto, Long Id);
+    EmployeeAllowancesRepDto create(EmployeeAllowancesReqDto employeeAllowancesReqDto);
+    List<EmployeeAllowancesRepDto> createMultiple(EmployeeAllowancesReqDto employeeAllowancesReqDto, List<Long> emId);
+    void delete(Long id);
+    EmployeeAllowancesRepDto update(EmployeeAllowancesReqDto employeeAllowancesReqDto, Long Id);
     EmployeeAllowances getEmpAllowancesById(Long id);
-    List<EmployeeAllowances> getListEmpAllowances();
-    List<EmployeeAllowances> getListEmpAllowancesByEmId(Long emId);
+    EmployeeAllowancesRepDto getEmpAllowances(Long id);
+    List<EmployeeAllowancesRepDto> getListEmpAllowances();
+    List<EmployeeAllowancesRepDto> getListEmpAllowancesByEmId(Long emId);
 }

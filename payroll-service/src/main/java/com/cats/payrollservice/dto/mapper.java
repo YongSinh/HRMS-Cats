@@ -1,7 +1,9 @@
 package com.cats.payrollservice.dto;
 
+import com.cats.payrollservice.dto.response.EmployeeAllowancesRepDto;
 import com.cats.payrollservice.dto.response.SalariesRepDto;
 import com.cats.payrollservice.dto.response.TaxRepDto;
+import com.cats.payrollservice.model.EmployeeAllowances;
 import com.cats.payrollservice.model.Salaries;
 import com.cats.payrollservice.model.Tax;
 
@@ -43,4 +45,27 @@ public class mapper {
         }
         return salariesRepDtoList;
     }
+
+    public static EmployeeAllowancesRepDto employeeAllowancesToEmployeeAllowancesResponseDto(EmployeeAllowances employeeAllowances){
+        EmployeeAllowancesRepDto employeeAllowancesRepDto = new EmployeeAllowancesRepDto();
+        employeeAllowancesRepDto.setEmpAllId(employeeAllowances.getEmpAllId());
+        employeeAllowancesRepDto.setEmpId(employeeAllowances.getEmpId());
+        employeeAllowancesRepDto.setType(employeeAllowances.getType());
+        employeeAllowancesRepDto.setAmount(employeeAllowances.getAmount());
+        employeeAllowancesRepDto.setEffectiveDate(employeeAllowances.getEffectiveDate());
+        employeeAllowancesRepDto.setDateCreated(employeeAllowances.getDateCreated());
+        employeeAllowancesRepDto.setAllowances(employeeAllowances.getAllowances().getAllowances());
+        employeeAllowancesRepDto.setAllowancesId(employeeAllowances.getAllowances().getALLId());
+        return employeeAllowancesRepDto;
+    }
+
+    public static List<EmployeeAllowancesRepDto> employeeAllowancesToEmployeeAllowancesResponseDtos(List<EmployeeAllowances> employeeAllowancesList){
+        List<EmployeeAllowancesRepDto> employeeAllowancesRepDtos = new ArrayList<>();
+        for (EmployeeAllowances employeeAllowances : employeeAllowancesList){
+            employeeAllowancesRepDtos.add(employeeAllowancesToEmployeeAllowancesResponseDto(employeeAllowances));
+        }
+        return employeeAllowancesRepDtos;
+    }
+
+
 }

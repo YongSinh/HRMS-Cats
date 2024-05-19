@@ -64,6 +64,11 @@ public class SalariesServiceImp implements SalariesService {
     }
 
     @Override
+    public SalariesRepDto getSalaryByEmId(Long emId) {
+        return mapper.salariesToSalariesResponseDto(salariesRepo.findByEmpId(emId));
+    }
+
+    @Override
     public void deleteSalary(Long id) {
         Salaries salaries = getSalary(id);
         salariesRepo.delete(salaries);
