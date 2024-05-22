@@ -63,6 +63,18 @@ public class TaxController {
                 .data(tax1)
                 .build();
     }
+
+    @GetMapping("/taxCalculator")
+    public BaseApi<?> taxCalculator(@RequestParam Double salary) {
+        Double tax1 = taxService.taxCalculator(salary);
+        return BaseApi.builder()
+                .status(true)
+                .code(HttpStatus.OK.value())
+                .message("Tax have been found")
+                .timestamp(LocalDateTime.now())
+                .data(tax1)
+                .build();
+    }
     @DeleteMapping("/deleteTax/{id}")
     public BaseApi<?> deleteTax(@PathVariable Long id) {
         taxService.deleteTax(id);

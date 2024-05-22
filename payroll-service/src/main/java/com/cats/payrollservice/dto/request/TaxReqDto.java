@@ -11,4 +11,8 @@ import lombok.Setter;
 public class TaxReqDto {
     private String taxableSalary;
     private Double rate;
+    private Double amount;
+    private Double lowerLimit;
+    private Double upperLimit;
+
 }

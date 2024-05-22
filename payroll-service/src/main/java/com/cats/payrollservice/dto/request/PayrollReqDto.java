@@ -15,4 +15,5 @@ public class PayrollReqDto {
     private Integer type;
     private Integer status;
     private LocalDate dateCreate;
+    private Double khmerRate;
 }

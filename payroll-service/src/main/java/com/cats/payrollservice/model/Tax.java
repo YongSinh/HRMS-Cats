@@ -26,6 +26,12 @@ public class Tax {
     private String taxableSalary;
     @Column(name ="rate")
     private Double rate;
+    @Column(name ="amount")
+    private Double amount;
+    @Column(nullable = false ,name = "lowerLimit")
+    private Double lowerLimit;
+    @Column(nullable = false,name = "upperLimit")
+    private Double upperLimit;
 
     @JsonManagedReference
     @OneToMany(mappedBy = "tax", cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.LAZY)

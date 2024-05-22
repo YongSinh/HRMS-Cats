@@ -15,7 +15,7 @@ import java.time.LocalDate;
 @Getter
 @AllArgsConstructor
 @RequiredArgsConstructor
-public class FileInfo {
+public class    FileInfo {
     @Id
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid",strategy = "uuid2")

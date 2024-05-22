@@ -2,7 +2,10 @@ package com.cats.payrollservice.service;
 
 import com.cats.payrollservice.dto.request.PayrollReqDto;
 import com.cats.payrollservice.dto.request.PayslipReqDto;
+import com.cats.payrollservice.dto.response.SalariesRepDto;
 import com.cats.payrollservice.model.Payroll;
+import com.cats.payrollservice.model.Salaries;
+import com.cats.payrollservice.model.Tax;
 import com.cats.payrollservice.repository.PayrollRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,6 +19,10 @@ import java.util.Random;
 public class PayrollServiceImp implements PayrollService {
 
     private final PayrollRepo payrollRepo;
+    private final TaxService taxService;
+    private final DeductionsService deductionsService;
+    private final AllowancesService allowancesService;
+    private final SalariesService salariesService;
     @Override
     public Payroll getPayrollById(Long id) {
         return payrollRepo.findById(id).orElseThrow(() ->
@@ -49,8 +56,11 @@ public class PayrollServiceImp implements PayrollService {
         payroll.setType(payrollReqDto.getType());
         payroll.setStatus(payrollReqDto.getStatus());
         payrollRepo.save(payroll);
-        return payroll;
+        return null;
     }
+
+
+
 
     @Override
     public String generatePayrollReference() {

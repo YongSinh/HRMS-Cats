@@ -12,5 +12,8 @@ public class TaxRepDto {
     private Long id;
     private String taxableSalary;
     private Double rate;
+    private Double amount;
+    private Double lowerLimit;
+    private Double upperLimit;
     private String salariesList;
 }

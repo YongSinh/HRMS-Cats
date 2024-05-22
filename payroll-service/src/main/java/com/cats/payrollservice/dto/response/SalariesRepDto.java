@@ -1,4 +1,5 @@
 package com.cats.payrollservice.dto.response;
+import com.cats.payrollservice.model.Tax;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -13,6 +14,6 @@ public class SalariesRepDto {
     private Double salary;
     private LocalDate fromDate;
     private LocalDate toDate;
-    private Double tax;
+    private Tax tax;
 
 }
