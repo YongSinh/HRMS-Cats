@@ -1,5 +1,6 @@
 package com.cats.payrollservice.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,7 +20,8 @@ public class Payslip {
     @GeneratedValue(strategy= GenerationType.AUTO)
     @Column(name ="id")
     private Long Id;
-    @OneToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.LAZY)
+    @ManyToOne( fetch = FetchType.LAZY, optional = false)
+    @JsonBackReference
     @JoinColumn( name ="payroll_id")
     private Payroll payroll;
     @Column(name ="employee_id")

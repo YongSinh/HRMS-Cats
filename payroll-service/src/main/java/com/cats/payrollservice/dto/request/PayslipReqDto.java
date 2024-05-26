@@ -21,4 +21,5 @@ public class PayslipReqDto {
     private Double deductionAmount;
     private String deductions;
     private LocalDateTime dateCreated;
+    private Double khmerRate;
 }

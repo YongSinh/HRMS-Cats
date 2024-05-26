@@ -3,6 +3,7 @@ package com.cats.payrollservice.service;
 import com.cats.payrollservice.dto.request.PayslipReqDto;
 import com.cats.payrollservice.model.Payroll;
 import com.cats.payrollservice.model.Payslip;
+import com.cats.payrollservice.model.Salaries;
 import com.cats.payrollservice.repository.PayslipRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,13 +15,19 @@ import java.util.List;
 public class PayslipServiceImp implements PayslipService {
     private final PayslipRepo payslipRepo;
     private final PayrollService payrollService;
+    private final SalariesService salariesService;
+    private final TaxService taxService;
     @Override
     public Payslip create(PayslipReqDto payslipReqDto) {
+        Salaries salaries = salariesService.getSalary(payslipReqDto.getEmpId());
+        Double khMoney = salaries.getSalary() * payslipReqDto.getKhmerRate();
+        Double tax = taxService.taxCalculator(khMoney);
+        Double salary = (khMoney - tax) / payslipReqDto.getKhmerRate();
         Payslip payslip = new Payslip();
         payslip.setEmpId(payslipReqDto.getEmpId());
         payslip.setPresent(payslipReqDto.getPresent());
         payslip.setAbsent(payslipReqDto.getAbsent());
-        payslip.setSalary(payslipReqDto.getSalary());
+        payslip.setSalary(salary);
         payslip.setAllowances(payslipReqDto.getAllowances());
         payslip.setAllowanceAmount(payslipReqDto.getAllowanceAmount());
         payslip.setDeductions(payslipReqDto.getDeductions());

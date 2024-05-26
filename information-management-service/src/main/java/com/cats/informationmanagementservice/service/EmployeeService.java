@@ -18,7 +18,7 @@ public interface EmployeeService {
     List<EmployeeDtoRep> getEmployeeByDep(Long depId);
     List<EmployeeDtoRep> getEmployeeByDepAndPos(Long depId, String posId);
     EmployeeDtoRep getEmployeeDtoRepById(Long Id);
-
+    List<Long> getEmployeeByDepGetOnlyEmId(Long depId);
     String uploadFile(MultipartFile file, Long emId, Integer type,  LocalDate date) throws IOException;
 
     Employee getPersonalDataById (Long Id);

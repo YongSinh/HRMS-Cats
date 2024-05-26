@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -151,6 +152,17 @@ public class EmployeeServiceImp implements EmployeeService{
     @Override
     public EmployeeDtoRep getEmployeeDtoRepById(Long Id) {
         return mapper.EmployeeDtoRepToEmployeeDtoRep(getPersonalDataById(Id));
+    }
+
+    @Override
+    public List<Long> getEmployeeByDepGetOnlyEmId(Long depId) {
+        Department department = departmentService.getDepById(depId);
+        List<Employee> employees = employeeRepo.findByDepartment(department);
+        List<Long> emId = new ArrayList<>();
+        for(Employee employee: employees){
+            emId.add(employee.getEmpId());
+        }
+        return emId;
     }
 
 

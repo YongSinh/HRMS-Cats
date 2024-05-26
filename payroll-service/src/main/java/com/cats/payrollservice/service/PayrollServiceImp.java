@@ -1,5 +1,6 @@
 package com.cats.payrollservice.service;
 
+import com.cats.payrollservice.dto.WebFluxResponse;
 import com.cats.payrollservice.dto.request.PayrollReqDto;
 import com.cats.payrollservice.dto.request.PayslipReqDto;
 import com.cats.payrollservice.dto.response.SalariesRepDto;
@@ -7,12 +8,15 @@ import com.cats.payrollservice.model.Payroll;
 import com.cats.payrollservice.model.Salaries;
 import com.cats.payrollservice.model.Tax;
 import com.cats.payrollservice.repository.PayrollRepo;
+import com.fasterxml.jackson.databind.JsonNode;
+import io.swagger.v3.oas.models.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Random;
+import java.time.LocalDate;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -23,6 +27,8 @@ public class PayrollServiceImp implements PayrollService {
     private final DeductionsService deductionsService;
     private final AllowancesService allowancesService;
     private final SalariesService salariesService;
+    private final WebClient.Builder webClientBuilder;
+
     @Override
     public Payroll getPayrollById(Long id) {
         return payrollRepo.findById(id).orElseThrow(() ->
@@ -31,35 +37,42 @@ public class PayrollServiceImp implements PayrollService {
     }
 
     @Override
-    public Payroll update(Long id, PayrollReqDto payrollReqDto) {
-        Payroll payroll = getPayrollById(id);
-        payroll.setEmpId(payrollReqDto.getEmpId());
-        //payroll.setRefNo(payrollReqDto.getRefNo());
-        payroll.setDateFrom(payrollReqDto.getDateFrom());
-        payroll.setDateTo(payrollReqDto.getDateTo());
-        payroll.setDateCreate(payrollReqDto.getDateCreate());
-        payroll.setType(payrollReqDto.getType());
-        payroll.setStatus(payrollReqDto.getStatus());
-        payrollRepo.save(payroll);
-        return payroll;
+    public List<Payroll> update(Long id, PayrollReqDto payrollReqDto) {
+        List<Payroll> payrollList = new ArrayList<>();
+        for (Long emId : payrollReqDto.getEmpIds()){
+            Payroll payroll = getPayrollById(id);
+            String payrollReference = generatePayrollReference();
+            payroll.setEmpId(emId);
+            payroll.setRefNo(payrollReference);
+            payroll.setDateFrom(payrollReqDto.getDateFrom());
+            payroll.setDateTo(payrollReqDto.getDateTo());
+            payroll.setDateCreate(payrollReqDto.getDateCreate());
+            payroll.setType(payrollReqDto.getType());
+            payroll.setStatus(payrollReqDto.getStatus());
+        }
+        payrollRepo.saveAll(payrollList);
+        return payrollList;
     }
+
 
     @Override
-    public Payroll create(PayrollReqDto payrollReqDto) {
-        Payroll payroll = new Payroll();
-        String payrollReference = generatePayrollReference();
-        payroll.setEmpId(payrollReqDto.getEmpId());
-        payroll.setRefNo(payrollReference);
-        payroll.setDateFrom(payrollReqDto.getDateFrom());
-        payroll.setDateTo(payrollReqDto.getDateTo());
-        payroll.setDateCreate(payrollReqDto.getDateCreate());
-        payroll.setType(payrollReqDto.getType());
-        payroll.setStatus(payrollReqDto.getStatus());
-        payrollRepo.save(payroll);
-        return null;
+    public List<Payroll> create(PayrollReqDto payrollReqDto) {
+        List<Payroll> payrollList = new ArrayList<>();
+        for (Long emId : payrollReqDto.getEmpIds()){
+            Payroll payroll = new Payroll();
+            String payrollReference = generatePayrollReference();
+            payroll.setEmpId(emId);
+            payroll.setRefNo(payrollReference);
+            payroll.setDateFrom(payrollReqDto.getDateFrom());
+            payroll.setDateTo(payrollReqDto.getDateTo());
+            payroll.setDateCreate(payrollReqDto.getDateCreate());
+            payroll.setType(payrollReqDto.getType());
+            payroll.setStatus(payrollReqDto.getStatus());
+
+        }
+        payrollRepo.saveAll(payrollList);
+        return payrollList;
     }
-
-
 
 
     @Override
@@ -74,5 +87,51 @@ public class PayrollServiceImp implements PayrollService {
 
         // Combine date and random parts
         return datePart + "-" + String.format("%06d", randomPart);
+    }
+
+    @Override
+    public List<Payroll> getListPayroll() {
+        return payrollRepo.findAll();
+    }
+
+    @Override
+    public List<Payroll> getListPayRollByEmId(Long emId) {
+        return payrollRepo.findPayrollByEmpId(emId);
+    }
+
+    @Override
+    public List<Payroll> getListPayRollByEmIdAndCreateDate(Long emId, LocalDate date) {
+        return payrollRepo.findPayrollByEmpIdAndDateCreate(emId, date);
+    }
+
+    @Override
+    public List<Payroll> findPayRollByDepEmId(Long depId) {
+        WebFluxResponse response = webClientBuilder.build().get()
+                .uri("http://information-management-service/api/info/employee/listEmployeeByDepOnlyEmId",
+                        uriBuilder -> uriBuilder.queryParam("depId", depId).build())
+                .retrieve()
+                    .bodyToMono(WebFluxResponse.class)
+                .block();
+        if (response != null && response.getCode() == 200) {
+            JsonNode emIdList = response.getData();
+            List<Long> idList = new ArrayList<>();
+            if (emIdList.isArray()) {
+                for (JsonNode node : emIdList) {
+                    idList.add(node.asLong());
+                }
+            }
+            System.out.println(idList);
+            return payrollRepo.findByEmpIdInOrderByDateCreate(idList);
+        } else {
+            System.out.println("No employee IDs found or response status is not OK.");
+            return List.of();
+        }
+
+    }
+
+    @Override
+    public void deletePayroll(Long id) {
+        Payroll delete = getPayrollById(id);
+        payrollRepo.delete(delete);
     }
 }

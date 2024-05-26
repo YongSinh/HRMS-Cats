@@ -1,5 +1,6 @@
 package com.cats.payrollservice.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Table(name = "payroll")
 @Entity
@@ -33,4 +36,7 @@ public class Payroll {
     private Integer status;
     @Column(name ="date_created")
     private LocalDate dateCreate;
+    @JsonManagedReference
+    @OneToMany(mappedBy = "payroll", cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.LAZY)
+    private List<Payslip> payslips = new ArrayList<>();
 }

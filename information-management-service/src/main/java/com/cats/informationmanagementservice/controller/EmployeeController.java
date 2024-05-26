@@ -52,7 +52,19 @@ public class EmployeeController {
         return BaseApi.builder()
                 .status(true)
                 .code(HttpStatus.OK.value())
-                .message("list Employee have been created")
+                .message("list Employee have been found")
+                .timestamp(LocalDateTime.now())
+                .data(employee)
+                .build();
+    }
+
+    @GetMapping("/listEmployeeByDepOnlyEmId")
+    public BaseApi<?> listEmployeeByDepOnlyEmId(@RequestParam Long depId) {
+        List<Long> employee = employeeService.getEmployeeByDepGetOnlyEmId(depId);
+        return BaseApi.builder()
+                .status(true)
+                .code(HttpStatus.OK.value())
+                .message("list Employee Id have been found")
                 .timestamp(LocalDateTime.now())
                 .data(employee)
                 .build();
@@ -64,7 +76,7 @@ public class EmployeeController {
         return BaseApi.builder()
                 .status(true)
                 .code(HttpStatus.OK.value())
-                .message("list Employee data have been created")
+                .message("list Employee data have been found")
                 .timestamp(LocalDateTime.now())
                 .data(employee)
                 .build();
