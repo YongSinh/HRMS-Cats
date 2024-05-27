@@ -10,13 +10,11 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PayrollReqDto {
-    private List<Long> empIds;
-    private Long empId;
-    private String refNo;
+//    private List<Long> empIds;
+//    private Long empId;
     private LocalDate dateFrom;
     private LocalDate dateTo;
     private Integer type;
     private Integer status;
     private LocalDate dateCreate;
-    private Double khmerRate;
 }

@@ -8,6 +8,8 @@ import com.cats.payrollservice.repository.PayslipRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -18,50 +20,80 @@ public class PayslipServiceImp implements PayslipService {
     private final SalariesService salariesService;
     private final TaxService taxService;
     @Override
-    public Payslip create(PayslipReqDto payslipReqDto) {
-        Salaries salaries = salariesService.getSalary(payslipReqDto.getEmpId());
-        Double khMoney = salaries.getSalary() * payslipReqDto.getKhmerRate();
-        Double tax = taxService.taxCalculator(khMoney);
-        Double salary = (khMoney - tax) / payslipReqDto.getKhmerRate();
-        Payslip payslip = new Payslip();
-        payslip.setEmpId(payslipReqDto.getEmpId());
-        payslip.setPresent(payslipReqDto.getPresent());
-        payslip.setAbsent(payslipReqDto.getAbsent());
-        payslip.setSalary(salary);
-        payslip.setAllowances(payslipReqDto.getAllowances());
-        payslip.setAllowanceAmount(payslipReqDto.getAllowanceAmount());
-        payslip.setDeductions(payslipReqDto.getDeductions());
-        payslip.setDeductionAmount(payslipReqDto.getDeductionAmount());
-        if(payslipReqDto.getPayroll() == null){
-            throw new IllegalArgumentException("Please select the Payroll");
+    public List<Payslip> create(PayslipReqDto payslipReqDto, List<Long> emId) {
+        List<Payslip> payslipList = new ArrayList<>();
+        for (Long emIds : emId){
+            Salaries salaries = salariesService.getSalary(emIds);
+            double net=0.0;
+            Payslip payslip = new Payslip();
+            payslip.setEmpId(emIds);
+            payslip.setPresent(payslipReqDto.getPresent());
+            payslip.setAbsent(payslipReqDto.getAbsent());
+            payslip.setAllowances(payslipReqDto.getAllowances());
+            payslip.setAllowanceAmount(payslipReqDto.getAllowanceAmount());
+            payslip.setDeductions(payslipReqDto.getDeductions());
+            payslip.setDeductionAmount(payslipReqDto.getDeductionAmount());
+            if(payslipReqDto.getPayrollDate() == null){
+                throw new IllegalArgumentException("Please select the Payroll");
+            }
+            Payroll payroll = payrollService.getListPayRollByEmIdAndCreateDate(emIds, payslipReqDto.getPayrollDate());
+            payslip.setPayroll(payroll);
+            if(payslipReqDto.getPaymentType() == 1){
+                Double khMoney = salaries.getSalary() * payslipReqDto.getKhmerRate();
+                Double tax = taxService.taxCalculator(khMoney);
+                Double USDMoney = (khMoney - tax) / payslipReqDto.getKhmerRate();
+                net = (USDMoney/ 2);
+            }else {
+                net = payrollService.calculateNetSalary(emIds, payslipReqDto.getKhmerRate());
+            }
+            payslip.setSalary(salaries.getSalary());
+            payslip.setNet(net);
+            payslip.setDateCreated(payslipReqDto.getDateCreated());
+            payslipList.add(payslip);
         }
-        Payroll payroll = payrollService.getPayrollById(payslipReqDto.getPayroll());
-        payslip.setPayroll(payroll);
-        payslip.setDateCreated(payslipReqDto.getDateCreated());
-        return payslip;
+        payslipRepo.saveAll(payslipList);
+        return payslipList;
     }
 
     @Override
-    public Payslip update(PayslipReqDto payslipReqDto, Long id) {
+    public List<Payslip>  update(PayslipReqDto payslipReqDto, Long id, List<Long> emId) {
+        List<Payslip> payslipList = new ArrayList<>();
+        for (Long emIds : emId){
+        Salaries salaries = salariesService.getSalary(emIds);
+        double salary=0.0;
         Payslip payslip = getPaySlipById(id);
         payslip.setPresent(payslipReqDto.getPresent());
         payslip.setAbsent(payslipReqDto.getAbsent());
-        payslip.setSalary(payslipReqDto.getSalary());
         payslip.setAllowances(payslipReqDto.getAllowances());
         payslip.setAllowanceAmount(payslipReqDto.getAllowanceAmount());
         payslip.setDeductions(payslipReqDto.getDeductions());
         payslip.setDeductionAmount(payslipReqDto.getDeductionAmount());
+        Payroll payroll = payrollService.getPayrollById(payslipReqDto.getPayroll());
         if(payslipReqDto.getPayroll() != null){
-            Payroll payroll = payrollService.getPayrollById(payslipReqDto.getPayroll());
             payslip.setPayroll(payroll);
         }
-        payslip.setDateCreated(payslipReqDto.getDateCreated());
-        return payslip;
+        if(payroll.getType() == 1){
+            Double khMoney = salaries.getSalary() * payslipReqDto.getKhmerRate();
+            Double tax = taxService.taxCalculator(khMoney);
+            Double USDMoney = (khMoney - tax) / payslipReqDto.getKhmerRate();
+            salary = (USDMoney/ 2);
+        }else {
+            salary = payrollService.calculateNetSalary(emIds, payslipReqDto.getKhmerRate());
+        }
+        payslip.setSalary(salary);
+        payslip.setDateCreated(payslipReqDto.getDateCreated());}
+        payslipRepo.saveAll(payslipList);
+        return payslipList;
     }
 
     @Override
     public List<Payslip> getListPaySlip() {
         return payslipRepo.findAll();
+    }
+
+    @Override
+    public Payslip getListPaySlipByeEmIdAndCreateDate(Long emId, LocalDateTime localDateTime) {
+        return payslipRepo.findByEmpIdAndDateCreated(emId,localDateTime);
     }
 
     @Override

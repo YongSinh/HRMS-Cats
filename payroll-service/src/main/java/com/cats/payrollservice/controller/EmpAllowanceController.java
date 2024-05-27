@@ -68,8 +68,10 @@ public class EmpAllowanceController {
     }
     @PostMapping(value = "/empAllowances/addMultiple", consumes = {"multipart/form-data", "multipart/mixed"})
     public BaseApi<?> createMultiple(@RequestPart(name = "body") EmployeeAllowancesReqDto employeeAllowancesReqDto,
-                                     @RequestPart(name = "emId") List<Long> emId) {
-        List<EmployeeAllowancesRepDto> employeeAllowances = employeeAllowancesService.createMultiple(employeeAllowancesReqDto, emId);
+                                     @RequestPart(name = "emId") List<Long> emId,
+                                     @RequestPart(name = "localDateTime") LocalDateTime localDateTime
+                                     ) {
+        List<EmployeeAllowancesRepDto> employeeAllowances = employeeAllowancesService.createMultiple(employeeAllowancesReqDto, emId, localDateTime);
         return BaseApi.builder()
                 .status(true)
                 .code(HttpStatus.OK.value())

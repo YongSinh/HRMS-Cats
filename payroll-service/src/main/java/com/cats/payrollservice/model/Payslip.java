@@ -32,6 +32,8 @@ public class Payslip {
     private Integer absent;
     @Column(name ="salary")
     private Double salary;
+    @Column(name ="net")
+    private Double net;
     @Column(name ="allowance_amount")
     private Double allowanceAmount;
     @Column(name ="allowances",columnDefinition = "text")

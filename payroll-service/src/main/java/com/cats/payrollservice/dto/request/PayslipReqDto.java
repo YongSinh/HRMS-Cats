@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Setter
@@ -12,14 +13,14 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class PayslipReqDto {
     private Long payroll;
-    private Long empId;
     private Integer present;
     private Integer absent;
-    private Double salary;
     private Double allowanceAmount;
     private String allowances;
     private Double deductionAmount;
     private String deductions;
     private LocalDateTime dateCreated;
     private Double khmerRate;
+    private LocalDate payrollDate;
+    private Integer paymentType;
 }

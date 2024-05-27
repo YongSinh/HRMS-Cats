@@ -1,15 +1,13 @@
 package com.cats.payrollservice.controller;
 
 import com.cats.payrollservice.base.BaseApi;
+import com.cats.payrollservice.dto.request.PayrollReqDto;
 import com.cats.payrollservice.model.Allowances;
 import com.cats.payrollservice.model.Payroll;
 import com.cats.payrollservice.service.PayrollService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -59,6 +57,17 @@ public class PayrollController {
     @GetMapping("/fetchEmployeeIds")
     public BaseApi<?> fetchEmployeeIds(@RequestParam Long depId) {
         List<Payroll> payrollList =  payrollService.findPayRollByDepEmId(depId);
+        return BaseApi.builder()
+                .status(true)
+                .code(HttpStatus.OK.value())
+                .message("payroll have been found")
+                .timestamp(LocalDateTime.now())
+                .data(payrollList)
+                .build();
+    }
+    @PostMapping("/addPayroll")
+    public BaseApi<?> addPayroll(@RequestPart("body") PayrollReqDto payrollReqDto,@RequestPart("emIds")List<Long> emIds ) {
+        List<Payroll> payrollList =  payrollService.create(payrollReqDto, emIds);
         return BaseApi.builder()
                 .status(true)
                 .code(HttpStatus.OK.value())

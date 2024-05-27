@@ -5,10 +5,13 @@ import com.cats.payrollservice.dto.request.EmployeeAllowancesReqDto;
 import com.cats.payrollservice.dto.response.EmployeeAllowancesRepDto;
 import com.cats.payrollservice.model.Allowances;
 import com.cats.payrollservice.model.EmployeeAllowances;
+import com.cats.payrollservice.model.Payslip;
 import com.cats.payrollservice.repository.EmployeeAllowancesRepo;
+import com.cats.payrollservice.repository.PayslipRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,6 +20,9 @@ import java.util.List;
 public class EmployeeAllowancesServiceImp implements EmployeeAllowancesService {
     private final EmployeeAllowancesRepo employeeAllowancesRepo;
     private final AllowancesService allowancesService;
+    private final PayrollService payrollService;
+    private final  PayslipService payslipService;
+    private final PayslipRepo payslipRepo;
     @Override
     public EmployeeAllowancesRepDto create(EmployeeAllowancesReqDto employeeAllowancesReqDto) {
         EmployeeAllowances employeeAllowances = new EmployeeAllowances();
@@ -35,8 +41,9 @@ public class EmployeeAllowancesServiceImp implements EmployeeAllowancesService {
     }
 
     @Override
-    public List<EmployeeAllowancesRepDto> createMultiple(EmployeeAllowancesReqDto employeeAllowancesReqDto, List<Long> emId) {
+    public List<EmployeeAllowancesRepDto> createMultiple(EmployeeAllowancesReqDto employeeAllowancesReqDto, List<Long> emId, LocalDateTime localDateTime) {
         List<EmployeeAllowances> employeeAllowancesArrayList = new ArrayList<>();
+        List<Payslip> payslips =  new ArrayList<>();
         for (Long emIds : emId){
             EmployeeAllowances employeeAllowances = new EmployeeAllowances();
             employeeAllowances.setEmpId(emIds);
@@ -50,7 +57,12 @@ public class EmployeeAllowancesServiceImp implements EmployeeAllowancesService {
             Allowances allowances = allowancesService.getAllowancesBytId(employeeAllowancesReqDto.getAllowances());
             employeeAllowances.setAllowances(allowances);
             employeeAllowancesArrayList.add(employeeAllowances);
+            Payslip payslip = payslipService.getListPaySlipByeEmIdAndCreateDate(emIds, localDateTime);
+            payslip.setAllowances(employeeAllowances.toString());
+            payslip.setAllowanceAmount(employeeAllowancesReqDto.getAmount());
+            payslips.add(payslip);
         }
+        payslipRepo.saveAll(payslips);
         return mapper.employeeAllowancesToEmployeeAllowancesResponseDtos(employeeAllowancesRepo.saveAll(employeeAllowancesArrayList));
     }
 

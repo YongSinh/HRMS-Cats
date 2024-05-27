@@ -11,13 +11,13 @@ import java.util.List;
 
 public interface PayrollService {
     Payroll getPayrollById(Long id);
-    List<Payroll> update(Long id, PayrollReqDto payrollReqDto);
-    List<Payroll> create(PayrollReqDto payrollReqDto);
+    List<Payroll> update(Long id, PayrollReqDto payrollReqDto, List<Long> emIds);
+    List<Payroll> create(PayrollReqDto payrollReqDto, List<Long> emIds);
     String generatePayrollReference();
     List<Payroll> getListPayroll();
     List<Payroll> getListPayRollByEmId(Long emId);
-    List<Payroll> getListPayRollByEmIdAndCreateDate(Long emId, LocalDate date);
-
+    Payroll getListPayRollByEmIdAndCreateDate(Long emId, LocalDate date);
+    Double calculateNetSalary(Long emId, Double KhRate);
     List<Payroll> findPayRollByDepEmId(Long depId);
     void deletePayroll(Long id);
 }

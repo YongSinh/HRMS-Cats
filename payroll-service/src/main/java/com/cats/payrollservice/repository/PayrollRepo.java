@@ -10,7 +10,7 @@ import java.util.List;
 
 @Repository
 public interface PayrollRepo extends JpaRepository<Payroll, Long> {
-    List<Payroll> findPayrollByEmpIdAndDateCreate(Long empId, LocalDate dateCreate);
+    Payroll findPayrollByEmpIdAndDateCreate(Long empId, LocalDate dateCreate);
     List<Payroll> findPayrollByEmpId(Long empId);
     List<Payroll> findByEmpIdInOrderByDateCreate(List<Long> empIds);
 }

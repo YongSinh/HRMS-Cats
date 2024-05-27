@@ -6,10 +6,12 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class PayrollPayslipResponse {
-    private Payroll payroll;
-    private Payslip payslip;
+    private List<Payroll> payroll;
+    private List<Payslip> payslip;
 }

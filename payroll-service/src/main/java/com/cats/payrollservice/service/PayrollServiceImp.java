@@ -37,9 +37,9 @@ public class PayrollServiceImp implements PayrollService {
     }
 
     @Override
-    public List<Payroll> update(Long id, PayrollReqDto payrollReqDto) {
+    public List<Payroll> update(Long id, PayrollReqDto payrollReqDto, List<Long> emIds) {
         List<Payroll> payrollList = new ArrayList<>();
-        for (Long emId : payrollReqDto.getEmpIds()){
+        for (Long emId : emIds){
             Payroll payroll = getPayrollById(id);
             String payrollReference = generatePayrollReference();
             payroll.setEmpId(emId);
@@ -56,9 +56,9 @@ public class PayrollServiceImp implements PayrollService {
 
 
     @Override
-    public List<Payroll> create(PayrollReqDto payrollReqDto) {
+    public List<Payroll> create(PayrollReqDto payrollReqDto, List<Long> emIds) {
         List<Payroll> payrollList = new ArrayList<>();
-        for (Long emId : payrollReqDto.getEmpIds()){
+        for (Long emId :emIds){
             Payroll payroll = new Payroll();
             String payrollReference = generatePayrollReference();
             payroll.setEmpId(emId);
@@ -68,7 +68,7 @@ public class PayrollServiceImp implements PayrollService {
             payroll.setDateCreate(payrollReqDto.getDateCreate());
             payroll.setType(payrollReqDto.getType());
             payroll.setStatus(payrollReqDto.getStatus());
-
+            payrollList.add(payroll);
         }
         payrollRepo.saveAll(payrollList);
         return payrollList;
@@ -87,6 +87,9 @@ public class PayrollServiceImp implements PayrollService {
 
         // Combine date and random parts
         return datePart + "-" + String.format("%06d", randomPart);
+
+
+
     }
 
     @Override
@@ -100,9 +103,18 @@ public class PayrollServiceImp implements PayrollService {
     }
 
     @Override
-    public List<Payroll> getListPayRollByEmIdAndCreateDate(Long emId, LocalDate date) {
+    public Payroll getListPayRollByEmIdAndCreateDate(Long emId, LocalDate date) {
         return payrollRepo.findPayrollByEmpIdAndDateCreate(emId, date);
     }
+
+    @Override
+    public Double calculateNetSalary(Long emId, Double KhRate) {
+        Salaries salaries = salariesService.getSalary(emId);
+        Double khMoney = salaries.getSalary() * KhRate;
+        Double tax = taxService.taxCalculator(khMoney);
+        return (khMoney - tax) / KhRate;
+    }
+
 
     @Override
     public List<Payroll> findPayRollByDepEmId(Long depId) {
