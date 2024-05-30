@@ -44,7 +44,7 @@ public class PayrollController {
 
     @GetMapping("/payrollByEmIdAndCreateDate")
     public BaseApi<?> getListPayrollByEmIdAndCreateDate(@RequestParam Long emId, @RequestParam LocalDate date) {
-        List<Payroll> payrollList = payrollService.getListPayRollByEmIdAndCreateDate(emId, date);
+        Payroll payrollList = payrollService.getListPayRollByEmIdAndCreateDate(emId, date);
         return BaseApi.builder()
                 .status(true)
                 .code(HttpStatus.OK.value())

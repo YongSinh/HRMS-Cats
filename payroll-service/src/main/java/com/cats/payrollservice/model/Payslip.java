@@ -30,6 +30,8 @@ public class Payslip {
     private Integer present;
     @Column(name ="absent")
     private Integer absent;
+    @Column(name ="payType")
+    private Integer payType;
     @Column(name ="salary")
     private Double salary;
     @Column(name ="net")

@@ -12,7 +12,6 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SalariesReqDto {
-    private Long id;
     private Long empId;
     private Double salary;
     private LocalDate fromDate;

@@ -14,6 +14,5 @@ public class SalariesRepDto {
     private Double salary;
     private LocalDate fromDate;
     private LocalDate toDate;
-    private Tax tax;
 
 }

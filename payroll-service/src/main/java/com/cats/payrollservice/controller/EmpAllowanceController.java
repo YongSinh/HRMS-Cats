@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -68,10 +69,9 @@ public class EmpAllowanceController {
     }
     @PostMapping(value = "/empAllowances/addMultiple", consumes = {"multipart/form-data", "multipart/mixed"})
     public BaseApi<?> createMultiple(@RequestPart(name = "body") EmployeeAllowancesReqDto employeeAllowancesReqDto,
-                                     @RequestPart(name = "emId") List<Long> emId,
-                                     @RequestPart(name = "localDateTime") LocalDateTime localDateTime
+                                     @RequestPart(name = "emId") List<Long> emId
                                      ) {
-        List<EmployeeAllowancesRepDto> employeeAllowances = employeeAllowancesService.createMultiple(employeeAllowancesReqDto, emId, localDateTime);
+        List<EmployeeAllowancesRepDto> employeeAllowances = employeeAllowancesService.createMultiple(employeeAllowancesReqDto, emId);
         return BaseApi.builder()
                 .status(true)
                 .code(HttpStatus.OK.value())

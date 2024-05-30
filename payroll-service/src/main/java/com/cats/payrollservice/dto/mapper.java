@@ -37,7 +37,6 @@ public class mapper {
         salariesRepDto.setToDate(salaries.getToDate());
         salariesRepDto.setEmpId(salaries.getEmpId());
         salariesRepDto.setId(salaries.getId());
-        salariesRepDto.setTax(salaries.getTax());
         return salariesRepDto;
     }
 

@@ -13,7 +13,9 @@ public interface PayslipService {
     List<Payslip> create(PayslipReqDto payslipReqDto, List<Long> emId);
     List<Payslip>  update(PayslipReqDto payslipReqDto, Long id, List<Long> emId);
     List<Payslip> getListPaySlip();
-    Payslip getListPaySlipByeEmIdAndCreateDate(Long emId, LocalDateTime localDateTime);
+    Payslip getListPaySlipByeEmIdAndCreateDate(Long emId, LocalDate localDate);
+    void addAllowanceToPaySlip(Long emId, LocalDate localDate, Double amount, List<String> allowance);
+    Payslip addDeductionsToPaySlip(Long emId, LocalDate localDate,Double amount, List<String> deductions);
     List<Payslip> getListPaySlipByEmId(Long emId);
     Payslip getPaySlipById(Long id);
 

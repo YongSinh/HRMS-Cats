@@ -13,4 +13,5 @@ public interface PayrollRepo extends JpaRepository<Payroll, Long> {
     Payroll findPayrollByEmpIdAndDateCreate(Long empId, LocalDate dateCreate);
     List<Payroll> findPayrollByEmpId(Long empId);
     List<Payroll> findByEmpIdInOrderByDateCreate(List<Long> empIds);
+
 }
