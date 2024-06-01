@@ -28,31 +28,25 @@ public class PayslipServiceImp implements PayslipService {
         List<Payslip> payslipList = new ArrayList<>();
         for (Long emIds : emId){
             double net=0.0;
-            double Total=0.0;
-            double allowanceAmount=0.0;
-            double deductionAmount=0.0;
             SalariesRepDto salaries = salariesService.getSalaryByEmId(emIds);
             Payslip payslip = new Payslip();
             payslip.setEmpId(emIds);
-            payslip.setPresent(payslipReqDto.getPresent());
-            payslip.setAbsent(payslipReqDto.getAbsent());
             if(payslipReqDto.getPayrollDate() == null){
                 throw new IllegalArgumentException("Please select the Payroll");
             }
-            Payroll payroll = payrollService.getPayrollById(payslipReqDto.getPayroll());
+            Payroll payroll = payrollService.getPayRollByEmIdAndCreateDate(emIds, payslipReqDto.getPayrollDate());
             payslip.setPayroll(payroll);
             payslip.setPayType(payslipReqDto.getPaymentType());
             if(payslipReqDto.getPaymentType() == 1){
                 Double khMoney = salaries.getSalary() * payslipReqDto.getKhmerRate();
                 Double tax = taxService.taxCalculator(khMoney);
                 Double USDMoney = (khMoney - tax) / payslipReqDto.getKhmerRate();
-                allowanceAmount= payslipReqDto.getAllowanceAmount(); ;
-                deductionAmount = payslipReqDto.getDeductionAmount();
-                USDMoney+= allowanceAmount;
-                USDMoney-= deductionAmount;
                 net = USDMoney / 2;
 
-            }else {
+            }else if (payslipReqDto.getPaymentType() == 2){
+                net = salaries.getSalary() / 2;
+            }
+            else {
                 net = payrollService.calculateNetSalary(emIds, payslipReqDto.getKhmerRate());
             }
             net = serviceCalculate.roundUp(net);
@@ -66,28 +60,25 @@ public class PayslipServiceImp implements PayslipService {
     }
 
     @Override
-    public List<Payslip>  update(PayslipReqDto payslipReqDto, Long id, List<Long> emId) {
+    public List<Payslip> update(PayslipReqDto payslipReqDto, Long id, List<Long> emId) {
         List<Payslip> payslipList = new ArrayList<>();
         for (Long emIds : emId){
         Salaries salaries = salariesService.getSalary(emIds);
         double salary=0.0;
         Payslip payslip = getPaySlipById(id);
-        payslip.setPresent(payslipReqDto.getPresent());
-        payslip.setAbsent(payslipReqDto.getAbsent());
         payslip.setAllowances(payslipReqDto.getAllowances());
         payslip.setAllowanceAmount(payslipReqDto.getAllowanceAmount());
         payslip.setDeductions(payslipReqDto.getDeductions());
         payslip.setDeductionAmount(payslipReqDto.getDeductionAmount());
-        Payroll payroll = payrollService.getPayrollById(payslipReqDto.getPayroll());
-        if(payslipReqDto.getPayroll() != null){
-            payslip.setPayroll(payroll);
-        }
+        Payroll payroll = payrollService.getPayRollByEmIdAndCreateDate(emIds, payslipReqDto.getPayrollDate());
+        payslip.setPayroll(payroll);
         if(payroll.getType() == 1){
             Double khMoney = salaries.getSalary() * payslipReqDto.getKhmerRate();
             Double tax = taxService.taxCalculator(khMoney);
             Double USDMoney = (khMoney - tax) / payslipReqDto.getKhmerRate();
             salary = (USDMoney/ 2);
-        }else {
+        }
+        else {
             salary = payrollService.calculateNetSalary(emIds, payslipReqDto.getKhmerRate());
         }
         payslip.setSalary(salary);
@@ -113,13 +104,34 @@ public class PayslipServiceImp implements PayslipService {
         for (String s : allowance) {
             joiner.add(s);
         }
-        System.out.println(joiner.toString());
-        addAllowance.setAllowances(allowance.toString());
+        addAllowance.setAllowances(joiner.toString());
         addAllowance.setAllowanceAmount(amount);
         double net = amount + addAllowance.getNet();
         net = serviceCalculate.roundUp(net);
         addAllowance.setNet(net);
         payslipRepo.save(addAllowance);
+    }
+
+    @Override
+    public void updateAllowanceToPaySlip(Long id, Double newAmount, Double oldAmount,    List<String> allowance) {
+        Payslip  update = getPaySlipById(id);
+        double net = 0.0;
+        StringJoiner joiner = new StringJoiner(",");
+        for (String s : allowance) {
+            joiner.add(s);
+        }
+        double result =update.getAllowanceAmount() - oldAmount;
+        double finalResult = result + newAmount;
+        net = update.getNet() - update.getAllowanceAmount();
+        double finalNet = net + finalResult;
+       // int finalResult = result ;
+        System.out.println(finalResult);
+        System.out.println(finalNet);
+        update.setAllowanceAmount(finalResult);
+        update.setNet(finalNet);
+        update.setAllowances(allowance.toString());
+        update.setAllowanceAmount(newAmount);
+        //payslipRepo.save(update);
     }
 
     @Override

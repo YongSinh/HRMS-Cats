@@ -103,7 +103,7 @@ public class PayrollServiceImp implements PayrollService {
     }
 
     @Override
-    public Payroll getListPayRollByEmIdAndCreateDate(Long emId, LocalDate date) {
+    public Payroll getPayRollByEmIdAndCreateDate(Long emId, LocalDate date) {
         return payrollRepo.findPayrollByEmpIdAndDateCreate(emId, date);
     }
 

@@ -12,9 +12,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @RequiredArgsConstructor
 public class PayslipReqDto {
-    private Long payroll;
-    private Integer present;
-    private Integer absent;
     private Double allowanceAmount;
     private String allowances;
     private Double deductionAmount;

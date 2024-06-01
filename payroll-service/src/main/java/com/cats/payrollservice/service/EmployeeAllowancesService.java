@@ -17,5 +17,6 @@ public interface EmployeeAllowancesService {
     EmployeeAllowances getEmpAllowancesById(Long id);
     EmployeeAllowancesRepDto getEmpAllowances(Long id);
     List<EmployeeAllowancesRepDto> getListEmpAllowances();
+    List<EmployeeAllowancesRepDto> getListEmpAllowancesByPaySlip(Long id);
     List<EmployeeAllowancesRepDto> getListEmpAllowancesByEmId(Long emId);
 }

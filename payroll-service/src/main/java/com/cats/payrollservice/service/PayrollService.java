@@ -16,7 +16,7 @@ public interface PayrollService {
     String generatePayrollReference();
     List<Payroll> getListPayroll();
     List<Payroll> getListPayRollByEmId(Long emId);
-    Payroll getListPayRollByEmIdAndCreateDate(Long emId, LocalDate date);
+    Payroll getPayRollByEmIdAndCreateDate(Long emId, LocalDate date);
     Double calculateNetSalary(Long emId, Double KhRate);
     List<Payroll> findPayRollByDepEmId(Long depId);
     void deletePayroll(Long id);

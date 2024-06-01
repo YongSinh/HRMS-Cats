@@ -10,6 +10,7 @@ import com.cats.payrollservice.repository.EmployeeAllowancesRepo;
 import com.cats.payrollservice.repository.PayslipRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -41,6 +42,7 @@ public class EmployeeAllowancesServiceImp implements EmployeeAllowancesService {
         return mapper.employeeAllowancesToEmployeeAllowancesResponseDto(employeeAllowances);
     }
 
+    @Transactional
     @Override
     public List<EmployeeAllowancesRepDto> createMultiple(EmployeeAllowancesReqDto employeeAllowancesReqDto, List<Long> emId) {
         List<EmployeeAllowances> employeeAllowancesArrayList = new ArrayList<>();
@@ -50,6 +52,7 @@ public class EmployeeAllowancesServiceImp implements EmployeeAllowancesService {
         }
         for (Long emIds : emId){
             List<String> allowanceList = new ArrayList<>();
+            Payslip payslip = payslipService.getListPaySlipByeEmIdAndCreateDate(emIds,employeeAllowancesReqDto.getPaySlipDate());
             for (Long allowance:employeeAllowancesReqDto.getAllowances()){
                 EmployeeAllowances employeeAllowances = new EmployeeAllowances();
                 employeeAllowances.setEmpId(emIds);
@@ -61,11 +64,10 @@ public class EmployeeAllowancesServiceImp implements EmployeeAllowancesService {
                 allowanceList.add(allowances.getAllowances());
                 employeeAllowances.setAllowances(allowances);
                 employeeAllowancesArrayList.add(employeeAllowances);
+                employeeAllowances.setPaySlipId(payslip.getId());
             }
             System.out.println(employeeAllowancesReqDto.getAmount());
             totalAmount += employeeAllowancesReqDto.getAmount();
-            System.out.println(totalAmount);
-
             payslipService.addAllowanceToPaySlip(emIds,employeeAllowancesReqDto.getPaySlipDate(), totalAmount, allowanceList);
         }
 
@@ -78,20 +80,14 @@ public class EmployeeAllowancesServiceImp implements EmployeeAllowancesService {
         EmployeeAllowances employeeAllowances = getEmpAllowancesById(id);
         employeeAllowancesRepo.delete(employeeAllowances);
     }
-
+    @Transactional
     @Override
     public EmployeeAllowancesRepDto update(EmployeeAllowancesReqDto employeeAllowancesReqDto, Long Id) {
         EmployeeAllowances employeeAllowances = getEmpAllowancesById(Id);
-        //employeeAllowances.setEmpId(employeeAllowancesReqDto.getEmpId());
-        employeeAllowances.setType(employeeAllowancesReqDto.getType());
-        employeeAllowances.setAmount(employeeAllowancesReqDto.getAmount());
-        employeeAllowances.setEffectiveDate(employeeAllowancesReqDto.getEffectiveDate());
-        employeeAllowances.setDateCreated(employeeAllowancesReqDto.getDateCreated());
-        if (employeeAllowancesReqDto.getAllowances() != null) {
-//            Allowances allowances = allowancesService.getAllowancesBytId(employeeAllowancesReqDto.getAllowances());
-//            employeeAllowances.setAllowances(allowances);
-        }
-        employeeAllowancesRepo.save(employeeAllowances);
+        List<String> allowanceList = new ArrayList<>();
+        double oldAmount = employeeAllowances.getAmount();
+        double newAmount = employeeAllowancesReqDto.getAmount();
+        payslipService.updateAllowanceToPaySlip(employeeAllowances.getPaySlipId(),newAmount, oldAmount,allowanceList);
         return mapper.employeeAllowancesToEmployeeAllowancesResponseDto(employeeAllowances);
     }
 
@@ -111,6 +107,11 @@ public class EmployeeAllowancesServiceImp implements EmployeeAllowancesService {
     public List<EmployeeAllowancesRepDto> getListEmpAllowances() {
 
         return mapper.employeeAllowancesToEmployeeAllowancesResponseDtos(employeeAllowancesRepo.findAll());
+    }
+
+    @Override
+    public List<EmployeeAllowancesRepDto> getListEmpAllowancesByPaySlip(Long id) {
+        return mapper.employeeAllowancesToEmployeeAllowancesResponseDtos(employeeAllowancesRepo.findByPaySlipId(id));
     }
 
     @Override

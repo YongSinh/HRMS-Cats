@@ -22,6 +22,8 @@ public class EmployeeDeductions {
     private Long empDedId;
     @Column(name ="employee_id")
     private Long empId;
+    @Column(name ="paySlipId")
+    private Long paySlipId;
     @ManyToOne( fetch = FetchType.LAZY, optional = false)
     @JsonBackReference
     @JoinColumn(name = "deductions_id")

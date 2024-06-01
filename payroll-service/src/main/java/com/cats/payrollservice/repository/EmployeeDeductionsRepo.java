@@ -11,4 +11,5 @@ import java.util.List;
 public interface EmployeeDeductionsRepo extends JpaRepository<EmployeeDeductions, Long> {
     List<EmployeeDeductions> findByEmpId(Long emId);
     List<EmployeeDeductions> findByEmpIdAndEffectiveDateGreaterThanEqual(Long empId, LocalDate effectiveDate);
+    List<EmployeeDeductions> findByPaySlipId(Long paySlipId);
 }
