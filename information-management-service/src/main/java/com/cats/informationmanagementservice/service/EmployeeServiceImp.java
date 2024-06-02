@@ -195,8 +195,8 @@ public class EmployeeServiceImp implements EmployeeService{
     @Override
     public void deleteEmpInfo(Long emId) {
         Employee employee = getPersonalDataById(emId);
-        System.out.println("hello world");
         employeeRepo.delete(employee);
+        
     }
 }
 

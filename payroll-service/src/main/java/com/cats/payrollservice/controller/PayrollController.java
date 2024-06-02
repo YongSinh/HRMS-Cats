@@ -42,17 +42,17 @@ public class PayrollController {
                 .build();
     }
 
-    @GetMapping("/payrollByEmIdAndCreateDate")
-    public BaseApi<?> getListPayrollByEmIdAndCreateDate(@RequestParam Long emId, @RequestParam LocalDate date) {
-        Payroll payrollList = payrollService.getListPayRollByEmIdAndCreateDate(emId, date);
-        return BaseApi.builder()
-                .status(true)
-                .code(HttpStatus.OK.value())
-                .message("payroll have been found")
-                .timestamp(LocalDateTime.now())
-                .data(payrollList)
-                .build();
-    }
+//    @GetMapping("/payrollByEmIdAndCreateDate")
+//    public BaseApi<?> getListPayrollByEmIdAndCreateDate(@RequestParam Long emId, @RequestParam LocalDate date) {
+//        Payroll payrollList = payrollService.getListPayRollByEmIdAndCreateDate(emId, date);
+//        return BaseApi.builder()
+//                .status(true)
+//                .code(HttpStatus.OK.value())
+//                .message("payroll have been found")
+//                .timestamp(LocalDateTime.now())
+//                .data(payrollList)
+//                .build();
+//    }
 
     @GetMapping("/fetchEmployeeIds")
     public BaseApi<?> fetchEmployeeIds(@RequestParam Long depId) {

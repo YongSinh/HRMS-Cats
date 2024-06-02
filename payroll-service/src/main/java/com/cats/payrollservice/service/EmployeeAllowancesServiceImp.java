@@ -42,6 +42,11 @@ public class EmployeeAllowancesServiceImp implements EmployeeAllowancesService {
         return mapper.employeeAllowancesToEmployeeAllowancesResponseDto(employeeAllowances);
     }
 
+    @Override
+    public EmployeeAllowancesRepDto addMoreToPaySlip(EmployeeAllowancesReqDto employeeAllowancesReqDto) {
+        return null;
+    }
+
     @Transactional
     @Override
     public List<EmployeeAllowancesRepDto> createMultiple(EmployeeAllowancesReqDto employeeAllowancesReqDto, List<Long> emId) {
@@ -83,12 +88,25 @@ public class EmployeeAllowancesServiceImp implements EmployeeAllowancesService {
     @Transactional
     @Override
     public EmployeeAllowancesRepDto update(EmployeeAllowancesReqDto employeeAllowancesReqDto, Long Id) {
-        EmployeeAllowances employeeAllowances = getEmpAllowancesById(Id);
         List<String> allowanceList = new ArrayList<>();
-        double oldAmount = employeeAllowances.getAmount();
+        EmployeeAllowances update = getEmpAllowancesById(Id);
+        update.setType(employeeAllowancesReqDto.getType());
+        update.setAmount(employeeAllowancesReqDto.getAmount());
+        update.setEffectiveDate(employeeAllowancesReqDto.getEffectiveDate());
+        update.setDateCreated(employeeAllowancesReqDto.getDateCreated());
+        String oldAllowance = update.getAllowances().getAllowances();
+        if(!employeeAllowancesReqDto.getAllowances().isEmpty()){
+            for (Long allowance:employeeAllowancesReqDto.getAllowances()){
+                Allowances allowances = allowancesService.getAllowancesBytId(allowance);
+                allowanceList.add(allowances.getAllowances());
+                update.setAllowances(allowances);
+            }
+        }
+        double oldAmount = update.getAmount();
         double newAmount = employeeAllowancesReqDto.getAmount();
-        payslipService.updateAllowanceToPaySlip(employeeAllowances.getPaySlipId(),newAmount, oldAmount,allowanceList);
-        return mapper.employeeAllowancesToEmployeeAllowancesResponseDto(employeeAllowances);
+
+        payslipService.updateAllowanceToPaySlip(update.getPaySlipId(),newAmount, oldAmount,allowanceList, oldAllowance);
+        return mapper.employeeAllowancesToEmployeeAllowancesResponseDto(update);
     }
 
     @Override

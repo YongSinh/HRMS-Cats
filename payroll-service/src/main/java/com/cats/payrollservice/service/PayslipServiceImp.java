@@ -12,8 +12,10 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.StringJoiner;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -113,13 +115,21 @@ public class PayslipServiceImp implements PayslipService {
     }
 
     @Override
-    public void updateAllowanceToPaySlip(Long id, Double newAmount, Double oldAmount,    List<String> allowance) {
+    public void updateAllowanceToPaySlip(Long id, Double newAmount, Double oldAmount, List<String> allowance, String oldAllowance) {
         Payslip  update = getPaySlipById(id);
         double net = 0.0;
-        StringJoiner joiner = new StringJoiner(",");
-        for (String s : allowance) {
-            joiner.add(s);
+        List<String> allowanceList = convertStringToList(update.getAllowances());
+        System.out.println(allowanceList.toString());
+        for (String allowances: allowance){
+            for (int i = 0; i < allowanceList.size(); i++) {
+                if (allowanceList.get(i).equalsIgnoreCase(oldAllowance.trim())) {
+                    allowanceList.set(i, allowances);
+                }
+            }
         }
+
+        String updatedAllowances = String.join(", ", allowanceList);
+        System.out.println(updatedAllowances);
         double result =update.getAllowanceAmount() - oldAmount;
         double finalResult = result + newAmount;
         net = update.getNet() - update.getAllowanceAmount();
@@ -127,11 +137,17 @@ public class PayslipServiceImp implements PayslipService {
        // int finalResult = result ;
         System.out.println(finalResult);
         System.out.println(finalNet);
-        update.setAllowanceAmount(finalResult);
-        update.setNet(finalNet);
-        update.setAllowances(allowance.toString());
-        update.setAllowanceAmount(newAmount);
+//        update.setAllowanceAmount(finalResult);
+//        update.setNet(finalNet);
+//        update.setAllowances(allowance.toString());
+//        update.setAllowanceAmount(newAmount);
         //payslipRepo.save(update);
+    }
+
+    public List<String> convertStringToList(String allowances) {
+        return Arrays.stream(allowances.split(","))
+                .map(String::trim)
+                .collect(Collectors.toList());
     }
 
     @Override
