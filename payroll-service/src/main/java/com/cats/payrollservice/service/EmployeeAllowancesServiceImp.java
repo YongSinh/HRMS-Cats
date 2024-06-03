@@ -25,26 +25,35 @@ public class EmployeeAllowancesServiceImp implements EmployeeAllowancesService {
     private final PayrollService payrollService;
     private final  PayslipService payslipService;
     private final PayslipRepo payslipRepo;
-    @Override
-    public EmployeeAllowancesRepDto create(EmployeeAllowancesReqDto employeeAllowancesReqDto) {
-        EmployeeAllowances employeeAllowances = new EmployeeAllowances();
-        //employeeAllowances.setEmpId(employeeAllowancesReqDto.getEmpId());
-        employeeAllowances.setType(employeeAllowancesReqDto.getType());
-        employeeAllowances.setAmount(employeeAllowancesReqDto.getAmount());
-        employeeAllowances.setEffectiveDate(employeeAllowancesReqDto.getEffectiveDate());
-        employeeAllowances.setDateCreated(employeeAllowancesReqDto.getDateCreated());
-        if (employeeAllowancesReqDto.getAllowances() == null) {
-            throw new IllegalArgumentException("Allowances at least on Employee Allowances");
-        }
-        //Allowances allowances = allowancesService.getAllowancesBytId(employeeAllowancesReqDto.getAllowances());
-       // employeeAllowances.setAllowances(allowances);
-        employeeAllowancesRepo.save(employeeAllowances);
-        return mapper.employeeAllowancesToEmployeeAllowancesResponseDto(employeeAllowances);
-    }
+
 
     @Override
-    public EmployeeAllowancesRepDto addMoreToPaySlip(EmployeeAllowancesReqDto employeeAllowancesReqDto) {
-        return null;
+    public List<EmployeeAllowancesRepDto> addMoreToPaySlip(EmployeeAllowancesReqDto employeeAllowancesReqDto, Long emId, Long id) {
+        List<EmployeeAllowances> employeeAllowancesArrayList = new ArrayList<>();
+        double totalAmount = 0.0;
+        if (employeeAllowancesReqDto.getAllowances() == null || employeeAllowancesReqDto.getAllowances().isEmpty()) {
+            throw new IllegalArgumentException("Allowances list cannot be null or empty.");
+        }
+            List<String> allowanceList = new ArrayList<>();
+            Payslip payslip = payslipService.getListPaySlipByeEmIdAndCreateDate(emId,employeeAllowancesReqDto.getPaySlipDate());
+            for (Long allowance:employeeAllowancesReqDto.getAllowances()){
+                EmployeeAllowances employeeAllowances = new EmployeeAllowances();
+                employeeAllowances.setEmpId(emId);
+                employeeAllowances.setType(employeeAllowancesReqDto.getType());
+                employeeAllowances.setAmount(employeeAllowancesReqDto.getAmount());
+                employeeAllowances.setEffectiveDate(employeeAllowancesReqDto.getEffectiveDate());
+                employeeAllowances.setDateCreated(employeeAllowancesReqDto.getDateCreated());
+                Allowances allowances = allowancesService.getAllowancesBytId(allowance);
+                allowanceList.add(allowances.getAllowances());
+                employeeAllowances.setAllowances(allowances);
+                employeeAllowancesArrayList.add(employeeAllowances);
+                employeeAllowances.setPaySlipId(payslip.getId());
+            }
+            System.out.println(employeeAllowancesReqDto.getAmount());
+            totalAmount += employeeAllowancesReqDto.getAmount();
+            payslipService.addAllowanceToPaySlipMore(id,totalAmount,allowanceList);
+        employeeAllowancesRepo.saveAll(employeeAllowancesArrayList);
+        return mapper.employeeAllowancesToEmployeeAllowancesResponseDtos(employeeAllowancesArrayList);
     }
 
     @Transactional
@@ -90,6 +99,8 @@ public class EmployeeAllowancesServiceImp implements EmployeeAllowancesService {
     public EmployeeAllowancesRepDto update(EmployeeAllowancesReqDto employeeAllowancesReqDto, Long Id) {
         List<String> allowanceList = new ArrayList<>();
         EmployeeAllowances update = getEmpAllowancesById(Id);
+        double oldAmount = update.getAmount();
+        double newAmount = employeeAllowancesReqDto.getAmount();
         update.setType(employeeAllowancesReqDto.getType());
         update.setAmount(employeeAllowancesReqDto.getAmount());
         update.setEffectiveDate(employeeAllowancesReqDto.getEffectiveDate());
@@ -102,9 +113,9 @@ public class EmployeeAllowancesServiceImp implements EmployeeAllowancesService {
                 update.setAllowances(allowances);
             }
         }
-        double oldAmount = update.getAmount();
-        double newAmount = employeeAllowancesReqDto.getAmount();
 
+        System.out.println(oldAmount);
+        System.out.println(newAmount);
         payslipService.updateAllowanceToPaySlip(update.getPaySlipId(),newAmount, oldAmount,allowanceList, oldAllowance);
         return mapper.employeeAllowancesToEmployeeAllowancesResponseDto(update);
     }

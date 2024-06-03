@@ -10,8 +10,8 @@ import java.util.List;
 
 
 public interface EmployeeAllowancesService {
-    EmployeeAllowancesRepDto create(EmployeeAllowancesReqDto employeeAllowancesReqDto);
-    EmployeeAllowancesRepDto addMoreToPaySlip(EmployeeAllowancesReqDto employeeAllowancesReqDto);
+
+    List<EmployeeAllowancesRepDto> addMoreToPaySlip(EmployeeAllowancesReqDto employeeAllowancesReqDto, Long emId, Long id);
     List<EmployeeAllowancesRepDto> createMultiple(EmployeeAllowancesReqDto employeeAllowancesReqDto, List<Long> emId);
     void delete(Long id);
     EmployeeAllowancesRepDto update(EmployeeAllowancesReqDto employeeAllowancesReqDto, Long Id);

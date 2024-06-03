@@ -115,6 +115,31 @@ public class PayslipServiceImp implements PayslipService {
     }
 
     @Override
+    public void addAllowanceToPaySlipMore(Long id, Double newAmount, List<String> allowance){
+        Payslip  update = getPaySlipById(id);
+        double net = 0.0;
+        List<String> allowanceList = convertStringToList(update.getAllowances());
+        System.out.println(allowanceList.toString());
+        for (String allowances: allowance){
+            for (int i = 0; i < allowanceList.size(); i++) {
+                    allowanceList.add(i, allowances);
+            }
+        }
+
+        String updatedAllowances = String.join(", ", allowanceList);
+        double result =update.getAllowanceAmount() + newAmount;
+         net = update.getNet() + result;
+        // int finalResult = result ;
+        System.out.println(result);
+        System.out.println(net);
+        update.setAllowanceAmount(result);
+        update.setAllowances(updatedAllowances);
+        update.setNet(net);
+        update.setAllowanceAmount(result);
+        payslipRepo.save(update);
+    }
+
+    @Override
     public void updateAllowanceToPaySlip(Long id, Double newAmount, Double oldAmount, List<String> allowance, String oldAllowance) {
         Payslip  update = getPaySlipById(id);
         double net = 0.0;
@@ -137,11 +162,11 @@ public class PayslipServiceImp implements PayslipService {
        // int finalResult = result ;
         System.out.println(finalResult);
         System.out.println(finalNet);
-//        update.setAllowanceAmount(finalResult);
-//        update.setNet(finalNet);
-//        update.setAllowances(allowance.toString());
-//        update.setAllowanceAmount(newAmount);
-        //payslipRepo.save(update);
+        update.setAllowanceAmount(finalResult);
+        update.setNet(finalNet);
+        update.setAllowances(updatedAllowances);
+        update.setAllowanceAmount(finalResult);
+        payslipRepo.save(update);
     }
 
     public List<String> convertStringToList(String allowances) {

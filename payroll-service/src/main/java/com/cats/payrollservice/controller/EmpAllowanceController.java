@@ -56,17 +56,7 @@ public class EmpAllowanceController {
                 .build();
     }
 
-    @PostMapping("/empAllowances/add")
-    public BaseApi<?> addEmpAllowances(@RequestBody EmployeeAllowancesReqDto employeeAllowancesReqDto) {
-        EmployeeAllowancesRepDto employeeAllowances = employeeAllowancesService.create(employeeAllowancesReqDto);
-        return BaseApi.builder()
-                .status(true)
-                .code(HttpStatus.OK.value())
-                .message("Employee Allowances have been created")
-                .timestamp(LocalDateTime.now())
-                .data(employeeAllowances)
-                .build();
-    }
+
     @PostMapping(value = "/empAllowances/addMultiple", consumes = {"multipart/form-data", "multipart/mixed"})
     public BaseApi<?> createMultiple(@RequestPart(name = "body") EmployeeAllowancesReqDto employeeAllowancesReqDto,
                                      @RequestPart(name = "emId") List<Long> emId
@@ -81,9 +71,20 @@ public class EmpAllowanceController {
                 .build();
     }
 
+    @PutMapping("/empAllowances/addMore")
+    public BaseApi<?> addMoreEmpAllowances(@RequestPart(name = "body") EmployeeAllowancesReqDto employeeAllowancesReqDto, @RequestPart(name = "emId") Long emId, @RequestParam(name = "id") Long id) {
+        List<EmployeeAllowancesRepDto> employeeAllowances = employeeAllowancesService.addMoreToPaySlip(employeeAllowancesReqDto,emId,id);
+        return BaseApi.builder()
+                .status(true)
+                .code(HttpStatus.OK.value())
+                .message("Employee Allowances have been updated")
+                .timestamp(LocalDateTime.now())
+                .data(employeeAllowances)
+                .build();
+    }
 
     @PutMapping("/empAllowances/update")
-    public BaseApi<?> updateEmpAllowances(@RequestBody EmployeeAllowancesReqDto employeeAllowancesReqDto, @RequestParam Long id) {
+    public BaseApi<?> updateEmpAllowances(@RequestPart(name = "body") EmployeeAllowancesReqDto employeeAllowancesReqDto, @RequestParam(name = "id") Long id) {
         EmployeeAllowancesRepDto employeeAllowances = employeeAllowancesService.update(employeeAllowancesReqDto,id);
         return BaseApi.builder()
                 .status(true)
