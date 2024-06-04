@@ -46,9 +46,21 @@ public class LeaveController {
                 .data(leave)
                 .build();
     }
-    @PutMapping("/leave/editLeaveForEm")
+    @PutMapping("/leave/user/editLeaveForEm")
     public BaseApi<?> editLeave(@RequestBody LeaveDtoReq leaveDtoReq, @RequestParam Long id) {
         LeaveDtoRep leave = leaveSerivce.editLeave(id, leaveDtoReq);
+        return BaseApi.builder()
+                .status(true)
+                .code(HttpStatus.OK.value())
+                .message("You have been edit leave")
+                .timestamp(LocalDateTime.now())
+                .data(leave)
+                .build();
+    }
+
+    @PutMapping("/leave/admin/editLeaveForEm")
+    public BaseApi<?> editLeaveByAdmin(@RequestBody LeaveDtoReq leaveDtoReq, @RequestParam Long id) {
+        LeaveDtoRep leave = leaveSerivce.edit(id, leaveDtoReq);
         return BaseApi.builder()
                 .status(true)
                 .code(HttpStatus.OK.value())
@@ -127,5 +139,30 @@ public class LeaveController {
                 .build();
     }
 
+    @GetMapping("/leave/delete")
+    public BaseApi<?> getDeleteLeave(@RequestParam Long id) {
+        Leave leave = leaveSerivce.getLeaveById(id);
+        leaveSerivce.delete(id);
+        return BaseApi.builder()
+                .status(true)
+                .code(HttpStatus.OK.value())
+                .message("leave have been delete by id "+ id )
+                .timestamp(LocalDateTime.now())
+                .data(leave)
+                .build();
+    }
+
+    @GetMapping("/leave/admin/delete")
+    public BaseApi<?> getDeleteLeaveByAdmin(@RequestParam Long id) {
+        Leave leave = leaveSerivce.getLeaveById(id);
+        leaveSerivce.deleteForAdmin(id);
+        return BaseApi.builder()
+                .status(true)
+                .code(HttpStatus.OK.value())
+                .message("leave have been delete by id "+ id )
+                .timestamp(LocalDateTime.now())
+                .data(leave)
+                .build();
+    }
 
 }

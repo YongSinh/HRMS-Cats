@@ -12,6 +12,7 @@
         <module name="information-management-service" />
         <module name="payroll-service" />
         <module name="attendance-service" />
+        <module name="notification-service" />
       </profile>
     </annotationProcessing>
   </component>
@@ -21,6 +22,7 @@
       <module name="attendance-service" options="-parameters" />
       <module name="discovery-server" options="-parameters" />
       <module name="information-management-service" options="-parameters" />
+      <module name="notification-service" options="-parameters" />
       <module name="payroll-service" options="-parameters" />
     </option>
   </component>

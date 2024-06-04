@@ -49,7 +49,42 @@ public class LeaveBalanceController {
         return BaseApi.builder()
                 .status(true)
                 .code(HttpStatus.OK.value())
-                .message("leave Balance have been create")
+                .message("leave Balance have been found")
+                .timestamp(LocalDateTime.now())
+                .data(leaveBalanceList)
+                .build();
+    }
+
+    @GetMapping("/getLeaveBalanceByEmIdAndType")
+    public BaseApi<?> getLeaveBalanceByEmIdAndType(@RequestParam Long emId, @RequestParam String type) {
+        LeaveBalanceDtoRep leaveBalanceList = leaveBalanceService.getLeaveBalanceByLeaveTypeAndEmpId(type, emId);
+        return BaseApi.builder()
+                .status(true)
+                .code(HttpStatus.OK.value())
+                .message("leave Balance have been found")
+                .timestamp(LocalDateTime.now())
+                .data(leaveBalanceList)
+                .build();
+    }
+    @GetMapping("/getLeaveBalanceByEmId")
+    public BaseApi<?> getLeaveBalanceByEmId(@RequestParam Long emId) {
+        List<LeaveBalanceDtoRep> leaveBalanceList = leaveBalanceService.getLeaveBalanceByEmId(emId);
+        return BaseApi.builder()
+                .status(true)
+                .code(HttpStatus.OK.value())
+                .message("leave Balance have been found")
+                .timestamp(LocalDateTime.now())
+                .data(leaveBalanceList)
+                .build();
+    }
+
+    @GetMapping("/getLeaveBalanceById")
+    public BaseApi<?> getLeaveBalanceById(@RequestParam Long id) {
+        LeaveBalanceDtoRep leaveBalanceList = leaveBalanceService.getLeaveBalanceById(id);
+        return BaseApi.builder()
+                .status(true)
+                .code(HttpStatus.OK.value())
+                .message("leave Balance have been found")
                 .timestamp(LocalDateTime.now())
                 .data(leaveBalanceList)
                 .build();

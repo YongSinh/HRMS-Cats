@@ -111,6 +111,7 @@ public class LeaveServiceImp implements LeaveSerivce{
         return mapper.leaveToLeaveResponseDto(leaveRepo.save(leave));
     }
 
+    //user
     @Override
     public LeaveDtoRep editLeave(Long Id, LeaveDtoReq leaveDtoReq) {
         Leave leave = getLeaveById(Id);
@@ -179,6 +180,13 @@ public class LeaveServiceImp implements LeaveSerivce{
     @Override
     public LeaveDtoRep getLeave(Long id) {
         return mapper.leaveToLeaveResponseDto(getLeaveById(id));
+    }
+
+    @Override
+    public void deleteForAdmin(Long Id) {
+        Leave leave = getLeaveById(Id);
+        leaveRepo.delete(leave);
+
     }
 
     @Override

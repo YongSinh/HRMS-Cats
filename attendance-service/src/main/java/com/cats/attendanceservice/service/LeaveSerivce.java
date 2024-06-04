@@ -25,8 +25,7 @@ public interface LeaveSerivce {
     Leave getLeaveById(Long id);
 
     LeaveDtoRep getLeave(Long id);
-
-
+    void deleteForAdmin(Long Id);
 
     void delete(Long Id);
 }
