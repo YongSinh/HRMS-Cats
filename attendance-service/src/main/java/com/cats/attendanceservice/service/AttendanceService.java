@@ -3,8 +3,10 @@ package com.cats.attendanceservice.service;
 import com.cats.attendanceservice.dto.AttendanceReqDto;
 import com.cats.attendanceservice.model.Attendance;
 import com.cats.attendanceservice.repository.AttendanceRepo;
+import org.hibernate.sql.ast.tree.expression.Collation;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
 import java.util.List;
 
 public interface AttendanceService {
@@ -18,5 +20,6 @@ public interface AttendanceService {
     String manualAsyncTimeIn();
     String manualAsyncTimeOut();
 
+    List<Attendance> getAttendanceByDepartmentOrPosition(Collection<Long> emId);
 
 }

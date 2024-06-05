@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collection;
 import java.util.List;
 
 @Repository
@@ -16,5 +17,6 @@ public interface AttendanceRepo extends JpaRepository<Attendance, Long> {
     @Query(value = "select * from attendance\n" +
             "where DateIn = ?1 and emId = ?2", nativeQuery = true)
     Attendance findByEmIdAndDateIn(String date, String emId);
+    List<Attendance> findByEmIdIn(Collection<Long> emId);
 
 }

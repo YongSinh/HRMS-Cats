@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.List;
 
 @RestController
@@ -57,7 +58,17 @@ public class AttendanceController {
                 .data(getList)
                 .build();
     }
-
+    @GetMapping("/attendance/listAttendanceByDepOrPos")
+    public BaseApi<?> listAttendanceByDepOrPos(@RequestParam Collection<Long> emId) {
+        List<Attendance> getList = attendanceService.getAttendanceByDepartmentOrPosition(emId);
+        return BaseApi.builder()
+                .status(true)
+                .code(HttpStatus.OK.value())
+                .message("List All the Attendance")
+                .timestamp(LocalDateTime.now())
+                .data(getList)
+                .build();
+    }
     @GetMapping("/attendance/manualAsyncTimeIn")
     public BaseApi<?> manualAsyncTimeIn() {
         String manualAsyncTimeIn = attendanceService.manualAsyncTimeIn();

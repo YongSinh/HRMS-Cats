@@ -35,7 +35,7 @@ public class EmployeeController {
     private final EmployeeService employeeService;
     //@ResponseStatus(HttpStatus.ACCEPTED)
     @DeleteMapping("/delete")
-    public BaseApi<?> findAllAccountTypes(@RequestParam Long emId) {
+    public BaseApi<?> deleteEmpInfo(@RequestParam Long emId) {
         employeeService.deleteEmpInfo(emId);
         return BaseApi.builder()
                 .status(true)
@@ -65,6 +65,18 @@ public class EmployeeController {
                 .status(true)
                 .code(HttpStatus.OK.value())
                 .message("list Employee Id have been found")
+                .timestamp(LocalDateTime.now())
+                .data(employee)
+                .build();
+    }
+
+    @GetMapping("/listEmployeeByDepAndPosOnlyEmId")
+    public BaseApi<?> listEmployeeByDepAndPosOnlyEmId(@RequestParam Long depId, @RequestParam String posId) {
+        List<Long> employee = employeeService.getEmployeeByDepAndPosId(depId, posId);
+        return BaseApi.builder()
+                .status(true)
+                .code(HttpStatus.OK.value())
+                .message("list Employee data have been found")
                 .timestamp(LocalDateTime.now())
                 .data(employee)
                 .build();

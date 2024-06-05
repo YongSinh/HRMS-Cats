@@ -11,6 +11,5 @@ public interface PositionService {
     Position addPosition (PositionDtoReq positionDtoReq);
     List<Position> getListPosition();
     Position editPosition (PositionDtoReq positionDtoReq, String Id);
-
     PositionDtoRep deletePosition(String Id);
 }

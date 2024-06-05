@@ -165,6 +165,18 @@ public class EmployeeServiceImp implements EmployeeService{
         return emId;
     }
 
+    @Override
+    public List<Long> getEmployeeByDepAndPosId(Long depId, String posId) {
+        Position position = positionService.getPositionById(posId);
+        Department department = departmentService.getDepById(depId);
+        List<Employee> employees = employeeRepo.findByDepartmentAndPosition(department, position);
+        List<Long> emId = new ArrayList<>();
+        for(Employee employee: employees){
+            emId.add(employee.getEmpId());
+        }
+        return emId;
+    }
+
 
     @Override
     public String uploadFile(MultipartFile file, Long emId, Integer type, LocalDate date) throws IOException {

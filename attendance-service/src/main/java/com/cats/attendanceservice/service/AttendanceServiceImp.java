@@ -21,10 +21,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -183,6 +180,11 @@ public class AttendanceServiceImp implements AttendanceService  {
         } else {
             return "Attendance file is empty or does not exist.";
         }
+    }
+
+    @Override
+    public List<Attendance> getAttendanceByDepartmentOrPosition(Collection<Long> emId) {
+        return attendanceRepo.findByEmIdIn(emId);
     }
 
 

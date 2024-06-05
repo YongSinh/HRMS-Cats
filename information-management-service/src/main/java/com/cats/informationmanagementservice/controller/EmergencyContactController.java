@@ -17,7 +17,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class EmergencyContactController {
 
-
     private final EmergencyService emergencyService;
     @PostMapping("/add")
     public BaseApi<?> addEmergencyContact(@RequestBody EmergencyContactDtoReq emergencyContactDtoReq) {
