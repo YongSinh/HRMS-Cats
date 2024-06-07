@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface PayrollService {
     Payroll getPayrollById(Long id);
-    List<Payroll> update(Long id, PayrollReqDto payrollReqDto, List<Long> emIds);
+    Payroll update(Long id, PayrollReqDto payrollReqDto);
     List<Payroll> create(PayrollReqDto payrollReqDto, List<Long> emIds);
     String generatePayrollReference();
     List<Payroll> getListPayroll();

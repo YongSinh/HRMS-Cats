@@ -11,7 +11,7 @@ import java.util.List;
 @AllArgsConstructor
 public class PayrollReqDto {
 //    private List<Long> empIds;
-//    private Long empId;
+    private Long empId;
     private LocalDate dateFrom;
     private LocalDate dateTo;
     private Integer type;

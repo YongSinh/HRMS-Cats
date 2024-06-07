@@ -42,17 +42,31 @@ public class PayrollController {
                 .build();
     }
 
-//    @GetMapping("/payrollByEmIdAndCreateDate")
-//    public BaseApi<?> getListPayrollByEmIdAndCreateDate(@RequestParam Long emId, @RequestParam LocalDate date) {
-//        Payroll payrollList = payrollService.getListPayRollByEmIdAndCreateDate(emId, date);
-//        return BaseApi.builder()
-//                .status(true)
-//                .code(HttpStatus.OK.value())
-//                .message("payroll have been found")
-//                .timestamp(LocalDateTime.now())
-//                .data(payrollList)
-//                .build();
-//    }
+    @DeleteMapping("/deletePayroll")
+    public BaseApi<?> deletePayroll(@RequestParam Long id) {
+        Payroll payroll = payrollService.getPayrollById(id);
+        payrollService.deletePayroll(id);
+        return BaseApi.builder()
+                .status(true)
+                .code(HttpStatus.OK.value())
+                .message("payroll have been delete`")
+                .timestamp(LocalDateTime.now())
+                .data(payroll)
+                .build();
+    }
+
+
+    @GetMapping("/payrollByEmIdAndCreateDate")
+    public BaseApi<?> getListPayrollByEmIdAndCreateDate(@RequestParam Long emId, @RequestParam LocalDate date) {
+        Payroll payrollList = payrollService.getPayRollByEmIdAndCreateDate(emId, date);
+        return BaseApi.builder()
+                .status(true)
+                .code(HttpStatus.OK.value())
+                .message("payroll have been found")
+                .timestamp(LocalDateTime.now())
+                .data(payrollList)
+                .build();
+    }
 
     @GetMapping("/fetchEmployeeIds")
     public BaseApi<?> fetchEmployeeIds(@RequestParam Long depId) {
@@ -76,5 +90,18 @@ public class PayrollController {
                 .data(payrollList)
                 .build();
     }
+
+    @PutMapping("/updatePayroll")
+    public BaseApi<?> updatePayroll(@RequestPart("body") PayrollReqDto payrollReqDto,@RequestPart("id")Long id ) {
+        Payroll payrollList =  payrollService.update(id, payrollReqDto);
+        return BaseApi.builder()
+                .status(true)
+                .code(HttpStatus.OK.value())
+                .message("payroll have been update")
+                .timestamp(LocalDateTime.now())
+                .data(payrollList)
+                .build();
+    }
+
 
 }

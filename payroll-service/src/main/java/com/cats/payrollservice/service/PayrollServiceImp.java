@@ -37,21 +37,17 @@ public class PayrollServiceImp implements PayrollService {
     }
 
     @Override
-    public List<Payroll> update(Long id, PayrollReqDto payrollReqDto, List<Long> emIds) {
-        List<Payroll> payrollList = new ArrayList<>();
-        for (Long emId : emIds){
+    public Payroll update(Long id, PayrollReqDto payrollReqDto) {
             Payroll payroll = getPayrollById(id);
             String payrollReference = generatePayrollReference();
-            payroll.setEmpId(emId);
+            payroll.setEmpId(payrollReqDto.getEmpId());
             payroll.setRefNo(payrollReference);
             payroll.setDateFrom(payrollReqDto.getDateFrom());
             payroll.setDateTo(payrollReqDto.getDateTo());
             payroll.setDateCreate(payrollReqDto.getDateCreate());
             payroll.setType(payrollReqDto.getType());
             payroll.setStatus(payrollReqDto.getStatus());
-        }
-        payrollRepo.saveAll(payrollList);
-        return payrollList;
+        return payroll;
     }
 
 
