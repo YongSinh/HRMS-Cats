@@ -17,7 +17,9 @@ public interface PayslipService {
     void addAllowanceToPaySlip(Long emId, LocalDate localDate, Double amount, List<String> allowance);
     void addAllowanceToPaySlipMore(Long id, Double newAmount, List<String> allowance);
     void updateAllowanceToPaySlip(Long id, Double newAmount, Double oldAmount,List<String> allowance, String oldAllowance);
-    Payslip addDeductionsToPaySlip(Long emId, LocalDate localDate,Double amount, List<String> deductions);
+    void addDeductionsToPaySlip(Long emId, LocalDate localDate,Double amount, List<String> deductions);
+    void addDeductionsToPaySlipMore(Long id, LocalDate localDate,Double newAmount, Double oldAmount, List<String> deductions, String  oldDeductions);
+    void updateDeductionsToPaySlip(Long id, LocalDate localDate,Double newAmount, Double oldAmount, List<String> deductions, String  oldDeductions);
     List<Payslip> getListPaySlipByEmId(Long emId);
     Payslip getPaySlipById(Long id);
 

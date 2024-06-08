@@ -144,7 +144,6 @@ public class PayslipServiceImp implements PayslipService {
         Payslip  update = getPaySlipById(id);
         double net = 0.0;
         List<String> allowanceList = convertStringToList(update.getAllowances());
-        System.out.println(allowanceList.toString());
         for (String allowances: allowance){
             for (int i = 0; i < allowanceList.size(); i++) {
                 if (allowanceList.get(i).equalsIgnoreCase(oldAllowance.trim())) {
@@ -160,9 +159,6 @@ public class PayslipServiceImp implements PayslipService {
         net = update.getNet() - update.getAllowanceAmount();
         double finalNet = net + finalResult;
        // int finalResult = result ;
-        System.out.println(finalResult);
-        System.out.println(finalNet);
-        update.setAllowanceAmount(finalResult);
         update.setNet(finalNet);
         update.setAllowances(updatedAllowances);
         update.setAllowanceAmount(finalResult);
@@ -176,7 +172,7 @@ public class PayslipServiceImp implements PayslipService {
     }
 
     @Override
-    public Payslip addDeductionsToPaySlip(Long emId, LocalDate localDate, Double amount, List<String> deductions) {
+    public void addDeductionsToPaySlip(Long emId, LocalDate localDate, Double amount, List<String> deductions) {
         Payslip  addDeductions = getListPaySlipByeEmIdAndCreateDate(emId, localDate);
         StringJoiner joiner = new StringJoiner(",");
         for (String s : deductions) {
@@ -188,7 +184,36 @@ public class PayslipServiceImp implements PayslipService {
         net = serviceCalculate.roundUp(net);
         addDeductions.setNet(net);
         payslipRepo.save(addDeductions);
-        return addDeductions;
+    }
+
+    @Override
+    public void addDeductionsToPaySlipMore(Long id, LocalDate localDate, Double newAmount, Double oldAmount, List<String> deductions, String oldDeductions) {
+
+    }
+
+    @Override
+    public void updateDeductionsToPaySlip(Long id, LocalDate localDate,Double newAmount, Double oldAmount, List<String> deductions, String oldDeductions) {
+        Payslip  update = getPaySlipById(id);
+        double net = 0.0;
+        List<String> deductionList = convertStringToList(update.getAllowances());
+        for (String deduction: deductions){
+            for (int i = 0; i < deductionList.size(); i++) {
+                if (deductionList.get(i).equalsIgnoreCase(oldDeductions.trim())) {
+                    deductionList.set(i, deduction);
+                }
+            }
+        }
+
+        String updatedDeduction = String.join(", ", deductionList);
+        double result =update.getAllowanceAmount() - oldAmount;
+        double finalResult = result + newAmount;
+        net = update.getNet() - update.getAllowanceAmount();
+        double finalNet = net - finalResult;
+        // int finalResult = result ;
+        update.setNet(finalNet);
+        update.setDeductions(updatedDeduction);
+        update.setDeductionAmount(  finalResult);
+        payslipRepo.save(update);
     }
 
     @Override
