@@ -2,3 +2,5 @@
     @Transactional
     @Query("DELETE FROM User u WHERE u.email = :email")
     void deleteByEmail(String email);
+
+    delete allowance, deduction and also update to the payslip detail

@@ -2,71 +2,103 @@ package com.cats.payrollservice.service;
 
 import com.cats.payrollservice.dto.request.EmployeeAllowancesReqDto;
 import com.cats.payrollservice.dto.request.EmployeeDeductionsReqDto;
-import com.cats.payrollservice.model.Allowances;
-import com.cats.payrollservice.model.Deductions;
-import com.cats.payrollservice.model.EmployeeAllowances;
-import com.cats.payrollservice.model.EmployeeDeductions;
+import com.cats.payrollservice.model.*;
 import com.cats.payrollservice.repository.EmployeeDeductionsRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@EnableTransactionManagement
 public class EmployeeDeductionsServiceImp implements EmployeeDeductionsService{
     private final EmployeeDeductionsRepo employeeDeductionsRepo;
     private final DeductionsService deductionsService;
-    @Override
-    public EmployeeDeductions create(EmployeeDeductionsReqDto employeeDeductionsReqDto) {
-        EmployeeDeductions employeeDeductions = new EmployeeDeductions();
-        employeeDeductions.setEmpId(employeeDeductionsReqDto.getEmpId());
-        employeeDeductions.setType(employeeDeductionsReqDto.getType());
-        employeeDeductions.setAmount(employeeDeductionsReqDto.getAmount());
-        employeeDeductions.setEffectiveDate(employeeDeductionsReqDto.getEffectiveDate());
-        employeeDeductions.setDateCreated(employeeDeductionsReqDto.getDateCreated());
-        if (employeeDeductionsReqDto.getDeductions() == null) {
-            throw new IllegalArgumentException("Deductions at least on Employee Allowances");
-        }
-        Deductions deductions = deductionsService.getDeductionsById(employeeDeductionsReqDto.getDeductions());
-        employeeDeductions.setDeductions(deductions);
-        return employeeDeductionsRepo.save(employeeDeductions);
-    }
+    private final PayslipService payslipService;
 
+
+    @Transactional
     @Override
     public List<EmployeeDeductions> createMultiple(EmployeeDeductionsReqDto employeeDeductionsReqDto, List<Long> emIds) {
         List<EmployeeDeductions> employeeDeductionsList = new ArrayList<>();
+        double totalAmount = 0.0;
+        if (employeeDeductionsReqDto.getDeductions() == null ||employeeDeductionsReqDto.getDeductions().isEmpty()) {
+            throw new IllegalArgumentException("Deductions list cannot be null or empty.");
+        }
         for (Long emId : emIds){
-            EmployeeDeductions employeeDeductions = new EmployeeDeductions();
-            employeeDeductions.setEmpId(emId);
-            employeeDeductions.setType(employeeDeductionsReqDto.getType());
-            employeeDeductions.setAmount(employeeDeductionsReqDto.getAmount());
-            employeeDeductions.setEffectiveDate(employeeDeductionsReqDto.getEffectiveDate());
-            employeeDeductions.setDateCreated(employeeDeductionsReqDto.getDateCreated());
-            if (employeeDeductionsReqDto.getDeductions() == null) {
-                throw new IllegalArgumentException("Deductions at least on Employee Allowances");
+            List<String> deductionList = new ArrayList<>();
+            Payslip payslip = payslipService.getListPaySlipByeEmIdAndCreateDate(emId,employeeDeductionsReqDto.getPaySlipDate());
+            for(Long deduction: employeeDeductionsReqDto.getDeductions()){
+                EmployeeDeductions employeeDeductions = new EmployeeDeductions();
+                employeeDeductions.setEmpId(emId);
+                employeeDeductions.setType(employeeDeductionsReqDto.getType());
+                employeeDeductions.setAmount(employeeDeductionsReqDto.getAmount());
+                employeeDeductions.setEffectiveDate(employeeDeductionsReqDto.getEffectiveDate());
+                employeeDeductions.setDateCreated(employeeDeductionsReqDto.getDateCreated());
+                employeeDeductions.setPaySlipId(payslip.getId());
+                Deductions deductions = deductionsService.getDeductionsById(deduction);
+                deductionList.add(deductions.getDeduction());
+                employeeDeductions.setDeductions(deductions);
             }
-            Deductions deductions = deductionsService.getDeductionsById(employeeDeductionsReqDto.getDeductions());
-            employeeDeductions.setDeductions(deductions);
+            totalAmount+= employeeDeductionsReqDto.getAmount();
+            payslipService.addDeductionsToPaySlip(emId,employeeDeductionsReqDto.getPaySlipDate(),totalAmount,deductionList);
 
         }
         return employeeDeductionsRepo.saveAll(employeeDeductionsList);
     }
 
     @Override
+    public List<EmployeeDeductions> addMoreToPaySlip(EmployeeDeductionsReqDto employeeDeductionsReqDto, Long emId, Long id) {
+        List<EmployeeDeductions> employeeDeductionsList = new ArrayList<>();
+        double totalAmount = 0.0;
+        if (employeeDeductionsReqDto.getDeductions() == null ||employeeDeductionsReqDto.getDeductions().isEmpty()) {
+            throw new IllegalArgumentException("Deductions list cannot be null or empty.");
+        }
+            List<String> deductionList = new ArrayList<>();
+            Payslip payslip = payslipService.getListPaySlipByeEmIdAndCreateDate(emId,employeeDeductionsReqDto.getPaySlipDate());
+            for(Long deduction: employeeDeductionsReqDto.getDeductions()){
+                EmployeeDeductions employeeDeductions = new EmployeeDeductions();
+                employeeDeductions.setEmpId(emId);
+                employeeDeductions.setType(employeeDeductionsReqDto.getType());
+                employeeDeductions.setAmount(employeeDeductionsReqDto.getAmount());
+                employeeDeductions.setEffectiveDate(employeeDeductionsReqDto.getEffectiveDate());
+                employeeDeductions.setDateCreated(employeeDeductionsReqDto.getDateCreated());
+                employeeDeductions.setPaySlipId(payslip.getId());
+                Deductions deductions = deductionsService.getDeductionsById(deduction);
+                deductionList.add(deductions.getDeduction());
+                employeeDeductions.setDeductions(deductions);
+            }
+            totalAmount+= employeeDeductionsReqDto.getAmount();
+            payslipService.addDeductionsToPaySlipMore(id,totalAmount,deductionList);
+
+        return employeeDeductionsRepo.saveAll(employeeDeductionsList);
+    }
+
+    @Transactional
+    @Override
     public EmployeeDeductions update(EmployeeDeductionsReqDto employeeDeductionsReqDto, Long Id) {
         EmployeeDeductions employeeDeductions = getEmployeeDeductionsById(Id);
-        employeeDeductions.setEmpId(employeeDeductionsReqDto.getEmpId());
+        List<String> deductionList = new ArrayList<>();
+        double oldAmount = employeeDeductions.getAmount();
+        double newAmount = employeeDeductionsReqDto.getAmount();
+
         employeeDeductions.setType(employeeDeductionsReqDto.getType());
         employeeDeductions.setAmount(employeeDeductionsReqDto.getAmount());
         employeeDeductions.setEffectiveDate(employeeDeductionsReqDto.getEffectiveDate());
         employeeDeductions.setDateCreated(employeeDeductionsReqDto.getDateCreated());
-        if (employeeDeductionsReqDto.getDeductions() != null) {
-            Deductions deductions = deductionsService.getDeductionsById(employeeDeductionsReqDto.getDeductions());
+        String oldDeduction = employeeDeductions.getDeductions().getDeduction();
+        if(!employeeDeductionsReqDto.getDeductions().isEmpty()){
+            for (Long deduction: employeeDeductionsReqDto.getDeductions()){
+            Deductions deductions = deductionsService.getDeductionsById(deduction);
+            deductionList.add(deductions.getDeduction());
             employeeDeductions.setDeductions(deductions);
+            }
         }
-
+        payslipService.updateDeductionsToPaySlip(employeeDeductions.getPaySlipId(),newAmount,oldAmount,deductionList,oldDeduction);
         return employeeDeductionsRepo.save(employeeDeductions);
     }
 
@@ -85,5 +117,10 @@ public class EmployeeDeductionsServiceImp implements EmployeeDeductionsService{
     @Override
     public List<EmployeeDeductions> getListEmployeeDeductionsByEmId(Long emId) {
         return employeeDeductionsRepo.findByEmpId(emId);
+    }
+
+    @Override
+    public List<EmployeeDeductions> getListEmployeeDeductionsByPaySlipId(Long id) {
+        return employeeDeductionsRepo.findByPaySlipId(id);
     }
 }

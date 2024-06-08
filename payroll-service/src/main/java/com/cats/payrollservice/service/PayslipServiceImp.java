@@ -115,55 +115,74 @@ public class PayslipServiceImp implements PayslipService {
     }
 
     @Override
-    public void addAllowanceToPaySlipMore(Long id, Double newAmount, List<String> allowance){
-        Payslip  update = getPaySlipById(id);
-        double net = 0.0;
-        List<String> allowanceList = convertStringToList(update.getAllowances());
-        System.out.println(allowanceList.toString());
-        for (String allowances: allowance){
-            for (int i = 0; i < allowanceList.size(); i++) {
-                    allowanceList.add(i, allowances);
-            }
+    public void addAllowanceToPaySlipMore(Long id, Double newAmount, List<String> allowances) {
+        Payslip update = getPaySlipById(id);
+        if (update == null) {
+            throw new IllegalArgumentException("Payslip with id " + id + " not found.");
         }
 
+        // Convert the allowances string to a list
+        List<String> allowanceList = convertStringToList(update.getAllowances());
+
+        // Add new allowances to the list
+        allowanceList.addAll(allowances);
+
+        // Join the updated allowance list back to a string
         String updatedAllowances = String.join(", ", allowanceList);
-        double result =update.getAllowanceAmount() + newAmount;
-         net = update.getNet() + result;
-        // int finalResult = result ;
-        System.out.println(result);
-        System.out.println(net);
-        update.setAllowanceAmount(result);
+
+        // Calculate the new allowance amount
+        double updatedAllowanceAmount = update.getAllowanceAmount() + newAmount;
+
+        // Calculate the new net amount
+        double newNet = update.getNet() + newAmount;
+
+        // Set the updated values to the payslip
+        update.setAllowanceAmount(updatedAllowanceAmount);
         update.setAllowances(updatedAllowances);
-        update.setNet(net);
-        update.setAllowanceAmount(result);
+        update.setNet(newNet);
+
+        // Save the updated payslip
         payslipRepo.save(update);
     }
 
     @Override
-    public void updateAllowanceToPaySlip(Long id, Double newAmount, Double oldAmount, List<String> allowance, String oldAllowance) {
-        Payslip  update = getPaySlipById(id);
-        double net = 0.0;
+    public void updateAllowanceToPaySlip(Long id, Double newAmount, Double oldAmount, List<String> allowances, String oldAllowance) {
+        Payslip update = getPaySlipById(id);
+        if (update == null) {
+            throw new IllegalArgumentException("Payslip with id " + id + " not found.");
+        }
+
+        // Convert the allowances string to a list
         List<String> allowanceList = convertStringToList(update.getAllowances());
-        for (String allowances: allowance){
+
+        // Update the allowance list
+        for (String allowance : allowances) {
             for (int i = 0; i < allowanceList.size(); i++) {
                 if (allowanceList.get(i).equalsIgnoreCase(oldAllowance.trim())) {
-                    allowanceList.set(i, allowances);
+                    allowanceList.set(i, allowance);
+                    break;  // Assuming you only want to replace the first occurrence
                 }
             }
         }
 
+        // Join the updated allowance list back to a string
         String updatedAllowances = String.join(", ", allowanceList);
-        System.out.println(updatedAllowances);
-        double result =update.getAllowanceAmount() - oldAmount;
-        double finalResult = result + newAmount;
-        net = update.getNet() - update.getAllowanceAmount();
-        double finalNet = net + finalResult;
-       // int finalResult = result ;
-        update.setNet(finalNet);
+
+        // Calculate the new allowance amount
+        double updatedAllowanceAmount = update.getAllowanceAmount() - oldAmount + newAmount;
+
+        // Calculate the new net amount
+        double newNet = update.getNet() - update.getAllowanceAmount() + updatedAllowanceAmount;
+
+        // Set the updated values to the payslip
+        update.setNet(newNet);
         update.setAllowances(updatedAllowances);
-        update.setAllowanceAmount(finalResult);
+        update.setAllowanceAmount(updatedAllowanceAmount);
+
+        // Save the updated payslip
         payslipRepo.save(update);
     }
+
 
     public List<String> convertStringToList(String allowances) {
         return Arrays.stream(allowances.split(","))
@@ -187,34 +206,74 @@ public class PayslipServiceImp implements PayslipService {
     }
 
     @Override
-    public void addDeductionsToPaySlipMore(Long id, LocalDate localDate, Double newAmount, Double oldAmount, List<String> deductions, String oldDeductions) {
+    public void addDeductionsToPaySlipMore(Long id, Double newAmount, List<String> deductions) {
+        Payslip update = getPaySlipById(id);
+        if (update == null) {
+            throw new IllegalArgumentException("Payslip with id " + id + " not found.");
+        }
 
+        // Convert the deductions string to a list
+        List<String> deductionList = convertStringToList(update.getDeductions());
+
+        // Add new deductions to the list
+        deductionList.addAll(deductions);
+
+        // Join the updated deduction list back to a string
+        String updatedDeductions = String.join(", ", deductionList);
+
+        // Calculate the new deduction amount
+        double updatedDeductionAmount = update.getDeductionAmount() + newAmount;
+
+        // Calculate the new net amount
+        double newNet = update.getNet() - newAmount;
+
+        // Set the updated values to the payslip
+        update.setDeductions(updatedDeductions);
+        update.setDeductionAmount(updatedDeductionAmount);
+        update.setNet(newNet);
+
+        // Save the updated payslip
+        payslipRepo.save(update);
     }
 
     @Override
-    public void updateDeductionsToPaySlip(Long id, LocalDate localDate,Double newAmount, Double oldAmount, List<String> deductions, String oldDeductions) {
-        Payslip  update = getPaySlipById(id);
-        double net = 0.0;
-        List<String> deductionList = convertStringToList(update.getAllowances());
-        for (String deduction: deductions){
+    public void updateDeductionsToPaySlip(Long id, Double newAmount, Double oldAmount, List<String> deductions, String oldDeductions) {
+        Payslip update = getPaySlipById(id);
+        if (update == null) {
+            throw new IllegalArgumentException("Payslip with id " + id + " not found.");
+        }
+
+        // Convert the deductions string to a list
+        List<String> deductionList = convertStringToList(update.getDeductions());
+
+        // Update the deduction list
+        for (String deduction : deductions) {
             for (int i = 0; i < deductionList.size(); i++) {
                 if (deductionList.get(i).equalsIgnoreCase(oldDeductions.trim())) {
                     deductionList.set(i, deduction);
+                    break;  // Assuming you only want to replace the first occurrence
                 }
             }
         }
 
+        // Join the updated deduction list back to a string
         String updatedDeduction = String.join(", ", deductionList);
-        double result =update.getAllowanceAmount() - oldAmount;
-        double finalResult = result + newAmount;
-        net = update.getNet() - update.getAllowanceAmount();
-        double finalNet = net - finalResult;
-        // int finalResult = result ;
-        update.setNet(finalNet);
+
+        // Calculate the new deduction amount
+        double updatedDeductionAmount = update.getDeductionAmount() - oldAmount + newAmount;
+
+        // Calculate the new net amount
+        double newNet = update.getNet() + oldAmount - newAmount;
+
+        // Set the updated values to the payslip
+        update.setNet(newNet);
         update.setDeductions(updatedDeduction);
-        update.setDeductionAmount(  finalResult);
+        update.setDeductionAmount(updatedDeductionAmount);
+
+        // Save the updated payslip
         payslipRepo.save(update);
     }
+
 
     @Override
     public List<Payslip> getListPaySlipByEmId(Long emId) {

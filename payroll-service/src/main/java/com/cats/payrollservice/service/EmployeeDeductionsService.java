@@ -10,10 +10,13 @@ import java.util.List;
 
 
 public interface EmployeeDeductionsService {
-    EmployeeDeductions create(EmployeeDeductionsReqDto employeeDeductionsReqDto);
+
     List<EmployeeDeductions> createMultiple(EmployeeDeductionsReqDto employeeDeductionsReqDto, List<Long> emIds);
+    List<EmployeeDeductions> addMoreToPaySlip(EmployeeDeductionsReqDto employeeDeductionsReqDto, Long emId, Long id);
     EmployeeDeductions update(EmployeeDeductionsReqDto employeeDeductionsReqDto, Long Id);
     EmployeeDeductions getEmployeeDeductionsById(Long id);
     List<EmployeeDeductions> getListEmployeeDeductions();
     List<EmployeeDeductions> getListEmployeeDeductionsByEmId(Long emId);
+    List<EmployeeDeductions> getListEmployeeDeductionsByPaySlipId(Long id);
+
 }

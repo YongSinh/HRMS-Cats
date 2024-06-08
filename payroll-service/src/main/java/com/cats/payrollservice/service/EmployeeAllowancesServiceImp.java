@@ -10,6 +10,7 @@ import com.cats.payrollservice.repository.EmployeeAllowancesRepo;
 import com.cats.payrollservice.repository.PayslipRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
@@ -19,6 +20,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@EnableTransactionManagement
 public class EmployeeAllowancesServiceImp implements EmployeeAllowancesService {
     private final EmployeeAllowancesRepo employeeAllowancesRepo;
     private final AllowancesService allowancesService;
@@ -49,10 +51,9 @@ public class EmployeeAllowancesServiceImp implements EmployeeAllowancesService {
                 employeeAllowancesArrayList.add(employeeAllowances);
                 employeeAllowances.setPaySlipId(payslip.getId());
             }
-            System.out.println(employeeAllowancesReqDto.getAmount());
             totalAmount += employeeAllowancesReqDto.getAmount();
             payslipService.addAllowanceToPaySlipMore(id,totalAmount,allowanceList);
-        employeeAllowancesRepo.saveAll(employeeAllowancesArrayList);
+            employeeAllowancesRepo.saveAll(employeeAllowancesArrayList);
         return mapper.employeeAllowancesToEmployeeAllowancesResponseDtos(employeeAllowancesArrayList);
     }
 
@@ -80,7 +81,6 @@ public class EmployeeAllowancesServiceImp implements EmployeeAllowancesService {
                 employeeAllowancesArrayList.add(employeeAllowances);
                 employeeAllowances.setPaySlipId(payslip.getId());
             }
-            System.out.println(employeeAllowancesReqDto.getAmount());
             totalAmount += employeeAllowancesReqDto.getAmount();
             payslipService.addAllowanceToPaySlip(emIds,employeeAllowancesReqDto.getPaySlipDate(), totalAmount, allowanceList);
         }
@@ -114,8 +114,6 @@ public class EmployeeAllowancesServiceImp implements EmployeeAllowancesService {
             }
         }
 
-        System.out.println(oldAmount);
-        System.out.println(newAmount);
         payslipService.updateAllowanceToPaySlip(update.getPaySlipId(),newAmount, oldAmount,allowanceList, oldAllowance);
         return mapper.employeeAllowancesToEmployeeAllowancesResponseDto(update);
     }
@@ -135,7 +133,7 @@ public class EmployeeAllowancesServiceImp implements EmployeeAllowancesService {
     @Override
     public List<EmployeeAllowancesRepDto> getListEmpAllowances() {
 
-        return mapper.employeeAllowancesToEmployeeAllowancesResponseDtos(employeeAllowancesRepo.findAll());
+        return mapper.employeeAllowancesToEmployeeAllowancesResponseDtos(employeeAllowancesRepo.findAllByOrderByEmpIdDesc());
     }
 
     @Override
