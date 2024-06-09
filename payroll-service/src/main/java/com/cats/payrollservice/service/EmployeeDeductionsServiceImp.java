@@ -111,7 +111,7 @@ public class EmployeeDeductionsServiceImp implements EmployeeDeductionsService{
 
     @Override
     public List<EmployeeDeductions> getListEmployeeDeductions() {
-        return employeeDeductionsRepo.findAll();
+        return employeeDeductionsRepo.findAllByOrderByEmpDedId();
     }
 
     @Override
@@ -122,5 +122,14 @@ public class EmployeeDeductionsServiceImp implements EmployeeDeductionsService{
     @Override
     public List<EmployeeDeductions> getListEmployeeDeductionsByPaySlipId(Long id) {
         return employeeDeductionsRepo.findByPaySlipId(id);
+    }
+
+    @Override
+    public void deleteEmployeeDeductions(Long id) {
+        EmployeeDeductions delete = getEmployeeDeductionsById(id);
+        String deduction = delete.getDeductions().getDeduction();
+        double deductionAmount = delete.getAmount();
+        payslipService.removeDeductionFromPaySlip(delete.getPaySlipId(),deduction,deductionAmount);
+        employeeDeductionsRepo.delete(delete);
     }
 }

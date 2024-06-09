@@ -100,5 +100,17 @@ public class EmpDeductionController {
                 .build();
     }
 
+    @DeleteMapping("/empDeduction/ByEmId")
+    public BaseApi<?> deleteEmpDeductionByEmId(@RequestParam Long id) {
+        EmployeeDeductions employeeDeductions = employeeDeductionsService.getEmployeeDeductionsById(id);
+        employeeDeductionsService.deleteEmployeeDeductions(id);
+        return BaseApi.builder()
+                .status(true)
+                .code(HttpStatus.OK.value())
+                .message("Employee Deduction have been delete")
+                .timestamp(LocalDateTime.now())
+                .data(employeeDeductions)
+                .build();
+    }
 
 }

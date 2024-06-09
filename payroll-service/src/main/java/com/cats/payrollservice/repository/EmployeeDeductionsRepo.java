@@ -16,4 +16,5 @@ public interface EmployeeDeductionsRepo extends JpaRepository<EmployeeDeductions
     List<EmployeeDeductions> findByPaySlipId(Long paySlipId);
     Optional<EmployeeDeductions> findByEmpIdAndDateCreated(Long empId, LocalDateTime dateCreated);
     Optional<EmployeeDeductions> findByEmpIdAndEffectiveDate(Long empId, LocalDate effectiveDate);
+    List<EmployeeDeductions> findAllByOrderByEmpDedId();
 }

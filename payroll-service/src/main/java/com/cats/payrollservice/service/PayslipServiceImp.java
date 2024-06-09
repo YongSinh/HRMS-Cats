@@ -156,14 +156,26 @@ public class PayslipServiceImp implements PayslipService {
         List<String> allowanceList = convertStringToList(update.getAllowances());
 
         // Update the allowance list
-        for (String allowance : allowances) {
-            for (int i = 0; i < allowanceList.size(); i++) {
-                if (allowanceList.get(i).equalsIgnoreCase(oldAllowance.trim())) {
-                    allowanceList.set(i, allowance);
-                    break;  // Assuming you only want to replace the first occurrence
+        for (int i = 0; i < allowanceList.size(); i++) {
+            if (allowanceList.get(i).equalsIgnoreCase(oldAllowance.trim())) {
+                // Replace the old allowance with the new one
+                if (!allowances.isEmpty()) {
+                    allowanceList.set(i, allowances.remove(0));
+                } else {
+                    // If newAllowances list is exhausted, break the loop
+                    break;
                 }
             }
         }
+
+//        for (String allowance : allowances) {
+//            for (int i = 0; i < allowanceList.size(); i++) {
+//                if (allowanceList.get(i).equalsIgnoreCase(oldAllowance.trim())) {
+//                    allowanceList.set(i, allowance);
+//                    break;  // Assuming you only want to replace the first occurrence
+//                }
+//            }
+//        }
 
         // Join the updated allowance list back to a string
         String updatedAllowances = String.join(", ", allowanceList);
@@ -247,11 +259,23 @@ public class PayslipServiceImp implements PayslipService {
         List<String> deductionList = convertStringToList(update.getDeductions());
 
         // Update the deduction list
-        for (String deduction : deductions) {
-            for (int i = 0; i < deductionList.size(); i++) {
-                if (deductionList.get(i).equalsIgnoreCase(oldDeductions.trim())) {
-                    deductionList.set(i, deduction);
-                    break;  // Assuming you only want to replace the first occurrence
+//        for (String deduction : deductions) {
+//            for (int i = 0; i < deductionList.size(); i++) {
+//                if (deductionList.get(i).equalsIgnoreCase(oldDeductions.trim())) {
+//                    deductionList.set(i, deduction);
+//                    break;  // Assuming you only want to replace the first occurrence
+//                }
+//            }
+//        }
+
+        for (int i = 0; i < deductionList.size(); i++) {
+            if (deductionList.get(i).equalsIgnoreCase(oldDeductions.trim())) {
+                // Replace the old allowance with the new one
+                if (!deductions.isEmpty()) {
+                    deductionList.set(i, deductions.remove(0));
+                } else {
+                    // If newAllowances list is exhausted, break the loop
+                    break;
                 }
             }
         }
@@ -272,6 +296,79 @@ public class PayslipServiceImp implements PayslipService {
 
         // Save the updated payslip
         payslipRepo.save(update);
+    }
+
+    @Override
+    public void removeDeductionFromPaySlip(Long id, String deductionToRemove, Double amountToRemove) {
+        // Retrieve the payslip by ID
+        Payslip update = getPaySlipById(id);
+        if (update == null) {
+            throw new IllegalArgumentException("Payslip with id " + id + " not found.");
+        }
+
+        // Convert the deductions string to a list
+        List<String> deductionList = convertStringToList(update.getDeductions());
+
+        // Remove the specified deduction
+        boolean removed = deductionList.removeIf(deduction -> deduction.equalsIgnoreCase(deductionToRemove.trim()));
+
+        // If the deduction was removed, update the amounts
+        if (removed) {
+            // Join the updated deduction list back to a string
+            String updatedDeduction = String.join(", ", deductionList);
+
+            // Calculate the new deduction amount
+            double updatedDeductionAmount = update.getDeductionAmount() - amountToRemove;
+
+            // Calculate the new net amount
+            double newNet = update.getNet() + amountToRemove;
+
+            // Set the updated values to the payslip
+            update.setNet(newNet);
+            update.setDeductions(updatedDeduction);
+            update.setDeductionAmount(updatedDeductionAmount);
+
+            // Save the updated payslip
+            payslipRepo.save(update);
+        } else {
+            throw new IllegalArgumentException("Deduction " + deductionToRemove + " not found in the payslip.");
+        }
+    }
+
+    @Override
+    public void removeAllowanceFromPaySlip(Long id, String allowanceToRemove, Double amountToRemove) {
+        Payslip update = getPaySlipById(id);
+        if (update == null) {
+            throw new IllegalArgumentException("Payslip with id " + id + " not found.");
+        }
+
+        // Convert the allowances string to a list
+        List<String> allowanceList = convertStringToList(update.getAllowances());
+
+        // Remove the specified allowance
+        boolean removed = allowanceList.removeIf(allowance -> allowance.equalsIgnoreCase(allowanceToRemove.trim()));
+
+        // If the allowance was removed, update the amounts
+        if (removed) {
+            // Join the updated allowance list back to a string
+            String updatedAllowances = String.join(", ", allowanceList);
+
+            // Calculate the new allowance amount
+            double updatedAllowanceAmount = update.getAllowanceAmount() - amountToRemove;
+
+            // Calculate the new net amount
+            double newNet = update.getNet() - amountToRemove;
+
+            // Set the updated values to the payslip
+            update.setNet(newNet);
+            update.setAllowances(updatedAllowances);
+            update.setAllowanceAmount(updatedAllowanceAmount);
+
+            // Save the updated payslip
+            payslipRepo.save(update);
+        } else {
+            throw new IllegalArgumentException("Allowance " + allowanceToRemove + " not found in the payslip.");
+        }
     }
 
 

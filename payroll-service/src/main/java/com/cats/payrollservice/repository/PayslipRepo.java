@@ -9,12 +9,14 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.List;
 
 @Repository
 public interface PayslipRepo extends JpaRepository<Payslip, Long> {
     List<Payslip> findByEmpId(Long emId);
-
+    List<Payslip> findByEmpIdIn(Collection<Long> empId);
+    List<Payslip> findByOrderByIdDesc();
     @Query(nativeQuery = true, value = "SELECT * FROM payslip WHERE employee_id = :empId AND DATE(date_created) = :dateCreated")
     Payslip findByEmpIdAndDateCreated(@Param("empId") Long empId, @Param("dateCreated") LocalDate dateCreated);
 }

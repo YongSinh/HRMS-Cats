@@ -92,6 +92,9 @@ public class EmployeeAllowancesServiceImp implements EmployeeAllowancesService {
     @Override
     public void delete(Long id) {
         EmployeeAllowances employeeAllowances = getEmpAllowancesById(id);
+        String allowance = employeeAllowances.getAllowances().getAllowances();
+        double allowanceAmount = employeeAllowances.getAmount();
+        payslipService.removeAllowanceFromPaySlip(employeeAllowances.getPaySlipId(), allowance,allowanceAmount);
         employeeAllowancesRepo.delete(employeeAllowances);
     }
     @Transactional

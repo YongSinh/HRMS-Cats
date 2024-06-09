@@ -20,6 +20,8 @@ public interface PayslipService {
     void addDeductionsToPaySlip(Long emId, LocalDate localDate,Double amount, List<String> deductions);
     void addDeductionsToPaySlipMore(Long id, Double newAmount, List<String> deductions);
     void updateDeductionsToPaySlip(Long id,Double newAmount, Double oldAmount, List<String> deductions, String  oldDeductions);
+    void removeDeductionFromPaySlip(Long id, String deductionToRemove, Double amountToRemove);
+    void removeAllowanceFromPaySlip(Long id, String allowanceToRemove, Double amountToRemove);
     List<Payslip> getListPaySlipByEmId(Long emId);
     Payslip getPaySlipById(Long id);
 
