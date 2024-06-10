@@ -4,3 +4,49 @@
     void deleteByEmail(String email);
 
     delete allowance, deduction and also update to the payslip detail
+
+           if (files != null) {
+                // Iterate over each file in the directory
+                for (File file : files) {
+                    if (file.isFile() && file.getName().toLowerCase().endsWith(".txt")) {
+                        // Read the text file
+                        try {
+                            // Using java.nio.file.Files to read file content
+                            SimpleDateFormat dateFormat = new SimpleDateFormat("M/d/yyyy h:mm a");
+                            SimpleDateFormat timeFormat = new SimpleDateFormat("h:mm a");
+                            String content = new String(Files.readAllBytes(file.toPath()));
+                            List<String> storeList = Files.readAllLines(file.toPath());
+                            Pattern pattern = Pattern.compile("\\d{1,2}/\\d{1,2}/\\d{4} \\d{1,2}:\\d{2} [AP]M");
+                            Pattern acNoPattern = Pattern.compile("\\b\\d{4}\\b");
+
+                            for (String data : storeList) {
+                                // Create a Matcher object to find the pattern in the string
+                                Matcher matcher = pattern.matcher(data);
+                                Matcher acNoMatcher = acNoPattern.matcher(data);
+                                // Find and print the time
+                                if (matcher.find() && acNoMatcher.find()) {
+                                    String time = matcher.group();
+                                    String emId = acNoMatcher.group();
+                                    Date date = dateFormat.parse(time);
+                                    LocalTime localTime = date.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalTime();
+                                    LocalDate localDate = date.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate();
+                                    Attendance attendance = getAttendanceByEmIdAndDateIn(localDate.toString(),emId);
+                                    attendance.setTimeOut(localTime);
+                                    attendanceRepo.save(attendance);
+                                }
+
+                            }
+                            Path sourcePath = file.toPath();
+                            Path destinationPath = Paths.get(attendanceFinished, file.getName());
+                            Files.move(sourcePath, destinationPath);
+                        } catch (IOException e) {
+                            System.err.println("Error reading file: " + file.getName());
+                            e.printStackTrace();
+                        } catch (ParseException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                }
+            } else {
+                System.err.println("Directory is empty or does not exist.");
+            }

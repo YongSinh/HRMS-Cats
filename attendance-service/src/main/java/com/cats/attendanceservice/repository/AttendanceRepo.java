@@ -3,10 +3,12 @@ package com.cats.attendanceservice.repository;
 import com.cats.attendanceservice.model.Attendance;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface AttendanceRepo extends JpaRepository<Attendance, Long> {
@@ -18,5 +20,9 @@ public interface AttendanceRepo extends JpaRepository<Attendance, Long> {
             "where DateIn = ?1 and emId = ?2", nativeQuery = true)
     Attendance findByEmIdAndDateIn(String date, String emId);
     List<Attendance> findByEmIdIn(Collection<Long> emId);
+    @Query("SELECT a FROM Attendance a WHERE a.emId = :emId ORDER BY a.timeIn DESC")
+    Optional<Attendance> findLastTimeInByEmId(@Param("emId") Long emId);
 
+    @Query("SELECT a FROM Attendance a WHERE a.emId = :emId ORDER BY a.timeOut DESC")
+    Optional<Attendance> findLastTimeOutByEmId(@Param("emId") Long emId);
 }
