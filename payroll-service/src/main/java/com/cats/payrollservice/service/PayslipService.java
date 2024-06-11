@@ -11,7 +11,7 @@ import java.util.List;
 public interface PayslipService {
 
     List<Payslip> create(PayslipReqDto payslipReqDto, List<Long> emId);
-    List<Payslip>  update(PayslipReqDto payslipReqDto, Long id, List<Long> emId);
+    Payslip  update(PayslipReqDto payslipReqDto, Long id);
     List<Payslip> getListPaySlip();
     Payslip getListPaySlipByeEmIdAndCreateDate(Long emId, LocalDate localDate);
     void addAllowanceToPaySlip(Long emId, LocalDate localDate, Double amount, List<String> allowance);

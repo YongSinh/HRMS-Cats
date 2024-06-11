@@ -19,4 +19,5 @@ public interface EmployeeDeductionsService {
     List<EmployeeDeductions> getListEmployeeDeductionsByEmId(Long emId);
     List<EmployeeDeductions> getListEmployeeDeductionsByPaySlipId(Long id);
     void deleteEmployeeDeductions(Long id);
+    void deleteEmpDeductionsByPlaySlip(Long id);
 }

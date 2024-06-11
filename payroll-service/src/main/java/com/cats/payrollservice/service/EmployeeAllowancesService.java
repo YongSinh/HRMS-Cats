@@ -14,6 +14,7 @@ public interface EmployeeAllowancesService {
     List<EmployeeAllowancesRepDto> addMoreToPaySlip(EmployeeAllowancesReqDto employeeAllowancesReqDto, Long emId, Long id);
     List<EmployeeAllowancesRepDto> createMultiple(EmployeeAllowancesReqDto employeeAllowancesReqDto, List<Long> emId);
     void delete(Long id);
+    void deleteEmpAllowanceByPaySlipId(Long id);
     EmployeeAllowancesRepDto update(EmployeeAllowancesReqDto employeeAllowancesReqDto, Long Id);
     EmployeeAllowances getEmpAllowancesById(Long id);
     EmployeeAllowancesRepDto getEmpAllowances(Long id);

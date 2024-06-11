@@ -132,4 +132,19 @@ public class EmployeeDeductionsServiceImp implements EmployeeDeductionsService{
         payslipService.removeDeductionFromPaySlip(delete.getPaySlipId(),deduction,deductionAmount);
         employeeDeductionsRepo.delete(delete);
     }
+
+    @Override
+    public void deleteEmpDeductionsByPlaySlip(Long id) {
+        try {
+            List<EmployeeDeductions> deductions = employeeDeductionsRepo.findByPaySlipId(id);
+
+            if (deductions != null && !deductions.isEmpty()) {
+                employeeDeductionsRepo.deleteAll(deductions);
+            } else {
+                throw  new IllegalArgumentException("No employee deductions found for pay slip ID: " + id);
+            }
+        } catch (Exception e) {
+            throw e;  // Rethrow the exception if you want the caller to handle it
+        }
+    }
 }

@@ -62,17 +62,15 @@ public class PayslipServiceImp implements PayslipService {
     }
 
     @Override
-    public List<Payslip> update(PayslipReqDto payslipReqDto, Long id, List<Long> emId) {
-        List<Payslip> payslipList = new ArrayList<>();
-        for (Long emIds : emId){
-        Salaries salaries = salariesService.getSalary(emIds);
+    public Payslip update(PayslipReqDto payslipReqDto, Long id) {
         double salary=0.0;
         Payslip payslip = getPaySlipById(id);
+        Salaries salaries = salariesService.getSalary(payslip.getEmpId());
         payslip.setAllowances(payslipReqDto.getAllowances());
         payslip.setAllowanceAmount(payslipReqDto.getAllowanceAmount());
         payslip.setDeductions(payslipReqDto.getDeductions());
         payslip.setDeductionAmount(payslipReqDto.getDeductionAmount());
-        Payroll payroll = payrollService.getPayRollByEmIdAndCreateDate(emIds, payslipReqDto.getPayrollDate());
+        Payroll payroll = payrollService.getPayRollByEmIdAndCreateDate(payslip.getEmpId(), payslipReqDto.getPayrollDate());
         payslip.setPayroll(payroll);
         if(payroll.getType() == 1){
             Double khMoney = salaries.getSalary() * payslipReqDto.getKhmerRate();
@@ -81,12 +79,12 @@ public class PayslipServiceImp implements PayslipService {
             salary = (USDMoney/ 2);
         }
         else {
-            salary = payrollService.calculateNetSalary(emIds, payslipReqDto.getKhmerRate());
+            salary = payrollService.calculateNetSalary(payslip.getEmpId(), payslipReqDto.getKhmerRate());
         }
         payslip.setSalary(salary);
-        payslip.setDateCreated(payslipReqDto.getDateCreated());}
-        payslipRepo.saveAll(payslipList);
-        return payslipList;
+        payslip.setDateCreated(payslipReqDto.getDateCreated());
+        payslipRepo.save(payslip);
+        return payslip;
     }
 
     @Override

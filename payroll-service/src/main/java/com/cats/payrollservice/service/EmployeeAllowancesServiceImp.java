@@ -5,6 +5,7 @@ import com.cats.payrollservice.dto.request.EmployeeAllowancesReqDto;
 import com.cats.payrollservice.dto.response.EmployeeAllowancesRepDto;
 import com.cats.payrollservice.model.Allowances;
 import com.cats.payrollservice.model.EmployeeAllowances;
+import com.cats.payrollservice.model.EmployeeDeductions;
 import com.cats.payrollservice.model.Payslip;
 import com.cats.payrollservice.repository.EmployeeAllowancesRepo;
 import com.cats.payrollservice.repository.PayslipRepo;
@@ -97,6 +98,23 @@ public class EmployeeAllowancesServiceImp implements EmployeeAllowancesService {
         payslipService.removeAllowanceFromPaySlip(employeeAllowances.getPaySlipId(), allowance,allowanceAmount);
         employeeAllowancesRepo.delete(employeeAllowances);
     }
+
+    @Override
+    public void deleteEmpAllowanceByPaySlipId(Long id) {
+        try {
+            List<EmployeeAllowances> delete = employeeAllowancesRepo.findByPaySlipId(id);
+
+            if (delete != null && !delete.isEmpty()) {
+                employeeAllowancesRepo.deleteAll(delete);
+            } else {
+                throw  new IllegalArgumentException("No employee allowance found for pay slip ID: " + id);
+            }
+        } catch (Exception e) {
+            throw e;  // Rethrow the exception if you want the caller to handle it
+        }
+
+    }
+
     @Transactional
     @Override
     public EmployeeAllowancesRepDto update(EmployeeAllowancesReqDto employeeAllowancesReqDto, Long Id) {
