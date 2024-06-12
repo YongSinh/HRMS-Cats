@@ -7,7 +7,9 @@ import com.cats.payrollservice.model.Payslip;
 import com.cats.payrollservice.model.Salaries;
 import com.cats.payrollservice.repository.PayslipRepo;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -19,12 +21,16 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@EnableTransactionManagement
+@Lazy
 public class PayslipServiceImp implements PayslipService {
     private final PayslipRepo payslipRepo;
     private final PayrollService payrollService;
     private final SalariesService salariesService;
     private final TaxService taxService;
     private final  ServiceCalculate serviceCalculate;
+    //private final  EmployeeAllowancesService employeeAllowancesService;
+//    private final EmployeeDeductionsService employeeDeductionsService;
     @Override
     public List<Payslip> create(PayslipReqDto payslipReqDto, List<Long> emId) {
         List<Payslip> payslipList = new ArrayList<>();
@@ -385,6 +391,8 @@ public class PayslipServiceImp implements PayslipService {
     @Override
     public void delete(Long id) {
         Payslip payslip = getPaySlipById(id);
+        //employeeAllowancesService.deleteEmpAllowanceByPaySlipId(id);
+       // employeeDeductionsService.deleteEmployeeDeductions(id);
         payslipRepo.delete(payslip);
     }
 }

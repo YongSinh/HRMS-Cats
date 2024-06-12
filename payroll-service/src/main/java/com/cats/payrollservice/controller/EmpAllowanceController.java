@@ -8,6 +8,7 @@ import com.cats.payrollservice.model.Allowances;
 import com.cats.payrollservice.model.EmployeeAllowances;
 import com.cats.payrollservice.service.EmployeeAllowancesService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,6 +20,7 @@ import java.util.List;
 @RequestMapping("/api/payrolls")
 @RequiredArgsConstructor
 public class EmpAllowanceController {
+
     private final EmployeeAllowancesService employeeAllowancesService;
     @GetMapping("/empAllowances/getById")
     public BaseApi<?> getEmpAllowancesById(@RequestParam Long id) {

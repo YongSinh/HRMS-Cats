@@ -9,7 +9,9 @@ import com.cats.payrollservice.model.EmployeeDeductions;
 import com.cats.payrollservice.model.Payslip;
 import com.cats.payrollservice.repository.EmployeeAllowancesRepo;
 import com.cats.payrollservice.repository.PayslipRepo;
+import jakarta.ws.rs.ext.ParamConverter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,12 +24,11 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @EnableTransactionManagement
+@Lazy
 public class EmployeeAllowancesServiceImp implements EmployeeAllowancesService {
     private final EmployeeAllowancesRepo employeeAllowancesRepo;
     private final AllowancesService allowancesService;
-    private final PayrollService payrollService;
-    private final  PayslipService payslipService;
-    private final PayslipRepo payslipRepo;
+    private final PayslipService payslipService;
 
 
     @Override
