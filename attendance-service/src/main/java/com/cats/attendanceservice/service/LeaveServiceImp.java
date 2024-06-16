@@ -15,6 +15,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -25,6 +27,7 @@ public class LeaveServiceImp implements LeaveSerivce{
     private final LeaveTypeService leaveTypeService;
     private final AttendanceRepo attendanceRepo;
     private final FileService fileService;
+    private final ApiService apiService;
     @Override
     public List<LeaveDtoRep> getListLeave() {
         return mapper.leaveToLeaveResponseDtos(leaveRepo.findAll());
@@ -167,6 +170,18 @@ public class LeaveServiceImp implements LeaveSerivce{
 
         }
         return mapper.leaveToLeaveResponseDtos(leaveRepo.saveAll(leaveList));
+    }
+
+    @Override
+    public List<LeaveDtoRep> getListLeaveForManger(Long emId) {
+        Collection<Long> emIds = apiService.getEmployeeByUnderMangerOnlyEmId(emId);
+        List<Leave> leaveList = leaveRepo.findByEmpIdIn(emIds);
+        return mapper.leaveToLeaveResponseDtos(leaveList);
+    }
+
+    @Override
+    public List<LeaveDtoRep> getListLeaveForHead(Long emId) {
+        return null;
     }
 
 

@@ -16,6 +16,7 @@ public interface EmployeeService {
     List<EmployeeDtoRep> listEmployee();
 
     List<EmployeeDtoRep> getEmployeeByDep(Long depId);
+    List<EmployeeDtoRep> getEmployeeByUnderManger(Long emId);
     List<EmployeeDtoRep> getEmployeeByDepAndPos(Long depId, String posId);
     EmployeeDtoRep getEmployeeDtoRepById(Long Id);
     List<Long> getEmployeeByDepGetOnlyEmId(Long depId);

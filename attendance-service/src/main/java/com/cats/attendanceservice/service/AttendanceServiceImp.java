@@ -28,7 +28,7 @@ import java.util.regex.Pattern;
 @EnableScheduling
 public class AttendanceServiceImp implements AttendanceService  {
     private final AttendanceRepo attendanceRepo;
-
+    private final ApiService apiService;
     @Value("${file.attendance.path}")
     private String attendanceText;
     @Value("${file.attendanceFinished.path}")
@@ -46,6 +46,12 @@ public class AttendanceServiceImp implements AttendanceService  {
     @Override
     public List<Attendance> getListAttendanceByEmId(Long emId) {
         return  attendanceRepo.findByEmId(emId);
+    }
+
+    @Override
+    public List<Attendance> getListAttendanceForManger(Long emId) {
+        Collection<Long> emIDs = apiService.getEmployeeByUnderMangerOnlyEmId(emId);
+        return attendanceRepo.findByEmIdIn(emIDs);
     }
 
     @Override

@@ -142,6 +142,13 @@ public class EmployeeServiceImp implements EmployeeService{
     }
 
     @Override
+    public List<EmployeeDtoRep> getEmployeeByUnderManger(Long emId) {
+        Employee getEmp= getPersonalDataById(emId);
+        List<Employee> employeeList = employeeRepo.callGetEmployeeHierarchyProcedure(getEmp.getMangerId(),getEmp.getDepartment().getDepId());
+        return mapper.EmployeeDtoRepToEmployeeDtoReps(employeeList);
+    }
+
+    @Override
     public List<EmployeeDtoRep> getEmployeeByDepAndPos(Long depId, String posId) {
         Position position = positionService.getPositionById(posId);
         Department department = departmentService.getDepById(depId);

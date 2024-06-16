@@ -23,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
@@ -69,6 +70,35 @@ public class EmployeeController {
                 .data(employee)
                 .build();
     }
+
+
+    @GetMapping("/getEmployeeByUnderManger")
+    public BaseApi<?> getEmployeeByUnderManger(@RequestParam Long emId) {
+        List<EmployeeDtoRep> employee = employeeService.getEmployeeByUnderManger(emId);
+        return BaseApi.builder()
+                .status(true)
+                .code(HttpStatus.OK.value())
+                .message("list Employee Id have been found")
+                .timestamp(LocalDateTime.now())
+                .data(employee)
+                .build();
+    }
+    @GetMapping("/getEmployeeByUnderMangerOnlyEmId")
+    public BaseApi<?> getEmployeeByUnderMangerOnlyEmId(@RequestParam Long emId) {
+        List<EmployeeDtoRep> employee = employeeService.getEmployeeByUnderManger(emId);
+        List<Long> idList = new ArrayList<>();
+        for (EmployeeDtoRep employeeDtoRep: employee){
+            idList.add(employeeDtoRep.getEmpId());
+        }
+        return BaseApi.builder()
+                .status(true)
+                .code(HttpStatus.OK.value())
+                .message("list Employee Id have been found")
+                .timestamp(LocalDateTime.now())
+                .data(idList)
+                .build();
+    }
+
 
     @GetMapping("/listEmployeeByDepAndPosOnlyEmId")
     public BaseApi<?> listEmployeeByDepAndPosOnlyEmId(@RequestParam Long depId, @RequestParam String posId) {

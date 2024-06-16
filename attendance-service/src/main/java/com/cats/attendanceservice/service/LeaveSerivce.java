@@ -22,6 +22,9 @@ public interface LeaveSerivce {
     List<LeaveDtoRep> ApprovedByHead(List<Long> Id, LeaveDtoReq leaveDtoRep);
     List<LeaveDtoRep> ApprovedByHr(List<Long> Id, LeaveDtoReq leaveDtoRep);
 
+    List<LeaveDtoRep> getListLeaveForManger(Long emId);
+    List<LeaveDtoRep> getListLeaveForHead(Long emId);
+
     Leave getLeaveById(Long id);
 
     LeaveDtoRep getLeave(Long id);

@@ -58,6 +58,19 @@ public class AttendanceController {
                 .data(getList)
                 .build();
     }
+
+    @GetMapping("/attendance/getListAttendanceForManger")
+    public BaseApi<?> getListAttendanceForManger(@RequestParam Long emId) {
+        List<Attendance> getList = attendanceService.getListAttendanceForManger(emId);
+        return BaseApi.builder()
+                .status(true)
+                .code(HttpStatus.OK.value())
+                .message("List All the Attendance")
+                .timestamp(LocalDateTime.now())
+                .data(getList)
+                .build();
+    }
+
     @GetMapping("/attendance/listAttendanceByDepOrPos")
     public BaseApi<?> listAttendanceByDepOrPos(@RequestParam Collection<Long> emId) {
         List<Attendance> getList = attendanceService.getAttendanceByDepartmentOrPosition(emId);

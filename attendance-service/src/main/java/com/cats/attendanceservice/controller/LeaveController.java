@@ -139,6 +139,19 @@ public class LeaveController {
                 .build();
     }
 
+    @GetMapping("/leave/getListLeaveForManager")
+    public BaseApi<?> getListLeaveForManager(@RequestParam Long emId) {
+        List<LeaveDtoRep> leave = leaveSerivce.getListLeaveForManger(emId);
+        return BaseApi.builder()
+                .status(true)
+                .code(HttpStatus.OK.value())
+                .message("leave list for manager have been found!")
+                .timestamp(LocalDateTime.now())
+                .data(leave)
+                .build();
+    }
+
+
     @GetMapping("/leave/delete")
     public BaseApi<?> getDeleteLeave(@RequestParam Long id) {
         Leave leave = leaveSerivce.getLeaveById(id);
