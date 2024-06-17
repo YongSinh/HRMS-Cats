@@ -22,7 +22,7 @@
       <module name="attendance-service" options="-parameters" />
       <module name="discovery-server" options="-parameters" />
       <module name="information-management-service" options="-parameters" />
-      <module name="notification-service" options="-parameters" />
+      <module name="notification-service" options="" />
       <module name="payroll-service" options="-parameters" />
     </option>
   </component>

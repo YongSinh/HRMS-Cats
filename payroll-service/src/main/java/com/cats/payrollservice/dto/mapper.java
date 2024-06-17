@@ -58,6 +58,7 @@ public class mapper {
         employeeAllowancesRepDto.setDateCreated(employeeAllowances.getDateCreated());
         employeeAllowancesRepDto.setAllowances(employeeAllowances.getAllowances().getAllowances());
         employeeAllowancesRepDto.setAllowancesId(employeeAllowances.getAllowances().getALLId());
+        employeeAllowancesRepDto.setPaySlipId(employeeAllowances.getPaySlipId());
         return employeeAllowancesRepDto;
     }
 

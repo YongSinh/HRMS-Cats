@@ -46,6 +46,18 @@ public class EmpAllowanceController {
                 .build();
     }
 
+    @GetMapping("/empAllowances/ByPaySlipId")
+    public BaseApi<?> getListEmpAllowancesByPaySlip(@RequestParam Long id) {
+        List<EmployeeAllowancesRepDto> employeeAllowances = employeeAllowancesService.getListEmpAllowancesByPaySlip(id);
+        return BaseApi.builder()
+                .status(true)
+                .code(HttpStatus.OK.value())
+                .message("Employee Allowances have been found")
+                .timestamp(LocalDateTime.now())
+                .data(employeeAllowances)
+                .build();
+    }
+
     @GetMapping("/empAllowances")
     public BaseApi<?> getEmpAllowances() {
         List<EmployeeAllowancesRepDto> employeeAllowances = employeeAllowancesService.getListEmpAllowances();

@@ -21,4 +21,5 @@ public class EmployeeAllowancesRepDto {
     private Double amount;
     private LocalDate effectiveDate;
     private LocalDateTime dateCreated;
+    private Long paySlipId;
 }
