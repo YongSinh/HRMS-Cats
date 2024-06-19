@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
@@ -62,25 +63,48 @@ public class AttendanceController {
                 .data(getList)
                 .build();
     }
-    @CircuitBreaker(name = "management",fallbackMethod = "fallbackMethod")
+
+    @GetMapping("/attendance/listAttendanceDateInBetweenAndEmId")
+    public BaseApi<?> listAttendanceDateInBetweenAndEmId(
+            @RequestParam(name = "dateIn") LocalDate dateIn,
+            @RequestParam(name = "dateIn2")  LocalDate dateIn2,
+            @RequestParam(name = "emId")  Long emId) {
+        List<Attendance> getList = attendanceService.findByDateInBetweenAndEmId(dateIn, dateIn2,emId);
+        return BaseApi.builder()
+                .status(true)
+                .code(HttpStatus.OK.value())
+                .message("List All the Attendance")
+                .timestamp(LocalDateTime.now())
+                .data(getList)
+                .build();
+    }
+
+    @CircuitBreaker(name = "management", fallbackMethod = "fallbackMethod")
     @TimeLimiter(name = "management")
     @Retry(name = "management")
     @GetMapping("/attendance/getListAttendanceForManger")
-    public CompletableFuture<?> getListAttendanceForManger(@RequestParam Long emId) {
-        List<Attendance> getList = attendanceService.getListAttendanceForManger(emId);
-        return CompletableFuture.supplyAsync(() -> getList);
-//        return BaseApi.builder()
-//                .status(true)
-//                .code(HttpStatus.OK.value())
-//                .message("List All the Attendance")
-//                .timestamp(LocalDateTime.now())
-//                .data(getList)
-//                .build();
+    public CompletableFuture<BaseApi<?>> getListAttendanceForManger(@RequestParam Long emId) {
+        return CompletableFuture.supplyAsync(() -> {
+            List<Attendance> getList = attendanceService.getListAttendanceForManger(emId);
+            return BaseApi.builder()
+                    .status(true)
+                    .code(HttpStatus.OK.value())
+                    .message("List All the Attendance")
+                    .timestamp(LocalDateTime.now())
+                    .data(getList)
+                    .build();
+        });
     }
-    public CompletableFuture<String> fallbackMethod(Long emId, RuntimeException runtimeException) {
-        System.out.println("Cannot Place Order Executing Fallback logic");
-        return CompletableFuture.supplyAsync(() -> "Oops! Something went wrong, please order after some time!");
+
+    public CompletableFuture<BaseApi<?>> fallbackMethod(Long emId, Throwable throwable) {
+        return CompletableFuture.supplyAsync(() -> BaseApi.builder()
+                .status(false)
+                .code(HttpStatus.SERVICE_UNAVAILABLE.value())
+                .message("Service is currently unavailable. Please try again later.")
+                .timestamp(LocalDateTime.now())
+                .build());
     }
+
     @GetMapping("/attendance/listAttendanceByDepOrPos")
     public BaseApi<?> listAttendanceByDepOrPos(@RequestParam Collection<Long> emId) {
         List<Attendance> getList = attendanceService.getAttendanceByDepartmentOrPosition(emId);

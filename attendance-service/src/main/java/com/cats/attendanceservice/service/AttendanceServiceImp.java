@@ -1,5 +1,6 @@
 package com.cats.attendanceservice.service;
 
+import com.cats.attendanceservice.Util.DateUtils;
 import com.cats.attendanceservice.dto.AttendanceReqDto;
 import com.cats.attendanceservice.model.Attendance;
 import com.cats.attendanceservice.repository.AttendanceRepo;
@@ -17,6 +18,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.*;
@@ -46,6 +48,11 @@ public class AttendanceServiceImp implements AttendanceService  {
     @Override
     public List<Attendance> getListAttendanceByEmId(Long emId) {
         return  attendanceRepo.findByEmId(emId);
+    }
+
+    @Override
+    public List<Attendance> findByDateInBetweenAndEmId(LocalDate dateIn, LocalDate dateIn2, Long emId) {
+        return attendanceRepo.findByDateInBetweenAndEmId(dateIn,dateIn2,emId);
     }
 
     @Override
@@ -232,6 +239,29 @@ public class AttendanceServiceImp implements AttendanceService  {
             return "Attendance time out have been save to database.";
         } else {
             return "Attendance file is empty or does not exist.";
+        }
+    }
+
+    @Override
+    public void createWeekendAttendance() throws IOException {
+        List<LocalDate> weekends = DateUtils.getUpcomingWeekends();
+        Collection<Long> emIds = apiService.getListAllEmployeeOnlyEmId();
+        for (Long emId : emIds) {
+            for (LocalDate date : weekends) {
+                Attendance attendance = new Attendance();
+                attendance.setEmId(emId);
+                attendance.setDateIn(date);
+                attendance.setTimeIn(null); // example time, set according to your requirements
+                attendance.setTimeOut(null); // example time, set according to your requirements
+
+                if (date.getDayOfWeek() == DayOfWeek.SATURDAY) {
+                    attendance.setRemark("Saturday");
+                } else if (date.getDayOfWeek() == DayOfWeek.SUNDAY) {
+                    attendance.setRemark("Sunday");
+                }
+
+                attendanceRepo.save(attendance);
+            }
         }
     }
 

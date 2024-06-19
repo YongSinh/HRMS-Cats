@@ -27,8 +27,8 @@ public class Attendance {
     private LocalTime timeIn;
     @Column(name = "timeOutDate")
     private LocalTime timeOut;
-    @Column(name = "DateIn")
-    private LocalDate DateIn;
+    @Column(name = "dateIn")
+    private LocalDate dateIn;
     @Column(name = "remark", columnDefinition = "varchar(150)")
     private String remark;
 

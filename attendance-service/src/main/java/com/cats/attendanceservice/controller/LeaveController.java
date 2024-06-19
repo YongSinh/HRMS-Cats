@@ -7,6 +7,9 @@ import com.cats.attendanceservice.dto.LeaveDtoReq;
 import com.cats.attendanceservice.model.Leave;
 import com.cats.attendanceservice.model.LeaveBalance;
 import com.cats.attendanceservice.service.LeaveSerivce;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.retry.annotation.Retry;
+import io.github.resilience4j.timelimiter.annotation.TimeLimiter;
 import jakarta.websocket.server.PathParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 @RestController
 @RequestMapping("/api/attendanceLeave")
@@ -138,19 +142,31 @@ public class LeaveController {
                 .data(leave)
                 .build();
     }
-
+    @CircuitBreaker(name = "management", fallbackMethod = "fallbackMethod")
+    @TimeLimiter(name = "management")
+    @Retry(name = "management")
     @GetMapping("/leave/getListLeaveForManager")
-    public BaseApi<?> getListLeaveForManager(@RequestParam Long emId) {
-        List<LeaveDtoRep> leave = leaveSerivce.getListLeaveForManger(emId);
-        return BaseApi.builder()
-                .status(true)
-                .code(HttpStatus.OK.value())
-                .message("leave list for manager have been found!")
-                .timestamp(LocalDateTime.now())
-                .data(leave)
-                .build();
-    }
+    public CompletableFuture<BaseApi<?>> getListLeaveForManager(@RequestParam Long emId) {
+        return CompletableFuture.supplyAsync(() -> {
+            List<LeaveDtoRep> leave = leaveSerivce.getListLeaveForManger(emId);
+            return BaseApi.builder()
+                    .status(true)
+                    .code(HttpStatus.OK.value())
+                    .message("leave list for manager have been found!")
+                    .timestamp(LocalDateTime.now())
+                    .data(leave)
+                    .build();
+        });
 
+    }
+    public CompletableFuture<BaseApi<?>> fallbackMethod(Long emId, Throwable throwable) {
+        return CompletableFuture.supplyAsync(() -> BaseApi.builder()
+                .status(false)
+                .code(HttpStatus.SERVICE_UNAVAILABLE.value())
+                .message("Service is currently unavailable. Please try again later.")
+                .timestamp(LocalDateTime.now())
+                .build());
+    }
 
     @GetMapping("/leave/delete")
     public BaseApi<?> getDeleteLeave(@RequestParam Long id) {
