@@ -35,6 +35,8 @@ public class AttendanceServiceImp implements AttendanceService  {
     private String attendanceText;
     @Value("${file.attendanceFinished.path}")
     private String attendanceFinished;
+
+    private final SimpleDateFormat dateFormat = new SimpleDateFormat("M/dd/yyyy h:mm a", Locale.ENGLISH);
     @Override
     public List<Attendance> getListAttendance() {
         return attendanceRepo.findAll();
@@ -75,7 +77,13 @@ public class AttendanceServiceImp implements AttendanceService  {
 
     @Override
     public Attendance create(AttendanceReqDto attendanceReqDto) {
-        return null;
+        Attendance attendance = new Attendance();
+        attendance.setEmId(attendanceReqDto.getEmId());
+        attendance.setTimeIn(attendanceReqDto.getTimeIn());
+        attendance.setTimeOut(attendanceReqDto.getTimeOut());
+        attendance.setDateIn(attendanceReqDto.getDateIn());
+        attendance.setRemark(attendanceReqDto.getRemark());
+        return attendanceRepo.save(attendance);
     }
 
     @Override
@@ -97,25 +105,28 @@ public class AttendanceServiceImp implements AttendanceService  {
     }
 
     private void processTimeInFile(File file) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("M/d/yyyy h:mm a");
-        Pattern pattern = Pattern.compile("\\b(\\d{1,2}/\\d{1,2}/\\d{4} \\d{1,2}:\\d{2} [AP]M)\\b.*\\b(\\d{4})\\b");
-
         try {
             List<String> lines = Files.readAllLines(file.toPath());
             System.out.println("Processing File: " + file.getName());
+            Pattern pattern = Pattern.compile("\\d{1,2}/\\d{1,2}/\\d{4} \\d{1,2}:\\d{2} [AP]M");
+            Pattern acNoPattern = Pattern.compile("\\b\\d{4}\\b");
 
             // Use a map to store the last timeIn for each emId
             Map<Long, LocalTime> latestTimeInMap = new HashMap<>();
 
             for (String line : lines) {
                 Matcher matcher = pattern.matcher(line);
-                if (matcher.find()) {
-                    String time = matcher.group(1);
-                    String acNo = matcher.group(2);
-
+                Matcher acNoMatcher = acNoPattern.matcher(line);
+                System.out.println("line1");
+                if (matcher.find() && acNoMatcher.find()) {
+                    String time = matcher.group();
+                    String acNo = acNoMatcher.group();
+                    System.out.println("line2");
+                    System.out.println(time);
                     Date date = dateFormat.parse(time);
+                    System.out.println(date);
                     LocalTime localTime = date.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalTime();
-                    LocalDate localDate = date.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate();
+                   // LocalDate localDate = date.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate();
 
                     Long emId = Long.valueOf(acNo);
 
@@ -128,7 +139,7 @@ public class AttendanceServiceImp implements AttendanceService  {
             for (Map.Entry<Long, LocalTime> entry : latestTimeInMap.entrySet()) {
                 Long emId = entry.getKey();
                 LocalTime latestTimeIn = entry.getValue();
-
+                System.out.println("line3");
                 // Retrieve the last timeIn for the given emId
                 Optional<Attendance> lastAttendanceOpt = attendanceRepo.findLastTimeInByEmId(emId);
                 if (lastAttendanceOpt.isPresent()) {
@@ -138,12 +149,13 @@ public class AttendanceServiceImp implements AttendanceService  {
                         continue;
                     }
                 }
-
+                System.out.println("Save");
                 Attendance  attendance = new Attendance();
                 attendance.setDateIn(LocalDate.now());
                 attendance.setEmId(emId);
                 attendance.setTimeIn(latestTimeIn);
                 attendanceRepo.save(attendance);
+
             }
 
             moveProcessedFile(file);
@@ -156,25 +168,23 @@ public class AttendanceServiceImp implements AttendanceService  {
         }
     }
     private void processTimeOutFile(File file) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("M/d/yyyy h:mm a");
-        Pattern pattern = Pattern.compile("\\b(\\d{1,2}/\\d{1,2}/\\d{4} \\d{1,2}:\\d{2} [AP]M)\\b.*\\b(\\d{4})\\b");
-
         try {
             List<String> lines = Files.readAllLines(file.toPath());
             System.out.println("Processing File: " + file.getName());
+            Pattern pattern = Pattern.compile("\\d{1,2}/\\d{1,2}/\\d{4} \\d{1,2}:\\d{2} [AP]M");
+            Pattern acNoPattern = Pattern.compile("\\b\\d{4}\\b");
 
             // Use a map to store the last timeOut for each emId
             Map<Long, LocalTime> latestTimeOutMap = new HashMap<>();
 
             for (String line : lines) {
                 Matcher matcher = pattern.matcher(line);
-                if (matcher.find()) {
-                    String time = matcher.group(1);
-                    String acNo = matcher.group(2);
-
+                Matcher acNoMatcher = acNoPattern.matcher(line);
+                if (matcher.find() && acNoMatcher.find()) {
+                    String time = matcher.group();
+                    String acNo = acNoMatcher.group();
                     Date date = dateFormat.parse(time);
                     LocalTime localTime = date.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalTime();
-                    LocalDate localDate = date.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate();
 
                     Long emId = Long.valueOf(acNo);
 
@@ -185,31 +195,37 @@ public class AttendanceServiceImp implements AttendanceService  {
 
             // Process and save the latest timeOut for each emId
             for (Map.Entry<Long, LocalTime> entry : latestTimeOutMap.entrySet()) {
-                String emId = String.valueOf(entry.getKey());
+                Long emId = entry.getKey();
                 LocalTime latestTimeOut = entry.getValue();
-
+                System.out.println(latestTimeOut);
                 // Retrieve the last timeOut for the given emId
-                Optional<Attendance> lastAttendanceOpt = attendanceRepo.findLastTimeOutByEmId(Long.valueOf(emId));
+                Optional<Attendance> lastAttendanceOpt = attendanceRepo.findLastTimeOutByEmId(emId);
                 if (lastAttendanceOpt.isPresent()) {
-                    LocalTime lastTimeOut = lastAttendanceOpt.get().getTimeOut();
-                    if (!latestTimeOut.isAfter(lastTimeOut)) {
-                        System.out.println("Duplicate or out-of-order entry found for Ac-No: " + emId + " and Time Out: " + latestTimeOut);
-                        continue;
+                    if (lastAttendanceOpt.get().getTimeOut() != null){
+                        LocalTime lastTimeOut = lastAttendanceOpt.get().getTimeOut();
+                        if (!latestTimeOut.isAfter(lastTimeOut)) {
+                            System.out.println("Duplicate or out-of-order entry found for Ac-No: " + emId + " and Time Out: " + latestTimeOut);
+                            continue;
+                        }
                     }
+
+                    // Retrieve the attendance record for the given emId and dateIn
+                    LocalDate localDate = lastAttendanceOpt.get().getDateIn(); // Assuming the current date is used
+                    Attendance attendance = getAttendanceByEmIdAndDateIn(localDate,emId);
+                    if (attendance != null) {
+                        attendance.setTimeOut(latestTimeOut);
+                        attendanceRepo.save(attendance);
+                        System.out.println("save");
+                        //moveProcessedFile(file);
+                    } else {
+                        System.err.println("No matching attendance record found for Ac-No: " + emId + " on Date: " + localDate);
+                    }
+                }else {
+                    throw  new IllegalArgumentException("Is empty");
                 }
 
-                // Retrieve the attendance record for the given emId and dateIn
-                LocalDate localDate = LocalDate.now(); // Assuming the current date is used
-                Attendance attendance = attendanceRepo.findByEmIdAndDateIn(emId, String.valueOf(localDate));
-                if (attendance != null) {
-                    attendance.setTimeOut(latestTimeOut);
-                    attendanceRepo.save(attendance);
-                } else {
-                    System.err.println("No matching attendance record found for Ac-No: " + emId + " on Date: " + localDate);
-                }
             }
 
-            moveProcessedFile(file);
         } catch (IOException e) {
             System.err.println("Error reading file: " + file.getName());
             e.printStackTrace();
@@ -233,7 +249,7 @@ public class AttendanceServiceImp implements AttendanceService  {
         if (files != null) {
             for (File file : files) {
                 if (file.isFile() && file.getName().toLowerCase().endsWith(".txt")) {
-                    processTimeInFile(file);
+                    processTimeOutFile(file);
                 }
             }
             return "Attendance time out have been save to database.";
@@ -241,7 +257,7 @@ public class AttendanceServiceImp implements AttendanceService  {
             return "Attendance file is empty or does not exist.";
         }
     }
-
+   @Scheduled(cron = "0 0 22 * * FRI")
     @Override
     public void createWeekendAttendance() throws IOException {
         List<LocalDate> weekends = DateUtils.getUpcomingWeekends();
@@ -279,7 +295,7 @@ public class AttendanceServiceImp implements AttendanceService  {
     }
 
     @Override
-    public Attendance getAttendanceByEmIdAndDateIn(String date, String emId) {
+    public Attendance getAttendanceByEmIdAndDateIn(LocalDate date, Long emId) {
         return attendanceRepo.findByEmIdAndDateIn(date, emId);
     }
 

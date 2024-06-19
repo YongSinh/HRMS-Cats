@@ -1,6 +1,7 @@
 package com.cats.attendanceservice.controller;
 
 import com.cats.attendanceservice.base.BaseApi;
+import com.cats.attendanceservice.dto.AttendanceReqDto;
 import com.cats.attendanceservice.model.Attendance;
 import com.cats.attendanceservice.service.AttendanceService;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
@@ -36,6 +37,18 @@ public class AttendanceController {
                 .status(true)
                 .code(HttpStatus.OK.value())
                 .message("List All the Attendance")
+                .timestamp(LocalDateTime.now())
+                .data(getList)
+                .build();
+    }
+
+    @PostMapping("/attendance/create")
+    public BaseApi<?> createAttendance(@RequestBody AttendanceReqDto attendanceReqDto) {
+        Attendance getList = attendanceService.create(attendanceReqDto);
+        return BaseApi.builder()
+                .status(true)
+                .code(HttpStatus.OK.value())
+                .message("Attendance have been created")
                 .timestamp(LocalDateTime.now())
                 .data(getList)
                 .build();

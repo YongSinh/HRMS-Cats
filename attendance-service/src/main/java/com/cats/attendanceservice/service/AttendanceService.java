@@ -20,7 +20,7 @@ public interface AttendanceService {
     Attendance update(Long Id, AttendanceReqDto attendanceReqDto);
     Attendance create( AttendanceReqDto attendanceReqDto);
     Attendance getAttendanceById( Long id);
-    Attendance getAttendanceByEmIdAndDateIn( String date, String emId);
+    Attendance getAttendanceByEmIdAndDateIn( LocalDate date, Long emId);
     String manualAsyncTimeIn();
     String manualAsyncTimeOut();
     void createWeekendAttendance() throws IOException;
