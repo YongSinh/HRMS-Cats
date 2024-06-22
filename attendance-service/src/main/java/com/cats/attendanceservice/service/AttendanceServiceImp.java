@@ -2,11 +2,14 @@ package com.cats.attendanceservice.service;
 
 import com.cats.attendanceservice.Util.DateUtils;
 import com.cats.attendanceservice.dto.AttendanceReqDto;
+import com.cats.attendanceservice.events.ListEmpByEmpIdEvent;
 import com.cats.attendanceservice.model.Attendance;
 import com.cats.attendanceservice.repository.AttendanceRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -36,6 +39,7 @@ public class AttendanceServiceImp implements AttendanceService  {
     @Value("${file.attendanceFinished.path}")
     private String attendanceFinished;
 
+    private final ApplicationEventPublisher applicationEventPublisher;
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("M/dd/yyyy h:mm a", Locale.ENGLISH);
     @Override
     public List<Attendance> getListAttendance() {
@@ -60,7 +64,9 @@ public class AttendanceServiceImp implements AttendanceService  {
     @Override
     public List<Attendance> getListAttendanceForManger(Long emId) {
         Collection<Long> emIDs = apiService.getEmployeeByUnderMangerOnlyEmId(emId);
-        return attendanceRepo.findByEmIdIn(emIDs);
+        List<Attendance> attendanceList = attendanceRepo.findByEmIdIn(emIDs);
+        applicationEventPublisher.publishEvent(new ListEmpByEmpIdEvent(this, emIDs));
+        return attendanceList;
     }
 
     @Override
@@ -257,7 +263,7 @@ public class AttendanceServiceImp implements AttendanceService  {
             return "Attendance file is empty or does not exist.";
         }
     }
-   @Scheduled(cron = "0 0 22 * * FRI")
+    @Scheduled(cron = "0 0 22 * * FRI")
     @Override
     public void createWeekendAttendance() throws IOException {
         List<LocalDate> weekends = DateUtils.getUpcomingWeekends();
