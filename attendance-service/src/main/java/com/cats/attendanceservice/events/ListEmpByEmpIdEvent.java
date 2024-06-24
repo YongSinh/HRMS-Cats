@@ -1,5 +1,6 @@
 package com.cats.attendanceservice.events;
 
+import com.cats.attendanceservice.service.ApiService;
 import lombok.*;
 import org.springframework.context.ApplicationEvent;
 
@@ -10,11 +11,14 @@ import java.util.Collection;
 @Setter
 public class ListEmpByEmpIdEvent extends ApplicationEvent {
     private Long emId;
-    public ListEmpByEmpIdEvent(Object source, Collection<Long> attendanceList) {
+
+    public ListEmpByEmpIdEvent(ApiService source, Long emId) {
         super(source);
+        this.emId = emId;
     }
 
-    public ListEmpByEmpIdEvent(Object source, Clock clock) {
-        super(source, clock);
+    public ListEmpByEmpIdEvent(Long emId) {
+        super(emId);
+        this.emId = emId;
     }
 }

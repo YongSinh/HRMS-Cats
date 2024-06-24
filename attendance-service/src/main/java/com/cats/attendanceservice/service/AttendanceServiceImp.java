@@ -64,9 +64,7 @@ public class AttendanceServiceImp implements AttendanceService  {
     @Override
     public List<Attendance> getListAttendanceForManger(Long emId) {
         Collection<Long> emIDs = apiService.getEmployeeByUnderMangerOnlyEmId(emId);
-        List<Attendance> attendanceList = attendanceRepo.findByEmIdIn(emIDs);
-        applicationEventPublisher.publishEvent(new ListEmpByEmpIdEvent(this, emIDs));
-        return attendanceList;
+        return attendanceRepo.findByEmIdIn(emIDs);
     }
 
     @Override

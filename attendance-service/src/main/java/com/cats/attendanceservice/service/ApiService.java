@@ -1,10 +1,13 @@
 package com.cats.attendanceservice.service;
 
 import com.cats.attendanceservice.dto.WebFluxResponse;
+import com.cats.attendanceservice.events.ListEmpByEmpIdEvent;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -16,8 +19,10 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ApiService {
     private final WebClient.Builder webClientBuilder;
+    private final ApplicationEventPublisher applicationEventPublisher;
     public Collection<Long> getEmployeeByUnderMangerOnlyEmId(Long emId) {
         WebFluxResponse response = webClientBuilder.build().get()
                 .uri("http://information-management-service/api/info/employee/getEmployeeByUnderMangerOnlyEmId",
@@ -33,7 +38,10 @@ public class ApiService {
                     idList.add(node.asLong());
                 }
             }
+          //  applicationEventPublisher.publishEvent(new ListEmpByEmpIdEvent(this, emId));
+
             return idList;
+
         } else {
             System.out.println("No employee IDs found or response status is not OK.");
             return List.of();
