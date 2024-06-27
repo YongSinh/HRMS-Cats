@@ -1,4 +1,4 @@
-package cats.com.notificationservice;
+package cats.com.notificationservice.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

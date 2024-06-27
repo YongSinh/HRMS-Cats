@@ -38,7 +38,7 @@ public class ApiService {
                     idList.add(node.asLong());
                 }
             }
-          //  applicationEventPublisher.publishEvent(new ListEmpByEmpIdEvent(this, emId));
+          applicationEventPublisher.publishEvent(new ListEmpByEmpIdEvent(this, emId));
 
             return idList;
 
