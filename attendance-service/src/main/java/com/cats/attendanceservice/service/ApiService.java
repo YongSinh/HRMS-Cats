@@ -2,6 +2,7 @@ package com.cats.attendanceservice.service;
 
 import com.cats.attendanceservice.dto.WebFluxResponse;
 import com.cats.attendanceservice.events.ListEmpByEmpIdEvent;
+import com.cats.attendanceservice.listener.KafKaProducerService;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
@@ -23,7 +24,9 @@ import java.util.List;
 public class ApiService {
     private final WebClient.Builder webClientBuilder;
     private final ApplicationEventPublisher applicationEventPublisher;
+    private final KafKaProducerService kafKaProducerService;
     public Collection<Long> getEmployeeByUnderMangerOnlyEmId(Long emId) {
+        kafKaProducerService.sendMessage(emId.toString());
         WebFluxResponse response = webClientBuilder.build().get()
                 .uri("http://information-management-service/api/info/employee/getEmployeeByUnderMangerOnlyEmId",
                         uriBuilder -> uriBuilder.queryParam("emId", emId).build())
@@ -38,7 +41,6 @@ public class ApiService {
                     idList.add(node.asLong());
                 }
             }
-          applicationEventPublisher.publishEvent(new ListEmpByEmpIdEvent(this, emId));
 
             return idList;
 
