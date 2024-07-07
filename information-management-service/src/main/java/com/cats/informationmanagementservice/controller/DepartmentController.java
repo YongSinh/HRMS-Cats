@@ -2,11 +2,9 @@ package com.cats.informationmanagementservice.controller;
 
 import com.cats.informationmanagementservice.Dto.DepartmentDtoRep;
 import com.cats.informationmanagementservice.Dto.DepartmentDtoReq;
-import com.cats.informationmanagementservice.Dto.PositionDtoRep;
 import com.cats.informationmanagementservice.base.BaseApi;
 import com.cats.informationmanagementservice.model.Department;
 import com.cats.informationmanagementservice.service.DepartmentService;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

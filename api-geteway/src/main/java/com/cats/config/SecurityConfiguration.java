@@ -29,7 +29,7 @@ public class SecurityConfiguration {
                 corsConfigurationSource("10.10.10.1")
         ));
         http.csrf(AbstractHttpConfigurer::disable);
-        http.securityMatcher("/api/**").authorizeHttpRequests(auth -> {
+        http.securityMatcher("/**").authorizeHttpRequests(auth -> {
             auth.requestMatchers("/v3/api-docs/**",
                     "/swagger-ui.html",
                     "/swagger-ui/**",
