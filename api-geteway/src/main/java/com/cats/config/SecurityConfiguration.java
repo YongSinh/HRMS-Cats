@@ -4,39 +4,34 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
-import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.config.web.server.ServerHttpSecurity;
+import org.springframework.security.web.server.SecurityWebFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import java.util.Arrays;
+import org.springframework.web.cors.reactive.CorsConfigurationSource;
+import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
+
 import java.util.List;
 
 @RequiredArgsConstructor
 @Configuration
-@ComponentScan
 @EnableWebFluxSecurity
-@EnableWebSecurity
+@ComponentScan
 public class SecurityConfiguration {
 
-    private final JwtAuthConverter jwtAuthConverter;
+   private final JwtAuthConverter jwtAuthConverter;
     @Bean
-    public SecurityFilterChain securityFilterChain (HttpSecurity http) throws Exception{
-        http.cors(cors -> cors.configurationSource(
-                corsConfigurationSource("10.10.10.1")
-        ));
-        http.csrf(AbstractHttpConfigurer::disable);
-        http.securityMatcher("/**").authorizeHttpRequests(auth -> {
-            auth.requestMatchers("/v3/api-docs/**",
-                    "/swagger-ui.html",
-                    "/swagger-ui/**",
-                    "/webjars/**").permitAll();
-            auth.anyRequest().authenticated();
-        });
+    public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
 
+        http
+                .csrf(ServerHttpSecurity.CsrfSpec::disable)
+                .authorizeExchange(exchanges -> exchanges
+                        .pathMatchers("/eureka/**", "/actuator/**", "/swagger-ui.html", "/v3/api-docs/**", "/swagger-ui/**").permitAll()
+                        .anyExchange()
+                        .authenticated())
+                .oauth2ResourceServer(spec -> spec.jwt(Customizer.withDefaults()))
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()));
         http.oauth2ResourceServer(oauth2 ->
                 oauth2.jwt(
                         jwt -> jwt.jwtAuthenticationConverter(
@@ -44,25 +39,20 @@ public class SecurityConfiguration {
                         )
                 )
         );
-
-        http
-                .sessionManagement((session) -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                );
         return http.build();
     }
 
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(List.of("*")); // Modify as needed
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(List.of("Authorization", "Content-Type"));
+        configuration.setAllowCredentials(true);
 
-
-    private UrlBasedCorsConfigurationSource corsConfigurationSource(String... origins) {
-        final var configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList(origins));
-        configuration.setAllowedMethods(List.of("*"));
-        configuration.setAllowedHeaders(List.of("*"));
-        configuration.setExposedHeaders(List.of("*"));
-
-        final var source = new UrlBasedCorsConfigurationSource();
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
+
 }
