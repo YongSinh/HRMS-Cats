@@ -1,7 +1,6 @@
 package com.cats.config;
 
 import lombok.AllArgsConstructor;
-import lombok.NonNull;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
