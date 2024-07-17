@@ -3,6 +3,7 @@ package com.cats.config;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -22,6 +23,13 @@ import java.util.List;
 @EnableWebFluxSecurity
 @ComponentScan
 public class SecurityConfiguration {
+
+    @Value("${role.admin}")
+    private String admin;
+    @Value("${role.hr}")
+    private String hr;
+    @Value("${role.user}")
+    private String user;
 
    private final JwtAuthConverter jwtAuthConverter;
    private static final Logger LOG = LoggerFactory.getLogger(SecurityConfig.class);

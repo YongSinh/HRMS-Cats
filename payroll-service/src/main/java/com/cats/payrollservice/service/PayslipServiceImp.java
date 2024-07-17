@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -29,8 +28,7 @@ public class PayslipServiceImp implements PayslipService {
     private final SalariesService salariesService;
     private final TaxService taxService;
     private final  ServiceCalculate serviceCalculate;
-    //private final  EmployeeAllowancesService employeeAllowancesService;
-//    private final EmployeeDeductionsService employeeDeductionsService;
+
     @Override
     public List<Payslip> create(PayslipReqDto payslipReqDto, List<Long> emId) {
         List<Payslip> payslipList = new ArrayList<>();

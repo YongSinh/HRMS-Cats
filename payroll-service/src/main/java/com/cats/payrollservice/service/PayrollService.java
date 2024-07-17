@@ -5,6 +5,7 @@ import com.cats.payrollservice.dto.request.PayslipReqDto;
 import com.cats.payrollservice.model.Payroll;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -13,6 +14,7 @@ public interface PayrollService {
     Payroll getPayrollById(Long id);
     Payroll update(Long id, PayrollReqDto payrollReqDto);
     List<Payroll> create(PayrollReqDto payrollReqDto, List<Long> emIds);
+    List<Payroll> createAllEmp(PayrollReqDto payrollReqDto) throws IOException;
     String generatePayrollReference();
     List<Payroll> getListPayroll();
     List<Payroll> getListPayRollByEmId(Long emId);

@@ -13,7 +13,9 @@ import io.swagger.v3.oas.models.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Flux;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.*;
@@ -28,6 +30,7 @@ public class PayrollServiceImp implements PayrollService {
     private final AllowancesService allowancesService;
     private final SalariesService salariesService;
     private final WebClient.Builder webClientBuilder;
+    private final  ApiService apiService;
 
     @Override
     public Payroll getPayrollById(Long id) {
@@ -53,6 +56,26 @@ public class PayrollServiceImp implements PayrollService {
 
     @Override
     public List<Payroll> create(PayrollReqDto payrollReqDto, List<Long> emIds) {
+        List<Payroll> payrollList = new ArrayList<>();
+        for (Long emId :emIds){
+            Payroll payroll = new Payroll();
+            String payrollReference = generatePayrollReference();
+            payroll.setEmpId(emId);
+            payroll.setRefNo(payrollReference);
+            payroll.setDateFrom(payrollReqDto.getDateFrom());
+            payroll.setDateTo(payrollReqDto.getDateTo());
+            payroll.setDateCreate(payrollReqDto.getDateCreate());
+            payroll.setType(payrollReqDto.getType());
+            payroll.setStatus(payrollReqDto.getStatus());
+            payrollList.add(payroll);
+        }
+        payrollRepo.saveAll(payrollList);
+        return payrollList;
+    }
+
+    @Override
+    public List<Payroll> createAllEmp(PayrollReqDto payrollReqDto) throws IOException {
+        Collection<Long> emIds = apiService.getListAllEmployeeOnlyEmId();
         List<Payroll> payrollList = new ArrayList<>();
         for (Long emId :emIds){
             Payroll payroll = new Payroll();

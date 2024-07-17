@@ -5,13 +5,18 @@ import com.cats.payrollservice.dto.request.PayrollReqDto;
 import com.cats.payrollservice.model.Allowances;
 import com.cats.payrollservice.model.Payroll;
 import com.cats.payrollservice.service.PayrollService;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.retry.annotation.Retry;
+import io.github.resilience4j.timelimiter.annotation.TimeLimiter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 @RestController
 @RequestMapping("/api/payrolls")
@@ -89,6 +94,36 @@ public class PayrollController {
                 .timestamp(LocalDateTime.now())
                 .data(payrollList)
                 .build();
+    }
+    @CircuitBreaker(name = "management", fallbackMethod = "fallbackMethod")
+    @TimeLimiter(name = "management")
+    @Retry(name = "management")
+    @PostMapping("/addPayrollAll")
+    public CompletableFuture<BaseApi<?>> addPayrollAll(@RequestPart("body") PayrollReqDto payrollReqDto)  {
+        return CompletableFuture.supplyAsync(() -> {
+            List<Payroll> payrollList;
+            try {
+                 payrollList =  payrollService.createAllEmp(payrollReqDto);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            return BaseApi.builder()
+                    .status(true)
+                    .code(HttpStatus.OK.value())
+                    .message("List All the Attendance")
+                    .timestamp(LocalDateTime.now())
+                    .data(payrollList)
+                    .build();
+        });
+    }
+
+    public CompletableFuture<BaseApi<Object>> fallbackMethod(PayrollReqDto payrollReqDto, Throwable throwable) {
+        return CompletableFuture.supplyAsync(() -> BaseApi.builder()
+                .status(false)
+                .code(HttpStatus.SERVICE_UNAVAILABLE.value())
+                .message("Service is currently unavailable. Please try again later.")
+                .timestamp(LocalDateTime.now())
+                .build());
     }
 
     @PutMapping("/updatePayroll")
