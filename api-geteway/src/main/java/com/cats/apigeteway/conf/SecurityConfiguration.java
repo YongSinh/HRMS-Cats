@@ -1,11 +1,10 @@
-package com.cats.config;
+package com.cats.apigeteway.conf;
 
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.SecurityConfig;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
@@ -15,15 +14,14 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.reactive.CorsConfigurationSource;
 import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
-
 
 @RequiredArgsConstructor
 @Configuration
 @EnableWebFluxSecurity
-@ComponentScan
 public class SecurityConfiguration {
-
     @Value("${role.admin}")
     private String admin;
     @Value("${role.hr}")
@@ -31,23 +29,32 @@ public class SecurityConfiguration {
     @Value("${role.user}")
     private String user;
 
-   private final JwtAuthConverter jwtAuthConverter;
-   private static final Logger LOG = LoggerFactory.getLogger(SecurityConfig.class);
+    private final JwtAuthConverter jwtAuthConverter;
+    private static final Logger LOG = LoggerFactory.getLogger(SecurityConfig.class);
     @Bean
-    public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
+    public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
         LOG.info("Configuring Security Web Filter Chain");
 
+        String[] AUTH_WHITELIST = {
+                // -- swagger ui
+                "/v2/api-docs",
+                "/swagger-resources/**",
+                "/configuration/ui",
+                "/configuration/security",
+                "/swagger-ui.html",
+                "/webjars/**"
+        };
         http
                 .csrf(ServerHttpSecurity.CsrfSpec::disable)
                 .authorizeExchange(exchanges -> {
                     LOG.info("Setting up route authorizations");
                     exchanges
-                            .pathMatchers("/actuator/**").permitAll()
-                            .pathMatchers("/eureka/**").permitAll()
-                            .pathMatchers("/openapi/**").permitAll()
-                            .pathMatchers("/webjars/**").permitAll()
+                            .pathMatchers("/actuator/**").hasRole(admin.toUpperCase())
+                            .pathMatchers(AUTH_WHITELIST).permitAll()
+                            .pathMatchers("/eureka/**", "/actuator/**", "/swagger-ui.html", "/v3/api-docs/**", "/swagger-ui/**").permitAll()
                             .anyExchange().authenticated();
                 })
+
                 .cors(cors -> {
                     LOG.info("Configuring CORS");
                     cors.configurationSource(corsConfigurationSource());
@@ -67,16 +74,14 @@ public class SecurityConfiguration {
         LOG.info("Configuring CORS Source");
 
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("*")); // Modify as needed
-        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(List.of("Authorization", "Content-Type"));
+        configuration.setAllowedOrigins(Collections.singletonList("*"));
+        configuration.setAllowedMethods(Arrays.asList("HEAD", "GET", "POST", "PUT", "DELETE", "PATCH", "OPTION"));
         configuration.setAllowCredentials(true);
-
+        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
 
         LOG.info("CORS Source configuration completed");
         return source;
     }
-
 }

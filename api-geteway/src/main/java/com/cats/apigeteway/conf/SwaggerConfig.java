@@ -1,4 +1,5 @@
-package com.cats.config;
+package com.cats.apigeteway.conf;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
@@ -6,7 +7,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 
-@SuppressWarnings("ALL")
 @Configuration
 @RequiredArgsConstructor
 public class SwaggerConfig {

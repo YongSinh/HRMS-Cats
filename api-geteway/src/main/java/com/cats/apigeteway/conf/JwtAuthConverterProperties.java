@@ -1,4 +1,4 @@
-package com.cats.config;
+package com.cats.apigeteway.conf;
 
 import lombok.Data;
 import lombok.RequiredArgsConstructor;

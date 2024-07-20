@@ -1,7 +1,9 @@
-package com.cats.config;
+package com.cats.apigeteway.conf;
 
 import lombok.AllArgsConstructor;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
@@ -24,10 +26,13 @@ import java.util.stream.Stream;
 @AllArgsConstructor
 public class JwtAuthConverter implements Converter<Jwt, Mono<? extends AbstractAuthenticationToken>> {
 
+    private static final Logger LOG = LoggerFactory.getLogger(JwtAuthConverter.class);
     private final JwtGrantedAuthoritiesConverter jwtGrantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
     private final JwtAuthConverterProperties properties;
+
     @Override
     public Mono<? extends AbstractAuthenticationToken> convert(@NotNull Jwt jwt) {
+        LOG.debug("Converting JWT to AuthenticationToken: {}", jwt);
         return Mono.justOrEmpty(buildAuthenticationToken(jwt));
     }
 
@@ -43,20 +48,26 @@ public class JwtAuthConverter implements Converter<Jwt, Mono<? extends AbstractA
         if (properties.getPrincipalAttribute() != null) {
             claimName = properties.getPrincipalAttribute();
         }
-        return jwt.getClaim(claimName);
+        String principal = jwt.getClaim(claimName);
+        LOG.debug("Extracted principal claim: {}", principal);
+        return principal;
     }
 
     @SuppressWarnings("unchecked")
     private Collection<? extends GrantedAuthority> extractResourceRoles(Jwt jwt) {
         final Map<String, Object> realmAccess = jwt.getClaim("realm_access");
-        final List<String> realmRoles = (List<String>) realmAccess.get("roles");
-
-        if (!realmRoles.isEmpty()) {
-            return realmRoles.stream()
-                    .map(role -> new SimpleGrantedAuthority("ROLE_" + role.toUpperCase()))
-                    .collect(Collectors.toSet());
+        if (realmAccess == null) {
+            LOG.warn("No realm_access claim in JWT");
+            return Collections.emptySet();
         }
-
-        return Collections.emptySet();
+        final List<String> realmRoles = (List<String>) realmAccess.get("roles");
+        if (realmRoles == null || realmRoles.isEmpty()) {
+            LOG.warn("No roles found in realm_access claim");
+            return Collections.emptySet();
+        }
+        LOG.debug("Extracted roles from JWT: {}", realmRoles);
+        return realmRoles.stream()
+                .map(role -> new SimpleGrantedAuthority("ROLE_" + role.toUpperCase()))
+                .collect(Collectors.toSet());
     }
 }

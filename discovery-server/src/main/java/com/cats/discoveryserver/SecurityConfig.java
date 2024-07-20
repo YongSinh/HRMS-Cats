@@ -12,14 +12,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.csrf(csrf -> csrf
                     .ignoringRequestMatchers("/eureka/**")
-            )
-            .authorizeHttpRequests(authorize -> authorize
-                    // your authorization configurations
-                    .anyRequest().authenticated()
-            )
-            // other configurations
-            .httpBasic(Customizer.withDefaults());
-
+            );
         return httpSecurity.build();
     }
 }
