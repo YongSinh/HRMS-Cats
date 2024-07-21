@@ -2,6 +2,7 @@ package com.cats.informationmanagementservice.service;
 
 import com.cats.informationmanagementservice.Dto.EmployeeDtoRep;
 import com.cats.informationmanagementservice.Dto.EmployeeDtoReq;
+import com.cats.informationmanagementservice.Dto.EmployeeInfo;
 import com.cats.informationmanagementservice.Dto.mapper;
 import com.cats.informationmanagementservice.model.Department;
 import com.cats.informationmanagementservice.model.Employee;
@@ -133,6 +134,11 @@ public class EmployeeServiceImp implements EmployeeService{
                 .stream(employeeRepo.findAll().spliterator(), false)
                 .toList();
         return mapper.EmployeeDtoRepToEmployeeDtoReps(employees);
+    }
+
+    @Override
+    public EmployeeInfo getEmpInfoByEmId(Long emId) {
+        return mapper.employeeToEmployeeInfoDto(getPersonalDataById(emId));
     }
 
     @Override

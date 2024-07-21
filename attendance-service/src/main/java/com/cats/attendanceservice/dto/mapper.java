@@ -1,12 +1,17 @@
 package com.cats.attendanceservice.dto;
 
+import com.cats.attendanceservice.model.Attendance;
 import com.cats.attendanceservice.model.Leave;
 import com.cats.attendanceservice.model.LeaveBalance;
+import com.cats.attendanceservice.service.ApiService;
+import com.fasterxml.jackson.databind.JsonNode;
+import lombok.RequiredArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
-
+@RequiredArgsConstructor
 public class mapper {
+    private final ApiService apiService;
     public static LeaveBalanceDtoRep leaveBalanceToBookResponseDto(LeaveBalance leaveBalance) {
         LeaveBalanceDtoRep leaveBalanceDtoRep = new LeaveBalanceDtoRep();
         leaveBalanceDtoRep.setId(leaveBalance.getId());
@@ -54,4 +59,5 @@ public class mapper {
         }
         return leaveDtoReps;
     }
+
 }

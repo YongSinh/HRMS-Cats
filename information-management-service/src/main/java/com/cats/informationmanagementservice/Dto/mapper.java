@@ -33,6 +33,25 @@ public class mapper {
         departmentDtoRep.setDepName(department.getDepName());
         return  departmentDtoRep;
     }
+
+    public static EmployeeInfo employeeToEmployeeInfoDto(Employee employee){
+        EmployeeInfo employeeInfo = new EmployeeInfo();
+        employeeInfo.setEmId(employee.getEmpId());
+        employeeInfo.setFullName(employee.getFirstName()+" "+employee.getLastName());
+        employeeInfo.setDepartment(employee.getDepartment().getDepName());
+        employeeInfo.setSection(employee.getPosition().getPoSection());
+        return  employeeInfo;
+    }
+
+    public static List<EmployeeInfo> employeeToEmployeeInfoDtos(List<Employee> employees){
+        List<EmployeeInfo> employeeInfo = new ArrayList<>();
+        for (Employee employee: employees) {
+            employeeInfo.add(employeeToEmployeeInfoDto(employee));
+        }
+        return  employeeInfo;
+    }
+
+
     public static EmployeeDtoRep EmployeeDtoRepToEmployeeDtoRep(Employee employee){
         EmployeeDtoRep emp = new EmployeeDtoRep();
         emp.setEmpId(employee.getEmpId());

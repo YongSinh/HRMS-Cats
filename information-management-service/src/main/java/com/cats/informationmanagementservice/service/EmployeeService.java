@@ -2,6 +2,7 @@ package com.cats.informationmanagementservice.service;
 
 import com.cats.informationmanagementservice.Dto.EmployeeDtoRep;
 import com.cats.informationmanagementservice.Dto.EmployeeDtoReq;
+import com.cats.informationmanagementservice.Dto.EmployeeInfo;
 import com.cats.informationmanagementservice.model.Employee;
 import org.springframework.http.codec.multipart.FilePart;
 import org.springframework.web.multipart.MultipartFile;
@@ -15,6 +16,7 @@ public interface EmployeeService {
     EmployeeDtoRep editPersonalData(EmployeeDtoReq employee, Long Id);
     List<EmployeeDtoRep> listEmployee();
 
+    EmployeeInfo getEmpInfoByEmId(Long emId);
     List<EmployeeDtoRep> getEmployeeByDep(Long depId);
     List<EmployeeDtoRep> getEmployeeByUnderManger(Long emId);
     List<EmployeeDtoRep> getEmployeeByDepAndPos(Long depId, String posId);

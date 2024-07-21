@@ -2,9 +2,13 @@ package com.cats.attendanceservice.service;
 
 import com.cats.attendanceservice.Util.DateUtils;
 import com.cats.attendanceservice.dto.AttendanceReqDto;
+import com.cats.attendanceservice.dto.LeaveDtoRep;
+import com.cats.attendanceservice.dto.ReportAttendanceDto;
 import com.cats.attendanceservice.events.ListEmpByEmpIdEvent;
 import com.cats.attendanceservice.model.Attendance;
+import com.cats.attendanceservice.model.Leave;
 import com.cats.attendanceservice.repository.AttendanceRepo;
+import com.fasterxml.jackson.databind.JsonNode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
@@ -27,6 +31,7 @@ import java.time.LocalTime;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -89,6 +94,36 @@ public class AttendanceServiceImp implements AttendanceService  {
         attendance.setRemark(attendanceReqDto.getRemark());
         return attendanceRepo.save(attendance);
     }
+
+    @Override
+    public List<ReportAttendanceDto> getReportByDateInBetweenAndEmId(LocalDate dateIn, LocalDate dateIn2, Long emId) throws IOException {
+        List<Attendance> attendances = findByDateInBetweenAndEmId(dateIn,dateIn2,emId);
+        return reportAttendanceDtoList(attendances,emId);
+    }
+
+    public List<ReportAttendanceDto> reportAttendanceDtoList( List<Attendance> attendanceList, Long emId) throws IOException {
+        JsonNode employeeInfo = apiService.getEmployeeInFoByEmId(emId);
+        if (employeeInfo == null) {
+            throw new IOException("Employee information not found for ID: " + emId);
+        }
+
+        String employeeName = employeeInfo.get("fullName").asText();
+        return attendanceList.stream()
+                .map(attendance -> {
+                    ReportAttendanceDto dto = new ReportAttendanceDto();
+                    dto.setName(employeeName);
+                    dto.setDateIn(attendance.getDateIn().toString());
+                    dto.setTimeIn(attendance.getTimeIn().toString());
+                    dto.setDateOut(attendance.getDateOut().toString());
+                    dto.setTimeOut(attendance.getTimeOut().toString());
+                    dto.setEmId(emId);
+                    dto.setRemark(attendance.getRemark());
+                    return dto;
+                })
+                .collect(Collectors.toList());
+    }
+
+
 
     @Override
     public String manualAsyncTimeIn() {
@@ -217,6 +252,7 @@ public class AttendanceServiceImp implements AttendanceService  {
                     LocalDate localDate = lastAttendanceOpt.get().getDateIn(); // Assuming the current date is used
                     Attendance attendance = getAttendanceByEmIdAndDateIn(localDate,emId);
                     if (attendance != null) {
+                        attendance.setDateOut(localDate);
                         attendance.setTimeOut(latestTimeOut);
                         attendanceRepo.save(attendance);
                         System.out.println("save");

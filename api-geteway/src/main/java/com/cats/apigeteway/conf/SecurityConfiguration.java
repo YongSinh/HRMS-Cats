@@ -52,7 +52,7 @@ public class SecurityConfiguration {
                             .pathMatchers("/actuator/**").hasRole(admin.toUpperCase())
                             .pathMatchers(AUTH_WHITELIST).permitAll()
                             .pathMatchers("/eureka/**", "/actuator/**", "/swagger-ui.html", "/v3/api-docs/**", "/swagger-ui/**").permitAll()
-                            .anyExchange().authenticated();
+                            .anyExchange().permitAll();
                 })
 
                 .cors(cors -> {

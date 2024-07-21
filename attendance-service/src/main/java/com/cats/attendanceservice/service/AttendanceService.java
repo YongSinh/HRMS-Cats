@@ -1,6 +1,7 @@
 package com.cats.attendanceservice.service;
 
 import com.cats.attendanceservice.dto.AttendanceReqDto;
+import com.cats.attendanceservice.dto.ReportAttendanceDto;
 import com.cats.attendanceservice.model.Attendance;
 import com.cats.attendanceservice.repository.AttendanceRepo;
 import org.hibernate.sql.ast.tree.expression.Collation;
@@ -19,6 +20,9 @@ public interface AttendanceService {
     List<Attendance> getListAttendanceForManger(Long emId);
     Attendance update(Long Id, AttendanceReqDto attendanceReqDto);
     Attendance create( AttendanceReqDto attendanceReqDto);
+
+    List<ReportAttendanceDto>  getReportByDateInBetweenAndEmId(LocalDate dateIn, LocalDate dateIn2, Long emId) throws IOException;
+
     Attendance getAttendanceById( Long id);
     Attendance getAttendanceByEmIdAndDateIn( LocalDate date, Long emId);
     String manualAsyncTimeIn();

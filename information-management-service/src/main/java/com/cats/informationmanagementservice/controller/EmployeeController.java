@@ -2,6 +2,7 @@ package com.cats.informationmanagementservice.controller;
 
 import com.cats.informationmanagementservice.Dto.EmployeeDtoRep;
 import com.cats.informationmanagementservice.Dto.EmployeeDtoReq;
+import com.cats.informationmanagementservice.Dto.EmployeeInfo;
 import com.cats.informationmanagementservice.Dto.FamilyDataDtoReq;
 import com.cats.informationmanagementservice.base.BaseApi;
 import com.cats.informationmanagementservice.model.Employee;
@@ -83,6 +84,19 @@ public class EmployeeController {
                 .data(employee)
                 .build();
     }
+
+    @GetMapping("/getEmpInfoById")
+    public BaseApi<?> getEmpInfoById(@RequestParam Long emId) {
+        EmployeeInfo employee = employeeService.getEmpInfoByEmId(emId);
+        return BaseApi.builder()
+                .status(true)
+                .code(HttpStatus.OK.value())
+                .message("Employee Id have been found")
+                .timestamp(LocalDateTime.now())
+                .data(employee)
+                .build();
+    }
+
     @GetMapping("/getEmployeeByUnderMangerOnlyEmId")
     public BaseApi<?> getEmployeeByUnderMangerOnlyEmId(@RequestParam Long emId) {
         List<EmployeeDtoRep> employee = employeeService.getEmployeeByUnderManger(emId);

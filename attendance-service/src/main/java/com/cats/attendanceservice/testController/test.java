@@ -3,6 +3,7 @@ package com.cats.attendanceservice.testController;
 import com.cats.attendanceservice.base.BaseApi;
 import com.cats.attendanceservice.listener.KafKaProducerService;
 import com.cats.attendanceservice.service.ApiService;
+import com.fasterxml.jackson.databind.JsonNode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -25,14 +26,15 @@ public class test {
         producerService.sendMessage(message);
     }
     @GetMapping("/test")
-    public BaseApi<?> getListAllEmployeeOnlyEmId() throws IOException {
-        Collection<Long> getList = apiService.getListAllEmployeeOnlyEmId();
+    public BaseApi<?> getListAllEmployeeOnlyEmId(@RequestParam Long emId) throws IOException {
+        JsonNode getList = apiService.getEmployeeInFoByEmId(emId);
         return BaseApi.builder()
                 .status(true)
                 .code(HttpStatus.OK.value())
                 .message("List All the Attendance")
                 .timestamp(LocalDateTime.now())
-                .data(getList)
+                .data(getList.get("emId"))
                 .build();
     }
+
 }

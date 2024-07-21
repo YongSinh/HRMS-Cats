@@ -84,4 +84,23 @@ public class ApiService {
         }
     }
 
+    public JsonNode getEmployeeInFoByEmId(Long emId) throws IOException {
+        WebFluxResponse response = webClientBuilder.build().get()
+                .uri("http://information-management-service/api/info/employee/getEmpInfoById",
+                        uriBuilder -> uriBuilder.queryParam("emId", emId).build()
+                        )
+                .retrieve()
+                .bodyToMono(WebFluxResponse.class)
+                .block();
+        if (response != null && response.getCode() == 200) {
+            ObjectMapper objectMapper = new ObjectMapper();
+            JsonNode jsonArray = objectMapper.readTree(response.getData().traverse());
+            System.out.println(jsonArray);
+            return jsonArray;
+        } else {
+            System.out.println("No employee IDs found or response status is not OK.");
+            return null;
+        }
+    }
+
 }
