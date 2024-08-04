@@ -170,14 +170,6 @@ public class PayslipServiceImp implements PayslipService {
             }
         }
 
-//        for (String allowance : allowances) {
-//            for (int i = 0; i < allowanceList.size(); i++) {
-//                if (allowanceList.get(i).equalsIgnoreCase(oldAllowance.trim())) {
-//                    allowanceList.set(i, allowance);
-//                    break;  // Assuming you only want to replace the first occurrence
-//                }
-//            }
-//        }
 
         // Join the updated allowance list back to a string
         String updatedAllowances = String.join(", ", allowanceList);
@@ -259,16 +251,6 @@ public class PayslipServiceImp implements PayslipService {
 
         // Convert the deductions string to a list
         List<String> deductionList = convertStringToList(update.getDeductions());
-
-        // Update the deduction list
-//        for (String deduction : deductions) {
-//            for (int i = 0; i < deductionList.size(); i++) {
-//                if (deductionList.get(i).equalsIgnoreCase(oldDeductions.trim())) {
-//                    deductionList.set(i, deduction);
-//                    break;  // Assuming you only want to replace the first occurrence
-//                }
-//            }
-//        }
 
         for (int i = 0; i < deductionList.size(); i++) {
             if (deductionList.get(i).equalsIgnoreCase(oldDeductions.trim())) {

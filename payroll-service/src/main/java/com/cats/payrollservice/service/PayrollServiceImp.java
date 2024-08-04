@@ -2,18 +2,16 @@ package com.cats.payrollservice.service;
 
 import com.cats.payrollservice.dto.WebFluxResponse;
 import com.cats.payrollservice.dto.request.PayrollReqDto;
-import com.cats.payrollservice.dto.request.PayslipReqDto;
-import com.cats.payrollservice.dto.response.SalariesRepDto;
 import com.cats.payrollservice.model.Payroll;
 import com.cats.payrollservice.model.Salaries;
-import com.cats.payrollservice.model.Tax;
+import com.cats.payrollservice.non_entity_POJO.PayrollAndPaySlip;
+import com.cats.payrollservice.repository.PayrollAndPayRepo;
 import com.cats.payrollservice.repository.PayrollRepo;
 import com.fasterxml.jackson.databind.JsonNode;
-import io.swagger.v3.oas.models.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Flux;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -31,6 +29,18 @@ public class PayrollServiceImp implements PayrollService {
     private final SalariesService salariesService;
     private final WebClient.Builder webClientBuilder;
     private final  ApiService apiService;
+    private final PayrollAndPayRepo payrollAndPayRepo;
+
+    @Override
+    @Transactional
+    public PayrollAndPaySlip getPayrollByRefNo2(String ref_no) {
+        return payrollAndPayRepo.GetPayrollByRefNo2(ref_no);
+    }
+    @Transactional
+    @Override
+    public List<PayrollAndPaySlip> getPayrollByCreateDate(String date) {
+        return payrollAndPayRepo.GetPayrollByCreateDate(date);
+    }
 
     @Override
     public Payroll getPayrollById(Long id) {

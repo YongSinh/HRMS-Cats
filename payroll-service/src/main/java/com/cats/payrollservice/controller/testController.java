@@ -1,18 +1,19 @@
 package com.cats.payrollservice.controller;
 
 import com.cats.payrollservice.base.BaseApi;
+import com.cats.payrollservice.non_entity_POJO.PayrollAndPaySlip;
+import com.cats.payrollservice.repository.PayrollAndPayRepo;
 import com.cats.payrollservice.service.ApiService;
+import com.cats.payrollservice.service.PayrollService;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import io.github.resilience4j.retry.annotation.Retry;
 import io.github.resilience4j.timelimiter.annotation.TimeLimiter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 @RestController
@@ -21,6 +22,20 @@ import java.util.concurrent.CompletableFuture;
 public class testController {
 
     private final ApiService apiService;
+    private final PayrollService payrollAndPayRepo;
+
+    @GetMapping("/test2")
+    public BaseApi<?> hello() {
+        PayrollAndPaySlip payrollAndPaySlip = payrollAndPayRepo.getPayrollByRefNo2("20240627223858-287562");
+        return BaseApi.builder()
+                .status(true)
+                .code(HttpStatus.OK.value())
+                .message("test done!")
+                .timestamp(LocalDateTime.now())
+                .data(payrollAndPaySlip)
+                .build();
+    }
+
 
     @CircuitBreaker(name = "management", fallbackMethod = "fallbackMethod")
     @TimeLimiter(name = "management")

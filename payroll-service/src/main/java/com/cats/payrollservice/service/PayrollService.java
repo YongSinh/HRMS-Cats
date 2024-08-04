@@ -3,6 +3,7 @@ package com.cats.payrollservice.service;
 import com.cats.payrollservice.dto.request.PayrollReqDto;
 import com.cats.payrollservice.dto.request.PayslipReqDto;
 import com.cats.payrollservice.model.Payroll;
+import com.cats.payrollservice.non_entity_POJO.PayrollAndPaySlip;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -22,4 +23,6 @@ public interface PayrollService {
     Double calculateNetSalary(Long emId, Double KhRate);
     List<Payroll> findPayRollByDepEmId(Long depId);
     void deletePayroll(Long id);
+    PayrollAndPaySlip getPayrollByRefNo2(String s);
+    List<PayrollAndPaySlip> getPayrollByCreateDate(String date);
 }

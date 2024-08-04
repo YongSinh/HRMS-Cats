@@ -4,6 +4,7 @@ import com.cats.payrollservice.base.BaseApi;
 import com.cats.payrollservice.dto.request.PayrollReqDto;
 import com.cats.payrollservice.model.Allowances;
 import com.cats.payrollservice.model.Payroll;
+import com.cats.payrollservice.non_entity_POJO.PayrollAndPaySlip;
 import com.cats.payrollservice.service.PayrollService;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import io.github.resilience4j.retry.annotation.Retry;
@@ -35,6 +36,33 @@ public class PayrollController {
                 .data(payrollList)
                 .build();
     }
+
+
+    @GetMapping("/user/getPayrollByRefNo")
+    public BaseApi<?> getPayrollByRefNo(@RequestParam String refNo) {
+        PayrollAndPaySlip payrollAndPaySlip = payrollService.getPayrollByRefNo2(refNo);
+        return BaseApi.builder()
+                .status(true)
+                .code(HttpStatus.OK.value())
+                .message("payroll have been found")
+                .timestamp(LocalDateTime.now())
+                .data(payrollAndPaySlip)
+                .build();
+    }
+
+    @GetMapping("/getPayrollByCreateDate")
+    public BaseApi<?> getPayrollByCreateDate(@RequestParam String date) {
+        List<PayrollAndPaySlip> payrollAndPaySlip = payrollService.getPayrollByCreateDate(date);
+        return BaseApi.builder()
+                .status(true)
+                .code(HttpStatus.OK.value())
+                .message("payroll have been found")
+                .timestamp(LocalDateTime.now())
+                .data(payrollAndPaySlip)
+                .build();
+    }
+
+
     @GetMapping("/payrollByEmId")
     public BaseApi<?> getListPayrollByEmId(@RequestParam Long emId) {
         List<Payroll> payrollList = payrollService.getListPayRollByEmId(emId);
