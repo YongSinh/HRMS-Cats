@@ -26,6 +26,7 @@
 	<parameter name="payslipDataset" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource"/>
 	<parameter name="refNo" class="java.lang.String"/>
 	<parameter name="Parameter1" class="java.lang.String"/>
+	<parameter name="tax_rate" class="java.lang.Double"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -94,13 +95,6 @@
 				<textFieldExpression><![CDATA[$P{payPeriod}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="130" y="161" width="120" height="20" uuid="8b95d75c-d9af-4d33-97b3-4b12bfeea7e7"/>
-				<textElement verticalAlignment="Middle">
-					<font fontName="Arial"/>
-				</textElement>
-				<textFieldExpression><![CDATA["Text Field"]]></textFieldExpression>
-			</textField>
-			<textField>
 				<reportElement x="0" y="116" width="100" height="20" uuid="fcba8e88-2e9b-4cd7-a952-cce9bfdb5fe1"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial"/>
@@ -162,6 +156,13 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$P{section}]]></textFieldExpression>
 			</textField>
+			<textField>
+				<reportElement x="130" y="161" width="100" height="20" uuid="92d570c2-9fe8-4c49-91ad-b7513ed243cf"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{tax_rate}]]></textFieldExpression>
+			</textField>
 		</band>
 	</title>
 	<detail>
@@ -214,7 +215,7 @@
 			<textField>
 				<reportElement x="457" y="170" width="100" height="18" uuid="10520514-0695-4d5b-b305-ae327170940f"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA["Text Field"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{total_deductions}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="457" y="100" width="100" height="18" uuid="3f23e2ca-167c-48b2-a945-376de4ae05df"/>
@@ -231,7 +232,7 @@
 			<textField>
 				<reportElement x="454" y="248" width="100" height="18" uuid="e39de515-3bd8-40a6-9fbf-3a3f5984a6b0"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA["Text Field"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{total_deductions}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="327" y="248" width="100" height="18" uuid="1520d8f2-4794-4dfa-ad8d-d93a3ce1d39f">
@@ -243,7 +244,7 @@
 			<textField>
 				<reportElement x="454" y="275" width="100" height="18" uuid="1768e1ed-1a77-4946-9ed6-8f6c0e5a4ae4"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA["Text Field"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{net}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="327" y="275" width="100" height="18" uuid="b295f934-59ed-4c05-8463-7279c0498ce4">
