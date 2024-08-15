@@ -70,10 +70,10 @@ public class PayslipServiceImp implements PayslipService {
         double salary=0.0;
         Payslip payslip = getPaySlipById(id);
         Salaries salaries = salariesService.getSalary(payslip.getEmpId());
-        payslip.setAllowances(payslipReqDto.getAllowances());
-        payslip.setAllowanceAmount(payslipReqDto.getAllowanceAmount());
-        payslip.setDeductions(payslipReqDto.getDeductions());
-        payslip.setDeductionAmount(payslipReqDto.getDeductionAmount());
+//        payslip.setAllowances(payslipReqDto.getAllowances());
+//        payslip.setAllowanceAmount(payslipReqDto.getAllowanceAmount());
+//        payslip.setDeductions(payslipReqDto.getDeductions());
+//        payslip.setDeductionAmount(payslipReqDto.getDeductionAmount());
         Payroll payroll = payrollService.getPayRollByEmIdAndCreateDate(payslip.getEmpId(), payslipReqDto.getPayrollDate());
         payslip.setPayroll(payroll);
         if(payroll.getType() == 1){

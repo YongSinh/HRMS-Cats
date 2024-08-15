@@ -12,10 +12,10 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @RequiredArgsConstructor
 public class PayslipReqDto {
-    private Double allowanceAmount;
-    private String allowances;
-    private Double deductionAmount;
-    private String deductions;
+//    private Double allowanceAmount;
+//    private String allowances;
+//    private Double deductionAmount;
+//    private String deductions;
     private LocalDateTime dateCreated;
     private Double khmerRate;
     private LocalDate payrollDate;
