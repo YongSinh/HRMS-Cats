@@ -14,6 +14,11 @@ import java.time.LocalDate;
                 resultSetMappings = "GetPayrollMapping"
         ),
         @NamedStoredProcedureQuery(
+                name = "GetListPayroll",
+                procedureName = "GetListPayroll",
+                resultSetMappings = "GetPayrollMapping"
+        ),
+        @NamedStoredProcedureQuery(
                 name = "GetPayrollByCreateDate",
                 procedureName = "GetPayrollByCreateDate",
                 resultSetMappings = "GetPayrollMapping"

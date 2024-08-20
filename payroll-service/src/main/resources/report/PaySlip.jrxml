@@ -1,16 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.21.3.final using JasperReports Library version 6.21.3-4a3078d20785ebe464f18037d738d12fc98c13cf  -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="PaySlip" pageWidth="595" pageHeight="651" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="ad9d158f-8e02-471a-b031-032c6a2e3b25">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="PaySlip" pageWidth="595" pageHeight="586" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="ad9d158f-8e02-471a-b031-032c6a2e3b25">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
-	<property name="com.jaspersoft.studio.unit." value="cm"/>
-	<property name="com.jaspersoft.studio.unit.pageHeight" value="cm"/>
-	<property name="com.jaspersoft.studio.unit.pageWidth" value="cm"/>
-	<property name="com.jaspersoft.studio.unit.topMargin" value="cm"/>
-	<property name="com.jaspersoft.studio.unit.bottomMargin" value="cm"/>
-	<property name="com.jaspersoft.studio.unit.leftMargin" value="cm"/>
-	<property name="com.jaspersoft.studio.unit.rightMargin" value="cm"/>
-	<property name="com.jaspersoft.studio.unit.columnWidth" value="cm"/>
-	<property name="com.jaspersoft.studio.unit.columnSpacing" value="cm"/>
 	<subDataset name="payslipDataset" uuid="58f66269-a6e6-4c07-a4f8-c894a16b1b62">
 		<queryString>
 			<![CDATA[]]>
@@ -36,7 +27,7 @@
 	<field name="deductions" class="java.lang.String"/>
 	<field name="total_deductions" class="java.lang.Double"/>
 	<field name="net" class="java.lang.Double"/>
-	<field name="total_earning" class="java.lang.String"/>
+	<field name="total_earning" class="java.lang.Double"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -88,21 +79,21 @@
 				<text><![CDATA[Tax]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="0" y="161" width="100" height="20" uuid="a63be7f1-8eb3-456f-932e-eddb2ff66ad3"/>
+				<reportElement x="0" y="155" width="100" height="20" uuid="a63be7f1-8eb3-456f-932e-eddb2ff66ad3"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{payPeriod}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="0" y="116" width="100" height="20" uuid="fcba8e88-2e9b-4cd7-a952-cce9bfdb5fe1"/>
+				<reportElement x="0" y="110" width="100" height="20" uuid="fcba8e88-2e9b-4cd7-a952-cce9bfdb5fe1"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{date}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="130" y="116" width="120" height="20" uuid="7409bd7b-aa94-4882-ae57-d4fbf128fa89"/>
+				<reportElement x="130" y="110" width="120" height="20" uuid="7409bd7b-aa94-4882-ae57-d4fbf128fa89"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial"/>
 				</textElement>
@@ -157,7 +148,7 @@
 				<textFieldExpression><![CDATA[$P{section}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="130" y="161" width="100" height="20" uuid="92d570c2-9fe8-4c49-91ad-b7513ed243cf"/>
+				<reportElement x="130" y="155" width="100" height="20" uuid="92d570c2-9fe8-4c49-91ad-b7513ed243cf"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial"/>
 				</textElement>
@@ -166,7 +157,7 @@
 		</band>
 	</title>
 	<detail>
-		<band height="328" splitType="Stretch">
+		<band height="252" splitType="Stretch">
 			<staticText>
 				<reportElement x="0" y="0" width="180" height="22" uuid="535b122b-d36a-44e3-8366-9e76de4a48db"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
@@ -198,56 +189,56 @@
 				<textFieldExpression><![CDATA[$F{total_allowances}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="140" width="180" height="22" uuid="da204ad0-c008-4910-82b9-b3f0771527db"/>
+				<reportElement x="0" y="114" width="180" height="22" uuid="da204ad0-c008-4910-82b9-b3f0771527db"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="Arial" size="13" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Deduction]]></text>
 			</staticText>
 			<line>
-				<reportElement x="1" y="162" width="557" height="1" uuid="6e2a306b-1770-4834-ac64-01b9eca36950"/>
+				<reportElement x="1" y="136" width="557" height="1" uuid="6e2a306b-1770-4834-ac64-01b9eca36950"/>
 			</line>
 			<textField textAdjust="StretchHeight">
-				<reportElement x="0" y="170" width="370" height="18" uuid="6d96fe10-15de-4698-a561-4c413e080fd8"/>
+				<reportElement x="0" y="144" width="370" height="18" uuid="6d96fe10-15de-4698-a561-4c413e080fd8"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$P{department}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="457" y="170" width="100" height="18" uuid="10520514-0695-4d5b-b305-ae327170940f"/>
+				<reportElement x="457" y="144" width="100" height="18" uuid="10520514-0695-4d5b-b305-ae327170940f"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{total_deductions}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="457" y="100" width="100" height="18" uuid="3f23e2ca-167c-48b2-a945-376de4ae05df"/>
+				<reportElement x="457" y="82" width="100" height="18" uuid="3f23e2ca-167c-48b2-a945-376de4ae05df"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{total_earning}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="330" y="100" width="100" height="18" uuid="6f05fdb5-9992-4a4e-9310-42d01452052d">
+				<reportElement x="330" y="82" width="100" height="18" uuid="6f05fdb5-9992-4a4e-9310-42d01452052d">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
 				<text><![CDATA[Total Earnings]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="454" y="248" width="100" height="18" uuid="e39de515-3bd8-40a6-9fbf-3a3f5984a6b0"/>
+				<reportElement x="454" y="207" width="100" height="18" uuid="e39de515-3bd8-40a6-9fbf-3a3f5984a6b0"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{total_deductions}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="327" y="248" width="100" height="18" uuid="1520d8f2-4794-4dfa-ad8d-d93a3ce1d39f">
+				<reportElement x="327" y="207" width="100" height="18" uuid="1520d8f2-4794-4dfa-ad8d-d93a3ce1d39f">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
 				<text><![CDATA[Total Deduction]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="454" y="275" width="100" height="18" uuid="1768e1ed-1a77-4946-9ed6-8f6c0e5a4ae4"/>
+				<reportElement x="454" y="234" width="100" height="18" uuid="1768e1ed-1a77-4946-9ed6-8f6c0e5a4ae4"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{net}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="327" y="275" width="100" height="18" uuid="b295f934-59ed-4c05-8463-7279c0498ce4">
+				<reportElement x="327" y="234" width="100" height="18" uuid="b295f934-59ed-4c05-8463-7279c0498ce4">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
@@ -255,7 +246,4 @@
 			</staticText>
 		</band>
 	</detail>
-	<pageFooter>
-		<band height="54" splitType="Stretch"/>
-	</pageFooter>
 </jasperReport>

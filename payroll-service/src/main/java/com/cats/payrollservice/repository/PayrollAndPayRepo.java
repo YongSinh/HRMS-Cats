@@ -16,5 +16,7 @@ public interface PayrollAndPayRepo extends JpaRepository<PayrollAndPaySlip, Stri
     List<PayrollAndPaySlip> GetPayrollByCreateDate(@Param("createDate") String createDate);
     @Procedure(procedureName = "GetPayrollByCreateDate")
     List<PayrollAndPaySlip> GetPayrollWithTaxForUser(@Param("emId") Long emId);
+    @Procedure(procedureName = "GetListPayroll")
+    List<PayrollAndPaySlip> GetListPayroll();
 
 }
