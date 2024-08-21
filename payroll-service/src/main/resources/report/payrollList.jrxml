@@ -51,9 +51,8 @@
 		<field name="deductions" class="java.lang.String"/>
 		<field name="total_deductions" class="java.lang.Double"/>
 		<field name="net" class="java.lang.Double"/>
-		<field name="Field_1" class="java.lang.String"/>
-		<field name="date" class="java.sql.Date"/>
-		<field name="tax_rate" class="java.lang.String"/>
+		<field name="date" class="java.lang.String"/>
+		<field name="tax_rate" class="java.lang.Double"/>
 	</subDataset>
 	<parameter name="username" class="java.lang.String"/>
 	<parameter name="department" class="java.lang.String"/>
@@ -62,7 +61,7 @@
 	<parameter name="endDate" class="java.lang.String"/>
 	<parameter name="startDate" class="java.lang.String"/>
 	<parameter name="catsLogo" class="java.lang.String"/>
-	<parameter name="attendanceDataset" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource"/>
+	<parameter name="payslipDataset" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -119,8 +118,8 @@
 					<property name="com.jaspersoft.studio.table.style.detail" value="Table_TD"/>
 				</reportElement>
 				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
-					<datasetRun subDataset="Dataset1" uuid="01336038-d956-4b63-95b2-2b9b1a61b73a">
-						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<datasetRun subDataset="Dataset1" uuid="b6b4d0ee-d768-44f1-9931-273256b53807">
+						<dataSourceExpression><![CDATA[$P{payslipDataset}]]></dataSourceExpression>
 					</datasetRun>
 					<jr:column width="40" uuid="4f43b7d0-2202-4b62-a6d2-0723343d4381">
 						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column1"/>
@@ -132,9 +131,10 @@
 							</staticText>
 						</jr:columnHeader>
 						<jr:detailCell style="Table_TD" height="30">
-							<textField>
+							<textField textAdjust="StretchHeight">
 								<reportElement x="0" y="0" width="40" height="30" uuid="d6192a7f-0a34-43ec-860f-260bdc83ec6a"/>
-								<textElement verticalAlignment="Middle"/>
+								<box leftPadding="2" rightPadding="1"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
 								<textFieldExpression><![CDATA[$F{empId}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
@@ -149,9 +149,10 @@
 							</staticText>
 						</jr:columnHeader>
 						<jr:detailCell style="Table_TD" height="30">
-							<textField>
+							<textField textAdjust="StretchHeight">
 								<reportElement x="0" y="0" width="90" height="30" uuid="fe1bd2f6-4fea-477b-a804-7717291e1137"/>
-								<textElement verticalAlignment="Middle"/>
+								<box leftPadding="2" rightPadding="1"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
 								<textFieldExpression><![CDATA[$F{ref_no}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
@@ -166,9 +167,10 @@
 							</staticText>
 						</jr:columnHeader>
 						<jr:detailCell style="Table_TD" height="30">
-							<textField>
+							<textField textAdjust="StretchHeight">
 								<reportElement x="0" y="0" width="70" height="30" uuid="1c8b1399-fba9-42a3-a5d3-020d9be3870b"/>
-								<textElement verticalAlignment="Middle"/>
+								<box leftPadding="2" rightPadding="1"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
 								<textFieldExpression><![CDATA[$F{salary}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
@@ -184,9 +186,10 @@
 						</jr:columnHeader>
 						<jr:detailCell style="Table_TD" height="30">
 							<property name="com.jaspersoft.studio.unit.width" value="px"/>
-							<textField>
+							<textField textAdjust="StretchHeight">
 								<reportElement x="0" y="0" width="59" height="30" uuid="4abdf5cf-dbb2-4505-8df7-cb0f65ab9d6a"/>
-								<textElement verticalAlignment="Middle"/>
+								<box leftPadding="2" rightPadding="1"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
 								<textFieldExpression><![CDATA[$F{type}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
@@ -201,9 +204,10 @@
 							</staticText>
 						</jr:columnHeader>
 						<jr:detailCell style="Table_TD" height="30">
-							<textField>
+							<textField textAdjust="StretchHeight">
 								<reportElement x="0" y="0" width="70" height="30" uuid="08c68da0-eeef-49f9-8b8b-4ffbd2a9639a"/>
-								<textElement verticalAlignment="Middle"/>
+								<box leftPadding="2" rightPadding="1"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
 								<textFieldExpression><![CDATA[$F{allowances}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
@@ -218,9 +222,10 @@
 							</staticText>
 						</jr:columnHeader>
 						<jr:detailCell style="Table_TD" height="30">
-							<textField>
+							<textField textAdjust="StretchHeight">
 								<reportElement x="0" y="0" width="90" height="30" uuid="d6142a0f-5208-4477-b6a4-1dea3e4039c7"/>
-								<textElement verticalAlignment="Middle"/>
+								<box leftPadding="2" rightPadding="1"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
 								<textFieldExpression><![CDATA[$F{total_allowances}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
@@ -235,9 +240,10 @@
 							</staticText>
 						</jr:columnHeader>
 						<jr:detailCell style="Table_TD" height="30">
-							<textField>
+							<textField textAdjust="StretchHeight">
 								<reportElement x="0" y="0" width="70" height="30" uuid="9db2dcaf-cf4c-41fb-b08c-060f9bca82c6"/>
-								<textElement verticalAlignment="Middle"/>
+								<box leftPadding="2" rightPadding="1"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
 								<textFieldExpression><![CDATA[$F{deductions}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
@@ -252,9 +258,10 @@
 							</staticText>
 						</jr:columnHeader>
 						<jr:detailCell style="Table_TD" height="30">
-							<textField>
+							<textField textAdjust="StretchHeight">
 								<reportElement x="0" y="0" width="99" height="30" uuid="21f3f2de-1b97-4aec-9bda-36c63e424f7f"/>
-								<textElement verticalAlignment="Middle"/>
+								<box leftPadding="2" rightPadding="1"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
 								<textFieldExpression><![CDATA[$F{total_deductions}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
@@ -269,9 +276,10 @@
 							</staticText>
 						</jr:columnHeader>
 						<jr:detailCell style="Table_TD" height="30">
-							<textField>
+							<textField textAdjust="StretchHeight">
 								<reportElement x="0" y="0" width="63" height="30" uuid="402734f0-c9d1-405a-bbfc-12b97a88edf3"/>
-								<textElement verticalAlignment="Middle"/>
+								<box leftPadding="2" rightPadding="1"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
 								<textFieldExpression><![CDATA[$F{net}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
@@ -286,9 +294,10 @@
 							</staticText>
 						</jr:columnHeader>
 						<jr:detailCell style="Table_TD" height="30">
-							<textField>
+							<textField textAdjust="StretchHeight">
 								<reportElement x="0" y="0" width="49" height="30" uuid="07d9832a-517d-43a3-a86a-2543e9c42146"/>
-								<textElement verticalAlignment="Middle"/>
+								<box leftPadding="2" rightPadding="1"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
 								<textFieldExpression><![CDATA[$F{tax_rate}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
@@ -303,9 +312,10 @@
 							</staticText>
 						</jr:columnHeader>
 						<jr:detailCell style="Table_TD" height="30">
-							<textField>
+							<textField textAdjust="StretchHeight">
 								<reportElement x="0" y="0" width="99" height="30" uuid="8b38fe6b-e6b3-4069-beee-e70ef73bb813"/>
-								<textElement verticalAlignment="Middle"/>
+								<box leftPadding="2" rightPadding="1"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
 								<textFieldExpression><![CDATA[$F{date}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>

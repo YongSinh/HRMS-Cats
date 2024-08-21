@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -18,6 +19,7 @@ import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
+
 public class PayslipReportServiceImp implements PayslipReportService{
     private final PayrollAndPayRepo payrollAndPayRepo;
     @Value(value = "${file.image-path-cats.logo}")
@@ -59,14 +61,43 @@ public class PayslipReportServiceImp implements PayslipReportService{
         JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport(filePath),parameters, beanCollectionDataSource(Collections.singletonList(paySlip)));
         return JasperExportManager.exportReportToPdf(jasperPrint);
     }
+    @Transactional
+    @Override
+    public byte[] getPayslipListReport(Long emId) throws IOException, JRException {
+        JsonNode employeeInfo = apiService.getEmployeeInFoByEmId(emId);
+        if (employeeInfo == null) {
+            throw new IOException("Employee information not found for ID: " + emId);
+        }
 
+        String employeeName = employeeInfo.get("fullName").asText();
+        String department = employeeInfo.get("department").asText();
+        String section = employeeInfo.get("section").asText();
+        String filePath = report_path+ "report/payrollList.jrxml";
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put("catsLogo", catsLogo_path);
+        parameters.put("emId",emId);
+        parameters.put("username", employeeName);
+        parameters.put("department", department);
+        parameters.put("section",section);
+        parameters.put("payslipDataset", beanCollectionDataSource(getListPaySlip()));
+        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport(filePath),parameters, new JREmptyDataSource());
+        return JasperExportManager.exportReportToPdf(jasperPrint);
+    }
+    @Transactional
+    @Override
+    public byte[] getPayslipListReportByDate(LocalDate date) throws IOException, JRException {
+        return new byte[0];
+    }
+    @Transactional
     @Override
     public List<PayrollAndPaySlip> getListPayslipForEmp(Long emId) {
         return payrollAndPayRepo.GetPayrollWithTaxForUser(emId);
     }
-
+    @Transactional
     @Override
     public List<PayrollAndPaySlip> getListPaySlip() {
         return payrollAndPayRepo.GetListPayroll();
     }
+
+
 }

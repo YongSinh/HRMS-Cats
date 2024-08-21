@@ -23,7 +23,7 @@ public class ReportController {
     private final PayslipReportService payslipReportService;
 
     @GetMapping("/report/payslip")
-    public ResponseEntity<?> getUserAttendanceReport(@RequestParam(name = "refNo") String refNo) throws JRException, IOException {
+    public ResponseEntity<?> getUserAttendangetPayslipForEmpceReport(@RequestParam(name = "refNo") String refNo) throws JRException, IOException {
         byte[] reportContent = payslipReportService.getPayslipForEmp(refNo);
 
         ByteArrayResource arrayResource = new ByteArrayResource(reportContent);
@@ -34,6 +34,22 @@ public class ReportController {
                 .header(HttpHeaders.CONTENT_DISPOSITION,
                         ContentDisposition.inline()
                                 .filename("payslip.pdf")
+                                .build().toString())
+                .body(arrayResource);
+    }
+
+    @GetMapping("/report/listPayslip")
+    public ResponseEntity<?> getlistPayslip(@RequestParam(name = "emId") Long emId) throws JRException, IOException {
+        byte[] reportContent = payslipReportService.getPayslipListReport(emId);
+
+        ByteArrayResource arrayResource = new ByteArrayResource(reportContent);
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_PDF)
+                .contentLength(arrayResource.contentLength())
+                .header(HttpHeaders.CONTENT_DISPOSITION,
+                        ContentDisposition.inline()
+                                .filename("payslip-list.pdf")
                                 .build().toString())
                 .body(arrayResource);
     }

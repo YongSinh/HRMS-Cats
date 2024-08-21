@@ -45,7 +45,7 @@ import java.time.LocalDate;
                         @ColumnResult(name = "total_deductions", type = Double.class),
                         @ColumnResult(name = "total_earning", type = Double.class),
                         @ColumnResult(name = "net", type = Double.class),
-                        @ColumnResult(name = "date", type = LocalDate.class),
+                        @ColumnResult(name = "date", type = String.class),
                         @ColumnResult(name = "tax_rate", type = Double.class),
                 }
         )
@@ -65,6 +65,6 @@ public class PayrollAndPaySlip {
     private Double total_deductions;
     private Double total_earning;
     private Double net;
-    private LocalDate date;
+    private String date;
     private Double tax_rate;
 }
