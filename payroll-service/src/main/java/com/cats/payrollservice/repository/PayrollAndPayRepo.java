@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Repository
@@ -13,7 +14,7 @@ public interface PayrollAndPayRepo extends JpaRepository<PayrollAndPaySlip, Stri
     @Procedure(procedureName = "GetPayrollByRefNo2")
     PayrollAndPaySlip GetPayrollByRefNo2(@Param("ref_no") String ref_no);
     @Procedure(procedureName = "GetPayrollByCreateDate")
-    List<PayrollAndPaySlip> GetPayrollByCreateDate(@Param("createDate") String createDate);
+    List<PayrollAndPaySlip> GetPayrollByCreateDate(@Param("createDate") LocalDate createDate);
     @Procedure(procedureName = "GetPayrollByCreateDate")
     List<PayrollAndPaySlip> GetPayrollWithTaxForUser(@Param("emId") Long emId);
     @Procedure(procedureName = "GetListPayroll")

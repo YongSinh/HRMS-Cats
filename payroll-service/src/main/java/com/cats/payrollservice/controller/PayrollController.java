@@ -50,17 +50,17 @@ public class PayrollController {
                 .build();
     }
 
-    @GetMapping("/getPayrollByCreateDate")
-    public BaseApi<?> getPayrollByCreateDate(@RequestParam String date) {
-        List<PayrollAndPaySlip> payrollAndPaySlip = payrollService.getPayrollByCreateDate(date);
-        return BaseApi.builder()
-                .status(true)
-                .code(HttpStatus.OK.value())
-                .message("payroll have been found")
-                .timestamp(LocalDateTime.now())
-                .data(payrollAndPaySlip)
-                .build();
-    }
+//    @GetMapping("/getPayrollByCreateDate")
+//    public BaseApi<?> getPayrollByCreateDate(@RequestParam String date) {
+//        List<PayrollAndPaySlip> payrollAndPaySlip = payrollService.getPayrollByCreateDate(date);
+//        return BaseApi.builder()
+//                .status(true)
+//                .code(HttpStatus.OK.value())
+//                .message("payroll have been found")
+//                .timestamp(LocalDateTime.now())
+//                .data(payrollAndPaySlip)
+//                .build();
+//    }
 
 
     @GetMapping("/payrollByEmId")

@@ -24,5 +24,5 @@ public interface PayrollService {
     List<Payroll> findPayRollByDepEmId(Long depId);
     void deletePayroll(Long id);
     PayrollAndPaySlip getPayrollByRefNo2(String s);
-    List<PayrollAndPaySlip> getPayrollByCreateDate(String date);
+
 }

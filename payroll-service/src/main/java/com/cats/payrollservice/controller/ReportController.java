@@ -53,4 +53,18 @@ public class ReportController {
                                 .build().toString())
                 .body(arrayResource);
     }
+
+    @GetMapping("/report/listPayslipByDate")
+    public ResponseEntity<?> getlistPayslipByDate(@RequestParam(name = "emId") Long emId, @RequestParam(name = "date") LocalDate date) throws JRException, IOException {
+        byte[] reportContent = payslipReportService.getPayslipReportByDate(date,emId);
+        ByteArrayResource arrayResource = new ByteArrayResource(reportContent);
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_PDF)
+                .contentLength(arrayResource.contentLength())
+                .header(HttpHeaders.CONTENT_DISPOSITION,
+                        ContentDisposition.inline()
+                                .filename("payslip-list.pdf")
+                                .build().toString())
+                .body(arrayResource);
+    }
 }

@@ -36,11 +36,6 @@ public class PayrollServiceImp implements PayrollService {
     public PayrollAndPaySlip getPayrollByRefNo2(String ref_no) {
         return payrollAndPayRepo.GetPayrollByRefNo2(ref_no);
     }
-    @Transactional
-    @Override
-    public List<PayrollAndPaySlip> getPayrollByCreateDate(String date) {
-        return payrollAndPayRepo.GetPayrollByCreateDate(date);
-    }
 
     @Override
     public Payroll getPayrollById(Long id) {

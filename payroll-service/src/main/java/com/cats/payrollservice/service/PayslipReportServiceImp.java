@@ -32,6 +32,13 @@ public class PayslipReportServiceImp implements PayslipReportService{
         return  JasperCompileManager.compileReport(filePath);
     }
 
+    public JsonNode employeeInfo(Long emId) throws IOException {
+        JsonNode employeeInfo = apiService.getEmployeeInFoByEmId(emId);
+        if (employeeInfo == null) {
+            throw new IOException("Employee information not found for ID: " + emId);
+        }
+        return employeeInfo;
+    }
     private JRBeanCollectionDataSource beanCollectionDataSource (List<?> objects){
         return  new JRBeanCollectionDataSource(objects);
     }
@@ -64,14 +71,10 @@ public class PayslipReportServiceImp implements PayslipReportService{
     @Transactional
     @Override
     public byte[] getPayslipListReport(Long emId) throws IOException, JRException {
-        JsonNode employeeInfo = apiService.getEmployeeInFoByEmId(emId);
-        if (employeeInfo == null) {
-            throw new IOException("Employee information not found for ID: " + emId);
-        }
 
-        String employeeName = employeeInfo.get("fullName").asText();
-        String department = employeeInfo.get("department").asText();
-        String section = employeeInfo.get("section").asText();
+        String employeeName = employeeInfo(emId).get("fullName").asText();
+        String department = employeeInfo(emId).get("department").asText();
+        String section = employeeInfo(emId).get("section").asText();
         String filePath = report_path+ "report/payrollList.jrxml";
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("catsLogo", catsLogo_path);
@@ -90,9 +93,35 @@ public class PayslipReportServiceImp implements PayslipReportService{
     }
     @Transactional
     @Override
+    public byte[] getPayslipReportByDate(LocalDate date, Long emId) throws IOException, JRException {
+
+        String employeeName = employeeInfo(emId).get("fullName").asText();
+        String department = employeeInfo(emId).get("department").asText();
+        String section = employeeInfo(emId).get("section").asText();
+        String filePath = report_path+ "report/payrollList.jrxml";
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put("catsLogo", catsLogo_path);
+        parameters.put("emId",emId);
+        parameters.put("username", employeeName);
+        parameters.put("department", department);
+        parameters.put("section",section);
+        parameters.put("payslipDataset", beanCollectionDataSource(getPayrollByCreateDate(date)));
+        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport(filePath),parameters, new JREmptyDataSource());
+        return JasperExportManager.exportReportToPdf(jasperPrint);
+
+    }
+
+    @Transactional
+    @Override
     public List<PayrollAndPaySlip> getListPayslipForEmp(Long emId) {
         return payrollAndPayRepo.GetPayrollWithTaxForUser(emId);
     }
+
+    @Override
+    public List<PayrollAndPaySlip> getPayrollByCreateDate(LocalDate date) {
+        return payrollAndPayRepo.GetPayrollByCreateDate(date);
+    }
+
     @Transactional
     @Override
     public List<PayrollAndPaySlip> getListPaySlip() {

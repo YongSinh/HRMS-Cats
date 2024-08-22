@@ -12,6 +12,10 @@ public interface PayslipReportService {
 
     byte[] getPayslipListReport(Long emId) throws IOException, JRException;
     byte[] getPayslipListReportByDate(LocalDate date) throws IOException, JRException;
+
+    byte[] getPayslipReportByDate(LocalDate date,Long emId) throws IOException, JRException;
     List<PayrollAndPaySlip> getListPayslipForEmp(Long emId);
+
+    List<PayrollAndPaySlip> getPayrollByCreateDate(LocalDate date);
     List<PayrollAndPaySlip> getListPaySlip();
 }
