@@ -41,15 +41,14 @@
 		<queryString>
 			<![CDATA[]]>
 		</queryString>
-		<field name="emId" class="java.lang.Long"/>
+		<field name="empId" class="java.lang.Long"/>
 		<field name="startDate" class="java.lang.String"/>
 		<field name="endDate" class="java.lang.String"/>
-		<field name="dateOut" class="java.lang.String"/>
 		<field name="reason" class="java.lang.String"/>
 		<field name="remark" class="java.lang.String"/>
-		<field name="approved" class="java.lang.String"/>
-		<field name="cancell" class="java.lang.String"/>
-		<field name="day" class="java.lang.Integer"/>
+		<field name="approved" class="java.lang.Boolean"/>
+		<field name="cancelled" class="java.lang.Boolean"/>
+		<field name="dayOfLeave" class="java.lang.Integer"/>
 	</subDataset>
 	<parameter name="username" class="java.lang.String"/>
 	<parameter name="department" class="java.lang.String"/>
@@ -131,7 +130,7 @@
 							<textField>
 								<reportElement x="0" y="0" width="90" height="30" uuid="da188c09-be42-42d0-bf84-ea96808566cb"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle"/>
-								<textFieldExpression><![CDATA[$F{emId}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{empId}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
@@ -197,11 +196,11 @@
 						</jr:columnHeader>
 						<jr:detailCell style="Table_TD" height="30">
 							<property name="com.jaspersoft.studio.unit.width" value="px"/>
-							<textField>
-								<reportElement x="0" y="0" width="70" height="30" uuid="17217ba9-3032-426d-8391-f346df32492d"/>
+							<staticText>
+								<reportElement x="0" y="0" width="70" height="30" uuid="f7ddc2fa-fbd5-4310-87ae-a1cc8efa6d3c"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle"/>
-								<textFieldExpression><![CDATA[$F{approved}]]></textFieldExpression>
-							</textField>
+								<text><![CDATA[Approved]]></text>
+							</staticText>
 						</jr:detailCell>
 					</jr:column>
 					<jr:column width="70" uuid="963e5644-a75a-49a8-b61e-11fccefdd00c">
@@ -214,11 +213,11 @@
 							</staticText>
 						</jr:columnHeader>
 						<jr:detailCell style="Table_TD" height="30">
-							<textField>
-								<reportElement x="0" y="0" width="70" height="30" uuid="00e05f54-d830-4e0d-bd37-57bc9d36d478"/>
+							<staticText>
+								<reportElement x="0" y="0" width="70" height="30" uuid="527f2215-af77-4b52-8bfc-d91389ac4681"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle"/>
-								<textFieldExpression><![CDATA[$F{cancell}]]></textFieldExpression>
-							</textField>
+								<text><![CDATA[No]]></text>
+							</staticText>
 						</jr:detailCell>
 					</jr:column>
 					<jr:column width="70" uuid="785124c3-860a-4db7-ac38-8f18d7808f8e">
@@ -234,7 +233,7 @@
 							<textField>
 								<reportElement x="0" y="0" width="70" height="30" uuid="e33c53b4-fe37-4486-8ea5-c59013a3cab8"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle"/>
-								<textFieldExpression><![CDATA[$F{day}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{dayOfLeave}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>

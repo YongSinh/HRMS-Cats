@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 
@@ -14,21 +13,14 @@ import java.time.LocalTime;
 @Getter
 @AllArgsConstructor
 @RequiredArgsConstructor
-public class LeaveDtoRep {
-    private Long Id;
+public class LeaveApplyDtoReq {
     private Long empId;
-    private String startDate;
-    private String endDate;
+    private LocalDate startDate;
+    private LocalDate endDate;
     private LocalTime timeOfHaftDay;
     private String reason;
-    private String leaveType;
-    private Boolean status;
-    private Boolean cancelled;
-    private Boolean approved;
-    private Boolean approvedByManger;
-    private Boolean approvedByHead;
-    private Boolean approvedByHr;
+    private String leaveTypeId;
     private String remark;
-        private Integer dayOfLeave;
+    private Integer dayOfLeave;
     private LocalDate createdAt;
 }

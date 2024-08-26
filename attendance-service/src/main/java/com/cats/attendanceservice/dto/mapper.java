@@ -35,10 +35,11 @@ public class mapper {
         LeaveDtoRep leaveDtoRep = new LeaveDtoRep();
         leaveDtoRep.setId(leave.getLeaveId());
         leaveDtoRep.setEmpId(leave.getEmpId());
-        leaveDtoRep.setStartDate(leave.getStartDate());
-        leaveDtoRep.setEndDate(leave.getEndDate());
+        leaveDtoRep.setStartDate(leave.getStartDate().toString());
+        leaveDtoRep.setEndDate(leave.getEndDate().toString());
         leaveDtoRep.setLeaveType(leave.getLeaveType().getLeaveTitle());
         leaveDtoRep.setStatus(leave.getStatus());
+        leaveDtoRep.setReason(leave.getReason());
         leaveDtoRep.setApproved(leave.getApproved());
         leaveDtoRep.setCancelled(leave.getCancelled());
         leaveDtoRep.setApprovedByManger(leave.getApprovedByManger());

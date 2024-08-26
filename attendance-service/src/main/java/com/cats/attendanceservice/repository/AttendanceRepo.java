@@ -25,7 +25,6 @@ public interface AttendanceRepo extends JpaRepository<Attendance, Long> {
     //@Query("SELECT a FROM Attendance a WHERE a.emId = :emId ORDER BY a.timeIn DESC")
     Optional<Attendance> findLastTimeInByEmId(@Param("emId") Long emId);
 
-
     //@Query("SELECT a FROM Attendance a WHERE a.emId = :emId ORDER BY a.timeOut DESC")
     Optional<Attendance> findLastTimeOutByEmId(@Param("emId") Long emId);
 }

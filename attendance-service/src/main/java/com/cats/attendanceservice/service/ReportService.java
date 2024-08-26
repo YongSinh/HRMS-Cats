@@ -8,5 +8,7 @@ import java.time.LocalDate;
 
 public interface ReportService {
     byte[] getAttendanceReportByEmId(LocalDate date, LocalDate date2, Long emId) throws IOException, JRException;
+    byte[] getLeaveByEmIdAndDateBetween(LocalDate date, LocalDate date2, Long emId) throws IOException, JRException;
 
+    byte[] getLeaveAndDateBetween(LocalDate date, LocalDate date2, Long emId) throws IOException, JRException;
 }

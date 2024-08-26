@@ -15,7 +15,6 @@ import java.time.LocalTime;
 @AllArgsConstructor
 @RequiredArgsConstructor
 public class LeaveDtoReq {
-    private Long Id;
     private Long empId;
     private LocalDate startDate;
     private LocalDate endDate;

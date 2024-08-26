@@ -17,5 +17,5 @@ public class LeaveBalanceListDtoReq {
         private List<Long> empId;
         private Long balanceAmount;
         private LocalDateTime lastUpdateDate;
-        private String leaveType;
+        private List<String> leaveType;
 }

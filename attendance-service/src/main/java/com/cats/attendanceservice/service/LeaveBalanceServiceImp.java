@@ -22,20 +22,23 @@ public class LeaveBalanceServiceImp implements LeaveBalanceService{
         if(leaveBalanceListDtoReq.getLeaveType().isEmpty()){
             throw new IllegalArgumentException("leave type is empty latest on leave Balances");
         }
+        for (String typeId : leaveBalanceListDtoReq.getLeaveType()){
         for (Long emId : leaveBalanceListDtoReq.getEmpId()){
             LeaveBalance leaveBalance = new LeaveBalance();
             leaveBalance.setEmpId(emId);
             leaveBalance.setLastUpdateDate(leaveBalanceListDtoReq.getLastUpdateDate());
-            LeaveType leaveType2 = leaveTypeService.getLeave(leaveBalanceListDtoReq.getLeaveType());
+            LeaveType leaveType2 = leaveTypeService.getLeave(typeId);
             leaveBalance.setLeaveType(leaveType2);
             leaveBalance.setBalanceAmount(leaveType2.getLeaveDayPerYear());
             leaveBalances.add(leaveBalance);
         }
+        }
+
             return leaveBalanceRepo.saveAll(leaveBalances);
         }
 
     @Override
-    public  LeaveBalance  edit(LeaveBalanceRepDto leaveBalanceRepDto, Long Id) {
+    public  LeaveBalance edit(LeaveBalanceRepDto leaveBalanceRepDto, Long Id) {
         LeaveBalance leaveBalance = getLeaveBalance(Id);
         leaveBalance.setEmpId(leaveBalanceRepDto.getEmpId());
         leaveBalance.setLastUpdateDate(leaveBalanceRepDto.getLastUpdateDate());

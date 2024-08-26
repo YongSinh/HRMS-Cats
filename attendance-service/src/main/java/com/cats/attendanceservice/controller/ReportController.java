@@ -43,5 +43,24 @@ public class ReportController {
     }
 
 
+    @GetMapping("/report/leaveListDateBetween")
+    public ResponseEntity<?> getLeaveAndDateBetween(@RequestParam(name = "startDate") LocalDate startDate,
+                                                     @RequestParam(name = "endDate") LocalDate endDate,
+                                                     @RequestParam(name = "emId") Long emId
+    ) throws JRException, IOException {
+        LocalDate localDate = LocalDate.now();
+        byte[] reportContent = reportService.getLeaveAndDateBetween(startDate,endDate,emId);
+
+        ByteArrayResource arrayResource = new ByteArrayResource(reportContent);
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_PDF)
+                .contentLength(arrayResource.contentLength())
+                .header(HttpHeaders.CONTENT_DISPOSITION,
+                        ContentDisposition.inline()
+                                .filename("leave-report.pdf")
+                                .build().toString())
+                .body(arrayResource);
+    }
 
 }
