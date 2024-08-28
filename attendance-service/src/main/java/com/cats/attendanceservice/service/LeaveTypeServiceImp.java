@@ -30,13 +30,14 @@ public class LeaveTypeServiceImp implements LeaveTypeService{
         leaveType1.setLeaveDayPerYear(leaveTypeReqDto.getLeaveDayPerYear());
         return leaveTypeRepo.save(leaveType1);
     }
-
+    @Transactional
     @Override
     public LeaveType edit(LeaveTypeReqDto leaveTypeReqDto, String Id) {
         LeaveType leaveType1 = getLeave(Id);
         leaveType1.setLeaveDes(leaveTypeReqDto.getLeaveDes());
         leaveType1.setLeaveTitle(leaveTypeReqDto.getLeaveTitle());
         leaveType1.setLeaveDayPerYear(leaveTypeReqDto.getLeaveDayPerYear());
+        updateLeaveBalance(Id, leaveTypeReqDto.getLeaveDayPerYear());
         return leaveTypeRepo.save(leaveType1);
     }
 

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -94,7 +95,7 @@ public class LeaveBalanceServiceImp implements LeaveBalanceService{
 
     @Override
     public void deleteByLeaveType(String Id) {
-        LeaveBalance leaveBalance = leaveBalanceRepo.findByLeaveType_Id(Id);
-        leaveBalanceRepo.delete(leaveBalance);
+        List<LeaveBalance> leaveBalance = leaveBalanceRepo.findByLeaveType_Id(Id);
+        leaveBalanceRepo.deleteAll(leaveBalance);
     }
 }
