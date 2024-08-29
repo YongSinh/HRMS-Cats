@@ -6,5 +6,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class DepartmentDtoRep {
     private Long Id;
+    private String depFullName;
     private String depName;
 }

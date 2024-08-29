@@ -7,6 +7,6 @@ import lombok.RequiredArgsConstructor;
 @Data
 @NoArgsConstructor
 public class DepartmentDtoReq {
-    private Long Id;
     private String depName;
+    private String depFullName;
 }

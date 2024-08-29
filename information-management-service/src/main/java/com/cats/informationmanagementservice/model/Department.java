@@ -23,6 +23,8 @@ public class Department {
     private Long depId;
     @Column(name = "depName")
     private String depName;
+    @Column(name = "depFullName")
+    private String depFullName;
     @JsonManagedReference
     @JsonIgnore
     @OneToMany(mappedBy = "department", cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.LAZY)

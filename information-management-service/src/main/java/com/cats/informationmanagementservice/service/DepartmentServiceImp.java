@@ -25,6 +25,7 @@ public class DepartmentServiceImp implements DepartmentService{
     public Department addDepartment(DepartmentDtoReq departmentDtoReq) {
         Department department = new Department();
         department.setDepName(departmentDtoReq.getDepName());
+        department.setDepFullName(departmentDtoReq.getDepFullName());
         return departmentRepo.save(department);
     }
 
@@ -39,6 +40,7 @@ public class DepartmentServiceImp implements DepartmentService{
     public Department editDepartment(Long Id, DepartmentDtoReq departmentDtoReq) {
         Department department = getDepById(Id);
         department.setDepName(departmentDtoReq.getDepName());
+        department.setDepFullName(departmentDtoReq.getDepFullName());
         return departmentRepo.save(department);
     }
 
