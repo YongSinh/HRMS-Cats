@@ -34,7 +34,7 @@ public class PositionController {
     }
     @GetMapping("/position")
     public BaseApi<?> Position() {
-        List<Position> position = positionService.getListPosition();
+        List<PositionDtoRep> position = positionService.getListPosition();
         return BaseApi.builder()
                 .status(true)
                 .code(HttpStatus.OK.value())

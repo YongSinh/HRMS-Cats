@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PositionDtoReq {
+    private String poId;
     private String posName;
     private Long depId;
     private String poSection;

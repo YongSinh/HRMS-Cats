@@ -9,7 +9,7 @@ import java.util.List;
 public interface PositionService {
     Position getPositionById (String Id);
     Position addPosition (PositionDtoReq positionDtoReq);
-    List<Position> getListPosition();
+    List<PositionDtoRep> getListPosition();
     Position editPosition (PositionDtoReq positionDtoReq, String Id);
     PositionDtoRep deletePosition(String Id);
 }

@@ -29,6 +29,7 @@ public class PositionServiceImp implements  PositionService{
     @Override
     public Position addPosition(PositionDtoReq positionDtoReq) {
         Position position = new Position();
+        position.setPosId(positionDtoReq.getPoId());
         position.setPosName(positionDtoReq.getPosName());
         position.setPoSection(positionDtoReq.getPoSection());
         position.setPoLevel(positionDtoReq.getPoLevel());
@@ -41,8 +42,9 @@ public class PositionServiceImp implements  PositionService{
     }
 
     @Override
-    public List<Position> getListPosition() {
-        return positionRepo.findAll();
+    public List<PositionDtoRep> getListPosition() {
+
+        return mapper.PosToPositionResponseDtos(positionRepo.findAll());
     }
 
     @Override
