@@ -18,7 +18,7 @@ public class AllowancesServiceImp implements AllowancesService{
     public Allowances create(AllowancesReqDto allowancesReqDto) {
         Allowances allowances = new Allowances();
         allowances.setAllowances(allowancesReqDto.getAllowances());
-        allowances.setDescription(allowancesReqDto.getAllowances());
+        allowances.setDescription(allowancesReqDto.getDescription());
         allowancesRepo.save(allowances);
         return allowances;
     }
@@ -27,7 +27,7 @@ public class AllowancesServiceImp implements AllowancesService{
     public Allowances update(AllowancesReqDto allowancesReqDto, Long Id) {
         Allowances allowances = getAllowancesBytId(Id);
         allowances.setAllowances(allowancesReqDto.getAllowances());
-        allowances.setDescription(allowancesReqDto.getAllowances());
+        allowances.setDescription(allowancesReqDto.getDescription());
         allowancesRepo.save(allowances);
         return allowances;
     }

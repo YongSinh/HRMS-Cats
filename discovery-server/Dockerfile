@@ -1,0 +1,12 @@
+# Use a base image with GraalVM and Java 17
+FROM findepi/graalvm:java17
+# Set the working directory within the container
+WORKDIR /app
+EXPOSE 8761
+# Copy your application JAR file to the container
+COPY ./target/discovery-server-0.0.1-SNAPSHOT.jar /app
+
+# Define the entry point to run your Java application
+ENTRYPOINT ["java", "-jar", "discovery-server-0.0.1-SNAPSHOT.jar"]
+
+

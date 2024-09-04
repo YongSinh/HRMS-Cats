@@ -43,14 +43,13 @@ public class DeductionController {
     }
     @DeleteMapping("/deductions/deleteDeductionById")
     public BaseApi<?> deleteDeductionById( @RequestParam Long id) {
-        Deductions deductions = deductionsService.getDeductionsById(id);
         deductionsService.delete(id);
         return BaseApi.builder()
                 .status(true)
                 .code(HttpStatus.OK.value())
                 .message("deductions have been delete")
                 .timestamp(LocalDateTime.now())
-                .data(deductions)
+                .data("deductions have been delete")
                 .build();
     }
     @GetMapping("/deductions/getDeductionById")
