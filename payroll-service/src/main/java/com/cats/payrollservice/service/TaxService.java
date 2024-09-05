@@ -14,5 +14,6 @@ public interface TaxService {
     Tax getTaxById(Long id);
     void deleteTax(Long id);
     Double taxCalculator( Double salary);
+    Tax getTaxRateBySalary (Double salary);
 }
 

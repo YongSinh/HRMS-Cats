@@ -24,6 +24,7 @@ public class TaxServiceImp implements TaxService{
         add.setUpperLimit(tax.getUpperLimit());
         return taxRepo.save(add);
     }
+
     @Override
     public Double taxCalculator( Double salary) {
         List<Tax> taxes = taxRepo.findByUpperLimitGreaterThanEqualOrderByLowerLimitAsc(salary);
@@ -46,6 +47,12 @@ public class TaxServiceImp implements TaxService{
 
         return tax;
     }
+
+    @Override
+    public Tax getTaxRateBySalary(Double salary) {
+        return taxRepo.findRateBySalary(salary);
+    }
+
     @Override
     public Tax updateTax(TaxReqDto tax, Long taxId) {
         Tax update = getTaxById(taxId);

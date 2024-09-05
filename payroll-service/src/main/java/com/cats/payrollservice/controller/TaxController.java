@@ -64,6 +64,18 @@ public class TaxController {
                 .build();
     }
 
+    @GetMapping("/getTaxRateBySalary")
+    public BaseApi<?> getTaxRateBySalary(@RequestParam Double salary) {
+        Tax tax1 = taxService.getTaxRateBySalary(salary);
+        return BaseApi.builder()
+                .status(true)
+                .code(HttpStatus.OK.value())
+                .message("Tax have been found")
+                .timestamp(LocalDateTime.now())
+                .data(tax1)
+                .build();
+    }
+
     @GetMapping("/taxCalculator")
     public BaseApi<?> taxCalculator(@RequestParam Double salary) {
         Double tax1 = taxService.taxCalculator(salary);
