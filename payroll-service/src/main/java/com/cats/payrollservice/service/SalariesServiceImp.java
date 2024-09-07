@@ -10,6 +10,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 @Service
 @RequiredArgsConstructor
@@ -32,6 +33,27 @@ public class SalariesServiceImp implements SalariesService {
         salaries.setTax(tax);
         return mapper.salariesToSalariesResponseDto(salariesRepo.save(salaries));
     }
+
+    @Override
+    public List<SalariesRepDto> addSalaryList(SalariesReqDto salariesReqDto, List<Long> emId) {
+        List<Salaries> salariesList = new ArrayList<>();
+        for (Long emIds : emId){
+            Salaries salaries = new Salaries();
+            salaries.setSalary(salariesReqDto.getSalary());
+            salaries.setFromDate(salariesReqDto.getFromDate());
+            salaries.setToDate(salariesReqDto.getToDate());
+            salaries.setEmpId(emIds);
+            if (salariesReqDto.getTaxId() == null) {
+                throw new IllegalArgumentException("Tax atleast on");
+            }
+            Tax tax = taxService.getTaxById(salariesReqDto.getTaxId());
+            salaries.setTax(tax);
+            salariesList.add(salaries);
+        }
+        salariesRepo.saveAll(salariesList);
+        return mapper.salariesToSalariesResponseDtos(salariesList);
+    }
+
     @Transactional
     @Override
     public SalariesRepDto editSalary(SalariesReqDto salariesReqDto, Long id) {

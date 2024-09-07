@@ -31,6 +31,20 @@ public class SalariesController {
                 .build();
     }
 
+    @PostMapping("/addSalaryList")
+    public BaseApi<?> addSalaryList(
+            @RequestPart("body") SalariesReqDto salariesReqDto, @RequestPart("body") List<Long> emId) {
+        List<SalariesRepDto> salaries= salariesService.addSalaryList(salariesReqDto, emId);
+        return BaseApi.builder()
+                .status(true)
+                .code(HttpStatus.OK.value())
+                .message("Salaries have been added")
+                .timestamp(LocalDateTime.now())
+                .data(salaries)
+                .build();
+    }
+
+
     @PutMapping ("/editSalary")
     public BaseApi<?> editSalary(@RequestBody SalariesReqDto salariesReqDto, @RequestParam Long id) {
         SalariesRepDto salaries= salariesService.editSalary(salariesReqDto, id);

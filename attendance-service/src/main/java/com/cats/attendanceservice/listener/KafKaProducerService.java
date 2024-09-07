@@ -32,7 +32,7 @@ public class KafKaProducerService {
     private final KafkaTemplate<String, User> userKafkaTemplate;
 
     public void sendMessage(String message) {
-        CompletableFuture<SendResult<String, String>> future = kafkaTemplate.send(topicName, message);
+        CompletableFuture<SendResult<String, String>> future = kafkaTemplate.send("test", message);
         System.out.println("Sent message: {} with offset: {}"+ message);
         future.whenComplete((result, throwable) -> {
             if (throwable != null) {

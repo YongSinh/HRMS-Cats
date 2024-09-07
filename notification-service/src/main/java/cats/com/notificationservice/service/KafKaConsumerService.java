@@ -20,6 +20,13 @@ public class KafKaConsumerService {
         log.info(String.format("Message received -> %s", message));
     }
 
+    @KafkaListener(topics = "test", groupId = "${general.topic.group.id}", containerFactory = "kafkaListenerContainerFactory")
+    public void consumeTest(String message) {
+        System.out.println("Sent message: {} with test offset: {}"+ message);
+        log.info(String.format("Message received test-> %s", message));
+    }
+
+
 //    @KafkaListener(topics = "${general.topic.name}",
 //            groupId = "${general.topic.group.id}")
 //	public void handleNotification(ListEmpByEmpIdEvent listEmpByEmpIdEvent) {

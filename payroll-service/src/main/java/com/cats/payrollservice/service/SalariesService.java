@@ -10,6 +10,7 @@ import java.util.List;
 public interface SalariesService {
 
     SalariesRepDto addSalary(SalariesReqDto salariesReqDto);
+    List<SalariesRepDto> addSalaryList(SalariesReqDto salariesReqDto, List<Long> emId);
     SalariesRepDto editSalary(SalariesReqDto salariesReqDto, Long id);
     SalariesRepDto getSalaryById(Long id);
     List<SalariesRepDto> getListSalary();
