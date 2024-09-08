@@ -129,7 +129,7 @@ public class AttendanceController {
                 .data(getList)
                 .build();
     }
-    @GetMapping("/attendance/manualAsyncTimeIn")
+    @PostMapping("/attendance/manualAsyncTimeIn")
     public BaseApi<?> manualAsyncTimeIn() {
         String manualAsyncTimeIn = attendanceService.manualAsyncTimeIn();
         return BaseApi.builder()
@@ -141,7 +141,7 @@ public class AttendanceController {
                 .build();
     }
 
-    @GetMapping("/attendance/manualAsyncTimeOut")
+    @PutMapping("/attendance/manualAsyncTimeOut")
     public BaseApi<?> manualAsyncTimeOut() {
         String manualAsyncTimeOut = attendanceService.manualAsyncTimeOut();
         return BaseApi.builder()

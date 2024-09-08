@@ -1,4 +1,0 @@
-Ac-No                    Name                     sTime              Verify Mode          Machine              Exception  
-1                        2023                    3/19/2024 8:08 AM  FP/PW/RF/FACE        FP1
-1                        2043                    3/19/2024 8:10 AM  FP/PW/RF/FACE        FP1
-1                        2013                    3/19/2024 8:12 AM  FP/PW/RF/FACE        FP1

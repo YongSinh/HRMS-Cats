@@ -4,6 +4,7 @@ import com.cats.attendanceservice.Util.DateUtils;
 import com.cats.attendanceservice.dto.AttendanceReqDto;
 import com.cats.attendanceservice.dto.LeaveDtoRep;
 import com.cats.attendanceservice.dto.ReportAttendanceDto;
+import com.cats.attendanceservice.dto.TimeAndDate;
 import com.cats.attendanceservice.events.ListEmpByEmpIdEvent;
 import com.cats.attendanceservice.model.Attendance;
 import com.cats.attendanceservice.model.Leave;
@@ -27,7 +28,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -146,99 +150,119 @@ public class AttendanceServiceImp implements AttendanceService  {
     private void processTimeInFile(File file) {
         try {
             List<String> lines = Files.readAllLines(file.toPath());
-            System.out.println("Processing File: " + file.getName());
+            DateTimeFormatter dateOnlyFormatter = DateTimeFormatter.ofPattern("M/d/yyyy");
+
+            // Regex patterns
             Pattern pattern = Pattern.compile("\\d{1,2}/\\d{1,2}/\\d{4} \\d{1,2}:\\d{2} [AP]M");
             Pattern acNoPattern = Pattern.compile("\\b\\d{4}\\b");
+            Pattern dateInPattern = Pattern.compile("\\d{1,2}/\\d{1,2}/\\d{4}");
 
-            // Use a map to store the last timeIn for each emId
-            Map<Long, LocalTime> latestTimeInMap = new HashMap<>();
+            // Map to store the latest Time and Date for each emId
+            Map<Long, TimeAndDate> latestTimeInMap = new HashMap<>();
 
             for (String line : lines) {
-                Matcher matcher = pattern.matcher(line);
+                Matcher timeMatcher = pattern.matcher(line);
                 Matcher acNoMatcher = acNoPattern.matcher(line);
-                System.out.println("line1");
-                if (matcher.find() && acNoMatcher.find()) {
-                    String time = matcher.group();
+                Matcher dateMatcher = dateInPattern.matcher(line);
+
+                if (timeMatcher.find() && acNoMatcher.find() && dateMatcher.find()) {
+                    String time = timeMatcher.group();
                     String acNo = acNoMatcher.group();
-                    System.out.println("line2");
-                    System.out.println(time);
                     Date date = dateFormat.parse(time);
-                    System.out.println(date);
+                    String dateString = dateMatcher.group();
+
                     LocalTime localTime = date.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalTime();
-                   // LocalDate localDate = date.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate();
+                    LocalDate localDate = LocalDate.parse(dateString, dateOnlyFormatter);
 
                     Long emId = Long.valueOf(acNo);
 
-                    // Keep track of the latest timeIn for each emId
-                    latestTimeInMap.put(emId, localTime);
+                    // Update the map with the latest time and date for each emId
+                    latestTimeInMap.put(emId, new TimeAndDate(localTime, localDate));
                 }
             }
 
             // Process and save the latest timeIn for each emId
-            for (Map.Entry<Long, LocalTime> entry : latestTimeInMap.entrySet()) {
+            for (Map.Entry<Long, TimeAndDate> entry : latestTimeInMap.entrySet()) {
                 Long emId = entry.getKey();
-                LocalTime latestTimeIn = entry.getValue();
-                System.out.println("line3");
-                // Retrieve the last timeIn for the given emId
-                Optional<Attendance> lastAttendanceOpt = attendanceRepo.findLastTimeInByEmId(emId);
+                LocalTime latestTimeIn = entry.getValue().getLocalTime();
+                LocalDate latestDateIn = entry.getValue().getLocalDate();
+
+                // Fetch the last recorded attendance for this employee ID and date
+                Optional<Attendance> lastAttendanceOpt = attendanceRepo.findLastTimeInByEmId(emId, latestDateIn);
                 if (lastAttendanceOpt.isPresent()) {
                     LocalTime lastTimeIn = lastAttendanceOpt.get().getTimeIn();
-                    if (!latestTimeIn.isAfter(lastTimeIn)) {
-                        System.out.println("Duplicate or out-of-order entry found for Ac-No: " + emId + " and Time In: " + latestTimeIn);
+                    LocalDate lastDateIn = lastAttendanceOpt.get().getDateIn();
+                    // Check date and time conditions
+                    if (latestDateIn.isAfter(lastDateIn)) {
+                        System.out.println("Newer date entry found for Ac-No: " + emId);
+                    } else if (latestDateIn.isEqual(lastDateIn) && latestTimeIn.isAfter(lastTimeIn)) {
+                        System.out.println("Newer time entry found for Ac-No: " + emId);
+                    } else {
+                        System.out.println("Duplicate or out-of-order entry for Ac-No: " + emId);
                         continue;
                     }
                 }
-                System.out.println("Save");
-                Attendance  attendance = new Attendance();
-                attendance.setDateIn(LocalDate.now());
+
+                // Save the latest attendance entry
+                Attendance attendance = new Attendance();
+                attendance.setDateIn(latestDateIn);
                 attendance.setEmId(emId);
                 attendance.setTimeIn(latestTimeIn);
                 attendanceRepo.save(attendance);
 
             }
-
             moveProcessedFile(file);
         } catch (IOException e) {
             System.err.println("Error reading file: " + file.getName());
             e.printStackTrace();
-        } catch (ParseException e) {
-            System.err.println("Error parsing date in file: " + file.getName());
+        } catch (DateTimeParseException e) {
+            System.err.println("Error parsing date/time in file: " + file.getName());
             e.printStackTrace();
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
         }
     }
+
     private void processTimeOutFile(File file) {
         try {
             List<String> lines = Files.readAllLines(file.toPath());
-            System.out.println("Processing File: " + file.getName());
+            DateTimeFormatter dateOnlyFormatter = DateTimeFormatter.ofPattern("M/d/yyyy");
+            // Regex patterns
             Pattern pattern = Pattern.compile("\\d{1,2}/\\d{1,2}/\\d{4} \\d{1,2}:\\d{2} [AP]M");
             Pattern acNoPattern = Pattern.compile("\\b\\d{4}\\b");
+            Pattern dateInPattern = Pattern.compile("\\d{1,2}/\\d{1,2}/\\d{4}");
 
-            // Use a map to store the last timeOut for each emId
-            Map<Long, LocalTime> latestTimeOutMap = new HashMap<>();
+            // Map to store the latest Time and Date for each emId
+            Map<Long, TimeAndDate> latestTimeInMap = new HashMap<>();
 
             for (String line : lines) {
-                Matcher matcher = pattern.matcher(line);
+                Matcher timeMatcher = pattern.matcher(line);
                 Matcher acNoMatcher = acNoPattern.matcher(line);
-                if (matcher.find() && acNoMatcher.find()) {
-                    String time = matcher.group();
+                Matcher dateMatcher = dateInPattern.matcher(line);
+
+                if (timeMatcher.find() && acNoMatcher.find() && dateMatcher.find()) {
+                    String time = timeMatcher.group();
                     String acNo = acNoMatcher.group();
                     Date date = dateFormat.parse(time);
+                    String dateString = dateMatcher.group();
+
                     LocalTime localTime = date.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalTime();
+                    LocalDate localDate = LocalDate.parse(dateString, dateOnlyFormatter);
 
                     Long emId = Long.valueOf(acNo);
 
-                    // Keep track of the latest timeOut for each emId
-                    latestTimeOutMap.put(emId, localTime);
+                    // Update the map with the latest time and date for each emId
+                    latestTimeInMap.put(emId, new TimeAndDate(localTime, localDate));
                 }
             }
 
             // Process and save the latest timeOut for each emId
-            for (Map.Entry<Long, LocalTime> entry : latestTimeOutMap.entrySet()) {
+            for (Map.Entry<Long, TimeAndDate> entry : latestTimeInMap.entrySet()) {
                 Long emId = entry.getKey();
-                LocalTime latestTimeOut = entry.getValue();
-                System.out.println(latestTimeOut);
+                LocalTime latestTimeOut = entry.getValue().getLocalTime();
+                LocalDate latestDateIn = entry.getValue().getLocalDate();
                 // Retrieve the last timeOut for the given emId
-                Optional<Attendance> lastAttendanceOpt = attendanceRepo.findLastTimeOutByEmId(emId);
+                Optional<Attendance> lastAttendanceOpt = attendanceRepo.findLastTimeOutByEmId(emId, latestDateIn);
                 if (lastAttendanceOpt.isPresent()) {
                     if (lastAttendanceOpt.get().getTimeOut() != null){
                         LocalTime lastTimeOut = lastAttendanceOpt.get().getTimeOut();
@@ -255,7 +279,6 @@ public class AttendanceServiceImp implements AttendanceService  {
                         attendance.setDateOut(localDate);
                         attendance.setTimeOut(latestTimeOut);
                         attendanceRepo.save(attendance);
-                        System.out.println("save");
                         //moveProcessedFile(file);
                     } else {
                         System.err.println("No matching attendance record found for Ac-No: " + emId + " on Date: " + localDate);
