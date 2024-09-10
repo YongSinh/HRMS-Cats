@@ -8,15 +8,18 @@ import com.cats.payrollservice.model.Tax;
 import com.cats.payrollservice.repository.SalariesRepo;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.sql.ast.tree.expression.Collation;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class SalariesServiceImp implements SalariesService {
     private final SalariesRepo salariesRepo;
     private final TaxService taxService;
+    private final  ApiService apiService;
 
     @Transactional
     @Override
@@ -77,6 +80,15 @@ public class SalariesServiceImp implements SalariesService {
     @Override
     public List<SalariesRepDto> getListSalary() {
         return mapper.salariesToSalariesResponseDtos(salariesRepo.findAll());
+    }
+
+    @Override
+    public List<SalariesRepDto> getListSalaryDepId(Long depId) {
+        Collection<Long> emIds = apiService.getEmployeeByDepId(depId);
+        if (emIds.isEmpty()){
+            return null;
+        }
+        return mapper.salariesToSalariesResponseDtos(salariesRepo.findByEmpIdIn(emIds));
     }
 
     @Override

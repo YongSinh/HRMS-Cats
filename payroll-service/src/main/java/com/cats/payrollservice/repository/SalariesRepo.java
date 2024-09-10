@@ -12,4 +12,5 @@ import java.util.List;
 public interface SalariesRepo extends JpaRepository<Salaries, Long> {
     Salaries findByEmpId(Long empId);
     List<Salaries> findByEmpIdIn(Collection<Long> empId);
+
 }

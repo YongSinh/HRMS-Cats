@@ -35,5 +35,4 @@ public class Salaries {
     @JoinColumn(name = "tax_id")
     @JsonBackReference
     private Tax tax;
-
 }

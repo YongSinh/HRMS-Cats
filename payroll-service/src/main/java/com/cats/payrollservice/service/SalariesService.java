@@ -14,6 +14,7 @@ public interface SalariesService {
     SalariesRepDto editSalary(SalariesReqDto salariesReqDto, Long id);
     SalariesRepDto getSalaryById(Long id);
     List<SalariesRepDto> getListSalary();
+    List<SalariesRepDto> getListSalaryDepId(Long depId);
     Salaries getSalary(Long id);
     SalariesRepDto getSalaryByEmId(Long emId);
     void deleteSalary(Long id);

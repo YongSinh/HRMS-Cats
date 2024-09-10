@@ -68,7 +68,7 @@ public class SalariesController {
                 .build();
     }
 
-    @GetMapping ("/deleteSalaryById")
+    @DeleteMapping ("/deleteSalaryById")
     public BaseApi<?> deleteSalaryById( @RequestParam Long id) {
         SalariesRepDto salaries= salariesService.getSalaryById( id);
         salariesService.deleteSalary(id);
@@ -85,6 +85,18 @@ public class SalariesController {
     @GetMapping ("/getSalaryByEmId")
     public BaseApi<?> getSalaryByEmId( @RequestParam Long emId) {
         SalariesRepDto salaries= salariesService.getSalaryByEmId( emId);
+        return BaseApi.builder()
+                .status(true)
+                .code(HttpStatus.OK.value())
+                .message("Salaries have been found")
+                .timestamp(LocalDateTime.now())
+                .data(salaries)
+                .build();
+    }
+
+    @GetMapping ("/getSalaryByDepId")
+    public BaseApi<?> getSalaryByDepId( @RequestParam(name = "depId") Long depId) {
+        List<SalariesRepDto> salaries= salariesService.getListSalaryDepId( depId);
         return BaseApi.builder()
                 .status(true)
                 .code(HttpStatus.OK.value())
