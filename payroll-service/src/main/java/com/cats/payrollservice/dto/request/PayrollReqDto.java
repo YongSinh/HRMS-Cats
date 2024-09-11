@@ -10,7 +10,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PayrollReqDto {
-//    private List<Long> empIds;
+    private List<Long> empIds;
     private Long empId;
     private LocalDate dateFrom;
     private LocalDate dateTo;

@@ -37,6 +37,6 @@ public class Payroll {
     @Column(name ="date_created")
     private LocalDate dateCreate;
     @JsonManagedReference
-    @OneToMany(mappedBy = "payroll", cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "payroll", cascade = {CascadeType.REMOVE }, fetch = FetchType.EAGER)
     private List<Payslip> payslips = new ArrayList<>();
 }

@@ -49,22 +49,22 @@ public class PayrollServiceImp implements PayrollService {
     @Override
     public Payroll update(Long id, PayrollReqDto payrollReqDto) {
             Payroll payroll = getPayrollById(id);
-            String payrollReference = generatePayrollReference();
-            payroll.setEmpId(payrollReqDto.getEmpId());
-            payroll.setRefNo(payrollReference);
+            //String payrollReference = generatePayrollReference();
+            //payroll.setEmpId(payrollReqDto.getEmpId());
+            //payroll.setRefNo(payrollReference);
             payroll.setDateFrom(payrollReqDto.getDateFrom());
             payroll.setDateTo(payrollReqDto.getDateTo());
             payroll.setDateCreate(payrollReqDto.getDateCreate());
             payroll.setType(payrollReqDto.getType());
             payroll.setStatus(payrollReqDto.getStatus());
-        return payroll;
+            return payrollRepo.save(payroll);
     }
 
 
     @Override
-    public List<Payroll> create(PayrollReqDto payrollReqDto, List<Long> emIds) {
+    public List<Payroll> create(PayrollReqDto payrollReqDto) {
         List<Payroll> payrollList = new ArrayList<>();
-        for (Long emId :emIds){
+        for (Long emId : payrollReqDto.getEmpIds()){
             Payroll payroll = new Payroll();
             String payrollReference = generatePayrollReference();
             payroll.setEmpId(emId);
@@ -124,8 +124,18 @@ public class PayrollServiceImp implements PayrollService {
     }
 
     @Override
+    public List<Payroll> getListPayrollByDesc() {
+        return payrollRepo.findAllByOrderByDateCreateDesc();
+    }
+
+    @Override
+    public List<Payroll> getListPayrollByDate(LocalDate date) {
+        return payrollRepo.findByDateCreate(date);
+    }
+
+    @Override
     public List<Payroll> getListPayRollByEmId(Long emId) {
-        return payrollRepo.findPayrollByEmpId(emId);
+        return payrollRepo.findPayrollByEmpIdOrderByDateCreateDesc(emId);
     }
 
     @Override
@@ -171,5 +181,10 @@ public class PayrollServiceImp implements PayrollService {
     public void deletePayroll(Long id) {
         Payroll delete = getPayrollById(id);
         payrollRepo.delete(delete);
+    }
+    @Transactional
+    @Override
+    public void updateStatusByDate(LocalDate localDate) {
+        payrollRepo.updateStatusToComputed(localDate);
     }
 }

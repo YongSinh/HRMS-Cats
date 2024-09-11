@@ -9,5 +9,6 @@ public record BaseError  <T> (Boolean status,
                              Integer code,
                              String message,
                              LocalDateTime timestamp,
+                             String error,
                              T data){
 }

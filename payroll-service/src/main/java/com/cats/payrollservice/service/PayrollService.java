@@ -14,15 +14,18 @@ import java.util.List;
 public interface PayrollService {
     Payroll getPayrollById(Long id);
     Payroll update(Long id, PayrollReqDto payrollReqDto);
-    List<Payroll> create(PayrollReqDto payrollReqDto, List<Long> emIds);
+    List<Payroll> create(PayrollReqDto payrollReqDto);
     List<Payroll> createAllEmp(PayrollReqDto payrollReqDto) throws IOException;
     String generatePayrollReference();
     List<Payroll> getListPayroll();
+    List<Payroll> getListPayrollByDesc();
+    List<Payroll> getListPayrollByDate(LocalDate date);
     List<Payroll> getListPayRollByEmId(Long emId);
     Payroll getPayRollByEmIdAndCreateDate(Long emId, LocalDate date);
     Double calculateNetSalary(Long emId, Double KhRate);
     List<Payroll> findPayRollByDepEmId(Long depId);
     void deletePayroll(Long id);
+    void updateStatusByDate (LocalDate localDate);
     PayrollAndPaySlip getPayrollByRefNo2(String s);
 
 }

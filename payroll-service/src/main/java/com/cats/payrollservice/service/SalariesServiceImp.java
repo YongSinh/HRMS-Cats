@@ -24,6 +24,15 @@ public class SalariesServiceImp implements SalariesService {
     @Transactional
     @Override
     public SalariesRepDto addSalary(SalariesReqDto salariesReqDto) {
+        boolean exists = salariesRepo.existsByEmpIdAndFromDateLessThanEqualAndToDateGreaterThanEqual(
+                salariesReqDto.getEmpId(),
+                salariesReqDto.getToDate(),
+                salariesReqDto.getFromDate()
+        );
+
+        if (exists) {
+            throw new IllegalArgumentException("Salary for the given employee in this date range already exists.");
+        }
         Salaries salaries = new Salaries();
         salaries.setSalary(salariesReqDto.getSalary());
         salaries.setFromDate(salariesReqDto.getFromDate());
@@ -85,9 +94,11 @@ public class SalariesServiceImp implements SalariesService {
     @Override
     public List<SalariesRepDto> getListSalaryDepId(Long depId) {
         Collection<Long> emIds = apiService.getEmployeeByDepId(depId);
+        System.out.println(emIds.isEmpty());
         if (emIds.isEmpty()){
             return null;
         }
+        System.out.println(emIds);
         return mapper.salariesToSalariesResponseDtos(salariesRepo.findByEmpIdIn(emIds));
     }
 

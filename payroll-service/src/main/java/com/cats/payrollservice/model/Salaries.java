@@ -31,7 +31,7 @@ public class Salaries {
     private LocalDate fromDate;
     @Column(name ="to_date")
     private LocalDate toDate;
-    @ManyToOne( fetch = FetchType.LAZY, optional = false)
+    @ManyToOne( fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "tax_id")
     @JsonBackReference
     private Tax tax;

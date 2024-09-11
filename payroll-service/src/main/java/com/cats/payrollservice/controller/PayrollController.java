@@ -11,6 +11,7 @@ import io.github.resilience4j.retry.annotation.Retry;
 import io.github.resilience4j.timelimiter.annotation.TimeLimiter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -27,7 +28,7 @@ public class PayrollController {
     private final PayrollService payrollService;
     @GetMapping("/payroll")
     public BaseApi<?> getListPayrollById() {
-        List<Payroll> payrollList = payrollService.getListPayroll();
+        List<Payroll> payrollList = payrollService.getListPayrollByDesc();
         return BaseApi.builder()
                 .status(true)
                 .code(HttpStatus.OK.value())
@@ -101,6 +102,19 @@ public class PayrollController {
                 .build();
     }
 
+    @GetMapping("/payrollByCreateDate")
+    public BaseApi<?> getListPayrollByCreateDate( @RequestParam LocalDate date) {
+        List <Payroll> payrollList = payrollService.getListPayrollByDate(date);
+        return BaseApi.builder()
+                .status(true)
+                .code(HttpStatus.OK.value())
+                .message("payroll have been found")
+                .timestamp(LocalDateTime.now())
+                .data(payrollList)
+                .build();
+    }
+
+
     @GetMapping("/fetchEmployeeIds")
     public BaseApi<?> fetchEmployeeIds(@RequestParam Long depId) {
         List<Payroll> payrollList =  payrollService.findPayRollByDepEmId(depId);
@@ -112,9 +126,9 @@ public class PayrollController {
                 .data(payrollList)
                 .build();
     }
-    @PostMapping("/addPayroll")
-    public BaseApi<?> addPayroll(@RequestPart("body") PayrollReqDto payrollReqDto,@RequestPart("emIds")List<Long> emIds ) {
-        List<Payroll> payrollList =  payrollService.create(payrollReqDto, emIds);
+    @PostMapping(value = "/addPayroll")
+    public BaseApi<?> addPayroll(@RequestBody PayrollReqDto payrollReqDto ) {
+        List<Payroll> payrollList =  payrollService.create(payrollReqDto);
         return BaseApi.builder()
                 .status(true)
                 .code(HttpStatus.OK.value())
@@ -155,7 +169,7 @@ public class PayrollController {
     }
 
     @PutMapping("/updatePayroll")
-    public BaseApi<?> updatePayroll(@RequestPart("body") PayrollReqDto payrollReqDto,@RequestPart("id")Long id ) {
+    public BaseApi<?> updatePayroll(@RequestBody PayrollReqDto payrollReqDto, @RequestParam Long id ) {
         Payroll payrollList =  payrollService.update(id, payrollReqDto);
         return BaseApi.builder()
                 .status(true)

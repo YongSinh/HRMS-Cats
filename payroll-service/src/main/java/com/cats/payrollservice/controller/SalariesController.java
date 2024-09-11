@@ -7,16 +7,23 @@ import com.cats.payrollservice.dto.response.SalariesRepDto;
 import com.cats.payrollservice.model.Salaries;
 import com.cats.payrollservice.model.Tax;
 import com.cats.payrollservice.service.SalariesService;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.retry.annotation.Retry;
+import io.github.resilience4j.timelimiter.annotation.TimeLimiter;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 @RestController
 @RequestMapping("/api/payrolls/salary")
 @RequiredArgsConstructor
+@Slf4j
 public class SalariesController {
     private final SalariesService salariesService;
     @PostMapping("/addSalary")
@@ -31,7 +38,7 @@ public class SalariesController {
                 .build();
     }
 
-    @PostMapping("/addSalaryList")
+    @PostMapping(value = "/addSalaryList", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public BaseApi<?> addSalaryList(
             @RequestPart("body") SalariesReqDto salariesReqDto, @RequestPart("body") List<Long> emId) {
         List<SalariesRepDto> salaries= salariesService.addSalaryList(salariesReqDto, emId);
@@ -93,17 +100,43 @@ public class SalariesController {
                 .data(salaries)
                 .build();
     }
+//    @GetMapping ("/getSalaryByDepId")
+//    public BaseApi<?> getSalaryByDepId( @RequestParam(name = "depId") Long depId) {
+//        List<SalariesRepDto> salaries= salariesService.getListSalaryDepId(depId);
+//        return BaseApi.builder()
+//                .status(true)
+//                .code(HttpStatus.OK.value())
+//                .message("Salaries have been found")
+//                .timestamp(LocalDateTime.now())
+//                .data(salaries)
+//                .build();
+//    }
 
+    @CircuitBreaker(name = "management", fallbackMethod = "fallbackMethod")
+    @TimeLimiter(name = "management")
+    @Retry(name = "management")
     @GetMapping ("/getSalaryByDepId")
-    public BaseApi<?> getSalaryByDepId( @RequestParam(name = "depId") Long depId) {
-        List<SalariesRepDto> salaries= salariesService.getListSalaryDepId( depId);
-        return BaseApi.builder()
-                .status(true)
-                .code(HttpStatus.OK.value())
-                .message("Salaries have been found")
+    public CompletableFuture<BaseApi<?>> getSalaryByDepId( @RequestParam(name = "depId") Long depId) {
+        return CompletableFuture.supplyAsync(() -> {
+            List<SalariesRepDto> salaries= salariesService.getListSalaryDepId(depId);
+            return BaseApi.builder()
+                    .status(true)
+                    .code(HttpStatus.OK.value())
+                    .message("Salaries have been found")
+                    .timestamp(LocalDateTime.now())
+                    .data(salaries)
+                    .build();
+        });
+    }
+
+    public CompletableFuture<BaseApi<?>> fallbackMethod(Long depId, Throwable throwable) {
+        log.error("Error occurred while fetching salaries: ", throwable);
+        return CompletableFuture.supplyAsync(() -> BaseApi.builder()
+                .status(false)
+                .code(HttpStatus.SERVICE_UNAVAILABLE.value())
+                .message("Service is currently unavailable. Please try again later.")
                 .timestamp(LocalDateTime.now())
-                .data(salaries)
-                .build();
+                .build());
     }
 
     @GetMapping ("/getListSalary")
