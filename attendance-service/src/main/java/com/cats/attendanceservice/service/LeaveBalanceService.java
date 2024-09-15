@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface LeaveBalanceService {
     List<LeaveBalance> create(LeaveBalanceListDtoReq leaveBalanceListDtoReq);
-    LeaveBalance  edit(LeaveBalanceRepDto leaveBalanceRepDto, Long Id);
+    LeaveBalance edit(LeaveBalanceRepDto leaveBalanceRepDto, Long Id);
     LeaveBalance getLeaveBalance(Long Id);
     LeaveBalanceDtoRep getLeaveBalanceById(Long Id);
     List<LeaveBalanceDtoRep> getLeaveBalanceByEmId(Long emId);

@@ -178,6 +178,16 @@ public class PayrollServiceImp implements PayrollService {
     }
 
     @Override
+    public List<Payroll> getListPayrollByDateBetween(LocalDate start, LocalDate end) {
+        return payrollRepo.findByDateCreateBetween(start,end);
+    }
+
+    @Override
+    public List<Payroll> getListPayrollByEmIdAndDateBetween(Long emId, LocalDate start, LocalDate end) {
+        return payrollRepo.findByEmpIdAndDateCreateBetween(emId,start,end);
+    }
+
+    @Override
     public void deletePayroll(Long id) {
         Payroll delete = getPayrollById(id);
         payrollRepo.delete(delete);

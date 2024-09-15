@@ -102,6 +102,54 @@ public class PayrollController {
                 .build();
     }
 
+
+    @GetMapping("/payrollByDateBetween")
+    public BaseApi<?> getListPayrollByDateBetween(
+            @RequestParam(name = "fromDate") LocalDate date,
+            @RequestParam(name = "toDate") LocalDate date2
+    ) {
+        List<Payroll> payrollList = payrollService.getListPayrollByDateBetween(date, date2);
+        return BaseApi.builder()
+                .status(true)
+                .code(HttpStatus.OK.value())
+                .message("payroll have been found")
+                .timestamp(LocalDateTime.now())
+                .data(payrollList)
+                .build();
+    }
+
+    @PutMapping("/updateStatusPayroll/{date}")
+    public BaseApi<?> updateStatusPayroll(
+            @PathVariable LocalDate date
+    ) {
+        payrollService.updateStatusByDate(date);
+        return BaseApi.builder()
+                .status(true)
+                .code(HttpStatus.OK.value())
+                .message("payroll have been update status")
+                .timestamp(LocalDateTime.now())
+                .data("")
+                .build();
+    }
+
+
+    @GetMapping("/payrollByEmIdAndDateBetween")
+    public BaseApi<?> getListPayrollByEmIdAndDateBetween(
+            @RequestParam(name = "fromDate") LocalDate date,
+            @RequestParam(name = "toDate") LocalDate date2,
+            @RequestParam(name = "emId") Long emId
+
+    ) {
+        List<Payroll> payrollList = payrollService.getListPayrollByEmIdAndDateBetween(emId,date, date2);
+        return BaseApi.builder()
+                .status(true)
+                .code(HttpStatus.OK.value())
+                .message("payroll have been found")
+                .timestamp(LocalDateTime.now())
+                .data(payrollList)
+                .build();
+    }
+
     @GetMapping("/payrollByCreateDate")
     public BaseApi<?> getListPayrollByCreateDate( @RequestParam LocalDate date) {
         List <Payroll> payrollList = payrollService.getListPayrollByDate(date);

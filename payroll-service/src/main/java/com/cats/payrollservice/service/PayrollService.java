@@ -24,6 +24,8 @@ public interface PayrollService {
     Payroll getPayRollByEmIdAndCreateDate(Long emId, LocalDate date);
     Double calculateNetSalary(Long emId, Double KhRate);
     List<Payroll> findPayRollByDepEmId(Long depId);
+    List<Payroll> getListPayrollByDateBetween(LocalDate start, LocalDate end);
+    List<Payroll> getListPayrollByEmIdAndDateBetween(Long emId,LocalDate start, LocalDate end);
     void deletePayroll(Long id);
     void updateStatusByDate (LocalDate localDate);
     PayrollAndPaySlip getPayrollByRefNo2(String s);

@@ -12,6 +12,7 @@ import java.util.Optional;
 @Repository
 public interface LeaveBalanceRepo extends JpaRepository<LeaveBalance, Long> {
     List<LeaveBalance> findByEmpId(Long empId);
+    List<LeaveBalance> findAllByOrderByEmpId();
     List<LeaveBalance> findByLeaveType(LeaveType leaveType);
     @Query(value = "select * from leave_balance lb where leave_type_id = ?1", nativeQuery = true)
     List<LeaveBalance> findByLeaveType_Id(String leaveType_id);

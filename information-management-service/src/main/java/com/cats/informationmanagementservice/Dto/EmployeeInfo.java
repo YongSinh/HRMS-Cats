@@ -12,4 +12,7 @@ public class EmployeeInfo {
     private String fullName;
     private String section;
     private String department;
+    private String position;
+    private String email;
+    private String location;
 }

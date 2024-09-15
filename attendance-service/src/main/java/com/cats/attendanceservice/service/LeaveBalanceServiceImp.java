@@ -20,6 +20,7 @@ public class LeaveBalanceServiceImp implements LeaveBalanceService{
     @Override
     public  List<LeaveBalance> create(LeaveBalanceListDtoReq leaveBalanceListDtoReq) {
         List<LeaveBalance> leaveBalances = new ArrayList<>();
+        System.out.println(leaveBalanceListDtoReq.getLeaveType());
         if(leaveBalanceListDtoReq.getLeaveType().isEmpty()){
             throw new IllegalArgumentException("leave type is empty latest on leave Balances");
         }
@@ -33,21 +34,21 @@ public class LeaveBalanceServiceImp implements LeaveBalanceService{
             leaveBalance.setBalanceAmount(leaveType2.getLeaveDayPerYear());
             leaveBalances.add(leaveBalance);
         }
-        }
+            }
 
             return leaveBalanceRepo.saveAll(leaveBalances);
         }
 
     @Override
-    public  LeaveBalance edit(LeaveBalanceRepDto leaveBalanceRepDto, Long Id) {
+    public LeaveBalance edit(LeaveBalanceRepDto leaveBalanceRepDto, Long Id) {
         LeaveBalance leaveBalance = getLeaveBalance(Id);
-        leaveBalance.setEmpId(leaveBalanceRepDto.getEmpId());
+       // leaveBalance.setEmpId(leaveBalanceRepDto.getEmpId());
         leaveBalance.setLastUpdateDate(leaveBalanceRepDto.getLastUpdateDate());
         leaveBalance.setBalanceAmount(leaveBalanceRepDto.getBalanceAmount());
-        if (leaveBalanceRepDto.getLeaveType() != null){
-            LeaveType leaveType2 = leaveTypeService.getLeave(leaveBalanceRepDto.getLeaveType());
-            leaveBalance.setLeaveType(leaveType2);
-        }
+//        if (leaveBalanceRepDto.getLeaveType() != null){
+//            LeaveType leaveType2 = leaveTypeService.getLeave(leaveBalanceRepDto.getLeaveType());
+//            leaveBalance.setLeaveType(leaveType2);
+//        }
         return leaveBalanceRepo.save(leaveBalance);
     }
 
@@ -71,7 +72,7 @@ public class LeaveBalanceServiceImp implements LeaveBalanceService{
 
     @Override
     public List<LeaveBalanceDtoRep> getListLeaveBalance() {
-        return mapper.leaveBalanceToBookResponseDtos(leaveBalanceRepo.findAll());
+        return mapper.leaveBalanceToBookResponseDtos(leaveBalanceRepo.findAllByOrderByEmpId());
     }
 
     @Override

@@ -40,6 +40,9 @@ public class mapper {
         employeeInfo.setFullName(employee.getFirstName()+" "+employee.getLastName());
         employeeInfo.setDepartment(employee.getDepartment().getDepName());
         employeeInfo.setSection(employee.getPosition().getPoSection());
+        employeeInfo.setEmail(employee.getEmail());
+        employeeInfo.setPosition(employee.getPosition().getPosName());
+        employeeInfo.setLocation(employee.getLocation());
         return  employeeInfo;
     }
 

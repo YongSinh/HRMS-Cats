@@ -18,11 +18,14 @@ public interface PayrollRepo extends JpaRepository<Payroll, Long> {
     List<Payroll> findPayrollByEmpIdOrderByDateCreateDesc(Long empId);
     List<Payroll> findByEmpIdInOrderByDateCreate(List<Long> empIds);
 
+    List<Payroll> findByDateCreateBetween(LocalDate dateCreate, LocalDate dateCreate2);
+    List<Payroll> findByEmpIdAndDateCreateBetween(Long empId, LocalDate dateCreate, LocalDate dateCreate2);
+
     List<Payroll> findByDateCreate(LocalDate dateCreate);
     List<Payroll> findAllByOrderByDateCreateDesc();
 
     @Modifying
-    @Query("UPDATE Payroll p SET p.status = 2 WHERE p.dateTo < :currentDate AND p.status <> 2")
+    @Query("UPDATE Payroll p SET p.status = 2 WHERE p.dateTo <= :currentDate AND p.status <> 2")
     void updateStatusToComputed(@Param("currentDate") LocalDate currentDate);
 
 }

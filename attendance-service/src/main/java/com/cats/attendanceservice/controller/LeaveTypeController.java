@@ -70,6 +70,8 @@ public class LeaveTypeController {
                 .build();
     }
 
+
+
 //    @PutMapping("/updateLeaveBalance/{Id}/{newValue}")
 //    public BaseApi<?> updateLeaveBalance(@PathVariable String Id ,@PathVariable Long newValue) {
 //        leaveTypeService.updateLeaveBalance(Id, newValue);
