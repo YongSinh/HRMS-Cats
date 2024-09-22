@@ -28,6 +28,9 @@ public class    FileInfo {
     @Column(name = "type" )
     private Integer type;
 
+    @Column(name = "serviceType" )
+    private Integer serviceType;
+
     @Column(name = "file_name" , columnDefinition = "varchar(50)")
     private String fileName;
 

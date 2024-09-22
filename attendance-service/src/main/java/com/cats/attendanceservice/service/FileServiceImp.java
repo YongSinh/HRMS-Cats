@@ -20,7 +20,7 @@ public class FileServiceImp implements FileService {
     private final AttachmentRepo attachmentRepo;
 
     @Override
-    public void store(MultipartFile file, Long emId, Integer type, LocalDate dateCreated) throws IOException {
+    public void store(MultipartFile file, Long emId, Integer type, LocalDate dateCreated, Integer serviceType) throws IOException {
         FileInfo fileInfo = new FileInfo();
         String fileName = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
         fileInfo.setType(type);
@@ -28,6 +28,7 @@ public class FileServiceImp implements FileService {
         fileInfo.setFileName(fileName);
         fileInfo.setFile(file.getBytes());
         fileInfo.setEmId(emId);
+        fileInfo.setServiceType(serviceType);
         fileInfo.setDateCreated(dateCreated);
         System.out.println("Hello");
         attachmentRepo.save(fileInfo);
@@ -63,6 +64,11 @@ public class FileServiceImp implements FileService {
     }
 
     @Override
+    public Stream<FileInfo> getListFileByEmIdWithServiceType(Long emId, Integer type, Integer service) {
+        return attachmentRepo.findAllByEmIdAndTypeAndServiceType(emId, type, service).stream();
+    }
+
+    @Override
     public Stream<FileInfo> getListFileByEmIdAndType(Long emId, Integer type) {
         return attachmentRepo.findByEmIdAndType(emId,type).stream();
     }
@@ -70,5 +76,10 @@ public class FileServiceImp implements FileService {
     @Override
     public Stream<FileInfo> getListFileByEmIdAndTypeAndDate(LocalDate date, Long emId, Integer type) {
         return attachmentRepo.findByDateCreatedAndEmIdAndType(date,emId,type).stream();
+    }
+
+    @Override
+    public Stream<FileInfo> getListFileByEmIdAndTypeServiceAndDate(LocalDate date, Long emId, Integer type, Integer service) {
+        return attachmentRepo.findAllByDateCreatedAndEmIdAndTypeAndServiceType(date,emId,type,service).stream();
     }
 }

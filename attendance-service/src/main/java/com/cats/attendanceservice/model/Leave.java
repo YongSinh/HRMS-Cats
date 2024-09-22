@@ -37,7 +37,6 @@ public class Leave {
     @JsonBackReference
     @JoinColumn(name = "leave_type_id")
     private LeaveType leaveType;
-
     @Column(name = "status")
     private Boolean status;
     @Column(name = "approved")

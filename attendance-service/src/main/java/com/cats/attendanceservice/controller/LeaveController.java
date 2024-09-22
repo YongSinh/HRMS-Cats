@@ -38,6 +38,8 @@ public class LeaveController {
                 .data(leave)
                 .build();
     }
+
+
     @PutMapping("/leave/apply")
     public BaseApi<?> applyLeave(@RequestParam Long id) {
         LeaveDtoRep leave = leaveSerivce.appleLeave(id);
@@ -72,40 +74,49 @@ public class LeaveController {
                 .data(leave)
                 .build();
     }
-    @PutMapping("/leave/approvedByManger")
-    public BaseApi<?> approvedByManger(@RequestPart(name = "body") LeaveApproveDtoReq leaveDtoReq, @RequestPart(name = "id") List<Long> id) {
-        List<LeaveDtoRep> leave = leaveSerivce.ApprovedByManger(id, leaveDtoReq);
+    @PutMapping("/leave/approveOrRejectByManger")
+    public BaseApi<?> approveOrRejectByManger(@RequestParam Long id, @RequestParam Boolean reject) {
+        LeaveDtoRep leave = reject ? leaveSerivce.rejectByManger(id) : leaveSerivce.ApprovedByManger(id);
+        String action = reject ? "rejected" : "approved";
         return BaseApi.builder()
                 .status(true)
                 .code(HttpStatus.OK.value())
-                .message("You have been approved the leave")
+                .message(String.format("You have %s the leave", action))
                 .timestamp(LocalDateTime.now())
                 .data(leave)
                 .build();
     }
 
-    @PutMapping("/leave/approvedByHead")
-    public BaseApi<?> approvedByHead(@RequestPart(name = "body") LeaveApproveDtoReq leaveDtoReq, @RequestPart(name = "id") List<Long> id) {
-        List<LeaveDtoRep> leave = leaveSerivce.ApprovedByHead(id, leaveDtoReq);
+    @PutMapping("/leave/approveOrRejectByHead")
+    public BaseApi<?> approveOrRejectByHead(@RequestParam Long id, @RequestParam Boolean reject) {
+        LeaveDtoRep leave = reject ? leaveSerivce.rejectByHead(id) : leaveSerivce.ApprovedByHead(id);
+        String action = reject ? "rejected" : "approved";
         return BaseApi.builder()
                 .status(true)
                 .code(HttpStatus.OK.value())
-                .message("You have been approved the leave")
+                .message(String.format("You have %s the leave", action))
                 .timestamp(LocalDateTime.now())
                 .data(leave)
                 .build();
     }
-    @PutMapping("/leave/approvedByHr")
-    public BaseApi<?> approvedByHr(@RequestPart(name = "body") LeaveApproveDtoReq leaveDtoReq, @RequestPart(name = "id") List<Long> id) {
-        List<LeaveDtoRep> leave = leaveSerivce.ApprovedByHr(id, leaveDtoReq);
+
+
+
+
+    @PutMapping("/leave/approveOrRejectByHr")
+    public BaseApi<?> approveOrRejectByHr(@RequestParam Long id, @RequestParam Boolean reject) {
+        LeaveDtoRep leave = reject ? leaveSerivce.rejectByHr(id) : leaveSerivce.ApprovedByHr(id);
+        String action = reject ? "rejected" : "approved";
         return BaseApi.builder()
                 .status(true)
                 .code(HttpStatus.OK.value())
-                .message("You have been approved the leave")
+                .message(String.format("You have %s the leave", action))
                 .timestamp(LocalDateTime.now())
                 .data(leave)
                 .build();
     }
+
+
 
     @GetMapping("/leave/getAll")
     public BaseApi<?> getAllLeave() {
@@ -124,6 +135,18 @@ public class LeaveController {
                                              @RequestParam(name = "date") LocalDate date
     ){
         List<LeaveDtoRep> leaveDtoRep = leaveSerivce.getLeaveByEmIdAndDate(date, emId);
+        return BaseApi.builder()
+                .status(true)
+                .code(HttpStatus.OK.value())
+                .message("List all your leave!")
+                .timestamp(LocalDateTime.now())
+                .data(leaveDtoRep)
+                .build();
+    }
+
+    @GetMapping("/leave/getLeaveByEmId/{emId}")
+    public  BaseApi<?> getLeaveByEmId(@PathVariable Long emId){
+        List<LeaveDtoRep> leaveDtoRep = leaveSerivce.getLeaveByEmId(emId);
         return BaseApi.builder()
                 .status(true)
                 .code(HttpStatus.OK.value())

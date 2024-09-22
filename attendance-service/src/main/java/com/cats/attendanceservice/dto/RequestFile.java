@@ -12,5 +12,6 @@ import java.time.LocalDate;
 public class RequestFile {
     private Long emId;
     private Integer type;
+    private Integer serviceType;
     private LocalDate dateCreated;
 }

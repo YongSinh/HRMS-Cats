@@ -25,9 +25,13 @@ public interface LeaveSerivce {
     LeaveDtoRep appleLeave(Long Id);
     LeaveDtoRep edit(Long Id, LeaveDtoReq leaveDtoRep);
     LeaveDtoRep editLeave(Long Id, LeaveDtoReq leaveDtoReq);
-    List<LeaveDtoRep> ApprovedByManger(List<Long> Id, LeaveApproveDtoReq leaveDtoRep);
-    List<LeaveDtoRep> ApprovedByHead(List<Long> Id, LeaveApproveDtoReq leaveDtoRep);
-    List<LeaveDtoRep> ApprovedByHr(List<Long> Id, LeaveApproveDtoReq leaveDtoRep);
+    LeaveDtoRep ApprovedByManger(Long Id);
+    LeaveDtoRep ApprovedByHead(Long Id);
+    LeaveDtoRep ApprovedByHr(Long Id);
+
+    LeaveDtoRep rejectByManger(Long Id);
+    LeaveDtoRep rejectByHead(Long Id);
+    LeaveDtoRep rejectByHr(Long Id);
 
     List<LeaveDtoRep> getListLeaveForManger(Long emId);
     List<LeaveDtoRep> getListLeaveForHead(Long emId);

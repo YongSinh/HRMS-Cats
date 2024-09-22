@@ -29,12 +29,12 @@ public class LeaveServiceImp implements LeaveSerivce{
     private final ApiService apiService;
     @Override
     public List<LeaveDtoRep> getListLeave() {
-        return mapper.leaveToLeaveResponseDtos(leaveRepo.findAll());
+        return mapper.leaveToLeaveResponseDtos(leaveRepo.findAllByOrderByCreatedAt());
     }
 
     @Override
     public List<LeaveDtoRep> getLeaveByEmId(Long EmId) {
-        return mapper.leaveToLeaveResponseDtos(leaveRepo.findLeaveByEmpId(EmId));
+        return mapper.leaveToLeaveResponseDtos(leaveRepo.findLeaveByEmpIdOrderByCreatedAtDesc(EmId));
     }
 
     @Override
@@ -88,7 +88,7 @@ public class LeaveServiceImp implements LeaveSerivce{
         leave.setCreatedAt(leaveDtoReq.getCreatedAt());
         leave.setTimeOfHaftDay(leaveDtoReq.getTimeOfHaftDay());
         if (file != null){
-            fileService.store(file,leaveDtoReq.getEmpId(),2, leaveDtoReq.getCreatedAt());
+            fileService.store(file,leaveDtoReq.getEmpId(),2, leaveDtoReq.getCreatedAt(), 2);
         }
         return mapper.leaveToLeaveResponseDto(leaveRepo.save(leave));
     }
@@ -157,42 +157,57 @@ public class LeaveServiceImp implements LeaveSerivce{
 
     //for manger to approved
     @Override
-    public List<LeaveDtoRep> ApprovedByManger(List<Long> Id, LeaveApproveDtoReq leaveDtoRep) {
-        List<Leave> leaveList = new ArrayList<>();
-        for (Long LeaveId : Id){
-            Leave leave = getLeaveById(LeaveId);
-            leave.setApprovedByManger(leaveDtoRep.getApprovedByManger());
-            leaveList.add(leave);
-        }
-        return mapper.leaveToLeaveResponseDtos(leaveRepo.saveAll(leaveList));
+    public LeaveDtoRep ApprovedByManger(Long Id) {
+            Leave leave = getLeaveById(Id);
+            leave.setApprovedByManger(true);
+        return mapper.leaveToLeaveResponseDto(leaveRepo.save(leave));
     }
     //for Head of department to approved
     @Override
-    public List<LeaveDtoRep> ApprovedByHead(List<Long> Id, LeaveApproveDtoReq leaveDtoRep) {
-        List<Leave> leaveList = new ArrayList<>();
-        for (Long LeaveId : Id){
-            Leave leave = getLeaveById(LeaveId);
-            leave.setApprovedByManger(leaveDtoRep.getApprovedByManger());
-            leave.setApprovedByHead(leaveDtoRep.getApprovedByHead());
-            leaveList.add(leave);
-        }
-        return mapper.leaveToLeaveResponseDtos(leaveRepo.saveAll(leaveList));
+    public LeaveDtoRep ApprovedByHead(Long Id) {
+            Leave leave = getLeaveById(Id);
+            leave.setApprovedByManger(true);
+            leave.setApprovedByHead(true);
+        return mapper.leaveToLeaveResponseDto(leaveRepo.save(leave));
     }
-    //This one for hr Approved and hr have permission for Approved all
+    @Transactional
     @Override
-    public List<LeaveDtoRep> ApprovedByHr(List<Long> Id, LeaveApproveDtoReq leaveDtoRep) {
-        List<Leave> leaveList = new ArrayList<>();
-        for (Long LeaveId : Id){
-            Leave leave = getLeaveById(LeaveId);
-            leave.setApprovedByManger(leaveDtoRep.getApprovedByManger());
-            leave.setApprovedByHead(leaveDtoRep.getApprovedByHead());
-            leave.setApprovedByHr(leaveDtoRep.getApprovedByHr());
-            leave.setApproved(leaveDtoRep.getApproved());
-            leaveList.add(leave);
+    public LeaveDtoRep ApprovedByHr(Long Id) {
+            Leave leave = getLeaveById(Id);
+            leave.setApprovedByManger(true);
+            leave.setApprovedByHead(true);
+            leave.setApprovedByHr(true);
+            leave.setApproved(true);
             leaveBalanceService.editLeaveBalance(leave.getLeaveType().getId(), leave.getEmpId(), Long.valueOf(leave.getDayOfLeave()));
+        return mapper.leaveToLeaveResponseDto(leaveRepo.save(leave));
+    }
 
-        }
-        return mapper.leaveToLeaveResponseDtos(leaveRepo.saveAll(leaveList));
+    @Override
+    public LeaveDtoRep rejectByManger(Long Id) {
+        Leave leave = getLeaveById(Id);
+        leave.setApprovedByManger(false);
+        leave.setApproved(false);
+        leave.setCancelled(true);
+        return mapper.leaveToLeaveResponseDto(leaveRepo.save(leave));
+    }
+
+    @Override
+    public LeaveDtoRep rejectByHead(Long Id) {
+        Leave leave = getLeaveById(Id);
+        leave.setApprovedByManger(false);
+        leave.setApprovedByHead(false);
+        leave.setApproved(false);
+        leave.setCancelled(true);
+        return mapper.leaveToLeaveResponseDto(leaveRepo.save(leave));
+    }
+
+    @Override
+    public LeaveDtoRep rejectByHr(Long Id) {
+        Leave leave = getLeaveById(Id);
+        leave.setApprovedByHr(false);
+        leave.setApproved(false);
+        leave.setCancelled(true);
+        return mapper.leaveToLeaveResponseDto(leaveRepo.save(leave));
     }
 
     @Override
