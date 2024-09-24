@@ -11,6 +11,7 @@ import io.github.resilience4j.timelimiter.annotation.TimeLimiter;
 import jakarta.websocket.server.PathParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -27,7 +28,7 @@ public class LeaveController {
     private final LeaveSerivce leaveSerivce;
 
     //for first create leave only
-    @PostMapping("/leave/add")
+    @PostMapping(value = "/leave/add", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public BaseApi<?> addLeave(@RequestPart("body") LeaveApplyDtoReq leaveDtoReq, @RequestPart("file")MultipartFile file) throws IOException {
         LeaveDtoRep leave = leaveSerivce.create(leaveDtoReq, file);
         return BaseApi.builder()

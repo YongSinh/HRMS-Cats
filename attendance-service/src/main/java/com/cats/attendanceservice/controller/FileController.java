@@ -6,6 +6,7 @@ import com.cats.attendanceservice.model.FileInfo;
 import com.cats.attendanceservice.service.FileService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -14,6 +15,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -65,38 +69,75 @@ public class FileController {
     }
 
 
-    @GetMapping("/files/preview/{id}")
-    public ResponseEntity<byte[]> previewFile(@PathVariable String id) {
-        FileInfo fileDB = fileService.getFile(id);
-        String contentType = fileDB.getFileType(); // Ensure this is set correctly in your DbFile
+//    @GetMapping("/files/preview/{id}")
+//    public ResponseEntity<byte[]> previewFile(@PathVariable String id) throws IOException {
+//        FileInfo fileDB = fileService.getFile(id);
+//        String contentType = fileDB.getFileType(); // Ensure this is set correctly in your DbFile
+//
+//        // If content type is not set, try to determine it from the file extension or data
+//        if (contentType == null || contentType.isEmpty()) {
+//            contentType = Files.probeContentType(Paths.get(fileDB.getFileName()));
+//            if (contentType == null) {
+//                contentType = "application/octet-stream";  // Default to binary if unknown
+//            }
+//        }
 
-        // Set Content-Disposition to inline to allow preview in the browser
+    
+//        // Set Content-Disposition to inline for browser preview
+//        return ResponseEntity.ok()
+//                .contentType(MediaType.parseMediaType(contentType))
+//                .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + fileDB.getFileName() + "\"")
+//                .body(fileDB.getFile());
+//    }
+
+    @GetMapping("/files/view/{fileName}")
+    public ResponseEntity<Resource> viewFile(@PathVariable String fileName) {
+        Resource resource = fileService.downloadFile(fileName);
+
+        if (resource == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        // Try to determine the file's content type
+        String contentType = "application/octet-stream";  // Default for unknown file types
+        try {
+            contentType = Files.probeContentType(resource.getFile().toPath());
+            if (contentType == null) {
+                contentType = "application/octet-stream";  // Fallback if no content type is detected
+            }
+        } catch (IOException e) {
+            System.out.println("Could not determine file type.");
+        }
+
+        // Use 'inline' instead of 'attachment' for viewing the file in the browser
         return ResponseEntity.ok()
                 .contentType(MediaType.parseMediaType(contentType))
-                .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + fileDB.getFileName() + "\"")
-                .body(fileDB.getFile());
+                .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + fileName + "\"")
+                .body(resource);
     }
 
-    @GetMapping("/files/{id}")
-    public ResponseEntity<byte[]> getFile(@PathVariable String id) {
-        FileInfo fileDB = fileService.getFile(id);
-        return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileDB.getFileName() + "\"")
-                .body(fileDB.getFile());
-    }
+
+//    @GetMapping("/files/{id}")
+//    public ResponseEntity<byte[]> getFile(@PathVariable String id) {
+//        FileInfo fileDB = fileService.getFile(id);
+//        return ResponseEntity.ok()
+//                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileDB.getFileName() + "\"")
+//                .body(fileDB.getFile());
+//    }
+
     @GetMapping("/files")
     public ResponseEntity<?> getListFiles() {
         List<ResponseFile> files = fileService.getAllFile().map(dbFile -> {
             String fileDownloadUri = ServletUriComponentsBuilder
                     .fromCurrentContextPath()
-                    .path("/api/files/")
-                    .path(dbFile.getFileId())
+                    .path("/api/files/view/")
+                    .path(dbFile.getFileName())
                     .toUriString();
             // Generate preview link
             String filePreviewUri = ServletUriComponentsBuilder
                     .fromCurrentContextPath()
-                    .path("/api/files/preview/")
-                    .path(dbFile.getFileId())
+                    .path("/api/files/view/")
+                    .path(dbFile.getFileName())
                     .toUriString();
 
             return new ResponseFile(
@@ -104,7 +145,7 @@ public class FileController {
                     fileDownloadUri,
                     filePreviewUri,
                     dbFile.getType(),
-                    dbFile.getFile().length,
+                    dbFile.getFileSize(),
                     dbFile.getEmId(),
                     dbFile.getFileType(),
                     dbFile.getDateCreated(),
@@ -120,20 +161,20 @@ public class FileController {
         List<ResponseFile> files = fileService.getAllFileByEmId(emId).map(dbFile -> {
             String fileDownloadUri = ServletUriComponentsBuilder
                     .fromCurrentContextPath()
-                    .path("/api/files/")
-                    .path(dbFile.getFileId())
+                   .path("/api/files/view/")
+                    .path(dbFile.getFileName())
                     .toUriString();
             String filePreviewUri = ServletUriComponentsBuilder
                     .fromCurrentContextPath()
-                    .path("/api/files/preview/")
-                    .path(dbFile.getFileId())
+                    .path("/api/files/view/")
+                    .path(dbFile.getFileName())
                     .toUriString();
             return new ResponseFile(
                     dbFile.getFileName(),
                     fileDownloadUri,
                     filePreviewUri,
                     dbFile.getType(),
-                    dbFile.getFile().length,
+                      dbFile.getFileSize(),
                     dbFile.getEmId(),
                     dbFile.getFileType(),
                     dbFile.getDateCreated(),
@@ -148,20 +189,20 @@ public class FileController {
         List<ResponseFile> files = fileService.getListFileByEmIdAndType(emId, type).map(dbFile -> {
             String fileDownloadUri = ServletUriComponentsBuilder
                     .fromCurrentContextPath()
-                    .path("/api/files/")
-                    .path(dbFile.getFileId())
+                   .path("/api/files/view/")
+                    .path(dbFile.getFileName())
                     .toUriString();
             String filePreviewUri = ServletUriComponentsBuilder
                     .fromCurrentContextPath()
-                    .path("/api/files/preview/")
-                    .path(dbFile.getFileId())
+                    .path("/api/files/view/")
+                    .path(dbFile.getFileName())
                     .toUriString();
             return new ResponseFile(
                     dbFile.getFileName(),
                     fileDownloadUri,
                     filePreviewUri,
                     dbFile.getType(),
-                    dbFile.getFile().length,
+                      dbFile.getFileSize(),
                     dbFile.getEmId(),
                     dbFile.getFileType(),
                     dbFile.getDateCreated(),
@@ -176,20 +217,20 @@ public class FileController {
         List<ResponseFile> files = fileService.getListFileByEmIdWithServiceType(emId, type, service).map(dbFile -> {
             String fileDownloadUri = ServletUriComponentsBuilder
                     .fromCurrentContextPath()
-                    .path("/api/files/")
-                    .path(dbFile.getFileId())
+                   .path("/api/files/view/")
+                    .path(dbFile.getFileName())
                     .toUriString();
             String filePreviewUri = ServletUriComponentsBuilder
                     .fromCurrentContextPath()
-                    .path("/api/files/preview/")
-                    .path(dbFile.getFileId())
+                    .path("/api/files/view/")
+                    .path(dbFile.getFileName())
                     .toUriString();
             return new ResponseFile(
                     dbFile.getFileName(),
                     fileDownloadUri,
                     filePreviewUri,
                     dbFile.getType(),
-                    dbFile.getFile().length,
+                    dbFile.getFileSize(),
                     dbFile.getEmId(),
                     dbFile.getFileType(),
                     dbFile.getDateCreated(),
@@ -198,6 +239,8 @@ public class FileController {
         }).collect(Collectors.toList());
         return ResponseEntity.status(HttpStatus.OK).body(files);
     }
+
+
 
     @GetMapping("/files/ByEmIdAndTypeServiceDate")
     public ResponseEntity<?> getListFilesByEmIdAndTypeAndDate(@RequestParam("emId") Long emId,
@@ -208,20 +251,20 @@ public class FileController {
         List<ResponseFile> files = fileService.getListFileByEmIdAndTypeServiceAndDate(date, emId, type, service).map(dbFile -> {
             String fileDownloadUri = ServletUriComponentsBuilder
                     .fromCurrentContextPath()
-                    .path("/api/files/")
-                    .path(dbFile.getFileId())
+                   .path("/api/files/view/")
+                    .path(dbFile.getFileName())
                     .toUriString();
             String filePreviewUri = ServletUriComponentsBuilder
                     .fromCurrentContextPath()
-                    .path("/api/files/preview/")
-                    .path(dbFile.getFileId())
+                    .path("/api/files/view/")
+                    .path(dbFile.getFileName())
                     .toUriString();
             return new ResponseFile(
                     dbFile.getFileName(),
                     fileDownloadUri,
                     filePreviewUri,
                     dbFile.getType(),
-                    dbFile.getFile().length,
+                      dbFile.getFileSize(),
                     dbFile.getEmId(),
                     dbFile.getFileType(),
                     dbFile.getDateCreated(),

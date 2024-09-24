@@ -4,11 +4,19 @@ import com.cats.attendanceservice.model.FileInfo;
 import com.cats.attendanceservice.repository.AttachmentRepo;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.time.LocalDate;
 import java.util.Objects;
 import java.util.stream.Stream;
@@ -18,7 +26,8 @@ import java.util.stream.Stream;
 public class FileServiceImp implements FileService {
 
     private final AttachmentRepo attachmentRepo;
-
+    @Value("${filePath}")
+    private String basePath;
     @Override
     public void store(MultipartFile file, Long emId, Integer type, LocalDate dateCreated, Integer serviceType) throws IOException {
         FileInfo fileInfo = new FileInfo();
@@ -26,11 +35,13 @@ public class FileServiceImp implements FileService {
         fileInfo.setType(type);
         fileInfo.setFileType(file.getContentType());
         fileInfo.setFileName(fileName);
-        fileInfo.setFile(file.getBytes());
+        fileInfo.setFileSize(file.getSize());
+        //fileInfo.setFile(file.getBytes());
         fileInfo.setEmId(emId);
         fileInfo.setServiceType(serviceType);
         fileInfo.setDateCreated(dateCreated);
-        System.out.println("Hello");
+        System.out.println(file.getSize());
+        uploadFileDir(file);
         attachmentRepo.save(fileInfo);
     }
 
@@ -43,7 +54,7 @@ public class FileServiceImp implements FileService {
         fileInfo.setType(1);
         fileInfo.setFileType(file.getContentType());
         fileInfo.setFileName(fileName);
-        fileInfo.setFile(file.getBytes());
+        //fileInfo.setFile(file.getBytes());
         fileInfo.setEmId(2431L);
         attachmentRepo.save(fileInfo);
     }
@@ -76,6 +87,53 @@ public class FileServiceImp implements FileService {
     @Override
     public Stream<FileInfo> getListFileByEmIdAndTypeAndDate(LocalDate date, Long emId, Integer type) {
         return attachmentRepo.findByDateCreatedAndEmIdAndType(date,emId,type).stream();
+    }
+
+    @Override
+    public Resource downloadFile(String fileName) {
+        try {
+            // Construct the file path
+            File dir = new File(basePath + fileName);
+            Path filePath = Path.of(basePath).resolve(fileName).normalize();  // Ensure safe path
+            File file = filePath.toFile();
+
+            // Check if the file exists and is readable
+            if (file.exists() && file.canRead()) {
+                return new UrlResource(file.toURI());
+            } else {
+                throw new FileNotFoundException("File not found or not readable: " + fileName);
+            }
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+            return null;
+        }
+    }
+
+    @Override
+    public String uploadFileDir(MultipartFile file) {
+        File dir = new File(basePath+ file.getOriginalFilename());
+
+        if (dir.exists()) {
+            return "EXIST";
+        }
+
+//        if (!dir.exists()) {
+//            dir.mkdirs();  // Create the directory if it doesn't exist
+//        }
+        // Get the original filename
+        String fileName = file.getOriginalFilename();
+        if (fileName == null || fileName.isEmpty()) {
+            return "INVALID_FILE";
+        }
+        Path path = Path.of(basePath + file.getOriginalFilename());
+
+        try {
+            Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+            return "CREATED";
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return "FAILED";
     }
 
     @Override

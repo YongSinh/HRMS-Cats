@@ -39,8 +39,14 @@ public class    FileInfo {
 
     @Column(name = "dateCreated")
     private LocalDate dateCreated;
+    @Column(name = "fileSize")
+    private long fileSize;
 
-    @Column(name = "file" , columnDefinition = "longblob")
-    @Lob
-    private byte[] file;
+
+    // This can return null if no file is stored
+//    @Getter
+//    @Column(name = "file" , columnDefinition = "longblob")
+//    @Lob
+//    private byte[] file;
+
 }
