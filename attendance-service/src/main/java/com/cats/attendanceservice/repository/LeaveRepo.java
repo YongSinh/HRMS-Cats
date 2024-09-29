@@ -13,6 +13,8 @@ import java.util.List;
 public interface LeaveRepo extends JpaRepository<Leave,Long> {
     List<Leave> findLeaveByEmpIdOrderByCreatedAtDesc(Long empId);
     List<Leave> findAllByOrderByCreatedAtDesc();
+    List<Leave> findAllByOrderByCreatedAtDescLeaveIdDesc();
+
     List<Leave> findByEmpIdIn(Collection<Long> empId);
     List<Leave> findByEmpIdAndCreatedAtOrderByCreatedAtDesc(Long empId, LocalDate createdAt);
     List<Leave> findByCreatedAtBetween(LocalDate createdAt, LocalDate createdAt2);

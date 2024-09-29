@@ -29,7 +29,7 @@ public class LeaveServiceImp implements LeaveSerivce{
     private final ApiService apiService;
     @Override
     public List<LeaveDtoRep> getListLeave() {
-        return mapper.leaveToLeaveResponseDtos(leaveRepo.findAllByOrderByCreatedAtDesc());
+        return mapper.leaveToLeaveResponseDtos(leaveRepo.findAllByOrderByCreatedAtDescLeaveIdDesc());
     }
 
     @Override
