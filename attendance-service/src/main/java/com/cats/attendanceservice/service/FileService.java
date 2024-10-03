@@ -10,9 +10,8 @@ import java.util.stream.Stream;
 
 
 public interface FileService {
-
     void store(MultipartFile file, Long emId, Integer type, LocalDate dateCreated, Integer serviceType) throws IOException;
-
+    void updateStore(MultipartFile file, Long emId, Integer type, LocalDate dateCreated, Integer serviceType, String fileId ) throws IOException;
     void store2(MultipartFile file) throws IOException;
     FileInfo getFile(String id);
     Stream<FileInfo> getAllFileByEmId(Long emId);

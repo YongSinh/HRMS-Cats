@@ -40,7 +40,6 @@ public class LeaveController {
                 .build();
     }
 
-
     @PutMapping("/leave/apply")
     public BaseApi<?> applyLeave(@RequestParam Long id) {
         LeaveDtoRep leave = leaveSerivce.appleLeave(id);
@@ -52,9 +51,10 @@ public class LeaveController {
                 .data(leave)
                 .build();
     }
+
     @PutMapping("/leave/user/editLeaveForEm")
-    public BaseApi<?> editLeave(@RequestBody LeaveDtoReq leaveDtoReq, @RequestParam Long id) {
-        LeaveDtoRep leave = leaveSerivce.editLeave(id, leaveDtoReq);
+    public BaseApi<?> editLeave(@RequestPart("body") LeaveDtoReq leaveDtoReq,  @RequestPart("file")MultipartFile file,  @RequestPart("id") LeaveIdRep rep) throws IOException {
+        LeaveDtoRep leave = leaveSerivce.editLeave(rep, leaveDtoReq, file);
         return BaseApi.builder()
                 .status(true)
                 .code(HttpStatus.OK.value())
@@ -210,6 +210,19 @@ public class LeaveController {
                 .data(leave)
                 .build();
     }
+
+    @DeleteMapping("/leave/cancelLeave")
+    public BaseApi<?> cancelLeave(@RequestParam Long id) {
+        LeaveDtoRep leave = leaveSerivce.cancelLeave(id);
+        return BaseApi.builder()
+                .status(true)
+                .code(HttpStatus.OK.value())
+                .message("You have been cancel leave!")
+                .timestamp(LocalDateTime.now())
+                .data(leave)
+                .build();
+    }
+
     @GetMapping("/leave/getByEmIdOrderByDate")
     public BaseApi<?> getAllLeaveByEmId(@RequestParam Long emId) {
         List<LeaveDtoRep> leave = leaveSerivce.getLeaveByEmIdAndOrderByDate(emId);

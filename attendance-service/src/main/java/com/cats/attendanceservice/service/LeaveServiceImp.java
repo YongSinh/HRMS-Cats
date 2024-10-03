@@ -139,8 +139,11 @@ public class LeaveServiceImp implements LeaveSerivce{
 
     //user
     @Override
-    public LeaveDtoRep editLeave(Long Id, LeaveDtoReq leaveDtoReq) {
-        Leave leave = getLeaveById(Id);
+    public LeaveDtoRep editLeave(LeaveIdRep leaveIdRep, LeaveDtoReq leaveDtoReq, MultipartFile file ) throws IOException {
+        Leave leave = getLeaveById(leaveIdRep.getLeaveId());
+        if (leave.getStatus()) {
+            throw new IllegalArgumentException("Changes cannot be made because the leave has already been submitted.");
+        }
         leave.setStartDate(leaveDtoReq.getStartDate());
         leave.setEndDate(leaveDtoReq.getEndDate());
         if(leaveDtoReq.getLeaveTypeId() != null){
@@ -152,6 +155,10 @@ public class LeaveServiceImp implements LeaveSerivce{
         leave.setDayOfLeave(leaveDtoReq.getDayOfLeave());
         leave.setCreatedAt(leaveDtoReq.getCreatedAt());
         leave.setTimeOfHaftDay(leaveDtoReq.getTimeOfHaftDay());
+
+        if (file != null){
+            fileService.updateStore(file,leaveDtoReq.getEmpId(),2, leaveDtoReq.getCreatedAt(), 2, leaveIdRep.getFileId());
+        }
         return mapper.leaveToLeaveResponseDto(leaveRepo.save(leave));
     }
 
@@ -180,6 +187,16 @@ public class LeaveServiceImp implements LeaveSerivce{
             leave.setApproved(true);
             leaveBalanceService.editLeaveBalance(leave.getLeaveType().getId(), leave.getEmpId(), Long.valueOf(leave.getDayOfLeave()));
         return mapper.leaveToLeaveResponseDto(leaveRepo.save(leave));
+    }
+
+    @Override
+    public LeaveDtoRep cancelLeave(Long Id) {
+        Leave leave = getLeaveById(Id);
+        if (leave.getStatus()) {
+            throw new IllegalArgumentException("Changes cannot cancel because the leave has already been submitted.");
+        }
+        leaveRepo.delete(leave);
+        return mapper.leaveToLeaveResponseDto(leave);
     }
 
     @Override

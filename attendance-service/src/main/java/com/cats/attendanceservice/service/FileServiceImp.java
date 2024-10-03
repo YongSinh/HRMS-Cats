@@ -36,15 +36,27 @@ public class FileServiceImp implements FileService {
         fileInfo.setFileType(file.getContentType());
         fileInfo.setFileName(fileName);
         fileInfo.setFileSize(file.getSize());
-        //fileInfo.setFile(file.getBytes());
         fileInfo.setEmId(emId);
         fileInfo.setServiceType(serviceType);
         fileInfo.setDateCreated(dateCreated);
-        System.out.println(file.getSize());
         uploadFileDir(file);
         attachmentRepo.save(fileInfo);
     }
 
+    @Override
+    public void updateStore(MultipartFile file, Long emId, Integer type, LocalDate dateCreated, Integer serviceType, String fileId) throws IOException {
+        FileInfo fileInfo = getFile(fileId);
+        String fileName = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
+        fileInfo.setType(type);
+        fileInfo.setFileType(file.getContentType());
+        fileInfo.setFileName(fileName);
+        fileInfo.setFileSize(file.getSize());
+        fileInfo.setEmId(emId);
+        fileInfo.setServiceType(serviceType);
+        fileInfo.setDateCreated(dateCreated);
+        uploadFileDir(file);
+        attachmentRepo.save(fileInfo);
+    }
 
 
     @Override

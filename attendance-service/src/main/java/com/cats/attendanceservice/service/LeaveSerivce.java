@@ -1,9 +1,6 @@
 package com.cats.attendanceservice.service;
 
-import com.cats.attendanceservice.dto.LeaveApplyDtoReq;
-import com.cats.attendanceservice.dto.LeaveApproveDtoReq;
-import com.cats.attendanceservice.dto.LeaveDtoRep;
-import com.cats.attendanceservice.dto.LeaveDtoReq;
+import com.cats.attendanceservice.dto.*;
 import com.cats.attendanceservice.model.Leave;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -24,11 +21,11 @@ public interface LeaveSerivce {
     LeaveDtoRep create(LeaveApplyDtoReq leaveDtoReq, MultipartFile file) throws IOException;
     LeaveDtoRep appleLeave(Long Id);
     LeaveDtoRep edit(Long Id, LeaveDtoReq leaveDtoRep);
-    LeaveDtoRep editLeave(Long Id, LeaveDtoReq leaveDtoReq);
+    LeaveDtoRep editLeave(LeaveIdRep leaveIdRep, LeaveDtoReq leaveDtoReq, MultipartFile file) throws IOException;
     LeaveDtoRep ApprovedByManger(Long Id);
     LeaveDtoRep ApprovedByHead(Long Id);
     LeaveDtoRep ApprovedByHr(Long Id);
-
+    LeaveDtoRep cancelLeave(Long Id);
     LeaveDtoRep rejectByManger(Long Id);
     LeaveDtoRep rejectByHead(Long Id);
     LeaveDtoRep rejectByHr(Long Id);
