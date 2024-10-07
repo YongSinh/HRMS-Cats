@@ -1,10 +1,22 @@
 package com.cats.payrollservice.exception;
 
 import com.cats.payrollservice.base.BaseError;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.client.HttpClientErrorException;
 
+import java.nio.file.AccessDeniedException;
+import java.sql.SQLException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class GlobalException {
     @ExceptionHandler(IllegalArgumentException.class)
@@ -27,4 +39,76 @@ public class GlobalException {
                 .error(e.getLocalizedMessage())
                 .build();
     }
+
+
+    @ExceptionHandler(AccessDeniedException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public BaseError<?> handleServiceException(AccessDeniedException  e) {
+        return BaseError.builder()
+                .status(false)
+                .code(HttpStatus.FORBIDDEN.value())
+                .message("Something went wrong, please check in error detail!")
+                .timestamp(LocalDateTime.now())
+                .error(e.getReason())
+                .build();
+    }
+
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public BaseError<?> handleValidationException(MethodArgumentNotValidException e) {
+        List<Map<String, String>> errors = new ArrayList<>();
+
+        for (FieldError fieldError : e.getFieldErrors()) {
+            Map<String, String> error = new HashMap<>();
+            error.put("field", fieldError.getField());
+            error.put("detail", fieldError.getDefaultMessage());
+            errors.add(error);
+        }
+        return BaseError.builder().status(false).code(HttpStatus.BAD_REQUEST.value()).message("Something field may empty, please check in error detail!").timestamp(LocalDateTime.now()).error(errors).build();
+    }
+
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    protected BaseError<?> handleConstraintViolationException(ConstraintViolationException e) {
+        StringBuilder errorMessage = new StringBuilder();
+        e.getConstraintViolations().forEach(violation -> {
+            errorMessage.append(violation.getMessage()).append(", ");
+        });
+        Map<String, String> errors = new HashMap<>();
+        for (ConstraintViolation<?> violation : e.getConstraintViolations()) {
+            errors.put(violation.getPropertyPath().toString(), violation.getMessage());
+        }
+        return BaseError.builder().status(false).code(HttpStatus.BAD_REQUEST.value()).message(String.valueOf(errorMessage)).timestamp(LocalDateTime.now()).error(errors).build();
+    }
+
+    @ExceptionHandler({IllegalStateException.class})
+    public BaseError<?> handleIllegalStateException(IllegalStateException e) {
+        Map<String, String> errors = new HashMap<>();
+        errors.put("IllegalStateException", e.getMessage());
+        return BaseError.builder().status(false).code(HttpStatus.NOT_FOUND.value()).message(e.getCause().getMessage()).timestamp(LocalDateTime.now()).error(errors).build();
+    }
+
+    @ExceptionHandler(SQLException.class)
+    public BaseError<?> handleSQLException(SQLException e) {
+//        Map<String, String> errors = new HashMap<>();
+//        errors.put("SQLError", e.getMessage());
+        return BaseError.builder().status(false).code(HttpStatus.BAD_REQUEST.value())
+                .message(e.getMessage())
+                .timestamp(LocalDateTime.now())
+                .error("SQLError: "+ e.getSQLState()).build();
+    }
+
+
+
+    @ExceptionHandler(HttpClientErrorException.NotFound.class)
+    public BaseError<?> NotFound(HttpClientErrorException.NotFound e) {
+        return BaseError.builder()
+                .status(false)
+                .code(HttpStatus.NOT_FOUND.value())
+                .message("Something went wrong, please check in error detail!")
+                .timestamp(LocalDateTime.now())
+                .error(e.getLocalizedMessage())
+                .build();
+    }
+
 }

@@ -13,13 +13,12 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 @RequiredArgsConstructor
-public class EmployeeAllowancesReqDto {
-    private List<Long> allowances;
+public class EmployeeAllowancesReqDto2 {
+    private Long allowances;
     private Integer type;
     private Double amount;
     private LocalDate effectiveDate;
     private LocalDateTime dateCreated;
-    private LocalDate paySlipDate;
     private Long paySlipId;
 
 }

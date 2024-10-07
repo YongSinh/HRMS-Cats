@@ -41,6 +41,9 @@ public class SecurityConfiguration {
                 "/swagger-resources/**",
                 "/configuration/ui",
                 "/configuration/security",
+                "/information-management-service/v3/api-docs",
+                "/payroll-service/v3/api-docs",
+                "/attendance-service/v3/api-docs",
                 "/swagger-ui.html",
                 "/webjars/**"
         };
@@ -51,6 +54,7 @@ public class SecurityConfiguration {
                     exchanges
                             .pathMatchers("/actuator/**").hasRole(admin.toUpperCase())
                             .pathMatchers(AUTH_WHITELIST).permitAll()
+                            //.pathMatchers("/api/files/**").permitAll()
                             .pathMatchers("/eureka/**", "/actuator/**", "/swagger-ui.html", "/v3/api-docs/**", "/swagger-ui/**").permitAll()
                             .anyExchange().permitAll();
                 })

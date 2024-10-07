@@ -4,10 +4,8 @@ import com.cats.payrollservice.base.BaseApi;
 import com.cats.payrollservice.dto.request.PayslipReqDto;
 import com.cats.payrollservice.model.Payroll;
 import com.cats.payrollservice.model.Payslip;
-import com.cats.payrollservice.service.EmployeeAllowancesService;
-import com.cats.payrollservice.service.EmployeeDeductionsService;
-import com.cats.payrollservice.service.PayrollService;
-import com.cats.payrollservice.service.PayslipService;
+import com.cats.payrollservice.non_entity_POJO.PayrollAndPaySlip;
+import com.cats.payrollservice.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
@@ -20,8 +18,8 @@ import java.util.List;
 @RequestMapping("/api/payrolls")
 @RequiredArgsConstructor
 public class PayslipController {
-
     private final PayslipService payslipService;
+    private final PayslipReportService payslipReportService;
    private final EmployeeAllowancesService employeeAllowancesService;
    private final EmployeeDeductionsService employeeDeductionsService;
     @GetMapping("/payslips")
@@ -36,9 +34,33 @@ public class PayslipController {
                 .build();
     }
 
+    @GetMapping("/payslips/report")
+    public BaseApi<?> getListPayrollReport() {
+        List<PayrollAndPaySlip> payslips = payslipReportService.getListPaySlip();
+        return BaseApi.builder()
+                .status(true)
+                .code(HttpStatus.OK.value())
+                .message("payslips have been found")
+                .timestamp(LocalDateTime.now())
+                .data(payslips)
+                .build();
+    }
+
     @GetMapping("/payslips/EmId")
     public BaseApi<?> getListPayrollByEmId(@RequestParam Long emId) {
         List<Payslip> payslips = payslipService.getListPaySlipByEmId(emId);
+        return BaseApi.builder()
+                .status(true)
+                .code(HttpStatus.OK.value())
+                .message("payslips have been found")
+                .timestamp(LocalDateTime.now())
+                .data(payslips)
+                .build();
+    }
+
+    @GetMapping("/payslips/getPayrollById")
+    public BaseApi<?> getListPayrollId(@RequestParam Long id) {
+        Payslip payslips = payslipService.getPaySlipById(id);
         return BaseApi.builder()
                 .status(true)
                 .code(HttpStatus.OK.value())
@@ -63,7 +85,7 @@ public class PayslipController {
     }
 
 
-    @GetMapping("/payslips/update")
+    @PutMapping("/payslips/update")
     public BaseApi<?> updatePaySlip(@RequestPart("body") PayslipReqDto payslipReqDto, @RequestPart("id") Long id) {
         Payslip payslips = payslipService.update(payslipReqDto,id);
         return BaseApi.builder()
@@ -77,8 +99,8 @@ public class PayslipController {
 
 
     @PostMapping("/payslips/add")
-    public BaseApi<?> addPayslip(@RequestPart("body") PayslipReqDto payslipReqDto, @RequestPart("emId")List<Long> emId) {
-        List<Payslip> payslips = payslipService.create(payslipReqDto,emId);
+    public BaseApi<?> addPayslip(@RequestBody PayslipReqDto payslipReqDto) {
+        List<Payslip> payslips = payslipService.create(payslipReqDto);
         return BaseApi.builder()
                 .status(true)
                 .code(HttpStatus.OK.value())

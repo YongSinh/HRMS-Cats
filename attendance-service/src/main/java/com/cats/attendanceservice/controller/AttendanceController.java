@@ -2,6 +2,8 @@ package com.cats.attendanceservice.controller;
 
 import com.cats.attendanceservice.base.BaseApi;
 import com.cats.attendanceservice.dto.AttendanceReqDto;
+import com.cats.attendanceservice.dto.TimeInReqDto;
+import com.cats.attendanceservice.dto.TimeOutReqDto;
 import com.cats.attendanceservice.model.Attendance;
 import com.cats.attendanceservice.service.AttendanceService;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
@@ -141,7 +143,7 @@ public class AttendanceController {
                 .build();
     }
 
-    @PutMapping("/attendance/manualAsyncTimeOut")
+    @PostMapping("/attendance/manualAsyncTimeOut")
     public BaseApi<?> manualAsyncTimeOut() {
         String manualAsyncTimeOut = attendanceService.manualAsyncTimeOut();
         return BaseApi.builder()
@@ -150,6 +152,30 @@ public class AttendanceController {
                 .message(manualAsyncTimeOut)
                 .timestamp(LocalDateTime.now())
                 .data(manualAsyncTimeOut)
+                .build();
+    }
+
+    @PostMapping("/attendance/timeIn")
+    public BaseApi<?> timeIn(@RequestBody TimeInReqDto attendanceReqDto) {
+        Attendance timeIn = attendanceService.timeIn(attendanceReqDto);
+        return BaseApi.builder()
+                .status(true)
+                .code(HttpStatus.OK.value())
+                .message("You have time in!")
+                .timestamp(LocalDateTime.now())
+                .data(timeIn)
+                .build();
+    }
+
+    @PutMapping("/attendance/timeOut")
+    public BaseApi<?> timeOut(@RequestBody TimeOutReqDto attendanceReqDto, @RequestParam Long id) {
+        Attendance timeIn = attendanceService.timeOut(id, attendanceReqDto);
+        return BaseApi.builder()
+                .status(true)
+                .code(HttpStatus.OK.value())
+                .message("You have time out!")
+                .timestamp(LocalDateTime.now())
+                .data(timeIn)
                 .build();
     }
 }

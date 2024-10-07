@@ -1,9 +1,11 @@
 package com.cats.payrollservice.dto;
 
 import com.cats.payrollservice.dto.response.EmployeeAllowancesRepDto;
+import com.cats.payrollservice.dto.response.EmployeeDeductionsRepDto;
 import com.cats.payrollservice.dto.response.SalariesRepDto;
 import com.cats.payrollservice.dto.response.TaxRepDto;
 import com.cats.payrollservice.model.EmployeeAllowances;
+import com.cats.payrollservice.model.EmployeeDeductions;
 import com.cats.payrollservice.model.Salaries;
 import com.cats.payrollservice.model.Tax;
 
@@ -70,6 +72,27 @@ public class mapper {
         }
         return employeeAllowancesRepDtos;
     }
+
+    public static EmployeeDeductionsRepDto empDeductionsToEmpDeductionsResponseDto(EmployeeDeductions deductions){
+        EmployeeDeductionsRepDto employeeDeductionsRepDto = new EmployeeDeductionsRepDto();
+        employeeDeductionsRepDto.setEmpDedId(deductions.getEmpDedId());
+        employeeDeductionsRepDto.setEmpId(deductions.getEmpId());
+        employeeDeductionsRepDto.setType(deductions.getType());
+        employeeDeductionsRepDto.setAmount(deductions.getAmount());
+        employeeDeductionsRepDto.setDeductions(deductions.getDeductions().getDeduction());
+        employeeDeductionsRepDto.setEffectiveDate(deductions.getEffectiveDate());
+        employeeDeductionsRepDto.setDateCreated(deductions.getDateCreated());
+        return employeeDeductionsRepDto;
+    }
+
+    public static List<EmployeeDeductionsRepDto> empDeductionsToEmpDeductionsResponseDtos(List<EmployeeDeductions> deductions){
+        List<EmployeeDeductionsRepDto> employeeDeductionsRepDto = new ArrayList<>();
+        for (EmployeeDeductions employeeDeductions : deductions){
+            employeeDeductionsRepDto.add(empDeductionsToEmpDeductionsResponseDto(employeeDeductions));
+        }
+        return employeeDeductionsRepDto;
+    }
+
 
 
 }

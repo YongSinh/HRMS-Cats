@@ -1,4 +1,5 @@
 package com.cats.payrollservice.dto.request;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -13,13 +14,11 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 @RequiredArgsConstructor
-public class EmployeeAllowancesReqDto {
-    private List<Long> allowances;
+public class EmployeeDeductionsReqDto2 {
+    private Long deductions;
     private Integer type;
     private Double amount;
     private LocalDate effectiveDate;
     private LocalDateTime dateCreated;
-    private LocalDate paySlipDate;
     private Long paySlipId;
-
 }

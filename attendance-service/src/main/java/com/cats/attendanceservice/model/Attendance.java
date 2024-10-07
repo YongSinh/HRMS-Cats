@@ -31,6 +31,8 @@ public class Attendance {
     private LocalDate dateIn;
     @Column(name = "dateOut")
     private LocalDate dateOut;
+    @Column(name = "onLeave")
+    private Boolean onLeave;
     @Column(name = "remark", columnDefinition = "varchar(150)")
     private String remark;
 

@@ -106,6 +106,7 @@ public class LeaveServiceImp implements LeaveSerivce{
         attendance.setDateIn(apply.getCreatedAt());
         attendance.setDateOut(apply.getCreatedAt());
         attendance.setRemark(apply.getReason());
+        attendance.setOnLeave(true);
         attendanceRepo.save(attendance);
         return mapper.leaveToLeaveResponseDto(leaveRepo.save(apply));
     }

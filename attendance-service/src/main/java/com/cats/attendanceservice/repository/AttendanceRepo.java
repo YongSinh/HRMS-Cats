@@ -15,6 +15,7 @@ import java.util.Optional;
 public interface AttendanceRepo extends JpaRepository<Attendance, Long> {
     @Query(value = "select * from attendance order by DateIn DESC ", nativeQuery = true)
     List<Attendance> findAllOrderByDateIn();
+    List<Attendance> findAllByOrderByIdDesc();
     @Query(value = "select * from attendance where emId = ?1 order by DateIn Desc ", nativeQuery = true)
     List<Attendance> findByEmId(Long emId);
     @Query(value = "select * from attendance\n" +

@@ -6,6 +6,7 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Setter
 @Getter
@@ -20,4 +21,5 @@ public class PayslipReqDto {
     private Double khmerRate;
     private LocalDate payrollDate;
     private Integer paymentType;
+    private List<Long> emId;
 }

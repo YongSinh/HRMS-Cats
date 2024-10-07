@@ -3,7 +3,9 @@ package com.cats.payrollservice.controller;
 import com.cats.payrollservice.base.BaseApi;
 import com.cats.payrollservice.dto.request.EmployeeAllowancesReqDto;
 import com.cats.payrollservice.dto.request.EmployeeDeductionsReqDto;
+import com.cats.payrollservice.dto.request.EmployeeDeductionsReqDto2;
 import com.cats.payrollservice.dto.response.EmployeeAllowancesRepDto;
+import com.cats.payrollservice.dto.response.EmployeeDeductionsRepDto;
 import com.cats.payrollservice.model.EmployeeDeductions;
 import com.cats.payrollservice.service.EmployeeDeductionsService;
 import lombok.RequiredArgsConstructor;
@@ -45,7 +47,7 @@ public class EmpDeductionController {
 
     @GetMapping("/empDeduction/ByPaySlip")
     public BaseApi<?> getEmpDeductionByPaySlip(@RequestParam Long id) {
-        List<EmployeeDeductions> employeeDeductions = employeeDeductionsService.getListEmployeeDeductionsByPaySlipId(id);
+        List<EmployeeDeductionsRepDto> employeeDeductions = employeeDeductionsService.getListEmployeeDeductionsByPaySlipId(id);
         return BaseApi.builder()
                 .status(true)
                 .code(HttpStatus.OK.value())
@@ -55,11 +57,8 @@ public class EmpDeductionController {
                 .build();
     }
     @PostMapping("/empDeduction/addDeduction")
-    public BaseApi<?> createEmpDeduction(
-            @RequestPart(name = "body")EmployeeDeductionsReqDto employeeDeductionsReqDto,
-            @RequestPart(name = "emId") List<Long> emId
-    ) {
-        List<EmployeeDeductions> employeeDeductions = employeeDeductionsService.createMultiple(employeeDeductionsReqDto, emId);
+    public BaseApi<?> createEmpDeduction(@RequestBody EmployeeDeductionsReqDto2 employeeDeductionsReqDto) {
+        EmployeeDeductions employeeDeductions = employeeDeductionsService.addDeductions(employeeDeductionsReqDto);
         return BaseApi.builder()
                 .status(true)
                 .code(HttpStatus.OK.value())
@@ -87,8 +86,8 @@ public class EmpDeductionController {
 
     @PutMapping("/empDeduction/updateDeduction")
     public BaseApi<?> updateEmpDeduction(
-            @RequestPart(name = "body")EmployeeDeductionsReqDto employeeDeductionsReqDto,
-            @RequestPart(name = "id") Long id
+            @RequestBody EmployeeDeductionsReqDto2 employeeDeductionsReqDto,
+            @RequestParam(name = "id") Long id
     ) {
         EmployeeDeductions employeeDeductions = employeeDeductionsService.update(employeeDeductionsReqDto, id);
         return BaseApi.builder()

@@ -1,10 +1,7 @@
 package com.cats.attendanceservice.service;
 
 import com.cats.attendanceservice.Util.DateUtils;
-import com.cats.attendanceservice.dto.AttendanceReqDto;
-import com.cats.attendanceservice.dto.LeaveDtoRep;
-import com.cats.attendanceservice.dto.ReportAttendanceDto;
-import com.cats.attendanceservice.dto.TimeAndDate;
+import com.cats.attendanceservice.dto.*;
 import com.cats.attendanceservice.events.ListEmpByEmpIdEvent;
 import com.cats.attendanceservice.model.Attendance;
 import com.cats.attendanceservice.model.Leave;
@@ -52,7 +49,7 @@ public class AttendanceServiceImp implements AttendanceService  {
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("M/dd/yyyy h:mm a", Locale.ENGLISH);
     @Override
     public List<Attendance> getListAttendance() {
-        return attendanceRepo.findAll();
+        return attendanceRepo.findAllByOrderByIdDesc();
     }
 
     @Override
@@ -96,6 +93,30 @@ public class AttendanceServiceImp implements AttendanceService  {
         attendance.setTimeOut(attendanceReqDto.getTimeOut());
         attendance.setDateIn(attendanceReqDto.getDateIn());
         attendance.setRemark(attendanceReqDto.getRemark());
+        return attendanceRepo.save(attendance);
+    }
+
+    @Override
+    public Attendance timeOut(Long Id, TimeOutReqDto attendanceReqDto) {
+        Attendance update = getAttendanceById(Id);
+        if (update.getTimeOut() != null) {
+            throw new IllegalArgumentException("You have already timed out.");
+        }
+        update.setTimeOut(attendanceReqDto.getTimeOut());
+        update.setDateOut(attendanceReqDto.getDateOut());
+        update.setRemark(attendanceReqDto.getRemark());
+        attendanceRepo.save(update);
+        return update;
+    }
+
+    @Override
+    public Attendance timeIn(TimeInReqDto attendanceReqDto) {
+        Attendance attendance = new Attendance();
+        attendance.setEmId(attendanceReqDto.getEmId());
+        attendance.setTimeIn(attendanceReqDto.getTimeIn());
+        attendance.setDateIn(attendanceReqDto.getDateIn());
+        attendance.setRemark(attendanceReqDto.getRemark());
+        attendance.setOnLeave(false);
         return attendanceRepo.save(attendance);
     }
 

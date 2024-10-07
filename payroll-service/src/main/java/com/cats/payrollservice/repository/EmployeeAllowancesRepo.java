@@ -14,6 +14,7 @@ import java.util.Optional;
 public interface EmployeeAllowancesRepo extends JpaRepository<EmployeeAllowances, Long> {
     List<EmployeeAllowances> findByEmpId(Long emId);
     List<EmployeeAllowances> findAllByOrderByEmpIdDesc();
+    List<EmployeeAllowances> findByEmpIdAndType(Long empId, Integer type);
     List<EmployeeAllowances> findByEmpIdIn(Collection<Long> empId);
     List<EmployeeAllowances> findByPaySlipId(Long paySlipId);
     Optional<EmployeeAllowances> findByEmpIdAndDateCreated(Long empId, LocalDateTime dateCreated);
