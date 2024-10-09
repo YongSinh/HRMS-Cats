@@ -3,11 +3,14 @@ package com.cats.payrollservice.exception;
 import com.cats.payrollservice.base.BaseError;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.client.HttpClientErrorException;
 
 import java.nio.file.AccessDeniedException;
@@ -18,28 +21,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@RestControllerAdvice
+@ControllerAdvice
+@Slf4j
 public class GlobalException {
-    @ExceptionHandler(IllegalArgumentException.class)
-    public BaseError<?> handleMainException(IllegalArgumentException e) {
-        return BaseError.builder().status(false)
-                .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
-                .message(e.getMessage())
-                .timestamp(LocalDateTime.now())
-                .error(e.getMessage())
-                .build();
-    }
-
-    @ExceptionHandler(NullPointerException.class)
-    public BaseError<?> NullPointerException(NullPointerException e) {
-        return BaseError.builder()
-                .status(false)
-                .code(HttpStatus.OK.value())
-                .message("Something went wrong, please check in error detail!")
-                .timestamp(LocalDateTime.now())
-                .error(e.getLocalizedMessage())
-                .build();
-    }
-
 
     @ExceptionHandler(AccessDeniedException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)
@@ -98,8 +83,25 @@ public class GlobalException {
                 .error("SQLError: "+ e.getSQLState()).build();
     }
 
-
-
+    @ExceptionHandler(IllegalArgumentException.class)
+    public BaseError<?> handleMainException(IllegalArgumentException e) {
+        return BaseError.builder().status(false)
+                .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                .message(e.getMessage())
+                .timestamp(LocalDateTime.now())
+                .error(e.getMessage())
+                .build();
+    }
+    @ExceptionHandler(NullPointerException.class)
+    public BaseError<?> NullPointerException(NullPointerException e) {
+        return BaseError.builder()
+                .status(false)
+                .code(HttpStatus.OK.value())
+                .message("Something went wrong, please check in error detail!")
+                .timestamp(LocalDateTime.now())
+                .error(e.getLocalizedMessage())
+                .build();
+    }
     @ExceptionHandler(HttpClientErrorException.NotFound.class)
     public BaseError<?> NotFound(HttpClientErrorException.NotFound e) {
         return BaseError.builder()
@@ -111,4 +113,6 @@ public class GlobalException {
                 .build();
     }
 
+
 }
+

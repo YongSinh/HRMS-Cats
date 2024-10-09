@@ -46,6 +46,18 @@ public class PayslipController {
                 .build();
     }
 
+    @GetMapping("/payslips/reportByEmId")
+    public BaseApi<?> getListPayrollReportByEmId(@RequestParam Long emId) {
+        List<PayrollAndPaySlip> payslips = payslipReportService.getListPayslipForEmp(emId);
+        return BaseApi.builder()
+                .status(true)
+                .code(HttpStatus.OK.value())
+                .message("payslips have been found")
+                .timestamp(LocalDateTime.now())
+                .data(payslips)
+                .build();
+    }
+
     @GetMapping("/payslips/EmId")
     public BaseApi<?> getListPayrollByEmId(@RequestParam Long emId) {
         List<Payslip> payslips = payslipService.getListPaySlipByEmId(emId);

@@ -505,7 +505,7 @@ public class PayslipServiceImp implements PayslipService {
 
             // Calculate the new net amount
             double newNet = update.getNet() + amountToRemove;
-
+            newNet = serviceCalculate.roundUp(newNet);
             // Set the updated values to the payslip
             update.setNet(newNet);
             update.setDeductions(updatedDeduction);
@@ -541,7 +541,7 @@ public class PayslipServiceImp implements PayslipService {
 
             // Calculate the new net amount
             double newNet = update.getNet() - amountToRemove;
-
+            newNet = serviceCalculate.roundUp(newNet);
             // Set the updated values to the payslip
             update.setNet(newNet);
             update.setAllowances(updatedAllowances);
