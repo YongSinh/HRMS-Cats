@@ -29,6 +29,7 @@ public class JobHistoryServiceImp implements JobHistoryService{
         }
         Employee employee = employeeService.getPersonalDataById(jobHistoryDtoReq.getEmpId());
         jobHistory.setEmployee(employee);
+        jobHistoryRepo.save(jobHistory);
         return jobHistory;
     }
 
@@ -43,6 +44,7 @@ public class JobHistoryServiceImp implements JobHistoryService{
             Employee employee = employeeService.getPersonalDataById(jobHistoryDtoReq.getEmpId());
             jobHistory.setEmployee(employee);
         }
+        jobHistoryRepo.save(jobHistory);
         return jobHistory;
     }
 

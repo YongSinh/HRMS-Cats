@@ -55,6 +55,19 @@ public class PositionController {
                 .build();
     }
 
+    @GetMapping("/getPositionByDepId")
+    public BaseApi<?> getPositionByDepId(@RequestParam Long depId) {
+        List<PositionDtoRep> position = positionService.getLisPositionByDepId(depId);
+        return BaseApi.builder()
+                .status(true)
+                .code(HttpStatus.OK.value())
+                .message("Account types have been found")
+                .timestamp(LocalDateTime.now())
+                .data(position)
+                .build();
+    }
+
+
     @DeleteMapping("/deletePosition/{id}")
     @ResponseBody
     public ResponseEntity<?> getDeletePosition(@PathVariable String id) {

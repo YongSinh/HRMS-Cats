@@ -12,8 +12,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SiblingDataDtoReq {
-
-    private Long id;
     private Long empId;
     private String firstName;
     private String lastName;
@@ -24,5 +22,4 @@ public class SiblingDataDtoReq {
     private String position;
     private String office;
     private String maritalStats;
-
 }

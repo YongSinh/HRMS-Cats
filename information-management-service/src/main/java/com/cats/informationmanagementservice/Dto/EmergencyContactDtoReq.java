@@ -13,7 +13,6 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class EmergencyContactDtoReq {
-    private Long id;
     private String fullName;
     private String relationship;
     private String address;

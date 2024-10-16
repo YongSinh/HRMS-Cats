@@ -20,7 +20,9 @@ public class EmployeeDtoRep {
     private String firstName;
     private String lastName;
     private String email;
+    private String phone;
     private LocalDate birthDate;
+    private String placeOfBirth;
     private Long age;
     private String sex;
     private Double height;

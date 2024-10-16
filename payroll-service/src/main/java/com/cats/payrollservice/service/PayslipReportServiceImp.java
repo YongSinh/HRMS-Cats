@@ -34,6 +34,7 @@ public class PayslipReportServiceImp implements PayslipReportService{
 
     public JsonNode employeeInfo(Long emId) throws IOException {
         JsonNode employeeInfo = apiService.getEmployeeInFoByEmId(emId);
+        System.out.println(employeeInfo);
         if (employeeInfo == null) {
             throw new IOException("Employee information not found for ID: " + emId);
         }

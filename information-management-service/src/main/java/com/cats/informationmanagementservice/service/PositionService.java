@@ -10,6 +10,7 @@ public interface PositionService {
     Position getPositionById (String Id);
     Position addPosition (PositionDtoReq positionDtoReq);
     List<PositionDtoRep> getListPosition();
+    List<PositionDtoRep> getLisPositionByDepId(Long depId);
     Position editPosition (PositionDtoReq positionDtoReq, String Id);
     PositionDtoRep deletePosition(String Id);
 }

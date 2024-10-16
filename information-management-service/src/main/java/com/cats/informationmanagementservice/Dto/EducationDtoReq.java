@@ -15,7 +15,6 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class EducationDtoReq {
-    private Long id;
     private String  eduLevel;
     private String  eduInstitution;
     private LocalDate yearEnd;

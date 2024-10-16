@@ -30,6 +30,7 @@ public class EducationServiceImp implements EducationService{
         }
         Employee employee = employeeService.getPersonalDataById(educationDtoReq.getEmID());
         education.setEmployee(employee);
+        educationRepo.save(education);
         return education;
     }
 
@@ -45,6 +46,7 @@ public class EducationServiceImp implements EducationService{
             Employee employee = employeeService.getPersonalDataById(educationDtoReq.getEmID());
             education.setEmployee(employee);
         }
+        educationRepo.save(education);
         return education;
     }
 

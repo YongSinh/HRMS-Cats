@@ -4,7 +4,6 @@ import com.cats.informationmanagementservice.Dto.EmployeeDtoRep;
 import com.cats.informationmanagementservice.Dto.EmployeeDtoReq;
 import com.cats.informationmanagementservice.Dto.EmployeeInfo;
 import com.cats.informationmanagementservice.model.Employee;
-import org.springframework.http.codec.multipart.FilePart;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -23,7 +22,7 @@ public interface EmployeeService {
     EmployeeDtoRep getEmployeeDtoRepById(Long Id);
     List<Long> getEmployeeByDepGetOnlyEmId(Long depId);
     List<Long> getEmployeeByDepAndPosId(Long depId, String posId);
-    String uploadFile(MultipartFile file, Long emId, Integer type,  LocalDate date) throws IOException;
+    void uploadFile(MultipartFile file, Long emId, Integer type, LocalDate date, Integer serviceType) throws IOException;
 
     Employee getPersonalDataById (Long Id);
 

@@ -48,6 +48,11 @@ public class PositionServiceImp implements  PositionService{
     }
 
     @Override
+    public List<PositionDtoRep> getLisPositionByDepId(Long depId) {
+        return mapper.PosToPositionResponseDtos(positionRepo.findAllByDepartment_DepId(depId));
+    }
+
+    @Override
     public Position editPosition(PositionDtoReq positionDtoReq, String Id) {
         Position editPosition = getPositionById(Id);
         editPosition.setPosName(positionDtoReq.getPosName());

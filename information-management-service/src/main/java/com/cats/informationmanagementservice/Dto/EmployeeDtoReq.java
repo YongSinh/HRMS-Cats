@@ -9,11 +9,12 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class EmployeeDtoReq {
     private Long empId;
-    private String empCode;
     private String firstName;
     private String lastName;
     private String email;
+    private String phone;
     private LocalDate birthDate;
+    private String placeOfBirth;
     private Long age;
     private String sex;
     private Double height;

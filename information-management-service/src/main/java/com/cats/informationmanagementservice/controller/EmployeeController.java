@@ -3,16 +3,13 @@ package com.cats.informationmanagementservice.controller;
 import com.cats.informationmanagementservice.Dto.EmployeeDtoRep;
 import com.cats.informationmanagementservice.Dto.EmployeeDtoReq;
 import com.cats.informationmanagementservice.Dto.EmployeeInfo;
-import com.cats.informationmanagementservice.Dto.FamilyDataDtoReq;
 import com.cats.informationmanagementservice.base.BaseApi;
 import com.cats.informationmanagementservice.model.Employee;
-import com.cats.informationmanagementservice.model.FamilyData;
 import com.cats.informationmanagementservice.service.EmployeeService;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import io.github.resilience4j.retry.annotation.Retry;
 import io.github.resilience4j.timelimiter.annotation.TimeLimiter;
 import jakarta.validation.Valid;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -138,10 +135,11 @@ public class EmployeeController {
                 .data(employee)
                 .build();
     }
-
-    //@PostMapping("/addEmployee")
-    @PostMapping(value = "/addEmployee", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public BaseApi<?> addFamilyData(@RequestPart("body") EmployeeDtoReq employeeDtoReq, @RequestPart("file") MultipartFile file) throws IOException {
+    @PostMapping(value = "/addEmployee", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+    public BaseApi<?> addEmployeeData(@RequestPart("body") EmployeeDtoReq employeeDtoReq,
+                                      @RequestPart(value = "file", required = true) MultipartFile file) throws IOException {
+        // Handle the case when no file is uploaded
+        System.out.println(file);
         Employee employee = employeeService.addPersonalData(employeeDtoReq, file);
         return BaseApi.builder()
                 .status(true)
@@ -151,6 +149,8 @@ public class EmployeeController {
                 .data(employee)
                 .build();
     }
+
+
     @GetMapping("/listEmployee")
     public BaseApi<?> listEmployee() {
         List<EmployeeDtoRep> employee = employeeService.listEmployee();
@@ -191,7 +191,7 @@ public class EmployeeController {
     public CompletableFuture<?> uploadFile(@RequestPart("file") @Valid MultipartFile file) throws IOException {
 
             LocalDate localDate = LocalDate.now();
-            employeeService.uploadFile(file,2431L, 1, localDate);
+            employeeService.uploadFile(file,2431L, 1, localDate, 1);
             String message = "Uploaded the file successfully: " + file.getOriginalFilename();
         return CompletableFuture.supplyAsync(() ->message);
 

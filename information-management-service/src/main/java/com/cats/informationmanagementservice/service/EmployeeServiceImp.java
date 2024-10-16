@@ -12,26 +12,17 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.minidev.json.JSONObject;
-import org.springframework.core.io.FileSystemResource;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.MultipartBodyBuilder;
-import org.springframework.http.codec.multipart.FilePart;
 import org.springframework.stereotype.Service;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import java.io.File;
 import java.io.IOException;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 @Service
@@ -51,7 +42,9 @@ public class EmployeeServiceImp implements EmployeeService{
         emp.setFirstName(employee.getFirstName());
         emp.setLastName(employee.getLastName());
         emp.setEmail(employee.getEmail());
+        emp.setPhone(employee.getPhone());
         emp.setBirthDate(employee.getBirthDate());
+        emp.setPlaceOfBirth(employee.getPlaceOfBirth());
         emp.setAge(employee.getAge());
         emp.setSex(employee.getSex());
         emp.setHeight(employee.getHeight());
@@ -83,9 +76,10 @@ public class EmployeeServiceImp implements EmployeeService{
         Department department = departmentService.getDepById(employee.getDepId());
         emp.setDepartment(department);
         if(!file.isEmpty()){
-            uploadFile(file, employee.getEmpId(),1,employee.getEmpDate());
+            uploadFile(file, employee.getEmpId(),1,employee.getEmpDate(), 1);
         }
-        return employeeRepo.save(emp);
+        employeeRepo.save(emp);
+        return emp;
     }
 
     @Override
@@ -94,7 +88,9 @@ public class EmployeeServiceImp implements EmployeeService{
         emp.setFirstName(employee.getFirstName());
         emp.setLastName(employee.getLastName());
         emp.setEmail(employee.getEmail());
+        emp.setPhone(employee.getPhone());
         emp.setBirthDate(employee.getBirthDate());
+        emp.setPlaceOfBirth(employee.getPlaceOfBirth());
         emp.setAge(employee.getAge());
         emp.setSex(employee.getSex());
         emp.setHeight(employee.getHeight());
@@ -192,16 +188,17 @@ public class EmployeeServiceImp implements EmployeeService{
 
 
     @Override
-    public String uploadFile(MultipartFile file, Long emId, Integer type, LocalDate date) throws IOException {
+    public void uploadFile(MultipartFile file, Long emId, Integer type, LocalDate date, Integer serviceType) throws IOException {
         JSONObject jsonBody = new JSONObject();
         jsonBody.put("emId", emId);
         jsonBody.put("type", type);
         jsonBody.put("dateCreated", date);
+        jsonBody.put("serviceType", serviceType);
 
         MultipartBodyBuilder builder = new MultipartBodyBuilder();
         builder.part("file", file.getResource());
         builder.part("body", jsonBody);
-        return  webClientBuilder.build().post()
+        webClientBuilder.build().post()
                 .uri("http://attendance-service/api/files/upload")
                 .contentType(MediaType.MULTIPART_FORM_DATA)
                 .body(BodyInserters.fromMultipartData(builder.build()))

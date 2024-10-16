@@ -61,7 +61,9 @@ public class mapper {
         emp.setFirstName(employee.getFirstName());
         emp.setLastName(employee.getLastName());
         emp.setEmail(employee.getEmail());
+        emp.setPhone(employee.getPhone());
         emp.setBirthDate(employee.getBirthDate());
+        emp.setPlaceOfBirth(employee.getPlaceOfBirth());
         emp.setAge(employee.getAge());
         emp.setSex(employee.getSex());
         emp.setHeight(employee.getHeight());

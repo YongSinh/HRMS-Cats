@@ -16,7 +16,5 @@ public class FamilyDataDtoReq {
     private String motherAddress;
     private String motherOccupation;
     private String motherPhoneNum;
-    private String siblings;
-    private String maritalStats;
     private Long emId;
 }

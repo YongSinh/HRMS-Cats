@@ -26,10 +26,14 @@ public class Employee {
     private String firstName;
     @Column(name ="lastName" )
     private String lastName;
-    @Column(name ="email" )
+    @Column(name ="email")
     private String email;
+    @Column(name ="phone")
+    private String phone;
     @Column(name ="birthDate")
     private LocalDate birthDate;
+    @Column(name ="placeOfBirth")
+    private String placeOfBirth;
     @Column(name ="age")
     private Long age;
     @Column(name ="sex")
