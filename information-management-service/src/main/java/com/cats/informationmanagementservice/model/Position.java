@@ -30,7 +30,7 @@ public class Position {
     @JsonBackReference
     private Department department;
 
-    @OneToMany(mappedBy = "position", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "position", cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.LAZY)
     private List<Employee> employees = new ArrayList<>();
 
 }

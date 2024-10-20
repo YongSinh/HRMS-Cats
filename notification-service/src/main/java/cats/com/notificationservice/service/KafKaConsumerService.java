@@ -16,7 +16,7 @@ public class KafKaConsumerService {
 	private final Tracer tracer;
 	@KafkaListener(topics = "${general.topic.name}", groupId = "${general.topic.group.id}", containerFactory = "kafkaListenerContainerFactory")
     public void consume(String message) {
-        System.out.println("Sent message: {} with offset: {}"+ message);
+        System.out.println("Sent message: "+ message);
         log.info(String.format("Message received -> %s", message));
     }
 

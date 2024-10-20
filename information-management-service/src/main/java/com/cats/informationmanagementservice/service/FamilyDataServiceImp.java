@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -65,7 +66,7 @@ public class FamilyDataServiceImp implements FamilyDataService{
     }
 
     @Override
-    public List<FamilyData> getListFamilyDataByEmId(Long emId) {
+    public Optional<FamilyData> getListFamilyDataByEmId(Long emId) {
         Employee employee = employeeService.getPersonalDataById(emId);
         return familyDataRepo.findByEmployee(employee);
     }

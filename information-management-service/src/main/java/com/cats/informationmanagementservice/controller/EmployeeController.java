@@ -2,6 +2,7 @@ package com.cats.informationmanagementservice.controller;
 
 import com.cats.informationmanagementservice.Dto.EmployeeDtoRep;
 import com.cats.informationmanagementservice.Dto.EmployeeDtoReq;
+import com.cats.informationmanagementservice.Dto.EmployeeDtoReqEdit;
 import com.cats.informationmanagementservice.Dto.EmployeeInfo;
 import com.cats.informationmanagementservice.base.BaseApi;
 import com.cats.informationmanagementservice.model.Employee;
@@ -137,7 +138,7 @@ public class EmployeeController {
     }
     @PostMapping(value = "/addEmployee", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public BaseApi<?> addEmployeeData(@RequestPart("body") EmployeeDtoReq employeeDtoReq,
-                                      @RequestPart(value = "file", required = true) MultipartFile file) throws IOException {
+                                      @RequestPart(value = "file", required = false) MultipartFile file) throws IOException {
         // Handle the case when no file is uploaded
         System.out.println(file);
         Employee employee = employeeService.addPersonalData(employeeDtoReq, file);
@@ -173,9 +174,10 @@ public class EmployeeController {
                 .data(employee)
                 .build();
     }
-    @PutMapping("/editEmployee/{Id}")
-    public BaseApi<?> editEmployee(@RequestBody EmployeeDtoReq employeeDtoReq, @PathVariable Long Id) {
-        EmployeeDtoRep employee = employeeService.editPersonalData(employeeDtoReq,Id);
+    @RequestMapping(value = "/editEmployee", method = RequestMethod.POST, consumes = { "multipart/form-data"})
+    public BaseApi<?> editEmployee(@RequestPart("body") EmployeeDtoReqEdit employeeDtoReq,
+                                   @RequestPart(value = "file", required = false) MultipartFile file) throws IOException {
+        EmployeeDtoRep employee = employeeService.editPersonalData(employeeDtoReq ,file);
         return BaseApi.builder()
                 .status(true)
                 .code(HttpStatus.OK.value())
@@ -184,6 +186,18 @@ public class EmployeeController {
                 .data(employee)
                 .build();
     }
+    @RequestMapping(value = "/updateEmployee", method = RequestMethod.POST)
+    public BaseApi<?> updateEmployee(@RequestBody EmployeeDtoReqEdit employeeDtoReq) throws IOException {
+        Employee employee = employeeService.update(employeeDtoReq );
+        return BaseApi.builder()
+                .status(true)
+                .code(HttpStatus.OK.value())
+                .message("Employee data have been updated")
+                .timestamp(LocalDateTime.now())
+                .data(employee)
+                .build();
+    }
+
     @CircuitBreaker(name = "attendance",fallbackMethod = "fallbackMethod")
     @TimeLimiter(name = "attendance")
     @Retry(name = "attendance")

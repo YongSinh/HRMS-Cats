@@ -1,21 +1,13 @@
 package com.cats.informationmanagementservice.Dto;
 
-import com.cats.informationmanagementservice.model.EmergencyContact;
-import com.cats.informationmanagementservice.model.JobHistory;
-import com.cats.informationmanagementservice.model.SiblingData;
-import com.cats.informationmanagementservice.model.SpecialAbility;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Map;
 
 @Data
 @AllArgsConstructor
-@RequiredArgsConstructor
-public class EmployeeDtoRep {
+public class EmployeeDtoReqEdit {
     private Long empId;
     private String firstName;
     private String lastName;
@@ -43,13 +35,7 @@ public class EmployeeDtoRep {
     private String  govTel;
     private String  govAddress;
     private String  govPosition;
-    private String depId;
+    private Long depId;
     private String posId;
-    private String section;
-    private List<EducationDtoRep> educationDtoReps;
-    private List<JobHistory> jobHistoryDtoReps;
-    private List<EmergencyContact> emergencyContacts;
-    private List<SiblingData> siblingData;
-    private List<SpecialAbility> specialAbilities;
-
+    private String fileId;
 }

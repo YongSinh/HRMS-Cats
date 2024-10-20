@@ -1,6 +1,7 @@
 package com.cats.attendanceservice.controller;
 
 import com.cats.attendanceservice.dto.RequestFile;
+import com.cats.attendanceservice.dto.RequestFileUpdate;
 import com.cats.attendanceservice.dto.ResponseFile;
 import com.cats.attendanceservice.model.FileInfo;
 import com.cats.attendanceservice.service.FileService;
@@ -38,6 +39,19 @@ public class FileController {
     public ResponseEntity<?> uploadFile(@RequestPart("file") @Valid MultipartFile file, @RequestPart("body")  @Valid RequestFile requestFile){
         try {
             fileService.store(file,requestFile.getEmId(), requestFile.getType(), requestFile.getDateCreated(), requestFile.getServiceType());
+            String message = "Uploaded the file successfully: " + file.getOriginalFilename();
+            return ResponseEntity.status(HttpStatus.OK).body(message);
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            String message = "Could not upload the file: " + file.getOriginalFilename() + "!";
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(message);
+        }
+    }
+
+    @RequestMapping(value = "/files/updateFile", method = RequestMethod.POST, consumes = { "multipart/form-data"})
+    public ResponseEntity<?> uploadUpdateFile(@RequestPart("file") @Valid MultipartFile file, @RequestPart("body")  @Valid RequestFileUpdate requestFile){
+        try {
+            fileService.updateStore(file,requestFile.getEmId(), requestFile.getType(), requestFile.getDateCreated(), requestFile.getServiceType(), requestFile.getId());
             String message = "Uploaded the file successfully: " + file.getOriginalFilename();
             return ResponseEntity.status(HttpStatus.OK).body(message);
         }catch (Exception e){

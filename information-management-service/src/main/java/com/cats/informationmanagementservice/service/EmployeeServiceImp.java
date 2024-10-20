@@ -1,9 +1,6 @@
 package com.cats.informationmanagementservice.service;
 
-import com.cats.informationmanagementservice.Dto.EmployeeDtoRep;
-import com.cats.informationmanagementservice.Dto.EmployeeDtoReq;
-import com.cats.informationmanagementservice.Dto.EmployeeInfo;
-import com.cats.informationmanagementservice.Dto.mapper;
+import com.cats.informationmanagementservice.Dto.*;
 import com.cats.informationmanagementservice.model.Department;
 import com.cats.informationmanagementservice.model.Employee;
 import com.cats.informationmanagementservice.model.Position;
@@ -26,17 +23,19 @@ import java.util.List;
 import java.util.stream.StreamSupport;
 
 @Service
-@Transactional
-@Slf4j
 @RequiredArgsConstructor
 public class EmployeeServiceImp implements EmployeeService{
-    private final EmployeeRepo employeeRepo;
+    private final EmployeeRepo  employeeRepo;
     private final PositionService positionService;
     private final DepartmentService departmentService;
     private final WebClient.Builder webClientBuilder;
     @Transactional
     @Override
     public Employee addPersonalData(EmployeeDtoReq employee, MultipartFile file) throws IOException {
+        if (employeeRepo.findByEmpId(employee.getEmpId()).isPresent()) {
+            throw new IllegalArgumentException("An employee with this ID already exists.");
+        }
+
         Employee emp = new Employee();
         emp.setEmpId(employee.getEmpId());
         emp.setFirstName(employee.getFirstName());
@@ -75,16 +74,24 @@ public class EmployeeServiceImp implements EmployeeService{
         }
         Department department = departmentService.getDepById(employee.getDepId());
         emp.setDepartment(department);
-        if(!file.isEmpty()){
+        if(file != null){
+            System.out.println(file.isEmpty());
             uploadFile(file, employee.getEmpId(),1,employee.getEmpDate(), 1);
         }
-        employeeRepo.save(emp);
-        return emp;
+        return employeeRepo.save(emp);
     }
-
+    @Transactional
     @Override
-    public EmployeeDtoRep editPersonalData(EmployeeDtoReq employee, Long Id) {
-        Employee emp = getPersonalDataById(Id);
+    public EmployeeDtoRep editPersonalData(EmployeeDtoReqEdit employee, MultipartFile file) throws IOException {
+        Employee emp = update(employee);
+        if(file != null){
+            uploadUpdateFile(file, employee.getEmpId(),1,employee.getEmpDate(), 1, employee.getFileId());
+        }
+        return mapper.EmployeeDtoRepToEmployeeDtoRep(emp);
+    }
+    @Override
+    public Employee update(EmployeeDtoReqEdit employee){
+        Employee emp = getPersonalDataById(employee.getEmpId());
         emp.setFirstName(employee.getFirstName());
         emp.setLastName(employee.getLastName());
         emp.setEmail(employee.getEmail());
@@ -119,9 +126,8 @@ public class EmployeeServiceImp implements EmployeeService{
             Department department = departmentService.getDepById(employee.getDepId());
             emp.setDepartment(department);
         }
-        employeeRepo.save(emp);
 
-        return mapper.EmployeeDtoRepToEmployeeDtoRep(emp);
+        return employeeRepo.save(emp);
     }
 
     @Override
@@ -200,6 +206,27 @@ public class EmployeeServiceImp implements EmployeeService{
         builder.part("body", jsonBody);
         webClientBuilder.build().post()
                 .uri("http://attendance-service/api/files/upload")
+                .contentType(MediaType.MULTIPART_FORM_DATA)
+                .body(BodyInserters.fromMultipartData(builder.build()))
+                .retrieve()
+                .bodyToMono(String.class)
+                .block();
+    }
+
+    @Override
+    public void uploadUpdateFile(MultipartFile file, Long emId, Integer type, LocalDate date, Integer serviceType, String fileId) throws IOException {
+        JSONObject jsonBody = new JSONObject();
+        jsonBody.put("emId", emId);
+        jsonBody.put("type", type);
+        jsonBody.put("dateCreated", date);
+        jsonBody.put("serviceType", serviceType);
+        jsonBody.put("id", fileId);
+
+        MultipartBodyBuilder builder = new MultipartBodyBuilder();
+        builder.part("file", file.getResource());
+        builder.part("body", jsonBody);
+        webClientBuilder.build().post()
+                .uri("http://attendance-service/api/files/updateFile")
                 .contentType(MediaType.MULTIPART_FORM_DATA)
                 .body(BodyInserters.fromMultipartData(builder.build()))
                 .retrieve()

@@ -35,7 +35,7 @@ public class EducationController {
     }
 
 
-    @PutMapping("/editJobHistory/{Id}")
+    @PutMapping("/editEducation/{Id}")
     public BaseApi<?> editJobHistory(@RequestBody EducationDtoReq educationDtoReq , @PathVariable Long Id) {
         Education education = educationService.edit(educationDtoReq, Id);
         return BaseApi.builder()

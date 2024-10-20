@@ -29,7 +29,7 @@ public class LeaveController {
 
     //for first create leave only
     @PostMapping(value = "/leave/add", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
-    public BaseApi<?> addLeave(@RequestPart("body") LeaveApplyDtoReq leaveDtoReq, @RequestPart("file")MultipartFile file) throws IOException {
+    public BaseApi<?> addLeave(@RequestPart("body") LeaveApplyDtoReq leaveDtoReq, @RequestPart(value = "file", required = false) MultipartFile file) throws IOException {
         LeaveDtoRep leave = leaveSerivce.create(leaveDtoReq, file);
         return BaseApi.builder()
                 .status(true)

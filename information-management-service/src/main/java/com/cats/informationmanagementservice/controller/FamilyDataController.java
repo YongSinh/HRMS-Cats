@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/info/familyData")
@@ -57,7 +58,7 @@ public class FamilyDataController {
 
     @GetMapping("/getListFamilyDataByEmId")
     public BaseApi<?> getListFamilyDataByEmId(@RequestParam Long emId) {
-        List<FamilyData> familyData = familyDataService.getListFamilyDataByEmId(emId);
+        Optional<FamilyData> familyData = familyDataService.getListFamilyDataByEmId(emId);
         return BaseApi.builder()
                 .status(true)
                 .code(HttpStatus.OK.value())

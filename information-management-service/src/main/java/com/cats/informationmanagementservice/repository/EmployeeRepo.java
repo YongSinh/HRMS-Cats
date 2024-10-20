@@ -9,12 +9,13 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface EmployeeRepo extends JpaRepository<Employee, Long> {
     List<Employee> findByMangerIdAndDepartment(Long mangerId, Department department);
     List<Employee> findByDepartment(Department department);
-
+    Optional<Employee> findByEmpId(Long empId);
     @Query(nativeQuery = true, value = "CALL GetEmployeeHierarchy(:manId, :depId)")
     List<Employee> callGetEmployeeHierarchyProcedure(@Param("manId") Long manId, @Param("depId") Long depId);
 

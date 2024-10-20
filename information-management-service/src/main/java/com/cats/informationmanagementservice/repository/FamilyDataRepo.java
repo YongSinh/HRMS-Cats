@@ -6,9 +6,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface FamilyDataRepo extends JpaRepository<FamilyData, Long> {
 
-    List<FamilyData> findByEmployee(Employee employee);
+    Optional<FamilyData> findByEmployee(Employee employee);
 }

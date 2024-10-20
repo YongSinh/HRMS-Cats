@@ -86,6 +86,7 @@ public class mapper {
         emp.setGovAddress(employee.getGovAddress());
         emp.setDepId(employee.getDepartment().getDepName());
         emp.setPosId(employee.getPosition().getPosName());
+        emp.setSection(employee.getPosition().getPoSection());
         List<EducationDtoRep> educationDtoRepList = new ArrayList<>();
         List<Education> existingEducationDtoReps = employee.getEducations();
         if (existingEducationDtoReps != null) {

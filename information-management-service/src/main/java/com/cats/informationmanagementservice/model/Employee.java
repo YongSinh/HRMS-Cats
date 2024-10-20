@@ -106,4 +106,6 @@ public class Employee {
     @JsonManagedReference
     @OneToMany(mappedBy = "employee", cascade = { CascadeType.PERSIST, CascadeType.MERGE , CascadeType.REMOVE}, fetch = FetchType.LAZY)
     private List<SpecialAbility> specialAbilities = new ArrayList<>();
+
+
 }
