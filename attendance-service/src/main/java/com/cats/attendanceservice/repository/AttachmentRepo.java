@@ -14,7 +14,7 @@ public interface AttachmentRepo extends JpaRepository<FileInfo, String> {
 
     List<FileInfo> findByEmId(Long emId);
     List<FileInfo> findAllByEmIdAndTypeAndServiceType(Long emId, Integer type, Integer serviceType);
-    List<FileInfo> findAllByDateCreatedAndEmIdAndTypeAndServiceType(LocalDate dateCreated, Long emId, Integer type, Integer serviceType);
+    List<FileInfo> findAllByDateCreatedAndEmIdAndTypeAndServiceTypeOrderByDateCreatedDesc(LocalDate dateCreated, Long emId, Integer type, Integer serviceType);
 
 
     List<FileInfo> findByEmIdAndType(Long emId, Integer type);

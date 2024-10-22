@@ -85,7 +85,12 @@ public class EmployeeServiceImp implements EmployeeService{
     public EmployeeDtoRep editPersonalData(EmployeeDtoReqEdit employee, MultipartFile file) throws IOException {
         Employee emp = update(employee);
         if(file != null){
-            uploadUpdateFile(file, employee.getEmpId(),1,employee.getEmpDate(), 1, employee.getFileId());
+            if (employee.getFileId().isEmpty()){
+                uploadFile(file, employee.getEmpId(),1,employee.getEmpDate(), 1);
+            }else {
+                uploadUpdateFile(file, employee.getEmpId(),1,employee.getEmpDate(), 1, employee.getFileId());
+            }
+
         }
         return mapper.EmployeeDtoRepToEmployeeDtoRep(emp);
     }

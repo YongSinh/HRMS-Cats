@@ -52,9 +52,9 @@ public class LeaveController {
                 .build();
     }
 
-    @PutMapping("/leave/user/editLeaveForEm")
-    public BaseApi<?> editLeave(@RequestPart("body") LeaveDtoReq leaveDtoReq,  @RequestPart("file")MultipartFile file,  @RequestPart("id") LeaveIdRep rep) throws IOException {
-        LeaveDtoRep leave = leaveSerivce.editLeave(rep, leaveDtoReq, file);
+    @PutMapping(value = "/leave/edit", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+    public BaseApi<?> editLeave(@RequestPart("body") LeaveDtoReqEdit leaveDtoReq,  @RequestPart(value = "file", required = false) MultipartFile file) throws IOException {
+        LeaveDtoRep leave = leaveSerivce.editLeave(leaveDtoReq, file);
         return BaseApi.builder()
                 .status(true)
                 .code(HttpStatus.OK.value())

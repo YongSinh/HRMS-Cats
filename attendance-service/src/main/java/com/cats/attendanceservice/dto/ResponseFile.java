@@ -11,6 +11,7 @@ import java.time.LocalDate;
 @RequiredArgsConstructor
 @AllArgsConstructor
 public class ResponseFile {
+    private String fileId;
     private String name;
     private String url;
     private String filePreviewUri;

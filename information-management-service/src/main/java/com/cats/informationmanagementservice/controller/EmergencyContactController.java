@@ -31,7 +31,7 @@ public class EmergencyContactController {
                 .build();
     }
 
-    @GetMapping("/getEmergencyContactByEmId")
+    @GetMapping("/ByEmId")
     public BaseApi<?> getEmergencyContactByEmId(@RequestParam Long emId) {
         List<EmergencyContact> emergencyContacts = emergencyService.getListEmergencyContactByEmId(emId);
         return BaseApi.builder()
@@ -43,7 +43,7 @@ public class EmergencyContactController {
                 .build();
     }
     @PutMapping("/edit")
-    public BaseApi<?> editJobHistory(@RequestBody EmergencyContactDtoReq emergencyContactDtoReq, @RequestParam Long Id) {
+    public BaseApi<?> edit(@RequestBody EmergencyContactDtoReq emergencyContactDtoReq, @RequestParam Long Id) {
         EmergencyContact emergencyContact = emergencyService.edit(emergencyContactDtoReq, Id);
         return BaseApi.builder()
                 .status(true)
@@ -54,7 +54,7 @@ public class EmergencyContactController {
                 .build();
     }
 
-    @GetMapping("/getListEmergencyContact")
+    @GetMapping("/getList")
     public BaseApi<?> getListEmergencyContact() {
         List<EmergencyContact> emergencyContacts = emergencyService.getList();
         return BaseApi.builder()

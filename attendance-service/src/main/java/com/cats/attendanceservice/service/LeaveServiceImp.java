@@ -138,10 +138,10 @@ public class LeaveServiceImp implements LeaveSerivce{
         return mapper.leaveToLeaveResponseDto(leaveRepo.save(leave));
     }
 
-    //user
+    @Transactional
     @Override
-    public LeaveDtoRep editLeave(LeaveIdRep leaveIdRep, LeaveDtoReq leaveDtoReq, MultipartFile file ) throws IOException {
-        Leave leave = getLeaveById(leaveIdRep.getLeaveId());
+    public LeaveDtoRep editLeave(LeaveDtoReqEdit leaveDtoReq, MultipartFile file ) throws IOException {
+        Leave leave = getLeaveById(leaveDtoReq.getLeaveId());
         if (leave.getStatus()) {
             throw new IllegalArgumentException("Changes cannot be made because the leave has already been submitted.");
         }
@@ -151,14 +151,18 @@ public class LeaveServiceImp implements LeaveSerivce{
             LeaveType leaveType = leaveTypeService.getLeave(leaveDtoReq.getLeaveTypeId());
             leave.setLeaveType(leaveType);
         }
-        leave.setStatus(leaveDtoReq.getStatus());
         leave.setRemark(leaveDtoReq.getRemark());
+        leave.setReason(leaveDtoReq.getReason());
         leave.setDayOfLeave(leaveDtoReq.getDayOfLeave());
         leave.setCreatedAt(leaveDtoReq.getCreatedAt());
         leave.setTimeOfHaftDay(leaveDtoReq.getTimeOfHaftDay());
-
         if (file != null){
-            fileService.updateStore(file,leaveDtoReq.getEmpId(),2, leaveDtoReq.getCreatedAt(), 2, leaveIdRep.getFileId());
+            if(leaveDtoReq.getFileId().isEmpty()){
+                fileService.store(file,leaveDtoReq.getEmpId(),2, leaveDtoReq.getCreatedAt(), 2);
+            }else {
+                fileService.updateStore(file,leaveDtoReq.getEmpId(),2, leaveDtoReq.getCreatedAt(), 2, leaveDtoReq.getFileId());
+            }
+
         }
         return mapper.leaveToLeaveResponseDto(leaveRepo.save(leave));
     }

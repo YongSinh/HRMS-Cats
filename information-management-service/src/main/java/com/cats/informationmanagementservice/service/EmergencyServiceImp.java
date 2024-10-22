@@ -36,7 +36,7 @@ public class EmergencyServiceImp implements EmergencyService {
 
     @Override
     public EmergencyContact edit(EmergencyContactDtoReq emergencyContactDtoReq, Long Id) {
-        EmergencyContact emergencyContact = new EmergencyContact();
+        EmergencyContact emergencyContact = getEmergencyContactById(Id);
         emergencyContact.setFullName(emergencyContactDtoReq.getFullName());
         emergencyContact.setRelationship(emergencyContactDtoReq.getRelationship());
         emergencyContact.setAddress(emergencyContactDtoReq.getAddress());

@@ -70,6 +70,6 @@ public class EducationServiceImp implements EducationService{
     @Override
     public void delete(Long Id) {
         Education education = getEducationById(Id);
-        educationRepo.save(education);
+        educationRepo.delete(education);
     }
 }

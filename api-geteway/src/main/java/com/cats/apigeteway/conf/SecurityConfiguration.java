@@ -56,7 +56,7 @@ public class SecurityConfiguration {
                             .pathMatchers(AUTH_WHITELIST).permitAll()
                             //.pathMatchers("/api/files/**").permitAll()
                             .pathMatchers("/eureka/**", "/actuator/**", "/swagger-ui.html", "/v3/api-docs/**", "/swagger-ui/**").permitAll()
-                            .anyExchange().permitAll();
+                            .anyExchange().authenticated();
                 })
 
                 .cors(cors -> {

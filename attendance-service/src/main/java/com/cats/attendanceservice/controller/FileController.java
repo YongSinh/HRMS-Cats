@@ -155,6 +155,7 @@ public class FileController {
                     .toUriString();
 
             return new ResponseFile(
+                    dbFile.getFileId(),
                     dbFile.getFileName(),
                     fileDownloadUri,
                     filePreviewUri,
@@ -184,6 +185,7 @@ public class FileController {
                     .path(dbFile.getFileName())
                     .toUriString();
             return new ResponseFile(
+                    dbFile.getFileId(),
                     dbFile.getFileName(),
                     fileDownloadUri,
                     filePreviewUri,
@@ -212,6 +214,7 @@ public class FileController {
                     .path(dbFile.getFileName())
                     .toUriString();
             return new ResponseFile(
+                    dbFile.getFileId(),
                     dbFile.getFileName(),
                     fileDownloadUri,
                     filePreviewUri,
@@ -240,6 +243,7 @@ public class FileController {
                     .path(dbFile.getFileName())
                     .toUriString();
             return new ResponseFile(
+                    dbFile.getFileId(),
                     dbFile.getFileName(),
                     fileDownloadUri,
                     filePreviewUri,
@@ -274,11 +278,12 @@ public class FileController {
                     .path(dbFile.getFileName())
                     .toUriString();
             return new ResponseFile(
+                    dbFile.getFileId(),
                     dbFile.getFileName(),
                     fileDownloadUri,
                     filePreviewUri,
                     dbFile.getType(),
-                      dbFile.getFileSize(),
+                    dbFile.getFileSize(),
                     dbFile.getEmId(),
                     dbFile.getFileType(),
                     dbFile.getDateCreated(),

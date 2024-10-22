@@ -21,7 +21,7 @@ public interface LeaveSerivce {
     LeaveDtoRep create(LeaveApplyDtoReq leaveDtoReq, MultipartFile file) throws IOException;
     LeaveDtoRep appleLeave(Long Id);
     LeaveDtoRep edit(Long Id, LeaveDtoReq leaveDtoRep);
-    LeaveDtoRep editLeave(LeaveIdRep leaveIdRep, LeaveDtoReq leaveDtoReq, MultipartFile file) throws IOException;
+    LeaveDtoRep editLeave(LeaveDtoReqEdit leaveIdRep, MultipartFile file) throws IOException;
     LeaveDtoRep ApprovedByManger(Long Id);
     LeaveDtoRep ApprovedByHead(Long Id);
     LeaveDtoRep ApprovedByHr(Long Id);

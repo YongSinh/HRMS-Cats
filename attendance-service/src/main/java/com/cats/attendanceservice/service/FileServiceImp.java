@@ -150,6 +150,6 @@ public class FileServiceImp implements FileService {
 
     @Override
     public Stream<FileInfo> getListFileByEmIdAndTypeServiceAndDate(LocalDate date, Long emId, Integer type, Integer service) {
-        return attachmentRepo.findAllByDateCreatedAndEmIdAndTypeAndServiceType(date,emId,type,service).stream();
+        return attachmentRepo.findAllByDateCreatedAndEmIdAndTypeAndServiceTypeOrderByDateCreatedDesc(date,emId,type,service).stream();
     }
 }
