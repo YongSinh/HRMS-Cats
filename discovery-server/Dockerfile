@@ -5,8 +5,8 @@ WORKDIR /app
 EXPOSE 8761
 # Copy your application JAR file to the container
 COPY ./target/discovery-server-0.0.1-SNAPSHOT.jar /app
-
+COPY ./src/main/resources/application-docker.properties /app
+#"--spring.config.location=/app/application-docker.properties"
 # Define the entry point to run your Java application
-ENTRYPOINT ["java", "-jar", "discovery-server-0.0.1-SNAPSHOT.jar"]
-
+ENTRYPOINT ["java", "-jar", "discovery-server-0.0.1-SNAPSHOT.jar", "--spring.config.location=/app/application-docker.properties"]
 

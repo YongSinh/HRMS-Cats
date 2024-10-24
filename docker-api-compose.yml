@@ -1,0 +1,30 @@
+version: '3.8'
+services:
+  # react-docker-training is the name of the container
+  discovery-server:
+    image: discovery-server
+    container_name:  discovery-server
+#    build:
+#      # context is the path to the Dockerfile
+#      context: .
+#      # dockerfile is the name of the Dockerfile
+#      dockerfile: /discovery-server/Dockerfile
+    # volumes:
+    #   - .:/app
+    ports:
+      - '8081:8081'
+    restart: 'always'
+
+  api-geteway:
+    image:  api-geteway
+    container_name:   api-geteway
+#    build:
+#      # context is the path to the Dockerfile
+#      context: .
+#      # dockerfile is the name of the Dockerfile
+#      dockerfile: /api-geteway/Geteway.Dockerfile
+    # volumes:
+    #   - .:/app
+    ports:
+      - '8085:8085'
+    restart: 'always'
