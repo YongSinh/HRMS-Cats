@@ -5,6 +5,7 @@ import com.cats.informationmanagementservice.Dto.EmployeeDtoReq;
 import com.cats.informationmanagementservice.Dto.EmployeeDtoReqEdit;
 import com.cats.informationmanagementservice.Dto.EmployeeInfo;
 import com.cats.informationmanagementservice.base.BaseApi;
+import com.cats.informationmanagementservice.listener.KafKaProducerService;
 import com.cats.informationmanagementservice.model.Employee;
 import com.cats.informationmanagementservice.service.EmployeeService;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
@@ -35,6 +36,9 @@ import java.util.concurrent.CompletableFuture;
 public class EmployeeController {
     private final EmployeeService employeeService;
     //@ResponseStatus(HttpStatus.ACCEPTED)
+
+    private final KafKaProducerService producerService;
+
     @DeleteMapping("/delete")
     public BaseApi<?> deleteEmpInfo(@RequestParam Long emId) {
         employeeService.deleteEmpInfo(emId);
@@ -141,6 +145,8 @@ public class EmployeeController {
                                       @RequestPart(value = "file", required = false) MultipartFile file) throws IOException {
         // Handle the case when no file is uploaded
         System.out.println(file);
+        String message = "Welcome new staff Mrs/Mr "+ employeeDtoReq.getFirstName() + employeeDtoReq.getLastName();
+        producerService.sendMessage(message);
         Employee employee = employeeService.addPersonalData(employeeDtoReq, file);
         return BaseApi.builder()
                 .status(true)

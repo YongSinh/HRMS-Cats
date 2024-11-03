@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -30,7 +31,7 @@ public class PayslipServiceImp implements PayslipService {
     private final SalariesService salariesService;
     private final TaxService taxService;
     private final  ServiceCalculate serviceCalculate;
-
+    @Transactional
     @Override
     public List<Payslip> create(PayslipReqDto payslipReqDto) {
         List<Payslip> payslipList = new ArrayList<>();
@@ -39,6 +40,9 @@ public class PayslipServiceImp implements PayslipService {
             SalariesRepDto salaries = salariesService.getSalaryByEmId(emIds);
             Payslip payslip = new Payslip();
             payslip.setEmpId(emIds);
+            if (salaries.getSalary() == null) {
+                throw new IllegalArgumentException("Employee Salary Not found or is empty for EmpId: " + emIds);
+            }
             if(payslipReqDto.getPayrollDate() == null){
                 throw new IllegalArgumentException("Please select the Payroll");
             }

@@ -70,7 +70,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="22" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Attenance Report]]></text>
+				<text><![CDATA[Attendance Report]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="-1" y="67" width="380" height="18" uuid="4d335fe4-9d2c-4c4b-9521-479287929943"/>
@@ -96,7 +96,7 @@
 	<detail>
 		<band height="61" splitType="Stretch">
 			<componentElement>
-				<reportElement x="0" y="1" width="555" height="60" uuid="95c52ee4-fb98-414c-aa29-bee6e72b7750">
+				<reportElement style="Table_TD" x="0" y="1" width="555" height="60" uuid="95c52ee4-fb98-414c-aa29-bee6e72b7750">
 					<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
 					<property name="com.jaspersoft.studio.table.style.table_header" value="Table_TH"/>
 					<property name="com.jaspersoft.studio.table.style.column_header" value="Table_CH"/>
@@ -153,7 +153,7 @@
 							<textField>
 								<reportElement x="0" y="0" width="60" height="30" uuid="80860c8a-751b-4dff-83df-7d6d709a7dde"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle"/>
-								<textFieldExpression><![CDATA[$F{timeIn}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{timeIn} == null || $F{timeIn}.trim().isEmpty() ? " " : $F{timeIn}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
@@ -188,7 +188,7 @@
 							<textField>
 								<reportElement x="0" y="0" width="70" height="30" uuid="8f0c275e-93b1-49f8-a1c4-c6e77b6c0ad6"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle"/>
-								<textFieldExpression><![CDATA[$F{timeOut}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{timeOut} == null || $F{timeOut}.trim().isEmpty() ? " " : $F{timeOut}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
@@ -205,8 +205,7 @@
 							<textField>
 								<reportElement x="0" y="0" width="185" height="30" uuid="dae00bfd-e008-476d-bc80-b6fd1c17c5f4"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle"/>
-								<textFieldExpression><![CDATA[$F{remark} == null || $F{remark}.trim().isEmpty() ? " " : $F{remark}
-]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{remark} == null || $F{remark}.trim().isEmpty() ? " " : $F{remark}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>

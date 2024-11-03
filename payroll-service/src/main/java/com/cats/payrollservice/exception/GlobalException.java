@@ -85,7 +85,8 @@ public class GlobalException {
 
     @ExceptionHandler(IllegalArgumentException.class)
     public BaseError<?> handleMainException(IllegalArgumentException e) {
-        return BaseError.builder().status(false)
+        return BaseError.builder()
+                .status(false)
                 .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
                 .message(e.getMessage())
                 .timestamp(LocalDateTime.now())

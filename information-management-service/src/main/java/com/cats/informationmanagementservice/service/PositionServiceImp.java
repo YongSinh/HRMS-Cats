@@ -56,6 +56,9 @@ public class PositionServiceImp implements  PositionService{
     public Position editPosition(PositionDtoReq positionDtoReq, String Id) {
         Position editPosition = getPositionById(Id);
         editPosition.setPosName(positionDtoReq.getPosName());
+        editPosition.setPosName(positionDtoReq.getPosName());
+        editPosition.setPoSection(positionDtoReq.getPoSection());
+        editPosition.setPoLevel(positionDtoReq.getPoLevel());
         if (positionDtoReq.getDepId() != null) {
             Department department = departmentService.getDepById(positionDtoReq.getDepId());
             editPosition.setDepartment(department);

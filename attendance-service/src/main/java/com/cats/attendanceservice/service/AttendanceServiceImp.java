@@ -87,6 +87,14 @@ public class AttendanceServiceImp implements AttendanceService  {
 
     @Override
     public Attendance create(AttendanceReqDto attendanceReqDto) {
+        Optional<Attendance> existingAttendance = attendanceRepo.findByEmIdAndDateIn(
+                attendanceReqDto.getEmId(), attendanceReqDto.getDateIn());
+
+        if (existingAttendance.isPresent()) {
+            // Handle the case where attendance already exists for this date
+            throw new IllegalStateException("Employee has already timed in or out for this day.");
+        }
+
         Attendance attendance = new Attendance();
         attendance.setEmId(attendanceReqDto.getEmId());
         attendance.setTimeIn(attendanceReqDto.getTimeIn());
@@ -99,9 +107,12 @@ public class AttendanceServiceImp implements AttendanceService  {
     @Override
     public Attendance timeOut(Long Id, TimeOutReqDto attendanceReqDto) {
         Attendance update = getAttendanceById(Id);
-        if (update.getTimeOut() != null) {
-            throw new IllegalArgumentException("You have already timed out.");
+
+        // If timeOut is being updated, ensure it's only updated once
+        if (update.getTimeOut() != null && attendanceReqDto.getTimeOut() != null) {
+            throw new IllegalStateException("Time out already recorded for this day.");
         }
+
         update.setTimeOut(attendanceReqDto.getTimeOut());
         update.setDateOut(attendanceReqDto.getDateOut());
         update.setRemark(attendanceReqDto.getRemark());
@@ -138,9 +149,23 @@ public class AttendanceServiceImp implements AttendanceService  {
                     ReportAttendanceDto dto = new ReportAttendanceDto();
                     dto.setName(employeeName);
                     dto.setDateIn(attendance.getDateIn().toString());
-                    dto.setTimeIn(attendance.getTimeIn().toString());
-                    dto.setDateOut(attendance.getDateOut().toString());
-                    dto.setTimeOut(attendance.getTimeOut().toString());
+
+                    // Check if timeIn is null
+                    if (attendance.getTimeIn() != null) {
+                        dto.setTimeIn(attendance.getTimeIn().toString());
+                    } else {
+                        dto.setTimeIn("N/A"); // or any default value you prefer
+                    }
+
+                    dto.setDateOut(attendance.getDateOut() != null ? attendance.getDateOut().toString() : "N/A");
+
+                    // Check if timeOut is null
+                    if (attendance.getTimeOut() != null) {
+                        dto.setTimeOut(attendance.getTimeOut().toString());
+                    } else {
+                        dto.setTimeOut("N/A"); // or any default value you prefer
+                    }
+
                     dto.setEmId(emId);
                     dto.setRemark(attendance.getRemark());
                     return dto;

@@ -27,7 +27,6 @@ public class ReportController {
                                                      @RequestParam(name = "endDate") LocalDate endDate,
                                                      @RequestParam(name = "emId") Long emId
                                                      ) throws JRException, IOException {
-        LocalDate localDate = LocalDate.now();
         byte[] reportContent = reportService.getAttendanceReportByEmId(startDate,endDate,emId);
 
         ByteArrayResource arrayResource = new ByteArrayResource(reportContent);

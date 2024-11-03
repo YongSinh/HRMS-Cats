@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 import java.util.Collection;
 
 @RestController
-@RequestMapping("/api/attendanceLeave")
+@RequestMapping("/api/attendanceLeave/test")
 @RequiredArgsConstructor
 @Slf4j
 public class test {
@@ -22,8 +22,8 @@ public class test {
     private final KafKaProducerService producerService;
 
     @PostMapping(value = "/publish")
-    public void sendMessageToKafkaTopic(@RequestParam("message") String message) {
-        producerService.sendMessage(message);
+    public void sendMessageToKafkaTopic(@RequestParam("message") String message, @RequestParam("sender") String sender) {
+        producerService.sendMessage(message,sender);
     }
     @GetMapping("/test")
     public BaseApi<?> getListAllEmployeeOnlyEmId(@RequestParam Long emId) throws IOException {

@@ -82,7 +82,7 @@ public class Employee {
 
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonBackReference
-    @ManyToOne(fetch = FetchType.LAZY , optional = false, cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE })
+    @ManyToOne(fetch = FetchType.LAZY , optional = false, cascade = { CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "positionid")
     private Position position;
 
