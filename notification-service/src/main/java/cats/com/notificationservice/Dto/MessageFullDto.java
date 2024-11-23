@@ -1,14 +1,18 @@
-package com.cats.attendanceservice.model;
+package cats.com.notificationservice.Dto;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.*;
 
 import java.time.LocalDateTime;
-
+@Getter
+@Setter
 @AllArgsConstructor
-@RequiredArgsConstructor
-@Data
-public class MessageFull {
-    private Integer id;
+@NoArgsConstructor
+@Builder
+public class MessageFullDto {
     private String khmerText;
     private String englishText;
     private String sender;

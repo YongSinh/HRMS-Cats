@@ -40,6 +40,24 @@ public class LeaveController {
                 .build();
     }
 
+    @GetMapping("/leave/check")
+    public BaseApi<?> checkLeaveApplied(
+            @RequestParam Long empId,
+            @RequestParam String startDate,
+            @RequestParam String endDate
+    ) {
+        LocalDate start = LocalDate.parse(startDate);
+        LocalDate end = LocalDate.parse(endDate);
+        Boolean checkLeaveApplied = leaveSerivce.isLeaveAlreadyApplied(empId, start, end);
+        return BaseApi.builder()
+                .status(true)
+                .code(HttpStatus.OK.value())
+                .message("Leave has already been applied for the specified date range.")
+                .timestamp(LocalDateTime.now())
+                .data(checkLeaveApplied)
+                .build();
+    }
+
     @PutMapping("/leave/apply")
     public BaseApi<?> applyLeave(@RequestParam Long id) {
         LeaveDtoRep leave = leaveSerivce.appleLeave(id);
@@ -211,7 +229,7 @@ public class LeaveController {
                 .build();
     }
 
-    @DeleteMapping("/leave/cancelLeave")
+    @PostMapping("/leave/cancelLeave")
     public BaseApi<?> cancelLeave(@RequestParam Long id) {
         LeaveDtoRep leave = leaveSerivce.cancelLeave(id);
         return BaseApi.builder()
@@ -237,21 +255,23 @@ public class LeaveController {
     @CircuitBreaker(name = "management", fallbackMethod = "fallbackMethod")
     @TimeLimiter(name = "management")
     @Retry(name = "management")
-    @GetMapping("/leave/getListLeaveForManager")
-    public CompletableFuture<BaseApi<?>> getListLeaveForManager(@RequestParam Long emId) {
+    @GetMapping("/leave/getLeave/management")
+    public CompletableFuture<BaseApi<?>> getListLeaveForManagement(@RequestParam Long emId) {
         return CompletableFuture.supplyAsync(() -> {
-            List<LeaveDtoRep> leave = leaveSerivce.getListLeaveForManger(emId);
+            //log.info("Fetching leave list for management with emId: {}", emId);
+            List<LeaveDtoRep> leave = leaveSerivce.getListLeaveForMangement(emId);
             return BaseApi.builder()
                     .status(true)
                     .code(HttpStatus.OK.value())
-                    .message("leave list for manager have been found!")
+                    .message("Leave list for manager has been found!")
                     .timestamp(LocalDateTime.now())
                     .data(leave)
                     .build();
         });
-
     }
+
     public CompletableFuture<BaseApi<?>> fallbackMethod(Long emId, Throwable throwable) {
+        //log.error("Fallback triggered for getListLeaveForManagement with emId: {} due to: {}", emId, throwable.toString());
         return CompletableFuture.supplyAsync(() -> BaseApi.builder()
                 .status(false)
                 .code(HttpStatus.SERVICE_UNAVAILABLE.value())

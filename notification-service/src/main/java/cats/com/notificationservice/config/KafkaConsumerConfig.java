@@ -3,7 +3,6 @@ package cats.com.notificationservice.config;
 import cats.com.notificationservice.message.Message;
 import cats.com.notificationservice.message.MessageFull;
 import cats.com.notificationservice.message.NotificationMessage;
-import cats.com.notificationservice.model.User;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,6 +24,8 @@ public class KafkaConsumerConfig {
 
     @Value("${general.topic.group.id}")
     private String groupId;
+    @Value("${notification.topic.group.id}")
+    private String noteGroupId;
 
     @Value("${user.topic.group.id}")
     private String userGroupId;
@@ -77,7 +78,7 @@ public class KafkaConsumerConfig {
         configProps.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         configProps.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, deserializer);
         configProps.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
-        configProps.put(ConsumerConfig.GROUP_ID_CONFIG, groupId);
+        configProps.put(ConsumerConfig.GROUP_ID_CONFIG, noteGroupId);
         return new DefaultKafkaConsumerFactory<>(configProps, new StringDeserializer(), deserializer);
     }
 
@@ -103,6 +104,7 @@ public class KafkaConsumerConfig {
         return new DefaultKafkaConsumerFactory<>(configProps, new StringDeserializer(), deserializer);
     }
 
+    // MessageFull Kafka listener container factory
     @Bean
     public ConcurrentKafkaListenerContainerFactory<String, MessageFull> messageFullKafkaListenerContainerFactory() {
         ConcurrentKafkaListenerContainerFactory<String, MessageFull> factory = new ConcurrentKafkaListenerContainerFactory<>();

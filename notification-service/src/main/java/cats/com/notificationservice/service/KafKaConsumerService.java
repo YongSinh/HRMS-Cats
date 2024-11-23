@@ -1,18 +1,15 @@
 package cats.com.notificationservice.service;
 
-import brave.Tracer;
 import cats.com.notificationservice.controller.CommandController;
 import cats.com.notificationservice.controller.WebSocketController;
 import cats.com.notificationservice.message.Message;
+import cats.com.notificationservice.message.MessageFull;
 import cats.com.notificationservice.message.MessageType;
 import cats.com.notificationservice.message.NotificationMessage;
 import io.micrometer.observation.ObservationRegistry;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.kafka.core.KafkaTemplate;
-import org.springframework.messaging.simp.SimpMessageSendingOperations;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -23,7 +20,8 @@ public class KafKaConsumerService {
     private final WebSocketController webSocketController;
     private final ObservationRegistry observationRegistry;
     private final CommandController commandController;
-	@KafkaListener(topics = "${general.topic.name}", groupId = "${general.topic.group.id}", containerFactory = "notificationMessageKafkaListenerContainerFactory")
+    private final MessageService messageService;
+	@KafkaListener(topics = "${notification.topic.name}", groupId = "${notification.topic.group.id}", containerFactory = "notificationMessageKafkaListenerContainerFactory")
     public void consume(NotificationMessage notificationMessage) {
         log.info("Message received -> {}", notificationMessage.getMessage());
 
@@ -33,27 +31,34 @@ public class KafKaConsumerService {
         messageObject.setType(MessageType.CHAT);
         messageObject.setSender(notificationMessage.getSender());
 
-        webSocketController.sendKafkaMessage(messageObject);
+        MessageFull messageFull = new MessageFull();
+        messageFull.setId(1);
+        messageFull.setEnglishText(notificationMessage.getMessage());
+        messageFull.setSender(notificationMessage.getSender());
+        messageFull.setMessageType(MessageType.CHAT.toString());
+        messageFull.setIsRead(false);
+        //webSocketController.sendGenMessage(messageFull);
+        //webSocketController.sendKafkaMessage(messageObject);
         commandController.send(messageObject);
     }
 
-    @KafkaListener(topics = "test", groupId = "${general.topic.group.id}", containerFactory = "kafkaListenerContainerFactory")
-    public void consumeTest(String message) {
-        System.out.println("Sent message: {} with test offset: {}"+ message);
-        log.info(String.format("Message received test-> %s", message));
+    @KafkaListener(topics = "${general.topic.name}", groupId = "${general.topic.group.id}", containerFactory = "messageFullKafkaListenerContainerFactory")
+    public void consumeGen(MessageFull message) {
+        webSocketController.sendGenMessage(message);
+       // messageService.saveMessage(messageFull);
+        System.out.println("Sent message: {} with test offset: {}"+ message.getEnglishText());
     }
 
-    @KafkaListener(topics = "hr", groupId = "hr", containerFactory = "kafkaListenerContainerFactory")
-    public void consumerHr(String message) {
-        log.info(String.format("Message received test-> %s", message));
+    @KafkaListener(topics = "messageGen", groupId = "${general.topic.group.id}", containerFactory = "messageFullKafkaListenerContainerFactory")
+    public void consumeGen2(MessageFull message) {
+        MessageFull messageFull = new MessageFull();
+        messageFull.setEnglishText(message.getEnglishText());
+        messageFull.setSender(message.getSender());
+        messageFull.setMessageType(MessageType.GENERAL.toString());
+        messageFull.setIsRead(false);
+        messageFull.setDateTime(message.getDateTime());
+        messageService.saveMessage(messageFull);
+        System.out.println("Sent message: {} with test offset: {}"+ message.getEnglishText());
     }
 
-
-
-//    @KafkaListener(topics = "${user.topic.name}",
-//            groupId = "${user.topic.group.id}",
-//            containerFactory = "userKafkaListenerContainerFactory")
-//    public void consume(User user) {
-//        log.info(String.format("User created -> %s", user));
-//    }
 }

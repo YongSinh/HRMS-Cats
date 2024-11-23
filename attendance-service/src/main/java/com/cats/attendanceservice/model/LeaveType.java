@@ -27,11 +27,11 @@ public class LeaveType {
     @Column(name = "leave_day_per_year")
     private Long leaveDayPerYear;
     @JsonManagedReference
-    @OneToMany(mappedBy = "leaveType", cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "leaveType", cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.EAGER)
     private List<LeaveBalance> leaveBalances = new ArrayList<>();
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "leaveType", cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "leaveType", cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.EAGER)
     private List<Leave> leaves = new ArrayList<>();
 
 }

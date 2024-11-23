@@ -1,5 +1,6 @@
 package com.cats.informationmanagementservice.listener;
 
+import com.cats.informationmanagementservice.events.MessageFull;
 import com.cats.informationmanagementservice.events.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -8,6 +9,7 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.concurrent.CompletableFuture;
 
 @Service
@@ -21,7 +23,7 @@ public class KafKaProducerService {
     private String topicName;
 
 
-    private final KafkaTemplate<String, String> kafkaTemplate;
+    private final  KafkaTemplate<String, MessageFull> messageFullKafkaTemplate;
 
     //2. Topic with user object payload
 
@@ -29,16 +31,18 @@ public class KafKaProducerService {
     private String userTopicName;
 
 
-    public void sendMessage(String message) {
-        CompletableFuture<SendResult<String, String>> future = kafkaTemplate.send("test", message);
-        System.out.println("Sent message: {} with offset: {}"+ message);
+    public void senGendMessage(MessageFull messageFull) {
+        CompletableFuture<SendResult<String, MessageFull>> future = messageFullKafkaTemplate.send("generalTopic", messageFull);
+        log.info("Attempting to send message: {}", messageFull);
+
         future.whenComplete((result, throwable) -> {
             if (throwable != null) {
-                log.error("Unable to send message: " + message, throwable);
+                log.error("Unable to send message: {}", messageFull, throwable);
             } else {
-                log.info("Sent message: {} with offset: {}", message, result.getRecordMetadata().offset());
+                log.info("Sent message: {} with offset: {}", messageFull, result.getRecordMetadata().offset());
             }
         });
     }
+
 
 }

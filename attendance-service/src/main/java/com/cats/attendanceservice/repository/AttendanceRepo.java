@@ -2,9 +2,11 @@ package com.cats.attendanceservice.repository;
 
 import com.cats.attendanceservice.model.Attendance;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.Collection;
@@ -27,6 +29,13 @@ public interface AttendanceRepo extends JpaRepository<Attendance, Long> {
     Optional<Attendance> findByEmIdAndDateIn(@Param("emId") Long emId, @Param("dateIn") LocalDate date);
     @Query("SELECT a FROM Attendance a WHERE a.emId = :emId AND a.dateIn = :dateIn")
     Optional<Attendance> findLastTimeInByEmId(@Param("emId") Long emId, @Param("dateIn") LocalDate dateIn);
+    @Query("SELECT a FROM Attendance a WHERE a.emId = :emId AND a.dateIn = :dateIn")
+    List<Attendance> preventDuplicates(@Param("emId") Long emId, @Param("dateIn") LocalDate date);
+
+    @Modifying
+    @Transactional
+    @Query("DELETE FROM Attendance a WHERE a.emId = :emId AND a.dateIn = :dateIn")
+    void deleteDuplicates(@Param("emId") Long emId, @Param("dateIn") LocalDate date);
 
     @Query("SELECT a FROM Attendance a WHERE a.emId = :emId  AND a.dateIn = :dateIn")
     Optional<Attendance> findLastTimeOutByEmId(@Param("emId") Long emId, @Param("dateIn") LocalDate dateIn);

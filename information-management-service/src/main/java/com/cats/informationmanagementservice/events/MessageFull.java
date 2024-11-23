@@ -1,6 +1,8 @@
-package com.cats.attendanceservice.model;
+package com.cats.informationmanagementservice.events;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDateTime;
 

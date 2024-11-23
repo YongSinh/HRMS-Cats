@@ -33,7 +33,7 @@ public class Leave {
     @Column(name = "reason")
     private String reason;
 
-    @ManyToOne( fetch = FetchType.LAZY, optional = false)
+    @ManyToOne( fetch = FetchType.EAGER, optional = false)
     @JsonBackReference
     @JoinColumn(name = "leave_type_id")
     private LeaveType leaveType;

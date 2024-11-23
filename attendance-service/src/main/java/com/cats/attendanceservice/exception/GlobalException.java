@@ -22,7 +22,6 @@ import java.util.List;
 import java.util.Map;
 
 @RestControllerAdvice
-@ControllerAdvice
 @Slf4j
 public class GlobalException {
 
@@ -70,7 +69,7 @@ public class GlobalException {
     public BaseError<?> handleIllegalStateException(IllegalStateException e) {
         Map<String, String> errors = new HashMap<>();
         errors.put("IllegalStateException", e.getMessage());
-        return BaseError.builder().status(false).code(HttpStatus.NOT_FOUND.value()).message(e.getCause().getMessage()).timestamp(LocalDateTime.now()).error(errors).build();
+        return BaseError.builder().status(false).code(HttpStatus.NOT_FOUND.value()).message(e.getMessage()).timestamp(LocalDateTime.now()).error(errors).build();
     }
 
     @ExceptionHandler(SQLException.class)

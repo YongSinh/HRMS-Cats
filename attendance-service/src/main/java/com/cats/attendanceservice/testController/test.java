@@ -2,6 +2,7 @@ package com.cats.attendanceservice.testController;
 
 import com.cats.attendanceservice.base.BaseApi;
 import com.cats.attendanceservice.listener.KafKaProducerService;
+import com.cats.attendanceservice.model.MessageFull;
 import com.cats.attendanceservice.service.ApiService;
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +25,11 @@ public class test {
     @PostMapping(value = "/publish")
     public void sendMessageToKafkaTopic(@RequestParam("message") String message, @RequestParam("sender") String sender) {
         producerService.sendMessage(message,sender);
+    }
+
+    @PostMapping(value = "/publish2")
+    public void sendMessageToKafkaTopic2(@RequestBody MessageFull message) {
+        producerService.senGendMessage(message);
     }
     @GetMapping("/test")
     public BaseApi<?> getListAllEmployeeOnlyEmId(@RequestParam Long emId) throws IOException {

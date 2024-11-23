@@ -23,7 +23,6 @@ import java.util.concurrent.CompletableFuture;
 @RestController
 @RequestMapping("/api/attendanceLeave")
 @RequiredArgsConstructor
-@Slf4j
 public class AttendanceController {
     private final AttendanceService attendanceService;
     /**
@@ -97,8 +96,8 @@ public class AttendanceController {
     @CircuitBreaker(name = "management", fallbackMethod = "fallbackMethod")
     @TimeLimiter(name = "management")
     @Retry(name = "management")
-    @GetMapping("/attendance/getListAttendanceForManger")
-    public CompletableFuture<BaseApi<?>> getListAttendanceForManger(@RequestParam Long emId) {
+    @GetMapping("/attendance/getListAttendanceForManagement")
+    public CompletableFuture<BaseApi<?>> getListAttendanceForManagement(@RequestParam Long emId) {
         return CompletableFuture.supplyAsync(() -> {
             List<Attendance> getList = attendanceService.getListAttendanceForManger(emId);
             return BaseApi.builder()

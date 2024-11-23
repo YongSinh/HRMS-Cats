@@ -3,6 +3,7 @@ package com.cats.attendanceservice.service;
 import com.cats.attendanceservice.dto.*;
 import com.cats.attendanceservice.model.Attendance;
 import com.cats.attendanceservice.model.Leave;
+import com.cats.attendanceservice.model.LeaveBalance;
 import com.cats.attendanceservice.model.LeaveType;
 import com.cats.attendanceservice.repository.AttendanceRepo;
 import com.cats.attendanceservice.repository.LeaveRepo;
@@ -67,14 +68,35 @@ public class LeaveServiceImp implements LeaveSerivce{
     @Transactional
     @Override
     public LeaveDtoRep create(LeaveApplyDtoReq leaveDtoReq, MultipartFile file) throws IOException {
-        Leave leave = new Leave();
-        leave.setEmpId(leaveDtoReq.getEmpId());
-        leave.setStartDate(leaveDtoReq.getStartDate());
-        leave.setEndDate(leaveDtoReq.getEndDate());
+        // Check if leave already exists for the employee in the given date range
+        boolean isLeaveApplied = leaveRepo.findOverlappingLeaves(
+                leaveDtoReq.getEmpId(),
+                leaveDtoReq.getStartDate(),
+                leaveDtoReq.getEndDate()
+        ).stream().anyMatch(leave -> !leave.getCancelled()); // Exclude cancelled leaves
+
+        if (isLeaveApplied) {
+            throw new IllegalArgumentException("Leave has already been applied for the specified date range.");
+        }
         if(leaveDtoReq.getLeaveTypeId() == null){
             throw new IllegalArgumentException("Please select the leave type");
         }
         LeaveType leaveType = leaveTypeService.getLeave(leaveDtoReq.getLeaveTypeId());
+        // Fetch the leave balance for the employee and leave type
+        LeaveBalanceDtoRep leaveBalance = leaveBalanceService.getLeaveBalanceByLeaveTypeAndEmpId(
+                leaveType.getId(),
+                leaveDtoReq.getEmpId()
+        );
+
+        // Check if leave balance is null or insufficient
+        if (leaveBalance == null || leaveBalance.getBalanceAmount() == null || leaveBalance.getBalanceAmount() <= 0) {
+            throw new IllegalArgumentException("Insufficient leave balance. Please contact HR.");
+        }
+
+        Leave leave = new Leave();
+        leave.setEmpId(leaveDtoReq.getEmpId());
+        leave.setStartDate(leaveDtoReq.getStartDate());
+        leave.setEndDate(leaveDtoReq.getEndDate());
         leave.setLeaveType(leaveType);
         leave.setStatus(false);
         leave.setApproved(false);
@@ -100,6 +122,9 @@ public class LeaveServiceImp implements LeaveSerivce{
     @Override
     public LeaveDtoRep appleLeave(Long Id) {
         Leave apply = getLeaveById(Id);
+        if (apply.getCancelled()) {
+            throw new IllegalStateException("Leave has already been cancelled or applied.");
+        }
         apply.setStatus(true);
         Attendance attendance = new Attendance();
         attendance.setEmId(apply.getEmpId());
@@ -200,7 +225,8 @@ public class LeaveServiceImp implements LeaveSerivce{
         if (leave.getStatus()) {
             throw new IllegalArgumentException("Changes cannot cancel because the leave has already been submitted.");
         }
-        leaveRepo.delete(leave);
+        leave.setCancelled(true);
+        leaveRepo.save(leave);
         return mapper.leaveToLeaveResponseDto(leave);
     }
 
@@ -231,17 +257,13 @@ public class LeaveServiceImp implements LeaveSerivce{
         leave.setCancelled(true);
         return mapper.leaveToLeaveResponseDto(leaveRepo.save(leave));
     }
-
+    @Transactional
     @Override
-    public List<LeaveDtoRep> getListLeaveForManger(Long emId) {
+    public List<LeaveDtoRep> getListLeaveForMangement(Long emId) {
         Collection<Long> emIds = apiService.getEmployeeByUnderMangerOnlyEmId(emId);
+        System.out.println(emIds);
         List<Leave> leaveList = leaveRepo.findByEmpIdIn(emIds);
         return mapper.leaveToLeaveResponseDtos(leaveList);
-    }
-
-    @Override
-    public List<LeaveDtoRep> getListLeaveForHead(Long emId) {
-        return null;
     }
 
 
@@ -271,5 +293,11 @@ public class LeaveServiceImp implements LeaveSerivce{
             leaveRepo.delete(leave);
         }
         throw new IllegalArgumentException("You can not delete leave!");
+    }
+
+    @Override
+    public boolean isLeaveAlreadyApplied(Long empId, LocalDate startDate, LocalDate endDate) {
+        List<Leave> overlappingLeaves = leaveRepo.findOverlappingLeaves(empId, startDate, endDate);
+        return !overlappingLeaves.isEmpty();
     }
 }

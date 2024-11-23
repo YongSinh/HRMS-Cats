@@ -30,8 +30,7 @@ public interface LeaveSerivce {
     LeaveDtoRep rejectByHead(Long Id);
     LeaveDtoRep rejectByHr(Long Id);
 
-    List<LeaveDtoRep> getListLeaveForManger(Long emId);
-    List<LeaveDtoRep> getListLeaveForHead(Long emId);
+    List<LeaveDtoRep> getListLeaveForMangement(Long emId);
 
     Leave getLeaveById(Long id);
 
@@ -39,4 +38,6 @@ public interface LeaveSerivce {
     void deleteForAdmin(Long Id);
 
     void delete(Long Id);
+
+    boolean isLeaveAlreadyApplied(Long empId, LocalDate startDate, LocalDate endDate);
 }

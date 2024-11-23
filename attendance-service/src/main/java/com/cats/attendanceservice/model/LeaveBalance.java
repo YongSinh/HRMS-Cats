@@ -26,7 +26,7 @@ public class LeaveBalance  {
         private Long balanceAmount;
         @Column(name = "last_update_date")
         private LocalDateTime lastUpdateDate;
-        @ManyToOne( fetch = FetchType.LAZY, optional = false)
+        @ManyToOne( fetch = FetchType.EAGER, optional = false)
         @JsonBackReference
         @JoinColumn(name = "leave_type_id")
         private LeaveType leaveType;

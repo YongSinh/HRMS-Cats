@@ -1,6 +1,8 @@
 package com.cats.informationmanagementservice.service;
 
 import com.cats.informationmanagementservice.Dto.*;
+import com.cats.informationmanagementservice.events.MessageFull;
+import com.cats.informationmanagementservice.listener.KafKaProducerService;
 import com.cats.informationmanagementservice.model.Department;
 import com.cats.informationmanagementservice.model.Employee;
 import com.cats.informationmanagementservice.model.Position;
@@ -18,6 +20,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.StreamSupport;
@@ -29,6 +32,7 @@ public class EmployeeServiceImp implements EmployeeService{
     private final PositionService positionService;
     private final DepartmentService departmentService;
     private final WebClient.Builder webClientBuilder;
+    private final KafKaProducerService kafKaProducerService;
     @Transactional
     @Override
     public Employee addPersonalData(EmployeeDtoReq employee, MultipartFile file) throws IOException {
@@ -78,6 +82,13 @@ public class EmployeeServiceImp implements EmployeeService{
             System.out.println(file.isEmpty());
             uploadFile(file, employee.getEmpId(),1,employee.getEmpDate(), 1);
         }
+        MessageFull messageFull = new MessageFull();
+        messageFull.setSender("Human Resources");
+        messageFull.setDateTime(LocalDateTime.now());
+        messageFull.setEnglishText("Welcome, " + (employee.getSex().equalsIgnoreCase("male") ? "Mr. " : "Mrs. ")
+                + employee.getLastName() + " " + employee.getFirstName() + " to CATS! We're excited to have you on board.");
+        messageFull.setReceiver("All");
+        kafKaProducerService.senGendMessage(messageFull);
         return employeeRepo.save(emp);
     }
     @Transactional
