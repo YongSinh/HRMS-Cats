@@ -91,6 +91,7 @@ public class LeaveBalanceServiceImp implements LeaveBalanceService{
     @Override
     public void delete(Long Id) {
         LeaveBalance leaveBalance = getLeaveBalance(Id);
+        System.out.println(leaveBalance.getId());
         leaveBalanceRepo.delete(leaveBalance);
     }
 

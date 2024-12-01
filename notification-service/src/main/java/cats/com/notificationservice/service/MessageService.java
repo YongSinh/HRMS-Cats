@@ -17,5 +17,6 @@ public interface MessageService {
     List<MessageFull> getAllMessagesOrderByDate();
     List<MessageFull> getMessageType(String type);
     Page<MessageFull> getMessageType(String type, int page, int size);
+    List<MessageFull> findUnreadMessagesByReceiver(String receiver);
     List<MessageFull> getAllMessagesBySenderAndService(String sender, String service);
 }

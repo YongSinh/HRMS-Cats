@@ -176,7 +176,7 @@
 			<textField textAdjust="StretchHeight">
 				<reportElement x="0" y="42" width="370" height="18" uuid="586c8336-4beb-461a-a1af-b5005ad3e33b"/>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{allowances}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{allowances}== null || $F{allowances}.trim().isEmpty() ? " " : $F{allowances}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="457" y="23" width="100" height="19" uuid="b4ff0beb-15ba-4296-b920-e7a90414c827"/>
@@ -186,7 +186,7 @@
 			<textField>
 				<reportElement x="457" y="42" width="100" height="18" uuid="4576d09d-625d-4a4d-a65b-2d399ba26058"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{total_allowances}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{total_allowances} == null  ?  0.0  : $F{total_allowances} ]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="0" y="114" width="180" height="22" uuid="da204ad0-c008-4910-82b9-b3f0771527db"/>
@@ -201,17 +201,17 @@
 			<textField textAdjust="StretchHeight">
 				<reportElement x="0" y="144" width="370" height="18" uuid="6d96fe10-15de-4698-a561-4c413e080fd8"/>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$P{department}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{deductions}== null || $F{deductions}.trim().isEmpty() ? " " : $F{deductions}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="457" y="144" width="100" height="18" uuid="10520514-0695-4d5b-b305-ae327170940f"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{total_deductions}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{total_deductions}== null  ?  0.0  : $F{total_deductions}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="457" y="82" width="100" height="18" uuid="3f23e2ca-167c-48b2-a945-376de4ae05df"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{total_earning}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{total_earning} == null  ?  0.0  : $F{total_earning}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="330" y="82" width="100" height="18" uuid="6f05fdb5-9992-4a4e-9310-42d01452052d">
@@ -223,7 +223,7 @@
 			<textField>
 				<reportElement x="454" y="207" width="100" height="18" uuid="e39de515-3bd8-40a6-9fbf-3a3f5984a6b0"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{total_deductions}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{total_deductions}== null  ?  0.0  : $F{total_deductions}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="327" y="207" width="100" height="18" uuid="1520d8f2-4794-4dfa-ad8d-d93a3ce1d39f">

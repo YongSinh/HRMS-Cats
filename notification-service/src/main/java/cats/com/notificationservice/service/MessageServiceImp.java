@@ -95,6 +95,11 @@ public class MessageServiceImp implements MessageService {
     }
 
     @Override
+    public List<MessageFull> findUnreadMessagesByReceiver(String receiver) {
+        return messageRepository.findByReceiverAndIsRead(receiver, false);
+    }
+
+    @Override
     public List<MessageFull> getAllMessagesBySenderAndService(String sender, String service) {
         return messageRepository.findBySenderAndServiceTypeOrderByDateTimeDesc(sender,service);
     }

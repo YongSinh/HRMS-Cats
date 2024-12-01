@@ -15,4 +15,6 @@ public interface MessageRepo extends JpaRepository<MessageFull, Integer> {
     List<MessageFull> findBySenderOrderByDateTimeDesc(String sender);
     List<MessageFull> findByMessageTypeOrderByDateTimeDesc(String messageType);
     Page<MessageFull> findByMessageTypeOrderByDateTimeDesc(String messageType, Pageable pageable);
+    List<MessageFull> findByReceiverAndIsRead(String receiver, Boolean isRead);
+
 }

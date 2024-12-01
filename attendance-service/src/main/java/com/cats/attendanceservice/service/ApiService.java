@@ -1,14 +1,11 @@
 package com.cats.attendanceservice.service;
 
 import com.cats.attendanceservice.dto.WebFluxResponse;
-import com.cats.attendanceservice.events.ListEmpByEmpIdEvent;
-import com.cats.attendanceservice.listener.KafKaProducerService;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
@@ -24,8 +21,6 @@ import java.util.List;
 @Slf4j
 public class ApiService {
     private final WebClient.Builder webClientBuilder;
-    private final ApplicationEventPublisher applicationEventPublisher;
-    private final KafKaProducerService kafKaProducerService;
     public Collection<Long> getEmployeeByUnderMangerOnlyEmId(Long emId) {
         // Send message to Kafka
         //kafKaProducerService.sendMessage(emId.toString());

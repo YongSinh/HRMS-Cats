@@ -29,6 +29,10 @@ public class SecurityConfiguration {
     @Value("${role.user}")
     private String user;
 
+    @Value("${allowed.origins}")
+    private String[] origin;
+
+
     private final JwtAuthConverter jwtAuthConverter;
     private static final Logger LOG = LoggerFactory.getLogger(SecurityConfig.class);
     @Bean
@@ -77,7 +81,7 @@ public class SecurityConfiguration {
     public CorsConfigurationSource corsConfigurationSource() {
         LOG.info("Configuring CORS Source");
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3005", "http://192.168.1.174:3005"));
+        configuration.setAllowedOrigins(Arrays.asList(origin));
         //configuration.setAllowedOrigins(Collections.singletonList("http://localhost:3005","http://192.168.1.169:3005"));
         configuration.setAllowedMethods(Arrays.asList("HEAD", "GET", "POST", "PUT", "DELETE", "PATCH", "OPTION"));
         configuration.setAllowCredentials(true);

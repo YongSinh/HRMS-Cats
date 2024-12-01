@@ -64,11 +64,4 @@ public class DepartmentController {
                 .build();
     }
 
-    @DeleteMapping("/deleteDepartment/{id}")
-    @ResponseBody
-    public ResponseEntity<?> getDeletePosition(@PathVariable Long id) {
-        DepartmentDtoRep department = departmentService.deleteDepartment(id);
-        return new ResponseEntity<>(department, HttpStatus.OK);
-    }
-
 }

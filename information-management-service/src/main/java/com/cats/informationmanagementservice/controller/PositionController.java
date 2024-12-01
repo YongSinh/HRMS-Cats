@@ -67,13 +67,6 @@ public class PositionController {
                 .build();
     }
 
-
-    @DeleteMapping("/deletePosition/{id}")
-    @ResponseBody
-    public ResponseEntity<?> getDeletePosition(@PathVariable String id) {
-        PositionDtoRep positionDtoRep = positionService.deletePosition(id);
-        return new ResponseEntity<>(positionDtoRep, HttpStatus.OK);
-    }
     @PutMapping("/editPosition/{id}")
     public BaseApi<?> editPosition(@RequestBody PositionDtoReq positionDtoReq, @PathVariable String id) {
         Position position = positionService.editPosition(positionDtoReq, id);

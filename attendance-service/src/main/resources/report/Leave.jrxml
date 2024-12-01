@@ -196,11 +196,11 @@
 						</jr:columnHeader>
 						<jr:detailCell style="Table_TD" height="30">
 							<property name="com.jaspersoft.studio.unit.width" value="px"/>
-							<staticText>
-								<reportElement x="0" y="0" width="70" height="30" uuid="f7ddc2fa-fbd5-4310-87ae-a1cc8efa6d3c"/>
+							<textField>
+								<reportElement x="0" y="0" width="70" height="30" uuid="12ff1d73-1c5e-438c-933a-cec1d596a565"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle"/>
-								<text><![CDATA[Approved]]></text>
-							</staticText>
+								<textFieldExpression><![CDATA[$F{approved}]]></textFieldExpression>
+							</textField>
 						</jr:detailCell>
 					</jr:column>
 					<jr:column width="70" uuid="963e5644-a75a-49a8-b61e-11fccefdd00c">
@@ -213,11 +213,11 @@
 							</staticText>
 						</jr:columnHeader>
 						<jr:detailCell style="Table_TD" height="30">
-							<staticText>
-								<reportElement x="0" y="0" width="70" height="30" uuid="527f2215-af77-4b52-8bfc-d91389ac4681"/>
+							<textField>
+								<reportElement x="0" y="0" width="70" height="30" uuid="62ab235d-65ae-488d-bc41-894c3e142f5e"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle"/>
-								<text><![CDATA[No]]></text>
-							</staticText>
+								<textFieldExpression><![CDATA[$F{cancelled}]]></textFieldExpression>
+							</textField>
 						</jr:detailCell>
 					</jr:column>
 					<jr:column width="70" uuid="785124c3-860a-4db7-ac38-8f18d7808f8e">

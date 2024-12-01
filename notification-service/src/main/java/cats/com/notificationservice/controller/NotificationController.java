@@ -1,6 +1,7 @@
 package cats.com.notificationservice.controller;
 
 import cats.com.notificationservice.message.MessageFull;
+import cats.com.notificationservice.service.ApiService;
 import cats.com.notificationservice.service.MessageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,6 +21,7 @@ import java.util.Map;
 public class NotificationController {
 
     private final MessageService messageService;
+    private final ApiService apiService;
 
     @GetMapping("/api/notification")
     public ResponseEntity<?> getNotification() {
@@ -27,12 +30,12 @@ public class NotificationController {
                 .body(messageService.getAllMessagesOrderByDate());
     }
 
-//    @GetMapping("/api/notification/general")
-//    public ResponseEntity<?> getGenMessage(@RequestParam String type) {
-//        return ResponseEntity
-//                .status(HttpStatus.OK)
-//                .body(messageService.getMessageType(type));
-//    }
+    @GetMapping("/api/notification/listEmp")
+    public ResponseEntity<?> getlistEmp() throws IOException {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(apiService.getListEmId());
+    }
 
     @GetMapping("/api/notification/general")
     public ResponseEntity<?> getGenMessage(

@@ -124,19 +124,41 @@ public class AttendanceServiceImp implements AttendanceService  {
     public Attendance timeIn(TimeInReqDto attendanceReqDto) {
         List<Attendance> existingAttendance = attendanceRepo.preventDuplicates(
                 attendanceReqDto.getEmId(), attendanceReqDto.getDateIn());
-        if (!existingAttendance.isEmpty()) {
-            // Handle the case where attendance already exists for this date
-            throw new IllegalStateException("Attendance record already exists for employee ID "
+//        if (!existingAttendance.isEmpty()) {
+//            // Handle the case where attendance already exists for this date
+//            throw new IllegalStateException("Attendance record already exists for employee ID "
+//                    + attendanceReqDto.getEmId() + " on " + attendanceReqDto.getDateIn());
+//        }
+//        Attendance attendance = new Attendance();
+//        attendance.setEmId(attendanceReqDto.getEmId());
+//        attendance.setTimeIn(attendanceReqDto.getTimeIn());
+//        attendance.setDateIn(attendanceReqDto.getDateIn());
+//        attendance.setRemark(attendanceReqDto.getRemark());
+//        attendance.setOnLeave(false);
+//        attendanceRepo.deleteDuplicates(attendanceReqDto.getEmId(), attendanceReqDto.getDateIn());
+//        return attendanceRepo.save(attendance);
+        if (attendanceReqDto.getTimeIn() == null) {
+            throw new IllegalStateException("TimeIn cannot be null or empty for employee ID "
                     + attendanceReqDto.getEmId() + " on " + attendanceReqDto.getDateIn());
         }
-        Attendance attendance = new Attendance();
-        attendance.setEmId(attendanceReqDto.getEmId());
-        attendance.setTimeIn(attendanceReqDto.getTimeIn());
-        attendance.setDateIn(attendanceReqDto.getDateIn());
-        attendance.setRemark(attendanceReqDto.getRemark());
-        attendance.setOnLeave(false);
-        attendanceRepo.deleteDuplicates(attendanceReqDto.getEmId(), attendanceReqDto.getDateIn());
-        return attendanceRepo.save(attendance);
+
+        if (!existingAttendance.isEmpty()) {
+            // Update existing attendance if found
+            Attendance attendance = existingAttendance.get(0);  // Assuming only one record for each employee per date
+            attendance.setTimeIn(attendanceReqDto.getTimeIn());  // Set the TimeIn value
+            attendance.setRemark(attendanceReqDto.getRemark());  // Update Remark
+            attendance.setOnLeave(false);  // Optionally update onLeave if necessary
+            return attendanceRepo.save(attendance);  // Save the updated attendance record
+        } else {
+            // Handle the case where no attendance record exists for this date
+            Attendance attendance = new Attendance();
+            attendance.setEmId(attendanceReqDto.getEmId());
+            attendance.setTimeIn(attendanceReqDto.getTimeIn());
+            attendance.setDateIn(attendanceReqDto.getDateIn());
+            attendance.setRemark(attendanceReqDto.getRemark());
+            attendance.setOnLeave(false);
+            return attendanceRepo.save(attendance);  // Create new attendance record
+        }
     }
 
     @Override

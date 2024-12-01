@@ -26,6 +26,8 @@ public class Deductions {
     @Column(name ="description")
     private String description;
     @JsonManagedReference
-    @OneToMany(mappedBy = "deductions", cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "deductions",
+            cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE },
+            fetch = FetchType.LAZY)
     private List<EmployeeDeductions> employeeDeductions = new ArrayList<>();
 }

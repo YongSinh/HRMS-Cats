@@ -13,21 +13,36 @@ import java.util.List;
 
 public interface EmployeeService {
     Employee addPersonalData(EmployeeDtoReq employee, MultipartFile file) throws IOException;
-    EmployeeDtoRep editPersonalData(EmployeeDtoReqEdit employee,MultipartFile file) throws IOException;
+
+    EmployeeDtoRep editPersonalData(EmployeeDtoReqEdit employee, MultipartFile file) throws IOException;
+
     List<EmployeeDtoRep> listEmployee();
+
     Employee update(EmployeeDtoReqEdit employee);
+
     EmployeeInfo getEmpInfoByEmId(Long emId);
+
     List<EmployeeDtoRep> getEmployeeByDep(Long depId);
+
     List<EmployeeDtoRep> getEmployeeByUnderManger(Long emId);
+
     List<EmployeeDtoRep> getEmployeeByDepAndPos(Long depId, String posId);
+
     EmployeeDtoRep getEmployeeDtoRepById(Long Id);
+
     List<Long> getEmployeeByDepGetOnlyEmId(Long depId);
+
     List<Long> getEmployeeByDepAndPosId(Long depId, String posId);
+
     void uploadFile(MultipartFile file, Long emId, Integer type, LocalDate date, Integer serviceType) throws IOException;
+
     void uploadUpdateFile(MultipartFile file, Long emId, Integer type, LocalDate date, Integer serviceType, String fileId) throws IOException;
-    Employee getPersonalDataById (Long Id);
+
+    Employee getPersonalDataById(Long Id);
 
     void deleteEmpInfo(Long emId);
+
+    List<Long> getListEmpId();
 
 }
 ;

@@ -26,7 +26,10 @@ public class Allowances {
     @Column(name ="description")
     private String description;
     @JsonManagedReference
-    @OneToMany(mappedBy = "allowances", cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "allowances",
+            cascade = { CascadeType.PERSIST,
+                    CascadeType.MERGE, CascadeType.REMOVE },
+            fetch = FetchType.LAZY)
     private List<EmployeeAllowances> employeeAllowances = new ArrayList<>();
 
 }

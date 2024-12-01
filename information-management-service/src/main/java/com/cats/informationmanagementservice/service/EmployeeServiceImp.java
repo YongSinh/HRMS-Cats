@@ -9,7 +9,6 @@ import com.cats.informationmanagementservice.model.Position;
 import com.cats.informationmanagementservice.repository.EmployeeRepo;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import net.minidev.json.JSONObject;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.MultipartBodyBuilder;
@@ -27,12 +26,13 @@ import java.util.stream.StreamSupport;
 
 @Service
 @RequiredArgsConstructor
-public class EmployeeServiceImp implements EmployeeService{
-    private final EmployeeRepo  employeeRepo;
+public class EmployeeServiceImp implements EmployeeService {
+    private final EmployeeRepo employeeRepo;
     private final PositionService positionService;
     private final DepartmentService departmentService;
     private final WebClient.Builder webClientBuilder;
     private final KafKaProducerService kafKaProducerService;
+
     @Transactional
     @Override
     public Employee addPersonalData(EmployeeDtoReq employee, MultipartFile file) throws IOException {
@@ -68,19 +68,19 @@ public class EmployeeServiceImp implements EmployeeService{
         emp.setGovTel(employee.getGovTel());
         emp.setGovPosition(employee.getGovPosition());
         emp.setGovAddress(employee.getGovAddress());
-        if (employee.getPosId() == null){
+        if (employee.getPosId() == null) {
             throw new IllegalArgumentException("Employee at least on Position ");
         }
         Position position = positionService.getPositionById(employee.getPosId());
         emp.setPosition(position);
-        if (employee.getDepId() == null){
+        if (employee.getDepId() == null) {
             throw new IllegalArgumentException("Employee at least on Position ");
         }
         Department department = departmentService.getDepById(employee.getDepId());
         emp.setDepartment(department);
-        if(file != null){
+        if (file != null) {
             System.out.println(file.isEmpty());
-            uploadFile(file, employee.getEmpId(),1,employee.getEmpDate(), 1);
+            uploadFile(file, employee.getEmpId(), 1, employee.getEmpDate(), 1);
         }
         MessageFull messageFull = new MessageFull();
         messageFull.setSender("Human Resources");
@@ -91,22 +91,24 @@ public class EmployeeServiceImp implements EmployeeService{
         kafKaProducerService.senGendMessage(messageFull);
         return employeeRepo.save(emp);
     }
+
     @Transactional
     @Override
     public EmployeeDtoRep editPersonalData(EmployeeDtoReqEdit employee, MultipartFile file) throws IOException {
         Employee emp = update(employee);
-        if(file != null){
-            if (employee.getFileId().isEmpty()){
-                uploadFile(file, employee.getEmpId(),1,employee.getEmpDate(), 1);
-            }else {
-                uploadUpdateFile(file, employee.getEmpId(),1,employee.getEmpDate(), 1, employee.getFileId());
+        if (file != null) {
+            if (employee.getFileId().isEmpty()) {
+                uploadFile(file, employee.getEmpId(), 1, employee.getEmpDate(), 1);
+            } else {
+                uploadUpdateFile(file, employee.getEmpId(), 1, employee.getEmpDate(), 1, employee.getFileId());
             }
 
         }
         return mapper.EmployeeDtoRepToEmployeeDtoRep(emp);
     }
+
     @Override
-    public Employee update(EmployeeDtoReqEdit employee){
+    public Employee update(EmployeeDtoReqEdit employee) {
         Employee emp = getPersonalDataById(employee.getEmpId());
         emp.setFirstName(employee.getFirstName());
         emp.setLastName(employee.getLastName());
@@ -134,11 +136,11 @@ public class EmployeeServiceImp implements EmployeeService{
         emp.setGovTel(employee.getGovTel());
         emp.setGovPosition(employee.getGovPosition());
         emp.setGovAddress(employee.getGovAddress());
-        if (employee.getPosId() != null){
+        if (employee.getPosId() != null) {
             Position position = positionService.getPositionById(employee.getPosId());
             emp.setPosition(position);
         }
-        if (employee.getDepId() != null){
+        if (employee.getDepId() != null) {
             Department department = departmentService.getDepById(employee.getDepId());
             emp.setDepartment(department);
         }
@@ -167,8 +169,8 @@ public class EmployeeServiceImp implements EmployeeService{
 
     @Override
     public List<EmployeeDtoRep> getEmployeeByUnderManger(Long emId) {
-        Employee getEmp= getPersonalDataById(emId);
-        List<Employee> employeeList = employeeRepo.callGetEmployeeHierarchyProcedure(getEmp.getMangerId(),getEmp.getDepartment().getDepId());
+        Employee getEmp = getPersonalDataById(emId);
+        List<Employee> employeeList = employeeRepo.callGetEmployeeHierarchyProcedure(getEmp.getMangerId(), getEmp.getDepartment().getDepId());
         return mapper.EmployeeDtoRepToEmployeeDtoReps(employeeList);
     }
 
@@ -190,7 +192,7 @@ public class EmployeeServiceImp implements EmployeeService{
         Department department = departmentService.getDepById(depId);
         List<Employee> employees = employeeRepo.findByDepartment(department);
         List<Long> emId = new ArrayList<>();
-        for(Employee employee: employees){
+        for (Employee employee : employees) {
             emId.add(employee.getEmpId());
         }
         return emId;
@@ -202,7 +204,7 @@ public class EmployeeServiceImp implements EmployeeService{
         Department department = departmentService.getDepById(depId);
         List<Employee> employees = employeeRepo.findByDepartmentAndPosition(department, position);
         List<Long> emId = new ArrayList<>();
-        for(Employee employee: employees){
+        for (Employee employee : employees) {
             emId.add(employee.getEmpId());
         }
         return emId;
@@ -261,7 +263,12 @@ public class EmployeeServiceImp implements EmployeeService{
     public void deleteEmpInfo(Long emId) {
         Employee employee = getPersonalDataById(emId);
         employeeRepo.delete(employee);
-        
+
+    }
+
+    @Override
+    public List<Long> getListEmpId() {
+        return employeeRepo.findEmployeeId();
     }
 }
 

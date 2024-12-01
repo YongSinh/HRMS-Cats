@@ -67,15 +67,14 @@ public class AllowanceController {
 
     @DeleteMapping("/allowances/delete")
     public BaseApi<?> deleteAllowancesById(@RequestParam Long id) {
-        Allowances allowances = allowancesService.getAllowancesBytId(id);
-      allowancesService.getAllowancesBytId(id);
-
+        //Allowances allowances = allowancesService.getAllowancesBytId(id);
+        allowancesService.delete(id);
         return BaseApi.builder()
                 .status(true)
                 .code(HttpStatus.OK.value())
                 .message("allowances have been deleted")
                 .timestamp(LocalDateTime.now())
-                .data(allowances)
+                .data("allowances have been deleted")
                 .build();
     }
 }
