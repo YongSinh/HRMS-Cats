@@ -7,7 +7,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -103,4 +105,25 @@ public class MessageServiceImp implements MessageService {
     public List<MessageFull> getAllMessagesBySenderAndService(String sender, String service) {
         return messageRepository.findBySenderAndServiceTypeOrderByDateTimeDesc(sender,service);
     }
+
+    @Override
+    public Page<MessageFull> getNotificationsForUser(String userId, String type, Pageable pageable) {
+        return messageRepository.findByMessageTypeAndReceiverOrderByDateTimeDesc(type, userId, pageable);
+    }
+
+
+    @Override
+    public long getUnreadCountForUser(String userId) {
+       return messageRepository.countByReceiverAndIsReadFalse(userId);
+    }
+
+    @Override
+    public void markNotificationsAsRead(String userId) {
+        List<MessageFull> notifications = messageRepository.findAllByReceiverAndIsReadFalse(userId, Pageable.unpaged());
+        for (MessageFull notification : notifications) {
+            notification.setIsRead(true);
+            notification.setEditedAt(LocalDateTime.now());
+        }
+    }
+
 }

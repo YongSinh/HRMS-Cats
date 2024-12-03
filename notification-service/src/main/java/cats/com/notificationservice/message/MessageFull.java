@@ -59,4 +59,5 @@ public class MessageFull {
 
     @Column(name = "deleted_at")
     private LocalDateTime deletedAt;
+
 }
