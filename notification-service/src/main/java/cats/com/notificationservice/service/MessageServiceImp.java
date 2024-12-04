@@ -124,6 +124,7 @@ public class MessageServiceImp implements MessageService {
             notification.setIsRead(true);
             notification.setEditedAt(LocalDateTime.now());
         }
+        messageRepository.saveAll(notifications);
     }
 
 }

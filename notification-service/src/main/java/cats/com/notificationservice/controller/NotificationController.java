@@ -44,26 +44,26 @@ public class NotificationController {
                 .code(HttpStatus.OK.value())
                 .message("List All the notification for userId: "+ userId)
                 .timestamp(LocalDateTime.now())
-                .data(pagedMessages)
+                .data(buildPagedResponse(pagedMessages))
                 .build();
     }
 
-    @GetMapping("/api/notification/general")
-    public ResponseEntity<?> getGenMessage(
-            @RequestParam String type,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
-        Page<MessageFull> pagedMessages = messageService.getMessageType(type, page, size);
-        return buildPagedResponse(pagedMessages);
-    }
+//    @GetMapping("/api/notification/general")
+//    public ResponseEntity<?> getGenMessage(
+//            @RequestParam String type,
+//            @RequestParam(defaultValue = "0") int page,
+//            @RequestParam(defaultValue = "10") int size) {
+//        Page<MessageFull> pagedMessages = messageService.getMessageType(type, page, size);
+//        return buildPagedResponse(pagedMessages);
+//    }
 
-    private ResponseEntity<Map<String, Object>> buildPagedResponse(Page<MessageFull> pagedMessages) {
+    private Map<String, Object> buildPagedResponse(Page<MessageFull> pagedMessages) {
         Map<String, Object> response = new HashMap<>();
         response.put("data", pagedMessages.getContent()); // List of messages
         response.put("hasMore", pagedMessages.hasNext()); // Indicates if more pages are available
         response.put("currentPage", pagedMessages.getNumber());
         response.put("totalPages", pagedMessages.getTotalPages());
-        return ResponseEntity.status(HttpStatus.OK).body(response);
+        return response;
     }
 
     @GetMapping("/api/notification/listEmp")
@@ -74,17 +74,27 @@ public class NotificationController {
     }
 
     @GetMapping("/api/notification/unreadCount")
-    public ResponseEntity<?> getUnreadCount(@RequestParam String userId) {
+    public BaseApi<?> getUnreadCount(@RequestParam String userId) {
         long unreadCount = messageService.getUnreadCountForUser(userId);
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(unreadCount);
+        return BaseApi.builder()
+                .status(true)
+                .code(HttpStatus.OK.value())
+                .message("List All the notification unread count for userId: "+ userId)
+                .timestamp(LocalDateTime.now())
+                .data(unreadCount)
+                .build();
     }
 
     @PutMapping("/api/notification/markAsRead")
-    public ResponseEntity<?> markNotificationsAsRead(@RequestParam String userId) {
+    public BaseApi<?> markNotificationsAsRead(@RequestParam String userId) {
         messageService.markNotificationsAsRead(userId);
-        return ResponseEntity.ok().build();
+        return BaseApi.builder()
+                .status(true)
+                .code(HttpStatus.OK.value())
+                .message("List the notification have been mark as read for userId: "+ userId)
+                .timestamp(LocalDateTime.now())
+                .data(null)
+                .build();
     }
 
 
