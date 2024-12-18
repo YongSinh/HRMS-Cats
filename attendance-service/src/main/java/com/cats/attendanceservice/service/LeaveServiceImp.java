@@ -234,8 +234,10 @@ public class LeaveServiceImp implements LeaveSerivce{
     public LeaveDtoRep rejectByManger(Long Id) {
         Leave leave = getLeaveById(Id);
         leave.setApprovedByManger(false);
+        leave.setStatus(false);
         leave.setApproved(false);
-        leave.setCancelled(true);
+        leave.setApprovedByHead(true);
+        leave.setCancelled(false);
         return mapper.leaveToLeaveResponseDto(leaveRepo.save(leave));
     }
 
@@ -243,9 +245,10 @@ public class LeaveServiceImp implements LeaveSerivce{
     public LeaveDtoRep rejectByHead(Long Id) {
         Leave leave = getLeaveById(Id);
         leave.setApprovedByManger(false);
-        leave.setApprovedByHead(false);
+        leave.setApprovedByHead(true);
+        leave.setStatus(false);
         leave.setApproved(false);
-        leave.setCancelled(true);
+        leave.setCancelled(false);
         return mapper.leaveToLeaveResponseDto(leaveRepo.save(leave));
     }
 
@@ -253,16 +256,18 @@ public class LeaveServiceImp implements LeaveSerivce{
     public LeaveDtoRep rejectByHr(Long Id) {
         Leave leave = getLeaveById(Id);
         leave.setApprovedByHr(false);
+        leave.setApprovedByManger(false);
         leave.setApproved(false);
-        leave.setCancelled(true);
+        leave.setCancelled(false);
+        leave.setApprovedByHead(true);
+        leave.setStatus(false);
         return mapper.leaveToLeaveResponseDto(leaveRepo.save(leave));
     }
     @Transactional
     @Override
     public List<LeaveDtoRep> getListLeaveForMangement(Long emId) {
         Collection<Long> emIds = apiService.getEmployeeByUnderMangerOnlyEmId(emId);
-        System.out.println(emIds);
-        List<Leave> leaveList = leaveRepo.findByEmpIdIn(emIds);
+        List<Leave> leaveList = leaveRepo.findByEmpIdInOrderByCreatedAtDesc(emIds);
         return mapper.leaveToLeaveResponseDtos(leaveList);
     }
 

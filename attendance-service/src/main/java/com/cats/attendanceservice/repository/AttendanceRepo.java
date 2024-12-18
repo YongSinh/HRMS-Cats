@@ -23,7 +23,12 @@ public interface AttendanceRepo extends JpaRepository<Attendance, Long> {
     @Query(value = "select * from attendance\n" +
             "where dateIn = :date and emId = :emId", nativeQuery = true)
     Attendance findByEmIdAndDateIn(@Param("date") LocalDate date, @Param("emId") Long emId);
-    List<Attendance> findByEmIdIn(Collection<Long> emId);
+    @Query(
+            value = "SELECT * FROM attendance WHERE attendance.emId IN :emIds ORDER BY dateIn DESC, timeInDate DESC",
+            nativeQuery = true
+    )
+    List<Attendance> findByEmIdIn(Collection<Long> emIds);
+
     List<Attendance> findByDateInBetweenAndEmId(LocalDate dateIn, LocalDate dateIn2, Long emId);
     @Query("SELECT a FROM Attendance a WHERE a.emId = :emId AND a.dateIn = :dateIn")
     Optional<Attendance> findByEmIdAndDateIn(@Param("emId") Long emId, @Param("dateIn") LocalDate date);

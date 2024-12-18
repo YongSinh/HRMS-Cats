@@ -16,7 +16,7 @@ public interface LeaveRepo extends JpaRepository<Leave,Long> {
     List<Leave> findAllByOrderByCreatedAtDesc();
     List<Leave> findAllByOrderByCreatedAtDescLeaveIdDesc();
 
-    List<Leave> findByEmpIdIn(Collection<Long> empId);
+    List<Leave> findByEmpIdInOrderByCreatedAtDesc(Collection<Long> empId);
     List<Leave> findByEmpIdAndCreatedAtOrderByCreatedAtDesc(Long empId, LocalDate createdAt);
     List<Leave> findByCreatedAtBetween(LocalDate createdAt, LocalDate createdAt2);
     List<Leave> findByCreatedAtOrderByCreatedAtDesc(LocalDate createdAt);

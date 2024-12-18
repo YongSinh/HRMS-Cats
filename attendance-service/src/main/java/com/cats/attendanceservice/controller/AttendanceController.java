@@ -93,22 +93,35 @@ public class AttendanceController {
                 .build();
     }
 
-    @CircuitBreaker(name = "management", fallbackMethod = "fallbackMethod")
-    @TimeLimiter(name = "management")
-    @Retry(name = "management")
+//    @CircuitBreaker(name = "management", fallbackMethod = "fallbackMethod")
+//    @TimeLimiter(name = "management")
+//    @Retry(name = "management")
+//    @GetMapping("/attendance/getListAttendanceForManagement")
+//    public CompletableFuture<BaseApi<?>> getListAttendanceForManagement(@RequestParam Long emId) {
+//        return CompletableFuture.supplyAsync(() -> {
+//            List<Attendance> getList = attendanceService.getListAttendanceForManger(emId);
+//            return BaseApi.builder()
+//                    .status(true)
+//                    .code(HttpStatus.OK.value())
+//                    .message("List All the Attendance")
+//                    .timestamp(LocalDateTime.now())
+//                    .data(getList)
+//                    .build();
+//        });
+//    }
+
     @GetMapping("/attendance/getListAttendanceForManagement")
-    public CompletableFuture<BaseApi<?>> getListAttendanceForManagement(@RequestParam Long emId) {
-        return CompletableFuture.supplyAsync(() -> {
-            List<Attendance> getList = attendanceService.getListAttendanceForManger(emId);
-            return BaseApi.builder()
-                    .status(true)
-                    .code(HttpStatus.OK.value())
-                    .message("List All the Attendance")
-                    .timestamp(LocalDateTime.now())
-                    .data(getList)
-                    .build();
-        });
+    public BaseApi<?>getListAttendanceForManagement(@RequestParam Long emId) {
+        List<Attendance> getList = attendanceService.getListAttendanceForManger(emId);
+        return BaseApi.builder()
+                .status(true)
+                .code(HttpStatus.OK.value())
+                .message("List All the Attendance")
+                .timestamp(LocalDateTime.now())
+                .data(getList)
+                .build();
     }
+
 
     public CompletableFuture<BaseApi<?>> fallbackMethod(Long emId, Throwable throwable) {
         return CompletableFuture.supplyAsync(() -> BaseApi.builder()

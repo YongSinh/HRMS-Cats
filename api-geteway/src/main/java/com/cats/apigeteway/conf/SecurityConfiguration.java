@@ -58,7 +58,7 @@ public class SecurityConfiguration {
                     exchanges
                             .pathMatchers("/actuator/**").hasRole(admin.toUpperCase())
                             .pathMatchers(AUTH_WHITELIST).permitAll()
-                            .pathMatchers("/api/files/**", "/api/payrolls/report/**","/api/attendanceLeave/test/**","/api/info/test/**", "/api/attendanceLeave/report/**").permitAll()
+                            .pathMatchers("/api/files/**", "/api/payrolls/report/**","/api/attendanceLeave/test/**","/api/info/test/**", "/api/attendanceLeave/report/**", "/api/notification/**","/fallback").permitAll()
                             .pathMatchers("/eureka/**", "/actuator/**", "/swagger-ui.html", "/v3/api-docs/**", "/swagger-ui/**").permitAll()
                             .anyExchange().permitAll();
                 })
