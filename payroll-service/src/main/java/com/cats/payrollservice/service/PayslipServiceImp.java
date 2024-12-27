@@ -50,13 +50,13 @@ public class PayslipServiceImp implements PayslipService {
             payslip.setPayroll(payroll);
             payslip.setPayType(payslipReqDto.getPaymentType());
             if(payslipReqDto.getPaymentType() == 1){
+                net = salaries.getSalary() / 2;
+
+            }else if (payslipReqDto.getPaymentType() == 2){
                 Double khMoney = salaries.getSalary() * payslipReqDto.getKhmerRate();
                 Double tax = taxService.taxCalculator(khMoney);
                 Double USDMoney = (khMoney - tax) / payslipReqDto.getKhmerRate();
                 net = USDMoney / 2;
-
-            }else if (payslipReqDto.getPaymentType() == 2){
-                net = salaries.getSalary() / 2;
             }
             else {
                 net = payrollService.calculateNetSalary(emIds, payslipReqDto.getKhmerRate());
@@ -92,13 +92,13 @@ public class PayslipServiceImp implements PayslipService {
         Payroll payroll = payrollService.getPayRollByEmIdAndCreateDate(payslip.getEmpId(), payslipReqDto.getPayrollDate());
         payslip.setPayroll(payroll);
         if(payroll.getType() == 1){
+            salary = payrollService.calculateNetSalary(payslip.getEmpId(), payslipReqDto.getKhmerRate());
+        }
+        else {
             Double khMoney = salaries.getSalary() * payslipReqDto.getKhmerRate();
             Double tax = taxService.taxCalculator(khMoney);
             Double USDMoney = (khMoney - tax) / payslipReqDto.getKhmerRate();
             salary = (USDMoney/ 2);
-        }
-        else {
-            salary = payrollService.calculateNetSalary(payslip.getEmpId(), payslipReqDto.getKhmerRate());
         }
         payslip.setSalary(salary);
         payslip.setDateCreated(payslipReqDto.getDateCreated());

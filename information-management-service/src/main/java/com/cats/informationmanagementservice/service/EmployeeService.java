@@ -5,6 +5,7 @@ import com.cats.informationmanagementservice.Dto.EmployeeDtoReq;
 import com.cats.informationmanagementservice.Dto.EmployeeDtoReqEdit;
 import com.cats.informationmanagementservice.Dto.EmployeeInfo;
 import com.cats.informationmanagementservice.model.Employee;
+import org.springframework.data.repository.query.Param;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -43,6 +44,8 @@ public interface EmployeeService {
     void deleteEmpInfo(Long emId);
 
     List<Long> getListEmpId();
+
+    String getEmpFullName(Long emId);
 
 }
 ;

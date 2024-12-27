@@ -43,4 +43,16 @@ public class test {
                 .build();
     }
 
+    @GetMapping("/name")
+    public BaseApi<?> getName(@RequestParam Long emId) throws IOException {
+        String name = apiService.getEmpName(emId);
+        return BaseApi.builder()
+                .status(true)
+                .code(HttpStatus.OK.value())
+                .message("List All the Attendance")
+                .timestamp(LocalDateTime.now())
+                .data(name)
+                .build();
+    }
+
 }

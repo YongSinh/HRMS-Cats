@@ -21,4 +21,9 @@ public interface EmployeeRepo extends JpaRepository<Employee, Long> {
     List<Employee> findByDepartmentAndPosition(Department department, Position position);
     @Query("select a.empId from Employee as a")
     List<Long> findEmployeeId();
+
+    @Query("SELECT CONCAT(e.firstName, ' ', e.lastName) FROM Employee e WHERE e.empId = :emId")
+    String getEmpFullName(@Param("emId") Long emId);
+
+
 }

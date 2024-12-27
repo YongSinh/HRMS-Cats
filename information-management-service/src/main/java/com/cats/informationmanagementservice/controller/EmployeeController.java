@@ -106,6 +106,19 @@ public class EmployeeController {
                 .build();
     }
 
+    @GetMapping("/getEmployeeName")
+    public BaseApi<?> getEmpFullName(@RequestParam Long emId) {
+        String employee = employeeService.getEmpFullName(emId);
+        return BaseApi.builder()
+                .status(true)
+                .code(HttpStatus.OK.value())
+                .message("list Employee Id have been found")
+                .timestamp(LocalDateTime.now())
+                .data(employee)
+                .build();
+    }
+
+
 
     @GetMapping("/listEmployeeByDepAndPosOnlyEmId")
     public BaseApi<?> listEmployeeByDepAndPosOnlyEmId(@RequestParam Long depId, @RequestParam String posId) {

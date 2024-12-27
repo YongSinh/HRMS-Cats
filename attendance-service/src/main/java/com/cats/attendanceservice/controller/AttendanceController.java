@@ -1,6 +1,7 @@
 package com.cats.attendanceservice.controller;
 
 import com.cats.attendanceservice.base.BaseApi;
+import com.cats.attendanceservice.dto.AttendanceRepDto;
 import com.cats.attendanceservice.dto.AttendanceReqDto;
 import com.cats.attendanceservice.dto.TimeInReqDto;
 import com.cats.attendanceservice.dto.TimeOutReqDto;
@@ -33,7 +34,7 @@ public class AttendanceController {
      * */
     @GetMapping("/attendance/listAttendance")
     public BaseApi<?> listAttendance() {
-        List<Attendance> getList = attendanceService.getListAttendance();
+        List<AttendanceRepDto> getList = attendanceService.getListAttendance();
         return BaseApi.builder()
                 .status(true)
                 .code(HttpStatus.OK.value())
@@ -57,7 +58,7 @@ public class AttendanceController {
 
     @GetMapping("/attendance/ListAttendanceOrderByDate")
     public BaseApi<?> ListAttendanceOrderByDate() {
-        List<Attendance> getList = attendanceService.getListAttendanceOrderByDate();
+        List<AttendanceRepDto> getList = attendanceService.getListAttendanceOrderByDate();
         return BaseApi.builder()
                 .status(true)
                 .code(HttpStatus.OK.value())
@@ -68,7 +69,7 @@ public class AttendanceController {
     }
     @GetMapping("/attendance/listAttendanceByEmId/{emId}")
     public BaseApi<?> listAttendanceByEmId(@PathVariable Long emId) {
-        List<Attendance> getList = attendanceService.getListAttendanceByEmId(emId);
+        List<AttendanceRepDto> getList = attendanceService.getListAttendanceByEmId(emId);
         return BaseApi.builder()
                 .status(true)
                 .code(HttpStatus.OK.value())
@@ -83,7 +84,7 @@ public class AttendanceController {
             @RequestParam(name = "dateIn") LocalDate dateIn,
             @RequestParam(name = "dateIn2")  LocalDate dateIn2,
             @RequestParam(name = "emId")  Long emId) {
-        List<Attendance> getList = attendanceService.findByDateInBetweenAndEmId(dateIn, dateIn2,emId);
+        List<AttendanceRepDto> getList = attendanceService.findByDateInBetweenAndEmId(dateIn, dateIn2,emId);
         return BaseApi.builder()
                 .status(true)
                 .code(HttpStatus.OK.value())
@@ -112,7 +113,7 @@ public class AttendanceController {
 
     @GetMapping("/attendance/getListAttendanceForManagement")
     public BaseApi<?>getListAttendanceForManagement(@RequestParam Long emId) {
-        List<Attendance> getList = attendanceService.getListAttendanceForManger(emId);
+        List<AttendanceRepDto> getList = attendanceService.getListAttendanceForManger(emId);
         return BaseApi.builder()
                 .status(true)
                 .code(HttpStatus.OK.value())

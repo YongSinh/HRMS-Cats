@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -78,6 +79,28 @@ public class ApiService {
             return Collections.emptyList();
         }
     }
+    public String getEmpName(Long emId) {
+        // Asynchronously retrieve the employee name
+        Mono<String> nameMono = webClientBuilder.build().get()
+                .uri("http://information-management-service/api/info/employee/getEmployeeName",
+                        uriBuilder -> uriBuilder.queryParam("emId", emId).build())
+                .retrieve()
+                .bodyToMono(WebFluxResponse.class)
+                .flatMap(response -> {
+                    if (response.getCode() == 200) {
+                        // Extract the employee name from the response data
+                        JsonNode data = response.getData();
+                        return Mono.just(data.asText());
+                    } else {
+                        System.out.println("Failed to retrieve employee name, code: " + response.getCode());
+                        return Mono.empty();
+                    }
+                });
+
+        // Block only if absolutely necessary, otherwise return Mono<String> for non-blocking usage
+        return nameMono.block(); // Avoid using block() unless you are in a non-reactive context
+    }
+
 
     public JsonNode getEmployeeInFoByEmId(Long emId) throws IOException {
         WebFluxResponse response = webClientBuilder.build().get()

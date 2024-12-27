@@ -17,6 +17,7 @@ import java.time.LocalTime;
 public class LeaveDtoRep {
     private Long Id;
     private Long empId;
+    private String employeeName;
     private String startDate;
     private String endDate;
     private LocalTime timeOfHaftDay;

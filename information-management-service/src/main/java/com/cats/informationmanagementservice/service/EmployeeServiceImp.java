@@ -270,5 +270,10 @@ public class EmployeeServiceImp implements EmployeeService {
     public List<Long> getListEmpId() {
         return employeeRepo.findEmployeeId();
     }
+
+    @Override
+    public String getEmpFullName(Long emId) {
+        return employeeRepo.getEmpFullName(emId);
+    }
 }
 

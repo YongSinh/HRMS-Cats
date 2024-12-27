@@ -2,16 +2,12 @@ package com.cats.attendanceservice.service;
 
 import com.cats.attendanceservice.Util.DateUtils;
 import com.cats.attendanceservice.dto.*;
-import com.cats.attendanceservice.events.ListEmpByEmpIdEvent;
 import com.cats.attendanceservice.model.Attendance;
-import com.cats.attendanceservice.model.Leave;
 import com.cats.attendanceservice.repository.AttendanceRepo;
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -25,7 +21,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -48,29 +43,29 @@ public class AttendanceServiceImp implements AttendanceService  {
     private final ApplicationEventPublisher applicationEventPublisher;
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("M/dd/yyyy h:mm a", Locale.ENGLISH);
     @Override
-    public List<Attendance> getListAttendance() {
-        return attendanceRepo.findAllByOrderByIdDesc();
+    public List<AttendanceRepDto> getListAttendance() {
+        return  mapper.AttendanceRepToAttendanceRepDtos( attendanceRepo.findAllByOrderByIdDesc(),apiService);
     }
 
     @Override
-    public List<Attendance> getListAttendanceOrderByDate() {
-        return attendanceRepo.findAllOrderByDateIn();
+    public List<AttendanceRepDto> getListAttendanceOrderByDate() {
+        return mapper.AttendanceRepToAttendanceRepDtos(attendanceRepo.findAllOrderByDateIn(), apiService);
     }
 
     @Override
-    public List<Attendance> getListAttendanceByEmId(Long emId) {
-        return  attendanceRepo.findByEmId(emId);
+    public List<AttendanceRepDto> getListAttendanceByEmId(Long emId) {
+        return  mapper.AttendanceRepToAttendanceRepDtos( attendanceRepo.findByEmId(emId),apiService);
     }
 
     @Override
-    public List<Attendance> findByDateInBetweenAndEmId(LocalDate dateIn, LocalDate dateIn2, Long emId) {
-        return attendanceRepo.findByDateInBetweenAndEmId(dateIn,dateIn2,emId);
+    public List<AttendanceRepDto>  findByDateInBetweenAndEmId(LocalDate dateIn, LocalDate dateIn2, Long emId) {
+        return mapper.AttendanceRepToAttendanceRepDtos( attendanceRepo.findByDateInBetweenAndEmId(dateIn,dateIn2,emId), apiService);
     }
 
     @Override
-    public List<Attendance> getListAttendanceForManger(Long emId) {
+    public List<AttendanceRepDto> getListAttendanceForManger(Long emId) {
         Collection<Long> emIDs = apiService.getEmployeeByUnderMangerOnlyEmId(emId);
-        return attendanceRepo.findByEmIdIn(emIDs);
+        return mapper.AttendanceRepToAttendanceRepDtos( attendanceRepo.findByEmIdIn(emIDs), apiService) ;
     }
 
     @Override
@@ -163,7 +158,7 @@ public class AttendanceServiceImp implements AttendanceService  {
 
     @Override
     public List<ReportAttendanceDto> getReportByDateInBetweenAndEmId(LocalDate dateIn, LocalDate dateIn2, Long emId) throws IOException {
-        List<Attendance> attendances = findByDateInBetweenAndEmId(dateIn,dateIn2,emId);
+        List<Attendance> attendances = attendanceRepo.findByDateInBetweenAndEmId(dateIn,dateIn2,emId);
         return reportAttendanceDtoList(attendances,emId);
     }
 

@@ -30,37 +30,37 @@ public class LeaveServiceImp implements LeaveSerivce{
     private final ApiService apiService;
     @Override
     public List<LeaveDtoRep> getListLeave() {
-        return mapper.leaveToLeaveResponseDtos(leaveRepo.findAllByOrderByCreatedAtDescLeaveIdDesc());
+        return mapper.leaveToLeaveResponseDtos2(leaveRepo.findAllByOrderByCreatedAtDescLeaveIdDesc(), apiService);
     }
 
     @Override
     public List<LeaveDtoRep> getLeaveByEmId(Long EmId) {
-        return mapper.leaveToLeaveResponseDtos(leaveRepo.findLeaveByEmpIdOrderByCreatedAtDesc(EmId));
+        return mapper.leaveToLeaveResponseDtos2(leaveRepo.findLeaveByEmpIdOrderByCreatedAtDesc(EmId), apiService);
     }
 
     @Override
     public List<LeaveDtoRep> getLeaveByEmIdAndOrderByDate(Long EmId) {
-        return mapper.leaveToLeaveResponseDtos(leaveRepo.findLeaveByEmpIdAndOOrderByDate(EmId));
+        return mapper.leaveToLeaveResponseDtos2(leaveRepo.findLeaveByEmpIdAndOOrderByDate(EmId), apiService);
     }
 
     @Override
     public List<LeaveDtoRep> getLeaveByEmIdAndDate(LocalDate date, Long emId) {
-        return mapper.leaveToLeaveResponseDtos(leaveRepo.findByEmpIdAndCreatedAtOrderByCreatedAtDesc(emId,date));
+        return mapper.leaveToLeaveResponseDtos2(leaveRepo.findByEmpIdAndCreatedAtOrderByCreatedAtDesc(emId,date), apiService);
     }
 
     @Override
     public List<LeaveDtoRep> getLeaveByDate(LocalDate date) {
-        return mapper.leaveToLeaveResponseDtos(leaveRepo.findByCreatedAtOrderByCreatedAtDesc(date));
+        return mapper.leaveToLeaveResponseDtos2(leaveRepo.findByCreatedAtOrderByCreatedAtDesc(date), apiService);
     }
 
     @Override
     public List<LeaveDtoRep> getLeaveByDateBetween(LocalDate start, LocalDate endDate) {
-        return mapper.leaveToLeaveResponseDtos(leaveRepo.findByCreatedAtBetween(start, endDate));
+        return mapper.leaveToLeaveResponseDtos2(leaveRepo.findByCreatedAtBetween(start, endDate), apiService);
     }
 
     @Override
     public List<LeaveDtoRep> getListByEmIdAndDateBetween(LocalDate startDate, LocalDate endDate, Long emId) {
-        return mapper.leaveToLeaveResponseDtos(leaveRepo.findByEmpIdAndCreatedAtBetween(emId, startDate, endDate));
+        return mapper.leaveToLeaveResponseDtos2(leaveRepo.findByEmpIdAndCreatedAtBetween(emId, startDate, endDate), apiService);
     }
 
 
@@ -268,7 +268,7 @@ public class LeaveServiceImp implements LeaveSerivce{
     public List<LeaveDtoRep> getListLeaveForMangement(Long emId) {
         Collection<Long> emIds = apiService.getEmployeeByUnderMangerOnlyEmId(emId);
         List<Leave> leaveList = leaveRepo.findByEmpIdInOrderByCreatedAtDesc(emIds);
-        return mapper.leaveToLeaveResponseDtos(leaveList);
+        return mapper.leaveToLeaveResponseDtos2(leaveList, apiService);
     }
 
 
@@ -281,7 +281,7 @@ public class LeaveServiceImp implements LeaveSerivce{
 
     @Override
     public LeaveDtoRep getLeave(Long id) {
-        return mapper.leaveToLeaveResponseDto(getLeaveById(id));
+        return mapper.leaveToLeaveResponseDto2(getLeaveById(id), apiService);
     }
 
     @Override
