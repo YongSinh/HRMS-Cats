@@ -1,38 +1,22 @@
 package com.cats.payrollservice.non_entity_POJO;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDate;
 
 @Entity
 @NamedStoredProcedureQueries({
         @NamedStoredProcedureQuery(
-                name = "GetPayrollByRefNo2",
-                procedureName = "GetPayrollByRefNo2",
-                resultSetMappings = "GetPayrollMapping"
-        ),
-        @NamedStoredProcedureQuery(
-                name = "GetListPayroll",
-                procedureName = "GetListPayroll",
-                resultSetMappings = "GetPayrollMapping"
-        ),
-        @NamedStoredProcedureQuery(
-                name = "GetPayrollByCreateDate",
-                procedureName = "GetPayrollByCreateDate",
-                resultSetMappings = "GetPayrollMapping"
-        ),
-        @NamedStoredProcedureQuery(
-                name = "GetPayrollWithTaxForUser",
-                procedureName = "GetPayrollWithTaxForUser",
-                resultSetMappings = "GetPayrollMapping"
+                name = "GetFirstAndSecondPayments",
+                procedureName = "GetFirstAndSecondPayments",
+                resultSetMappings = "GetPayrollMapping2"
         )
 })
 @SqlResultSetMapping(
-        name = "GetPayrollMapping",
+        name = "GetPayrollMapping2",
         classes = @ConstructorResult(
-                targetClass = PayrollAndPaySlip.class,
+                targetClass = PaySlipReportDto.class,
                 columns = {
                         @ColumnResult(name = "empId", type = Long.class),
                         @ColumnResult(name = "ref_no", type = String.class),
@@ -46,14 +30,15 @@ import java.time.LocalDate;
                         @ColumnResult(name = "total_earning", type = Double.class),
                         @ColumnResult(name = "net", type = Double.class),
                         @ColumnResult(name = "date", type = String.class),
-                        @ColumnResult(name = "tax_rate", type = Double.class)
+                        @ColumnResult(name = "tax_rate", type = Double.class),
+                        @ColumnResult(name = "payment_sequence", type = String.class)
                 }
         )
 )
 @Data
 @NoArgsConstructor
-public class PayrollAndPaySlip {
-    @Id
+@AllArgsConstructor
+public class PaySlipReportDto {
     private String ref_no;
     private Long empId;
     private Double salary;
@@ -67,4 +52,6 @@ public class PayrollAndPaySlip {
     private Double net;
     private String date;
     private Double tax_rate;
+    @Id
+    private String payment_sequence;
 }

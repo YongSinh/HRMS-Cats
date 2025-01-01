@@ -1,5 +1,6 @@
 package com.cats.payrollservice.repository;
 
+import com.cats.payrollservice.non_entity_POJO.PaySlipReportDto;
 import com.cats.payrollservice.non_entity_POJO.PayrollAndPaySlip;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.query.Procedure;
@@ -19,5 +20,4 @@ public interface PayrollAndPayRepo extends JpaRepository<PayrollAndPaySlip, Stri
     List<PayrollAndPaySlip> GetPayrollWithTaxForUser(@Param("emId") Long emId);
     @Procedure(procedureName = "GetListPayroll")
     List<PayrollAndPaySlip> GetListPayroll();
-
 }
