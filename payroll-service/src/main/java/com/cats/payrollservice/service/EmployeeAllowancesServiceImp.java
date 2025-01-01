@@ -1,17 +1,13 @@
 package com.cats.payrollservice.service;
 
 import com.cats.payrollservice.dto.mapper;
+import com.cats.payrollservice.dto.request.EmployeeAllowancesDto5;
 import com.cats.payrollservice.dto.request.EmployeeAllowancesReqDto;
 import com.cats.payrollservice.dto.request.EmployeeAllowancesReqDto2;
 import com.cats.payrollservice.dto.request.EmployeeAllowancesReqDto3;
 import com.cats.payrollservice.dto.response.EmployeeAllowancesRepDto;
-import com.cats.payrollservice.model.Allowances;
-import com.cats.payrollservice.model.EmployeeAllowances;
-import com.cats.payrollservice.model.EmployeeDeductions;
-import com.cats.payrollservice.model.Payslip;
+import com.cats.payrollservice.model.*;
 import com.cats.payrollservice.repository.EmployeeAllowancesRepo;
-import com.cats.payrollservice.repository.PayslipRepo;
-import jakarta.ws.rs.ext.ParamConverter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
@@ -23,6 +19,7 @@ import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -238,5 +235,42 @@ public class EmployeeAllowancesServiceImp implements EmployeeAllowancesService {
     @Override
     public List<EmployeeAllowancesRepDto> getListEmpAllowancesByEmId(Long emId) {
         return mapper.employeeAllowancesToEmployeeAllowancesResponseDtos(employeeAllowancesRepo.findByEmpId(emId));
+    }
+
+    @Override
+    public List<EmployeeAllowances> createEmployeeAllowances(List<EmployeeAllowancesDto5> employeeAllowancesReqDto) {
+        List<EmployeeAllowances> entities = employeeAllowancesReqDto.stream().map(dto -> {
+            EmployeeAllowances allowance = new EmployeeAllowances();
+            // Set basic fields
+            allowance.setType(dto.getType());
+            allowance.setAmount(dto.getAmount());
+            allowance.setEffectiveDate(LocalDate.now());
+            allowance.setDateCreated(LocalDateTime.now());
+            // Set the allowances entity (ManyToOne relationship)
+            if (dto.getAllowanceId() != null) {
+                Allowances allowances = allowancesService.getAllowancesBytId(dto.getAllowanceId());
+                //allowanceList.add(allowances.getAllowances());
+                allowance.setAllowances(allowances);
+            }
+            // For each employee ID, create a new record (if required)
+            if (dto.getEmId() != null && !dto.getEmId().isEmpty()) {
+                return dto.getEmId().stream().map(empId -> {
+                    EmployeeAllowances employeeAllowances = new EmployeeAllowances();
+                    employeeAllowances.setEmpId(empId);
+                    employeeAllowances.setType(allowance.getType());
+                    employeeAllowances.setAmount(allowance.getAmount());
+                    employeeAllowances.setEffectiveDate(allowance.getEffectiveDate());
+                    employeeAllowances.setDateCreated(allowance.getDateCreated());
+                    employeeAllowances.setPaySlipId(allowance.getPaySlipId());
+                    employeeAllowances.setAllowances(allowance.getAllowances());
+                    return employeeAllowances;
+                }).collect(Collectors.toList());
+            }
+
+            return List.of(allowance);
+        }).flatMap(List::stream).collect(Collectors.toList());
+
+        // Save all entities
+        return employeeAllowancesRepo.saveAll(entities);
     }
 }
