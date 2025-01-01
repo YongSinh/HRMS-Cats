@@ -5,7 +5,6 @@ import com.cats.payrollservice.dto.request.EmployeeAllowancesDto5;
 import com.cats.payrollservice.dto.request.EmployeeAllowancesReqDto;
 import com.cats.payrollservice.dto.request.EmployeeAllowancesReqDto2;
 import com.cats.payrollservice.dto.response.EmployeeAllowancesRepDto;
-import com.cats.payrollservice.model.Allowances;
 import com.cats.payrollservice.model.EmployeeAllowances;
 import com.cats.payrollservice.service.EmployeeAllowancesService;
 import lombok.RequiredArgsConstructor;

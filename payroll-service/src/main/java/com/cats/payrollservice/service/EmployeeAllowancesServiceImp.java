@@ -24,10 +24,10 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 @EnableTransactionManagement
-@Lazy
 public class EmployeeAllowancesServiceImp implements EmployeeAllowancesService {
     private final EmployeeAllowancesRepo employeeAllowancesRepo;
     private final AllowancesService allowancesService;
+    @Lazy
     private final PayslipService payslipService;
 
 

@@ -2,9 +2,9 @@ package com.cats.payrollservice.service;
 
 import com.cats.payrollservice.dto.request.PayslipReqDto;
 import com.cats.payrollservice.dto.response.SalariesRepDto;
-import com.cats.payrollservice.model.Payroll;
-import com.cats.payrollservice.model.Payslip;
-import com.cats.payrollservice.model.Salaries;
+import com.cats.payrollservice.model.*;
+import com.cats.payrollservice.repository.EmployeeAllowancesRepo;
+import com.cats.payrollservice.repository.EmployeeDeductionsRepo;
 import com.cats.payrollservice.repository.PayslipRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Lazy;
@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -31,10 +32,18 @@ public class PayslipServiceImp implements PayslipService {
     private final SalariesService salariesService;
     private final TaxService taxService;
     private final ServiceCalculate serviceCalculate;
+    private final EmployeeAllowancesRepo employeeAllowancesRepo;
+    private final EmployeeDeductionsRepo employeeDeductionsRepo;
 
     @Transactional
     @Override
     public List<Payslip> create(PayslipReqDto payslipReqDto) {
+        YearMonth currentMonth = YearMonth.now(); // Get current month
+        LocalDate startOfMonth = currentMonth.atDay(1); // First day of the month
+        LocalDate endOfMonth = currentMonth.atEndOfMonth(); // Last day of the month
+        LocalDate payrollDate = LocalDate.now();
+        LocalDate fifteenth = payrollDate.withDayOfMonth(15);
+        LocalDate twentyFifth = payrollDate.withDayOfMonth(25);
         List<Payslip> payslipList = new ArrayList<>();
         for (Long emIds : payslipReqDto.getEmId()) {
             double net = 0.0;
@@ -44,12 +53,12 @@ public class PayslipServiceImp implements PayslipService {
             if (salaries.getSalary() == null) {
                 throw new IllegalArgumentException("Employee Salary Not found or is empty for EmpId: " + emIds);
             }
-
             Payroll payroll = payrollService.getPayrollsForCurrentMonth(emIds);
             payslip.setPayroll(payroll);
-            LocalDate payrollDate = LocalDate.now();
-            LocalDate fifteenth = payrollDate.withDayOfMonth(15);
-            LocalDate twentyFifth = payrollDate.withDayOfMonth(25);
+            List<EmployeeAllowances> allowances = employeeAllowancesRepo.findByEffectiveDateForCurrentMonth(startOfMonth,endOfMonth,emIds);
+            List<EmployeeDeductions> deductions = employeeDeductionsRepo.findByEffectiveDateForCurrentMonth(startOfMonth,endOfMonth,emIds);
+            double totalAllowances = allowances.stream().mapToDouble(EmployeeAllowances::getAmount).sum();
+            double totalDeductions = deductions.stream().mapToDouble(EmployeeDeductions::getAmount).sum();
             if (payrollDate.isBefore(fifteenth) || payrollDate.equals(fifteenth)) {
                 net = salaries.getSalary() / 2;
                 payslip.setPayType(1);
@@ -60,10 +69,10 @@ public class PayslipServiceImp implements PayslipService {
                 Double khMoney = salaries.getSalary() * payslipReqDto.getKhmerRate();
                 Double tax = taxService.taxCalculator(khMoney);
                 double USDMoney = (khMoney - tax) / payslipReqDto.getKhmerRate();
-                net = USDMoney / 2;
+                net = USDMoney / 2 + totalAllowances - totalDeductions;
                 payslip.setPayType(2);
             } else {
-                net = payrollService.calculateNetSalary(emIds, payslipReqDto.getKhmerRate());
+                net = payrollService.calculateNetSalary(emIds, payslipReqDto.getKhmerRate()) + totalAllowances;
             }
             net = serviceCalculate.roundUp(net);
             payslip.setSalary(salaries.getSalary());

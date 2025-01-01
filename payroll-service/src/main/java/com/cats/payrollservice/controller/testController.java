@@ -1,11 +1,12 @@
 package com.cats.payrollservice.controller;
 
 import com.cats.payrollservice.base.BaseApi;
+import com.cats.payrollservice.model.EmployeeAllowances;
+import com.cats.payrollservice.model.EmployeeDeductions;
 import com.cats.payrollservice.model.Payroll;
 import com.cats.payrollservice.non_entity_POJO.PayrollAndPaySlip;
 import com.cats.payrollservice.repository.PayrollAndPayRepo;
-import com.cats.payrollservice.service.ApiService;
-import com.cats.payrollservice.service.PayrollService;
+import com.cats.payrollservice.service.*;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import io.github.resilience4j.retry.annotation.Retry;
 import io.github.resilience4j.timelimiter.annotation.TimeLimiter;
@@ -24,20 +25,10 @@ import java.util.concurrent.CompletableFuture;
 public class testController {
 
     private final ApiService apiService;
-    private final PayrollService payrollAndPayRepo;
+    private final ServiceCalculate serviceCalculate;
     private final PayrollService payrollService;
-
-    @GetMapping("/test2")
-    public BaseApi<?> hello() {
-        PayrollAndPaySlip payrollAndPaySlip = payrollAndPayRepo.getPayrollByRefNo2("20240627223858-287562");
-        return BaseApi.builder()
-                .status(true)
-                .code(HttpStatus.OK.value())
-                .message("test done!")
-                .timestamp(LocalDateTime.now())
-                .data(payrollAndPaySlip)
-                .build();
-    }
+    private final EmployeeAllowancesService employeeAllowancesService;
+    private final EmployeeDeductionsService employeeDeductionsService;
 
     @GetMapping("/test3")
     public BaseApi<?> hello2(@RequestParam Long emId)  {
@@ -48,6 +39,28 @@ public class testController {
                 .message("test payroll!")
                 .timestamp(LocalDateTime.now())
                 .data(payroll)
+                .build();
+    }
+    @GetMapping("/test4")
+    public BaseApi<?> hello3(@RequestParam Long emId)  {
+        List<EmployeeAllowances> allowances = employeeAllowancesService.getAllowancesForCurrentMonth(emId);
+        List<EmployeeDeductions> deductions = employeeDeductionsService.getDeductionsForCurrentMonth(emId);
+        double totalAllowances = allowances.stream().mapToDouble(EmployeeAllowances::getAmount).sum();
+        double totalDeductions = deductions.stream().mapToDouble(EmployeeDeductions::getAmount).sum();
+        // Base salary
+        double salary = 500D;
+        // Apply 10% tax deduction
+        double tax = salary * 0.10;
+        double salaryAfterTax = salary - tax;
+        // Calculate net salary
+        double net = salaryAfterTax / 2 + totalAllowances - 10;
+        net = serviceCalculate.roundUp(net);
+        return BaseApi.builder()
+                .status(true)
+                .code(HttpStatus.OK.value())
+                .message("test payroll!")
+                .timestamp(LocalDateTime.now())
+                .data(net)
                 .build();
     }
 
