@@ -2,6 +2,7 @@ package com.cats.payrollservice.service;
 
 import com.cats.payrollservice.dto.mapper;
 import com.cats.payrollservice.dto.request.EmployeeAllowancesReqDto;
+import com.cats.payrollservice.dto.request.EmployeeDeductionsDto5;
 import com.cats.payrollservice.dto.request.EmployeeDeductionsReqDto;
 import com.cats.payrollservice.dto.request.EmployeeDeductionsReqDto2;
 import com.cats.payrollservice.dto.response.EmployeeDeductionsRepDto;
@@ -13,8 +14,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -23,7 +28,6 @@ public class EmployeeDeductionsServiceImp implements EmployeeDeductionsService{
     private final EmployeeDeductionsRepo employeeDeductionsRepo;
     private final DeductionsService deductionsService;
     private final PayslipService payslipService;
-
 
     @Transactional
     @Override
@@ -168,5 +172,51 @@ public class EmployeeDeductionsServiceImp implements EmployeeDeductionsService{
         } catch (Exception e) {
             throw e;  // Rethrow the exception if you want the caller to handle it
         }
+    }
+
+    @Override
+    public List<EmployeeDeductions> getDeductionsForCurrentMonth(Long emId) {
+        YearMonth currentMonth = YearMonth.now(); // Get current month
+        LocalDate startOfMonth = currentMonth.atDay(1); // First day of the month
+        LocalDate endOfMonth = currentMonth.atEndOfMonth(); // Last day of the month
+
+        return employeeDeductionsRepo.findByEffectiveDateForCurrentMonth(startOfMonth, endOfMonth, emId);
+    }
+
+    @Override
+    public List<EmployeeDeductions> createEmployeeDeductions(List<EmployeeDeductionsDto5> deductionsDtos) {
+        List<EmployeeDeductions> entities = deductionsDtos.stream().map(dto -> {
+            EmployeeDeductions deduction = new EmployeeDeductions();
+            // Set basic fields
+            deduction.setType(dto.getType());
+            deduction.setAmount(dto.getAmount());
+            deduction.setEffectiveDate(LocalDate.now());
+            deduction.setDateCreated(LocalDateTime.now());
+            // Set the Deductions entity (ManyToOne relationship)
+            if (dto.getDeductionsId() != null) {
+                Deductions deductions = deductionsService.getDeductionsById(dto.getDeductionsId());
+                deduction.setDeductions(deductions);
+            }
+
+            // For each employee ID, create a new record (if required)
+            if (dto.getEmId() != null && !dto.getEmId().isEmpty()) {
+                return dto.getEmId().stream().map(empId -> {
+                    EmployeeDeductions empDeduction = new EmployeeDeductions();
+                    empDeduction.setEmpId(empId);
+                    empDeduction.setType(deduction.getType());
+                    empDeduction.setAmount(deduction.getAmount());
+                    empDeduction.setEffectiveDate(deduction.getEffectiveDate());
+                    empDeduction.setDateCreated(deduction.getDateCreated());
+                    empDeduction.setPaySlipId(deduction.getPaySlipId());
+                    empDeduction.setDeductions(deduction.getDeductions());
+                    return empDeduction;
+                }).collect(Collectors.toList());
+            }
+
+            return List.of(deduction);
+        }).flatMap(List::stream).collect(Collectors.toList());
+
+        // Save all entities
+        return employeeDeductionsRepo.saveAll(entities);
     }
 }

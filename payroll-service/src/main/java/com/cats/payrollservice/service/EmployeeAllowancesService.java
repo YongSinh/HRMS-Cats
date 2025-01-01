@@ -1,5 +1,6 @@
 package com.cats.payrollservice.service;
 
+import com.cats.payrollservice.dto.request.EmployeeAllowancesDto5;
 import com.cats.payrollservice.dto.request.EmployeeAllowancesReqDto;
 import com.cats.payrollservice.dto.request.EmployeeAllowancesReqDto2;
 import com.cats.payrollservice.dto.request.EmployeeAllowancesReqDto3;
@@ -17,6 +18,8 @@ public interface EmployeeAllowancesService {
     List<EmployeeAllowancesRepDto> createMultiple(EmployeeAllowancesReqDto employeeAllowancesReqDto, List<Long> emId);
     EmployeeAllowancesRepDto addAllowances(EmployeeAllowancesReqDto2 employeeAllowancesReqDto);
 
+    List<EmployeeAllowances> getAllowancesForCurrentMonth(Long emId);
+
     void delete(Long id);
     void deleteEmpAllowanceByPaySlipId(Long id);
     EmployeeAllowancesRepDto update(EmployeeAllowancesReqDto2 employeeAllowancesReqDto, Long Id);
@@ -25,4 +28,5 @@ public interface EmployeeAllowancesService {
     List<EmployeeAllowancesRepDto> getListEmpAllowances();
     List<EmployeeAllowancesRepDto> getListEmpAllowancesByPaySlip(Long id);
     List<EmployeeAllowancesRepDto> getListEmpAllowancesByEmId(Long emId);
+    List<EmployeeAllowances> createEmployeeAllowances(List<EmployeeAllowancesDto5> employeeAllowancesReqDto);
 }

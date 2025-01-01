@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 
 public interface PayrollService {
@@ -16,6 +17,7 @@ public interface PayrollService {
     Payroll update(Long id, PayrollReqDto payrollReqDto);
     List<Payroll> create(PayrollReqDto payrollReqDto);
     List<Payroll> createAllEmp(PayrollReqDto payrollReqDto) throws IOException;
+    Payroll getPayrollsForCurrentMonth(Long empIds);
     String generatePayrollReference();
     List<Payroll> getListPayroll();
     List<Payroll> getListPayrollByDesc();

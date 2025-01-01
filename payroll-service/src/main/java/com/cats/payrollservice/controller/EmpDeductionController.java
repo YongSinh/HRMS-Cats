@@ -2,6 +2,7 @@ package com.cats.payrollservice.controller;
 
 import com.cats.payrollservice.base.BaseApi;
 import com.cats.payrollservice.dto.request.EmployeeAllowancesReqDto;
+import com.cats.payrollservice.dto.request.EmployeeDeductionsDto5;
 import com.cats.payrollservice.dto.request.EmployeeDeductionsReqDto;
 import com.cats.payrollservice.dto.request.EmployeeDeductionsReqDto2;
 import com.cats.payrollservice.dto.response.EmployeeAllowancesRepDto;
@@ -59,6 +60,18 @@ public class EmpDeductionController {
     @PostMapping("/empDeduction/addDeduction")
     public BaseApi<?> createEmpDeduction(@RequestBody EmployeeDeductionsReqDto2 employeeDeductionsReqDto) {
         EmployeeDeductions employeeDeductions = employeeDeductionsService.addDeductions(employeeDeductionsReqDto);
+        return BaseApi.builder()
+                .status(true)
+                .code(HttpStatus.OK.value())
+                .message("Employee Deduction have been create")
+                .timestamp(LocalDateTime.now())
+                .data(employeeDeductions)
+                .build();
+    }
+
+    @PostMapping("/v2/empDeduction/addDeduction")
+    public BaseApi<?> createEmpDeductionV2(@RequestBody List<EmployeeDeductionsDto5> deductionsDtos) {
+        List<EmployeeDeductions> employeeDeductions = employeeDeductionsService.createEmployeeDeductions(deductionsDtos);
         return BaseApi.builder()
                 .status(true)
                 .code(HttpStatus.OK.value())

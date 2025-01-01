@@ -16,6 +16,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.YearMonth;
 import java.util.*;
 
 @Service
@@ -54,7 +55,7 @@ public class PayrollServiceImp implements PayrollService {
             //payroll.setRefNo(payrollReference);
             payroll.setDateFrom(payrollReqDto.getDateFrom());
             payroll.setDateTo(payrollReqDto.getDateTo());
-            payroll.setDateCreate(payrollReqDto.getDateCreate());
+            payroll.setDateCreate(LocalDate.now());
             payroll.setType(payrollReqDto.getType());
             payroll.setStatus(payrollReqDto.getStatus());
             return payrollRepo.save(payroll);
@@ -64,14 +65,17 @@ public class PayrollServiceImp implements PayrollService {
     @Override
     public List<Payroll> create(PayrollReqDto payrollReqDto) {
         List<Payroll> payrollList = new ArrayList<>();
+        YearMonth currentMonth = YearMonth.now(); // Get current month
+        LocalDate startOfMonth = currentMonth.atDay(1); // First day of the month
+        LocalDate endOfMonth = currentMonth.atEndOfMonth(); // Last day of the month
         for (Long emId : payrollReqDto.getEmpIds()){
             Payroll payroll = new Payroll();
             String payrollReference = generatePayrollReference();
             payroll.setEmpId(emId);
             payroll.setRefNo(payrollReference);
-            payroll.setDateFrom(payrollReqDto.getDateFrom());
-            payroll.setDateTo(payrollReqDto.getDateTo());
-            payroll.setDateCreate(payrollReqDto.getDateCreate());
+            payroll.setDateFrom(startOfMonth);
+            payroll.setDateTo(endOfMonth);
+            payroll.setDateCreate(LocalDate.now());
             payroll.setType(payrollReqDto.getType());
             payroll.setStatus(payrollReqDto.getStatus());
             payrollList.add(payroll);
@@ -84,20 +88,32 @@ public class PayrollServiceImp implements PayrollService {
     public List<Payroll> createAllEmp(PayrollReqDto payrollReqDto) throws IOException {
         Collection<Long> emIds = apiService.getListAllEmployeeOnlyEmId();
         List<Payroll> payrollList = new ArrayList<>();
+        YearMonth currentMonth = YearMonth.now(); // Get current month
+        LocalDate startOfMonth = currentMonth.atDay(1); // First day of the month
+        LocalDate endOfMonth = currentMonth.atEndOfMonth(); // Last day of the month
         for (Long emId :emIds){
             Payroll payroll = new Payroll();
             String payrollReference = generatePayrollReference();
             payroll.setEmpId(emId);
             payroll.setRefNo(payrollReference);
-            payroll.setDateFrom(payrollReqDto.getDateFrom());
-            payroll.setDateTo(payrollReqDto.getDateTo());
-            payroll.setDateCreate(payrollReqDto.getDateCreate());
+            payroll.setDateFrom(startOfMonth);
+            payroll.setDateTo(endOfMonth);
+            payroll.setDateCreate(LocalDate.now());
             payroll.setType(payrollReqDto.getType());
             payroll.setStatus(payrollReqDto.getStatus());
             payrollList.add(payroll);
         }
         payrollRepo.saveAll(payrollList);
         return payrollList;
+    }
+
+    @Override
+    public Payroll getPayrollsForCurrentMonth(Long empIds) {
+        LocalDate startOfMonth = LocalDate.now().withDayOfMonth(1);
+        LocalDate endOfMonth = LocalDate.now().withDayOfMonth(LocalDate.now().lengthOfMonth());
+
+        return payrollRepo.findByCurrentMonthAndEmpIds(startOfMonth, endOfMonth, empIds);
+
     }
 
 

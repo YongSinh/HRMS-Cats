@@ -1,9 +1,9 @@
 package com.cats.payrollservice.controller;
 
 import com.cats.payrollservice.base.BaseApi;
+import com.cats.payrollservice.dto.request.EmployeeAllowancesDto5;
 import com.cats.payrollservice.dto.request.EmployeeAllowancesReqDto;
 import com.cats.payrollservice.dto.request.EmployeeAllowancesReqDto2;
-import com.cats.payrollservice.dto.request.EmployeeDeductionsReqDto;
 import com.cats.payrollservice.dto.response.EmployeeAllowancesRepDto;
 import com.cats.payrollservice.model.Allowances;
 import com.cats.payrollservice.model.EmployeeAllowances;
@@ -47,7 +47,7 @@ public class EmpAllowanceController {
                 .build();
     }
 
-        @GetMapping("/empAllowances/ByPaySlipId")
+    @GetMapping("/empAllowances/ByPaySlipId")
     public BaseApi<?> getListEmpAllowancesByPaySlip(@RequestParam Long id) {
         List<EmployeeAllowancesRepDto> employeeAllowances = employeeAllowancesService.getListEmpAllowancesByPaySlip(id);
         return BaseApi.builder()
@@ -74,6 +74,18 @@ public class EmpAllowanceController {
     @PostMapping(value = "/empAllowances/add")
     public BaseApi<?> create(@RequestBody EmployeeAllowancesReqDto2 employeeAllowancesReqDto) {
         EmployeeAllowancesRepDto employeeAllowances = employeeAllowancesService.addAllowances(employeeAllowancesReqDto);
+        return BaseApi.builder()
+                .status(true)
+                .code(HttpStatus.OK.value())
+                .message("Employee Allowances have been created")
+                .timestamp(LocalDateTime.now())
+                .data(employeeAllowances)
+                .build();
+    }
+
+    @PostMapping(value = "/v2/empAllowances/add")
+    public BaseApi<?> createEmployeeAllowances(@RequestBody List<EmployeeAllowancesDto5> employeeAllowancesReqDto) {
+        List<EmployeeAllowances> employeeAllowances = employeeAllowancesService.createEmployeeAllowances(employeeAllowancesReqDto);
         return BaseApi.builder()
                 .status(true)
                 .code(HttpStatus.OK.value())

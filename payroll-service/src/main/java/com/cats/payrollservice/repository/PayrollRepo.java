@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface PayrollRepo extends JpaRepository<Payroll, Long> {
@@ -23,6 +24,22 @@ public interface PayrollRepo extends JpaRepository<Payroll, Long> {
 
     List<Payroll> findByDateCreate(LocalDate dateCreate);
     List<Payroll> findAllByOrderByDateCreateDesc();
+    @Query(
+            value = """
+            SELECT * FROM payroll e
+            WHERE (e.date_from <= :endOfMonth AND e.date_to >= :startOfMonth)
+            AND e.empId =:empId
+            ORDER BY e.date_from DESC
+            LIMIT 1
+            """,
+            nativeQuery = true
+    )
+    Payroll findByCurrentMonthAndEmpIds(
+            @Param("startOfMonth") LocalDate startOfMonth,
+            @Param("endOfMonth") LocalDate endOfMonth,
+            @Param("empId") Long empId
+    );
+
 
     @Modifying
     @Query("UPDATE Payroll p SET p.status = 2 WHERE p.dateTo <= :currentDate AND p.status <> 2")
