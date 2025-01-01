@@ -30,46 +30,51 @@ public class PayslipServiceImp implements PayslipService {
     private final PayrollService payrollService;
     private final SalariesService salariesService;
     private final TaxService taxService;
-    private final  ServiceCalculate serviceCalculate;
+    private final ServiceCalculate serviceCalculate;
+
     @Transactional
     @Override
     public List<Payslip> create(PayslipReqDto payslipReqDto) {
         List<Payslip> payslipList = new ArrayList<>();
-        for (Long emIds : payslipReqDto.getEmId()){
-            double net=0.0;
+        for (Long emIds : payslipReqDto.getEmId()) {
+            double net = 0.0;
             SalariesRepDto salaries = salariesService.getSalaryByEmId(emIds);
             Payslip payslip = new Payslip();
             payslip.setEmpId(emIds);
             if (salaries.getSalary() == null) {
                 throw new IllegalArgumentException("Employee Salary Not found or is empty for EmpId: " + emIds);
             }
-            if(payslipReqDto.getPayrollDate() == null){
-                throw new IllegalArgumentException("Please select the Payroll");
-            }
-            Payroll payroll = payrollService.getPayRollByEmIdAndCreateDate(emIds, payslipReqDto.getPayrollDate());
-            payslip.setPayroll(payroll);
-            payslip.setPayType(payslipReqDto.getPaymentType());
-            if(payslipReqDto.getPaymentType() == 1){
-                net = salaries.getSalary() / 2;
 
-            }else if (payslipReqDto.getPaymentType() == 2){
+            Payroll payroll = payrollService.getPayrollsForCurrentMonth(emIds);
+            payslip.setPayroll(payroll);
+            LocalDate payrollDate = LocalDate.now();
+            LocalDate fifteenth = payrollDate.withDayOfMonth(15);
+            LocalDate twentyFifth = payrollDate.withDayOfMonth(25);
+            if (payrollDate.isBefore(fifteenth) || payrollDate.equals(fifteenth)) {
+                net = salaries.getSalary() / 2;
+                payslip.setPayType(1);
+            } else if (payrollDate.isBefore(twentyFifth) || payrollDate.equals(twentyFifth)) {
+                if (payslipReqDto.getKhmerRate() == null || payslipReqDto.getKhmerRate() <= 0) {
+                    throw new IllegalArgumentException("Khmer rate must be provided and greater than zero for Payment Type 2.");
+                }
                 Double khMoney = salaries.getSalary() * payslipReqDto.getKhmerRate();
                 Double tax = taxService.taxCalculator(khMoney);
-                Double USDMoney = (khMoney - tax) / payslipReqDto.getKhmerRate();
+                double USDMoney = (khMoney - tax) / payslipReqDto.getKhmerRate();
                 net = USDMoney / 2;
-            }
-            else {
+                payslip.setPayType(2);
+            } else {
                 net = payrollService.calculateNetSalary(emIds, payslipReqDto.getKhmerRate());
             }
             net = serviceCalculate.roundUp(net);
             payslip.setSalary(salaries.getSalary());
             payslip.setNet(net);
-            payslip.setDateCreated(payslipReqDto.getDateCreated());
+            payslip.setDateCreated(LocalDateTime.now());
             payslipList.add(payslip);
         }
         payslipRepo.saveAll(payslipList);
         return payslipList;
     }
+
 
     @Override
     public List<Payslip> getPayslipsByDateRange(LocalDate startDate, LocalDate endDate) {
@@ -82,26 +87,21 @@ public class PayslipServiceImp implements PayslipService {
 
     @Override
     public Payslip update(PayslipReqDto payslipReqDto, Long id) {
-        double salary=0.0;
+        double salary = 0.0;
         Payslip payslip = getPaySlipById(id);
         Salaries salaries = salariesService.getSalary(payslip.getEmpId());
-//        payslip.setAllowances(payslipReqDto.getAllowances());
-//        payslip.setAllowanceAmount(payslipReqDto.getAllowanceAmount());
-//        payslip.setDeductions(payslipReqDto.getDeductions());
-//        payslip.setDeductionAmount(payslipReqDto.getDeductionAmount());
-        Payroll payroll = payrollService.getPayRollByEmIdAndCreateDate(payslip.getEmpId(), payslipReqDto.getPayrollDate());
+        Payroll payroll = payrollService.getPayrollsForCurrentMonth(payslip.getEmpId());
         payslip.setPayroll(payroll);
-        if(payroll.getType() == 1){
+        if (payroll.getType() == 1) {
             salary = payrollService.calculateNetSalary(payslip.getEmpId(), payslipReqDto.getKhmerRate());
-        }
-        else {
+        } else {
             Double khMoney = salaries.getSalary() * payslipReqDto.getKhmerRate();
             Double tax = taxService.taxCalculator(khMoney);
-            Double USDMoney = (khMoney - tax) / payslipReqDto.getKhmerRate();
-            salary = (USDMoney/ 2);
+            double USDMoney = (khMoney - tax) / payslipReqDto.getKhmerRate();
+            salary = (USDMoney / 2);
         }
         payslip.setSalary(salary);
-        payslip.setDateCreated(payslipReqDto.getDateCreated());
+        payslip.setDateCreated(LocalDateTime.now());
         payslipRepo.save(payslip);
         return payslip;
     }
@@ -113,12 +113,12 @@ public class PayslipServiceImp implements PayslipService {
 
     @Override
     public Payslip getListPaySlipByeEmIdAndCreateDate(Long emId, LocalDate localDate) {
-        return payslipRepo.findByEmpIdAndDateCreated(emId,localDate);
+        return payslipRepo.findByEmpIdAndDateCreated(emId, localDate);
     }
 
     @Override
     public void addAllowanceToPaySlip(Long emId, LocalDate localDate, Double amount, List<String> allowance) {
-        Payslip  addAllowance = getListPaySlipByeEmIdAndCreateDate(emId, localDate);
+        Payslip addAllowance = getListPaySlipByeEmIdAndCreateDate(emId, localDate);
         StringJoiner joiner = new StringJoiner(",");
         for (String s : allowance) {
             joiner.add(s);
@@ -130,7 +130,6 @@ public class PayslipServiceImp implements PayslipService {
         addAllowance.setNet(net);
         payslipRepo.save(addAllowance);
     }
-
 
 
     @Override
@@ -172,6 +171,7 @@ public class PayslipServiceImp implements PayslipService {
                 .map(String::trim)
                 .collect(Collectors.toList()); // Collect into a mutable list
     }
+
     @Override
     public void addAllowanceToPaySlipMore2(Long id, Double newAmount, String allowance) {
         Payslip update = getPaySlipById(id);
@@ -279,7 +279,7 @@ public class PayslipServiceImp implements PayslipService {
                 }
             }
         }
-       // System.out.println(allowanceList);
+        // System.out.println(allowanceList);
 
         // Join the updated allowance list back to a string
         String updatedAllowances = String.join(", ", allowanceList);
@@ -311,7 +311,7 @@ public class PayslipServiceImp implements PayslipService {
 
     @Override
     public void addDeductionsToPaySlip(Long emId, LocalDate localDate, Double amount, List<String> deductions) {
-        Payslip  addDeductions = getListPaySlipByeEmIdAndCreateDate(emId, localDate);
+        Payslip addDeductions = getListPaySlipByeEmIdAndCreateDate(emId, localDate);
         StringJoiner joiner = new StringJoiner(",");
         for (String s : deductions) {
             joiner.add(s);
@@ -323,7 +323,6 @@ public class PayslipServiceImp implements PayslipService {
         addDeductions.setNet(net);
         payslipRepo.save(addDeductions);
     }
-
 
 
     @Override

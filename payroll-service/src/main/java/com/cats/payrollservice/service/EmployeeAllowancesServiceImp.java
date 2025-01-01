@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -153,6 +154,14 @@ public class EmployeeAllowancesServiceImp implements EmployeeAllowancesService {
         payslipService.addAllowanceToPaySlipMore2(payslip.getId(), employeeAllowancesReqDto.getAmount(), allowances.getAllowances());
         employeeAllowancesRepo.save(employeeAllowances);
         return mapper.employeeAllowancesToEmployeeAllowancesResponseDto(employeeAllowances);
+    }
+
+    @Override
+    public List<EmployeeAllowances> getAllowancesForCurrentMonth(Long emId) {
+        YearMonth currentMonth = YearMonth.now(); // Get current month
+        LocalDate startOfMonth = currentMonth.atDay(1); // First day of the month
+        LocalDate endOfMonth = currentMonth.atEndOfMonth(); // Last day of the month
+        return employeeAllowancesRepo.findByEffectiveDateForCurrentMonth(startOfMonth,endOfMonth,emId);
     }
 
     @Override

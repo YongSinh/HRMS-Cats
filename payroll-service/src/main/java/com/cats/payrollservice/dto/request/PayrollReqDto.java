@@ -16,5 +16,5 @@ public class PayrollReqDto {
     private LocalDate dateTo;
     private Integer type;
     private Integer status;
-    private LocalDate dateCreate;
+
 }

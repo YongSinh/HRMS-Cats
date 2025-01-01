@@ -13,13 +13,6 @@ import java.util.List;
 @AllArgsConstructor
 @RequiredArgsConstructor
 public class PayslipReqDto {
-//    private Double allowanceAmount;
-//    private String allowances;
-//    private Double deductionAmount;
-//    private String deductions;
-    private LocalDateTime dateCreated;
-    private Double khmerRate;
-    private LocalDate payrollDate;
-    private Integer paymentType;
+    private Double khmerRate = 4000.0;
     private List<Long> emId;
 }

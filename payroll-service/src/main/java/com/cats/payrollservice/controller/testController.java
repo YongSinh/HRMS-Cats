@@ -1,6 +1,7 @@
 package com.cats.payrollservice.controller;
 
 import com.cats.payrollservice.base.BaseApi;
+import com.cats.payrollservice.model.Payroll;
 import com.cats.payrollservice.non_entity_POJO.PayrollAndPaySlip;
 import com.cats.payrollservice.repository.PayrollAndPayRepo;
 import com.cats.payrollservice.service.ApiService;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 @RestController
@@ -23,6 +25,7 @@ public class testController {
 
     private final ApiService apiService;
     private final PayrollService payrollAndPayRepo;
+    private final PayrollService payrollService;
 
     @GetMapping("/test2")
     public BaseApi<?> hello() {
@@ -33,6 +36,18 @@ public class testController {
                 .message("test done!")
                 .timestamp(LocalDateTime.now())
                 .data(payrollAndPaySlip)
+                .build();
+    }
+
+    @GetMapping("/test3")
+    public BaseApi<?> hello2(@RequestParam Long emId)  {
+        Payroll payroll = payrollService.getPayrollsForCurrentMonth(emId);
+        return BaseApi.builder()
+                .status(true)
+                .code(HttpStatus.OK.value())
+                .message("test payroll!")
+                .timestamp(LocalDateTime.now())
+                .data(payroll)
                 .build();
     }
 
