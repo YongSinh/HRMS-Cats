@@ -1,6 +1,5 @@
 package com.cats.payrollservice.service;
 
-import com.cats.payrollservice.model.EmployeeDeductions;
 import com.cats.payrollservice.non_entity_POJO.PaySlipReportDto;
 import com.cats.payrollservice.non_entity_POJO.PayrollAndPaySlip;
 import com.cats.payrollservice.repository.PayrollAndPayRepo;
@@ -113,11 +112,6 @@ public class PayslipReportServiceImp implements PayslipReportService{
         parameters.put("tax",serviceCalculate.roundUp(tax));
         parameters.put("salary",payroll.get(0).getSalary());
         parameters.put("secondDataSetIsNull",secondPayments.isEmpty());
-
-        // Handle each list
-//        System.out.println("First Payments: " + firstPayments.size());
-//        System.out.println("Second Payments: " + secondPayments.size());
-//        payroll.forEach(System.out::println);
         JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport(filePath),parameters, new JREmptyDataSource());
         return JasperExportManager.exportReportToPdf(jasperPrint);
     }
@@ -139,11 +133,7 @@ public class PayslipReportServiceImp implements PayslipReportService{
         JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport(filePath),parameters, new JREmptyDataSource());
         return JasperExportManager.exportReportToPdf(jasperPrint);
     }
-    @Transactional
-    @Override
-    public byte[] getPayslipListReportByDate(LocalDate date) throws IOException, JRException {
-        return new byte[0];
-    }
+
     @Transactional
     @Override
     public byte[] getPayslipReportByDate(LocalDate date, Long emId) throws IOException, JRException {
