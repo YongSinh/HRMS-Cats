@@ -1,7 +1,10 @@
 package com.cats.payrollservice.service;
 
+import com.cats.payrollservice.model.EmployeeDeductions;
+import com.cats.payrollservice.non_entity_POJO.PaySlipReportDto;
 import com.cats.payrollservice.non_entity_POJO.PayrollAndPaySlip;
 import com.cats.payrollservice.repository.PayrollAndPayRepo;
+import com.cats.payrollservice.repository.PayslipReprotRepo;
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.RequiredArgsConstructor;
 import net.sf.jasperreports.engine.*;
@@ -16,6 +19,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -27,7 +31,9 @@ public class PayslipReportServiceImp implements PayslipReportService{
     @Value(value = "${file.report-path}")
     private String report_path;
     private final ApiService apiService;
-
+    private final PayslipReprotRepo payslipReprotRepo;
+    private final TaxService taxService;
+    private final ServiceCalculate serviceCalculate;
     public JasperReport jasperReport (String filePath) throws JRException {
         return  JasperCompileManager.compileReport(filePath);
     }
@@ -71,8 +77,54 @@ public class PayslipReportServiceImp implements PayslipReportService{
     }
     @Transactional
     @Override
-    public byte[] getPayslipListReport(Long emId) throws IOException, JRException {
+    public byte[] getPayslipForFirstAndSecondPayments(String refNo) throws IOException, JRException {
+        List<PaySlipReportDto> payroll = payslipReprotRepo.getFirstAndSecondPayments(refNo);
+        Map<String, List<PaySlipReportDto>> groupedPayroll = payroll.stream()
+                .collect(Collectors.groupingBy(PaySlipReportDto::getPayment_sequence));
+        List<PaySlipReportDto> firstPayments = groupedPayroll.getOrDefault("First Payment", List.of());
+        List<PaySlipReportDto> secondPayments = groupedPayroll.getOrDefault("Second Payment", List.of());
+        double tax = 0;
+        if(!secondPayments.isEmpty()){
+            Double khMoney = payroll.get(0).getSalary() * 4000D;
+            tax = taxService.taxCalculator(khMoney) / 4000D;
+        }
+        JsonNode employeeInfo = apiService.getEmployeeInFoByEmId(payroll.get(0).getEmpId());
+        if (employeeInfo == null) {
+            throw new IOException("Employee information not found for ID: " +payroll.get(0).getEmpId());
+        }
+        double totalEarn = payroll.stream().mapToDouble(PaySlipReportDto::getTotal_earning).sum();
+        String employeeName = employeeInfo.get("fullName").asText();
+        String department = employeeInfo.get("department").asText();
+        String section = employeeInfo.get("section").asText();
+        String filePath = report_path+ "report/PaySlip2.jrxml";
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put("catsLogo", catsLogo_path);
+        parameters.put("emId",payroll.get(0).getEmpId());
+        parameters.put("username", employeeName);
+        parameters.put("department", department);
+        parameters.put("section",section);
+        parameters.put("refNo",refNo);
+        parameters.put("date",payroll.get(0).getDate());
+        parameters.put("payPeriod",payroll.get(0).getType());
+        parameters.put("tax_rate",payroll.get(0).getTax_rate());
+        parameters.put("datasetFirst",beanCollectionDataSource(firstPayments));
+        parameters.put("datasetSecond",beanCollectionDataSource(secondPayments));
+        parameters.put("net",serviceCalculate.roundUp(totalEarn));
+        parameters.put("tax",serviceCalculate.roundUp(tax));
+        parameters.put("salary",payroll.get(0).getSalary());
+        parameters.put("secondDataSetIsNull",secondPayments.isEmpty());
 
+        // Handle each list
+//        System.out.println("First Payments: " + firstPayments.size());
+//        System.out.println("Second Payments: " + secondPayments.size());
+//        payroll.forEach(System.out::println);
+        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport(filePath),parameters, new JREmptyDataSource());
+        return JasperExportManager.exportReportToPdf(jasperPrint);
+    }
+
+    @Transactional
+    @Override
+    public byte[] getPayslipListReport(Long emId) throws IOException, JRException {
         String employeeName = employeeInfo(emId).get("fullName").asText();
         String department = employeeInfo(emId).get("department").asText();
         String section = employeeInfo(emId).get("section").asText();

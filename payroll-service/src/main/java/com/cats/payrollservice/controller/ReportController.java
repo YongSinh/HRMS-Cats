@@ -38,6 +38,26 @@ public class ReportController {
                 .body(arrayResource);
     }
 
+
+    @GetMapping("/v2/report/payslip")
+    public ResponseEntity<?> getPayslipForFirstAndSecondPayments(@RequestParam(name = "refNo") String refNo) throws JRException, IOException {
+        byte[] reportContent = payslipReportService.getPayslipForFirstAndSecondPayments(refNo);
+
+        ByteArrayResource arrayResource = new ByteArrayResource(reportContent);
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_PDF)
+                .contentLength(arrayResource.contentLength())
+                .header(HttpHeaders.CONTENT_DISPOSITION,
+                        ContentDisposition.inline()
+                                .filename("payslip.pdf")
+                                .build().toString())
+                .body(arrayResource);
+    }
+
+
+
+
     @GetMapping("/report/listPayslip")
     public ResponseEntity<?> getlistPayslip(@RequestParam(name = "emId") Long emId) throws JRException, IOException {
         byte[] reportContent = payslipReportService.getPayslipListReport(emId);

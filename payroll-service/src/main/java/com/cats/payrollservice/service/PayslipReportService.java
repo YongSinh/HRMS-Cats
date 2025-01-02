@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface PayslipReportService {
     byte[] getPayslipForEmp(String refNo) throws IOException, JRException;
-
+    byte[] getPayslipForFirstAndSecondPayments(String refNo) throws IOException, JRException;
     byte[] getPayslipListReport(Long emId) throws IOException, JRException;
     byte[] getPayslipListReportByDate(LocalDate date) throws IOException, JRException;
 
