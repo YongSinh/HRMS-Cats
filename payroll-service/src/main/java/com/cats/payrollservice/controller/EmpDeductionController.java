@@ -45,6 +45,18 @@ public class EmpDeductionController {
                 .build();
     }
 
+    @GetMapping("/getDeductionsForCurrentMonth")
+    public BaseApi<?> getDeductionsForCurrentMonth(@RequestParam Long emId) {
+        List<EmployeeDeductions> employeeDeductions = employeeDeductionsService.getDeductionsForCurrentMonth(emId);
+        return BaseApi.builder()
+                .status(true)
+                .code(HttpStatus.OK.value())
+                .message("Employee Deduction have been found")
+                .timestamp(LocalDateTime.now())
+                .data(employeeDeductions)
+                .build();
+    }
+
 
     @GetMapping("/empDeduction/ByPaySlip")
     public BaseApi<?> getEmpDeductionByPaySlip(@RequestParam Long id) {

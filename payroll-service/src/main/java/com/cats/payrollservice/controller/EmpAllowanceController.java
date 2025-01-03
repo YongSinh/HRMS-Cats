@@ -46,6 +46,18 @@ public class EmpAllowanceController {
                 .build();
     }
 
+    @GetMapping("/getAllowancesForCurrentMonth")
+    public BaseApi<?> getAllowancesForCurrentMonth(@RequestParam Long emId) {
+        List<EmployeeAllowances> employeeAllowances = employeeAllowancesService.getAllowancesForCurrentMonth(emId);
+        return BaseApi.builder()
+                .status(true)
+                .code(HttpStatus.OK.value())
+                .message("Employee Allowances have been found")
+                .timestamp(LocalDateTime.now())
+                .data(employeeAllowances)
+                .build();
+    }
+
     @GetMapping("/empAllowances/ByPaySlipId")
     public BaseApi<?> getListEmpAllowancesByPaySlip(@RequestParam Long id) {
         List<EmployeeAllowancesRepDto> employeeAllowances = employeeAllowancesService.getListEmpAllowancesByPaySlip(id);

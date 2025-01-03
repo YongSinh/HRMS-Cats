@@ -24,14 +24,11 @@ public class SalariesServiceImp implements SalariesService {
     @Transactional
     @Override
     public SalariesRepDto addSalary(SalariesReqDto salariesReqDto) {
-        boolean exists = salariesRepo.existsByEmpIdAndFromDateLessThanEqualAndToDateGreaterThanEqual(
-                salariesReqDto.getEmpId(),
-                salariesReqDto.getToDate(),
-                salariesReqDto.getFromDate()
+        Salaries exists = salariesRepo.findByEmpId(
+                salariesReqDto.getEmpId()
         );
-
-        if (exists) {
-            throw new IllegalArgumentException("Salary for the given employee in this date range already exists.");
+        if (exists != null) {
+            throw new IllegalArgumentException("Salary for the given employee in this already exists.");
         }
         Salaries salaries = new Salaries();
         salaries.setSalary(salariesReqDto.getSalary());
@@ -98,7 +95,6 @@ public class SalariesServiceImp implements SalariesService {
         if (emIds.isEmpty()){
             return null;
         }
-        System.out.println(emIds);
         return mapper.salariesToSalariesResponseDtos(salariesRepo.findByEmpIdIn(emIds));
     }
 
@@ -111,7 +107,13 @@ public class SalariesServiceImp implements SalariesService {
 
     @Override
     public SalariesRepDto getSalaryByEmId(Long emId) {
-        return mapper.salariesToSalariesResponseDto(salariesRepo.findByEmpId(emId));
+        Salaries salaries = salariesRepo.findByEmpId(emId);
+
+        if (salaries == null) {
+            throw new IllegalArgumentException("Salary details not found for employee ID: " + emId);
+        }
+
+        return mapper.salariesToSalariesResponseDto(salaries);
     }
 
     @Override

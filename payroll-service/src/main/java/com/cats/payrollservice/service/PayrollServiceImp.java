@@ -25,8 +25,6 @@ public class PayrollServiceImp implements PayrollService {
 
     private final PayrollRepo payrollRepo;
     private final TaxService taxService;
-    private final DeductionsService deductionsService;
-    private final AllowancesService allowancesService;
     private final SalariesService salariesService;
     private final WebClient.Builder webClientBuilder;
     private final  ApiService apiService;
@@ -50,13 +48,8 @@ public class PayrollServiceImp implements PayrollService {
     @Override
     public Payroll update(Long id, PayrollReqDto payrollReqDto) {
             Payroll payroll = getPayrollById(id);
-            //String payrollReference = generatePayrollReference();
-            //payroll.setEmpId(payrollReqDto.getEmpId());
-            //payroll.setRefNo(payrollReference);
-            payroll.setDateFrom(payrollReqDto.getDateFrom());
-            payroll.setDateTo(payrollReqDto.getDateTo());
             payroll.setDateCreate(LocalDate.now());
-            payroll.setType(payrollReqDto.getType());
+            payroll.setType(1);
             payroll.setStatus(payrollReqDto.getStatus());
             return payrollRepo.save(payroll);
     }
@@ -76,7 +69,7 @@ public class PayrollServiceImp implements PayrollService {
             payroll.setDateFrom(startOfMonth);
             payroll.setDateTo(endOfMonth);
             payroll.setDateCreate(LocalDate.now());
-            payroll.setType(payrollReqDto.getType());
+            payroll.setType(1);
             payroll.setStatus(payrollReqDto.getStatus());
             payrollList.add(payroll);
         }
@@ -99,7 +92,7 @@ public class PayrollServiceImp implements PayrollService {
             payroll.setDateFrom(startOfMonth);
             payroll.setDateTo(endOfMonth);
             payroll.setDateCreate(LocalDate.now());
-            payroll.setType(payrollReqDto.getType());
+            payroll.setType(1);
             payroll.setStatus(payrollReqDto.getStatus());
             payrollList.add(payroll);
         }

@@ -42,7 +42,11 @@ public interface PayrollRepo extends JpaRepository<Payroll, Long> {
 
 
     @Modifying
-    @Query("UPDATE Payroll p SET p.status = 2 WHERE p.dateTo <= :currentDate AND p.status <> 2")
+    @Query("UPDATE Payroll p " +
+            "SET p.status = 2 " +
+            "WHERE p.status <> 2 " +
+            "AND FUNCTION('MONTH', p.dateCreate) = FUNCTION('MONTH', :currentDate) " +
+            "AND FUNCTION('YEAR', p.dateCreate) = FUNCTION('YEAR', :currentDate)")
     void updateStatusToComputed(@Param("currentDate") LocalDate currentDate);
 
 }
