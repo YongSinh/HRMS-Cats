@@ -1,13 +1,10 @@
 package com.cats.payrollservice.service;
 
-import com.cats.payrollservice.dto.request.EmployeeAllowancesReqDto;
 import com.cats.payrollservice.dto.request.EmployeeDeductionsDto5;
 import com.cats.payrollservice.dto.request.EmployeeDeductionsReqDto;
 import com.cats.payrollservice.dto.request.EmployeeDeductionsReqDto2;
 import com.cats.payrollservice.dto.response.EmployeeDeductionsRepDto;
-import com.cats.payrollservice.model.EmployeeAllowances;
 import com.cats.payrollservice.model.EmployeeDeductions;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -24,6 +21,6 @@ public interface EmployeeDeductionsService {
     List<EmployeeDeductionsRepDto> getListEmployeeDeductionsByPaySlipId(Long id);
     void deleteEmployeeDeductions(Long id);
     void deleteEmpDeductionsByPlaySlip(Long id);
-    List<EmployeeDeductions> getDeductionsForCurrentMonth(Long emId);
+    List<EmployeeDeductionsRepDto> getDeductionsForCurrentMonth(Long emId);
     List<EmployeeDeductions> createEmployeeDeductions(List<EmployeeDeductionsDto5> deductionsDtos);
 }

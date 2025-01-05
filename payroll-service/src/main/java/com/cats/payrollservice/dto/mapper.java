@@ -78,6 +78,7 @@ public class mapper {
         employeeDeductionsRepDto.setEmpDedId(deductions.getEmpDedId());
         employeeDeductionsRepDto.setEmpId(deductions.getEmpId());
         employeeDeductionsRepDto.setType(deductions.getType());
+        employeeDeductionsRepDto.setDeductionsId(deductions.getDeductions().getDeId());
         employeeDeductionsRepDto.setAmount(deductions.getAmount());
         employeeDeductionsRepDto.setDeductions(deductions.getDeductions().getDeduction());
         employeeDeductionsRepDto.setEffectiveDate(deductions.getEffectiveDate());

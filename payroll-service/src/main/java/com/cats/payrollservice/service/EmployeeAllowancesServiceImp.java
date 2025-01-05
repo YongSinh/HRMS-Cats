@@ -154,11 +154,11 @@ public class EmployeeAllowancesServiceImp implements EmployeeAllowancesService {
     }
 
     @Override
-    public List<EmployeeAllowances> getAllowancesForCurrentMonth(Long emId) {
+    public List<EmployeeAllowancesRepDto> getAllowancesForCurrentMonth(Long emId) {
         YearMonth currentMonth = YearMonth.now(); // Get current month
         LocalDate startOfMonth = currentMonth.atDay(1); // First day of the month
         LocalDate endOfMonth = currentMonth.atEndOfMonth(); // Last day of the month
-        return employeeAllowancesRepo.findByEffectiveDateForCurrentMonth(startOfMonth,endOfMonth,emId);
+        return mapper.employeeAllowancesToEmployeeAllowancesResponseDtos(employeeAllowancesRepo.findByEffectiveDateForCurrentMonth(startOfMonth,endOfMonth,emId));
     }
 
     @Override

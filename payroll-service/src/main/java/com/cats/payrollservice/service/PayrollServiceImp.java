@@ -62,6 +62,7 @@ public class PayrollServiceImp implements PayrollService {
         LocalDate startOfMonth = currentMonth.atDay(1); // First day of the month
         LocalDate endOfMonth = currentMonth.atEndOfMonth(); // Last day of the month
         for (Long emId : payrollReqDto.getEmpIds()){
+            existsByEmpIdAndDateCreateBetween(emId, startOfMonth, endOfMonth);
             Payroll payroll = new Payroll();
             String payrollReference = generatePayrollReference();
             payroll.setEmpId(emId);
@@ -85,6 +86,7 @@ public class PayrollServiceImp implements PayrollService {
         LocalDate startOfMonth = currentMonth.atDay(1); // First day of the month
         LocalDate endOfMonth = currentMonth.atEndOfMonth(); // Last day of the month
         for (Long emId :emIds){
+            existsByEmpIdAndDateCreateBetween(emId, startOfMonth, endOfMonth);
             Payroll payroll = new Payroll();
             String payrollReference = generatePayrollReference();
             payroll.setEmpId(emId);
@@ -205,5 +207,12 @@ public class PayrollServiceImp implements PayrollService {
     @Override
     public void updateStatusByDate(LocalDate localDate) {
         payrollRepo.updateStatusToComputed(localDate);
+    }
+
+    @Override
+    public void existsByEmpIdAndDateCreateBetween(Long empId, LocalDate dateCreate, LocalDate dateCreate2) {
+        if (payrollRepo.existsByEmpIdAndDateCreateBetween(empId,dateCreate,dateCreate2)) {
+            throw new IllegalArgumentException("Duplicate Payroll entry exists for the employee ID "+empId+" .");
+        }
     }
 }

@@ -1,6 +1,8 @@
 package com.cats.payrollservice.controller;
 
 import com.cats.payrollservice.base.BaseApi;
+import com.cats.payrollservice.dto.response.EmployeeAllowancesRepDto;
+import com.cats.payrollservice.dto.response.EmployeeDeductionsRepDto;
 import com.cats.payrollservice.model.EmployeeAllowances;
 import com.cats.payrollservice.model.EmployeeDeductions;
 import com.cats.payrollservice.model.Payroll;
@@ -61,24 +63,15 @@ public class testController {
 
     @GetMapping("/test4")
     public BaseApi<?> hello3(@RequestParam Long emId)  {
-        List<EmployeeAllowances> allowances = employeeAllowancesService.getAllowancesForCurrentMonth(emId);
-        List<EmployeeDeductions> deductions = employeeDeductionsService.getDeductionsForCurrentMonth(emId);
-        double totalAllowances = allowances.stream().mapToDouble(EmployeeAllowances::getAmount).sum();
-        double totalDeductions = deductions.stream().mapToDouble(EmployeeDeductions::getAmount).sum();
-        // Base salary
-        double salary = 500D;
-        // Apply 10% tax deduction
-        double tax = salary * 0.10;
-        double salaryAfterTax = salary - tax;
-        // Calculate net salary
-        double net = salaryAfterTax / 2 + totalAllowances - 10;
-        net = serviceCalculate.roundUp(net);
+        List<EmployeeAllowancesRepDto> allowances = employeeAllowancesService.getAllowancesForCurrentMonth(emId);
+        List<EmployeeDeductionsRepDto> deductions = employeeDeductionsService.getDeductionsForCurrentMonth(emId);
+
         return BaseApi.builder()
                 .status(true)
                 .code(HttpStatus.OK.value())
                 .message("test payroll!")
                 .timestamp(LocalDateTime.now())
-                .data(net)
+                .data(allowances)
                 .build();
     }
 

@@ -47,7 +47,7 @@ public class EmpDeductionController {
 
     @GetMapping("/getDeductionsForCurrentMonth")
     public BaseApi<?> getDeductionsForCurrentMonth(@RequestParam Long emId) {
-        List<EmployeeDeductions> employeeDeductions = employeeDeductionsService.getDeductionsForCurrentMonth(emId);
+        List<EmployeeDeductionsRepDto> employeeDeductions = employeeDeductionsService.getDeductionsForCurrentMonth(emId);
         return BaseApi.builder()
                 .status(true)
                 .code(HttpStatus.OK.value())

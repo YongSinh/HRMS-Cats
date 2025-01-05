@@ -48,7 +48,7 @@ public class EmpAllowanceController {
 
     @GetMapping("/getAllowancesForCurrentMonth")
     public BaseApi<?> getAllowancesForCurrentMonth(@RequestParam Long emId) {
-        List<EmployeeAllowances> employeeAllowances = employeeAllowancesService.getAllowancesForCurrentMonth(emId);
+        List<EmployeeAllowancesRepDto> employeeAllowances = employeeAllowancesService.getAllowancesForCurrentMonth(emId);
         return BaseApi.builder()
                 .status(true)
                 .code(HttpStatus.OK.value())

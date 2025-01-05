@@ -18,6 +18,14 @@ public interface PayslipRepo extends JpaRepository<Payslip, Long> {
     List<Payslip> findByEmpIdIn(Collection<Long> empId);
     List<Payslip> findByDateCreatedBetween(LocalDateTime startDateTime, LocalDateTime endDateTime);
     List<Payslip> findByOrderByIdDesc();
+
+    boolean existsByEmpIdAndPayTypeAndDateCreatedBetween(
+            @Param("empId") Long empId,
+            @Param("payType") int payType,
+            @Param("startDate") LocalDateTime startDate,
+            @Param("endDate") LocalDateTime endDate
+    );
+
     @Query(nativeQuery = true, value = "SELECT * FROM payslip WHERE employee_id = :empId AND DATE(date_created) = :dateCreated")
     Payslip findByEmpIdAndDateCreated(@Param("empId") Long empId, @Param("dateCreated") LocalDate dateCreated);
 }

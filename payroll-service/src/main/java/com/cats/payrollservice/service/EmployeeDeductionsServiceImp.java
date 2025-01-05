@@ -1,7 +1,6 @@
 package com.cats.payrollservice.service;
 
 import com.cats.payrollservice.dto.mapper;
-import com.cats.payrollservice.dto.request.EmployeeAllowancesReqDto;
 import com.cats.payrollservice.dto.request.EmployeeDeductionsDto5;
 import com.cats.payrollservice.dto.request.EmployeeDeductionsReqDto;
 import com.cats.payrollservice.dto.request.EmployeeDeductionsReqDto2;
@@ -9,7 +8,6 @@ import com.cats.payrollservice.dto.response.EmployeeDeductionsRepDto;
 import com.cats.payrollservice.model.*;
 import com.cats.payrollservice.repository.EmployeeDeductionsRepo;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Transactional;
@@ -175,12 +173,12 @@ public class EmployeeDeductionsServiceImp implements EmployeeDeductionsService{
     }
 
     @Override
-    public List<EmployeeDeductions> getDeductionsForCurrentMonth(Long emId) {
+    public List<EmployeeDeductionsRepDto> getDeductionsForCurrentMonth(Long emId) {
         YearMonth currentMonth = YearMonth.now(); // Get current month
         LocalDate startOfMonth = currentMonth.atDay(1); // First day of the month
         LocalDate endOfMonth = currentMonth.atEndOfMonth(); // Last day of the month
 
-        return employeeDeductionsRepo.findByEffectiveDateForCurrentMonth(startOfMonth, endOfMonth, emId);
+        return mapper.empDeductionsToEmpDeductionsResponseDtos(employeeDeductionsRepo.findByEffectiveDateForCurrentMonth(startOfMonth, endOfMonth, emId));
     }
 
     @Override

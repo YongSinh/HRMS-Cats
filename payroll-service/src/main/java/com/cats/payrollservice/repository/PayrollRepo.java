@@ -40,7 +40,7 @@ public interface PayrollRepo extends JpaRepository<Payroll, Long> {
             @Param("empId") Long empId
     );
 
-
+    boolean existsByEmpIdAndDateCreateBetween(Long empId, LocalDate dateCreate, LocalDate dateCreate2);
     @Modifying
     @Query("UPDATE Payroll p " +
             "SET p.status = 2 " +

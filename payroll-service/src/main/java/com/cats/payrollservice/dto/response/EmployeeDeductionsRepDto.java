@@ -25,6 +25,7 @@ public class EmployeeDeductionsRepDto {
     private Long empId;
     private Long paySlipId;
     private String deductions;
+    private Long deductionsId;
     private Integer type;
     private Double amount;
     private LocalDate effectiveDate;

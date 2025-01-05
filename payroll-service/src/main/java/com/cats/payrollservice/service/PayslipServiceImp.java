@@ -47,6 +47,21 @@ public class PayslipServiceImp implements PayslipService {
         List<Payslip> payslipList = new ArrayList<>();
         for (Long emIds : payslipReqDto.getEmId()) {
             double net = 0.0;
+
+            // Check for existing Payslip
+            int payType = (payrollDate.isBefore(fifteenth) || payrollDate.equals(fifteenth)) ? 1 :
+                    (payrollDate.isBefore(twentyFifth) || payrollDate.equals(twentyFifth)) ? 2 : 3;
+            boolean exists = payslipRepo.existsByEmpIdAndPayTypeAndDateCreatedBetween(
+                    emIds,
+                    payType,
+                    payrollDate.withDayOfMonth(payType == 1 ? 1 : 16).atStartOfDay(), // Start of range
+                    payrollDate.withDayOfMonth(payType == 1 ? 15 : 25).atStartOfDay() // End of range
+            );
+
+            if (exists) {
+                throw new IllegalArgumentException("Payslip already exists for EmpId: " + emIds + " and PayType: " + payType);
+            }
+
             SalariesRepDto salaries = salariesService.getSalaryByEmId(emIds);
             Payslip payslip = new Payslip();
             payslip.setEmpId(emIds);

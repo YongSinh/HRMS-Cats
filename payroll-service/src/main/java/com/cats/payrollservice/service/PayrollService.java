@@ -30,6 +30,8 @@ public interface PayrollService {
     List<Payroll> getListPayrollByEmIdAndDateBetween(Long emId,LocalDate start, LocalDate end);
     void deletePayroll(Long id);
     void updateStatusByDate (LocalDate localDate);
+
+    void existsByEmpIdAndDateCreateBetween(Long empId, LocalDate dateCreate, LocalDate dateCreate2);
     PayrollAndPaySlip getPayrollByRefNo2(String s);
 
 }

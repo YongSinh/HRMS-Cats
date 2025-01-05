@@ -7,8 +7,6 @@ import com.cats.payrollservice.dto.request.EmployeeAllowancesReqDto3;
 import com.cats.payrollservice.dto.response.EmployeeAllowancesRepDto;
 import com.cats.payrollservice.model.EmployeeAllowances;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -18,7 +16,7 @@ public interface EmployeeAllowancesService {
     List<EmployeeAllowancesRepDto> createMultiple(EmployeeAllowancesReqDto employeeAllowancesReqDto, List<Long> emId);
     EmployeeAllowancesRepDto addAllowances(EmployeeAllowancesReqDto2 employeeAllowancesReqDto);
 
-    List<EmployeeAllowances> getAllowancesForCurrentMonth(Long emId);
+    List<EmployeeAllowancesRepDto> getAllowancesForCurrentMonth(Long emId);
 
     void delete(Long id);
     void deleteEmpAllowanceByPaySlipId(Long id);
