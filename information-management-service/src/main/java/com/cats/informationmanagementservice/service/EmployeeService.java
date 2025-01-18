@@ -15,6 +15,8 @@ import java.util.List;
 public interface EmployeeService {
     Employee addPersonalData(EmployeeDtoReq employee, MultipartFile file) throws IOException;
 
+    Employee userUpdateInfo(EmployeeDtoReqEdit employee, MultipartFile file) throws IOException;
+
     EmployeeDtoRep editPersonalData(EmployeeDtoReqEdit employee, MultipartFile file) throws IOException;
 
     List<EmployeeDtoRep> listEmployee();

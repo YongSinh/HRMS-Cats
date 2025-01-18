@@ -16,10 +16,10 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @RequiredArgsConstructor
 public class Payslip {
-    @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
-    @Column(name ="id")
-    private Long Id;
+        @Id
+        @GeneratedValue(strategy= GenerationType.AUTO)
+        @Column(name ="id")
+        private Long Id;
     @ManyToOne( fetch = FetchType.LAZY, optional = false)
     @JsonBackReference
     @JoinColumn( name ="payroll_id")

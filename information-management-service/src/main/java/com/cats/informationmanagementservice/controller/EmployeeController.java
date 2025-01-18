@@ -209,6 +209,20 @@ public class EmployeeController {
                 .build();
     }
 
+    @RequestMapping(value = "/user/editInfo", method = RequestMethod.POST, consumes = {"multipart/form-data"})
+    public BaseApi<?> userEditInfo(@RequestPart("body") EmployeeDtoReqEdit employeeDtoReq,
+                                   @RequestPart(value = "file", required = false) MultipartFile file) throws IOException {
+        Employee employee = employeeService.userUpdateInfo(employeeDtoReq, file);
+        return BaseApi.builder()
+                .status(true)
+                .code(HttpStatus.OK.value())
+                .message("Employee data have been updated")
+                .timestamp(LocalDateTime.now())
+                .data(employee)
+                .build();
+    }
+
+
     @RequestMapping(value = "/updateEmployee", method = RequestMethod.POST)
     public BaseApi<?> updateEmployee(@RequestBody EmployeeDtoReqEdit employeeDtoReq) throws IOException {
         Employee employee = employeeService.update(employeeDtoReq);

@@ -42,6 +42,7 @@ public class PayslipServiceImp implements PayslipService {
         LocalDate startOfMonth = currentMonth.atDay(1); // First day of the month
         LocalDate endOfMonth = currentMonth.atEndOfMonth(); // Last day of the month
         LocalDate payrollDate = LocalDate.now();
+        //payrollDate = payrollDate.withDayOfMonth(22);
         LocalDate fifteenth = payrollDate.withDayOfMonth(15);
         LocalDate twentyFifth = payrollDate.withDayOfMonth(25);
         List<Payslip> payslipList = new ArrayList<>();
@@ -72,6 +73,13 @@ public class PayslipServiceImp implements PayslipService {
             payslip.setPayroll(payroll);
             List<EmployeeAllowances> allowances = employeeAllowancesRepo.findByEffectiveDateForCurrentMonth(startOfMonth,endOfMonth,emIds);
             List<EmployeeDeductions> deductions = employeeDeductionsRepo.findByEffectiveDateForCurrentMonth(startOfMonth,endOfMonth,emIds);
+            String allowanceNames = allowances.stream()
+                    .map(employeeAllowances -> employeeAllowances.getAllowances().getAllowances())
+                    .collect(Collectors.joining(", "));
+            String deductionsNames = deductions.stream()
+                    .map(employeeDeductions -> employeeDeductions.getDeductions().getDeduction())
+                    .collect(Collectors.joining(", "));
+
             double totalAllowances = allowances.stream().mapToDouble(EmployeeAllowances::getAmount).sum();
             double totalDeductions = deductions.stream().mapToDouble(EmployeeDeductions::getAmount).sum();
             if (payrollDate.isBefore(fifteenth) || payrollDate.equals(fifteenth)) {
@@ -81,11 +89,17 @@ public class PayslipServiceImp implements PayslipService {
                 if (payslipReqDto.getKhmerRate() == null || payslipReqDto.getKhmerRate() <= 0) {
                     throw new IllegalArgumentException("Khmer rate must be provided and greater than zero for Payment Type 2.");
                 }
+                payslip.setDeductions(deductionsNames);
+
+                payslip.setAllowances(allowanceNames);
+                payslip.setDeductionAmount(totalDeductions);
+                payslip.setAllowanceAmount(totalAllowances);
                 Double khMoney = salaries.getSalary() * payslipReqDto.getKhmerRate();
                 Double tax = taxService.taxCalculator(khMoney);
                 double USDMoney = (khMoney - tax) / payslipReqDto.getKhmerRate();
                 net = USDMoney / 2 + totalAllowances - totalDeductions;
                 payslip.setPayType(2);
+
             } else {
                 net = payrollService.calculateNetSalary(emIds, payslipReqDto.getKhmerRate()) + totalAllowances;
             }
@@ -94,8 +108,28 @@ public class PayslipServiceImp implements PayslipService {
             payslip.setNet(net);
             payslip.setDateCreated(LocalDateTime.now());
             payslipList.add(payslip);
+            payslipRepo.save(payslip);
+
+            if (payrollDate.isBefore(twentyFifth) || payrollDate.equals(twentyFifth)){
+                List<EmployeeAllowances> employeeAllowancesList = new ArrayList<>();
+                for (EmployeeAllowances allowances1 : allowances){
+                    allowances1.setPaySlipId(payslip.getId());
+                    System.out.println(payslip.getId());
+                    employeeAllowancesList.add(allowances1);
+                }
+                employeeAllowancesRepo.saveAll(employeeAllowancesList);
+
+                List<EmployeeDeductions> employeeDeductionsList = new ArrayList<>();
+                for (EmployeeDeductions deductions1 : deductions){
+                    System.out.println(payslip.getId());
+                    deductions1.setPaySlipId(payslip.getId());
+                    employeeDeductionsList.add(deductions1);
+                }
+                employeeDeductionsRepo.saveAll(employeeDeductionsList);
+            }
+
         }
-        payslipRepo.saveAll(payslipList);
+        //payslipRepo.saveAll(payslipList);
         return payslipList;
     }
 

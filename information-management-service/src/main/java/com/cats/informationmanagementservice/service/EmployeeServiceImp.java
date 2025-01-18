@@ -91,6 +91,41 @@ public class EmployeeServiceImp implements EmployeeService {
         kafKaProducerService.senGendMessage(messageFull);
         return employeeRepo.save(emp);
     }
+    @Transactional
+    @Override
+    public Employee userUpdateInfo(EmployeeDtoReqEdit employee, MultipartFile file) throws IOException {
+        Employee emp = getPersonalDataById(employee.getEmpId());
+        emp.setFirstName(employee.getFirstName());
+        emp.setLastName(employee.getLastName());
+        emp.setEmail(employee.getEmail());
+        emp.setPhone(employee.getPhone());
+        emp.setBirthDate(employee.getBirthDate());
+        emp.setPlaceOfBirth(employee.getPlaceOfBirth());
+        emp.setAge(employee.getAge());
+        emp.setSex(employee.getSex());
+        emp.setHeight(employee.getHeight());
+        emp.setWeight(employee.getWeight());
+        emp.setAddress(employee.getAddress());
+        emp.setMaritalStats(employee.getMaritalStats());
+        emp.setNationality(employee.getNationality());
+        emp.setReligion(employee.getReligion());
+        emp.setIdCard(employee.getIdCard());
+        emp.setPassport(employee.getPassport());
+        emp.setRemark(employee.getRemark());
+        emp.setGovOfficer(employee.getGovOfficer());
+        emp.setGovTel(employee.getGovTel());
+        emp.setGovPosition(employee.getGovPosition());
+        emp.setGovAddress(employee.getGovAddress());
+        if (file != null) {
+            if (employee.getFileId().isEmpty()) {
+                uploadFile(file, employee.getEmpId(), 1, emp.getEmpDate(), 1);
+            } else {
+                uploadUpdateFile(file, employee.getEmpId(), 1, emp.getEmpDate(), 1, employee.getFileId());
+            }
+
+        }
+        return employeeRepo.save(emp);
+    }
 
     @Transactional
     @Override
