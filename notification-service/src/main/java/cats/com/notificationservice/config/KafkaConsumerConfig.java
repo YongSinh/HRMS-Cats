@@ -16,6 +16,7 @@ import org.springframework.kafka.support.serializer.JsonDeserializer;
 
 import java.util.HashMap;
 import java.util.Map;
+
 @Configuration
 @EnableKafka
 public class KafkaConsumerConfig {
@@ -29,7 +30,8 @@ public class KafkaConsumerConfig {
 
     @Value("${user.topic.group.id}")
     private String userGroupId;
-//
+
+    //
     @Bean
     public ConsumerFactory<String, String> consumerFactory() {
         Map<String, Object> props = new HashMap<>();

@@ -1,8 +1,5 @@
 package com.cats.payrollservice.dto.request;
 
-import com.cats.payrollservice.model.Deductions;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

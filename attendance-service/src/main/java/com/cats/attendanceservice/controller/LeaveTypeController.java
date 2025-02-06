@@ -7,7 +7,6 @@ import com.cats.attendanceservice.model.LeaveType;
 import com.cats.attendanceservice.repository.LeaveBalanceRepo;
 import com.cats.attendanceservice.service.LeaveBalanceService;
 import com.cats.attendanceservice.service.LeaveTypeService;
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -23,6 +22,7 @@ public class LeaveTypeController {
     private final LeaveTypeService leaveTypeService;
     private final LeaveBalanceService leaveBalanceService;
     private final LeaveBalanceRepo leaveBalanceRepo;
+
     @PostMapping("/addLeaveType")
     public BaseApi<?> addLeaveType(@RequestBody LeaveTypeReqDto leaveTypeReqDto) {
         LeaveType leaveType = leaveTypeService.create(leaveTypeReqDto);
@@ -37,7 +37,7 @@ public class LeaveTypeController {
 
     @PutMapping("/editLeaveType/{Id}")
     public BaseApi<?> editLeaveType(@RequestBody LeaveTypeReqDto leaveTypeReqDto, @PathVariable String Id) {
-        LeaveType leaveType = leaveTypeService.edit(leaveTypeReqDto,Id);
+        LeaveType leaveType = leaveTypeService.edit(leaveTypeReqDto, Id);
         return BaseApi.builder()
                 .status(true)
                 .code(HttpStatus.OK.value())
@@ -46,8 +46,9 @@ public class LeaveTypeController {
                 .data(leaveType)
                 .build();
     }
+
     @GetMapping("/getListLeaveType")
-    public BaseApi<?> getListLeaveType( ) {
+    public BaseApi<?> getListLeaveType() {
         List<LeaveType> leaveTypeList = leaveTypeService.getListLeave();
         return BaseApi.builder()
                 .status(true)
@@ -59,8 +60,8 @@ public class LeaveTypeController {
     }
 
     @GetMapping("/leaveTypeById/{Id}")
-    public BaseApi<?> getLeaveTypeById(@PathVariable String Id ) {
-       LeaveType leaveTypeList = leaveTypeService.getLeave(Id);
+    public BaseApi<?> getLeaveTypeById(@PathVariable String Id) {
+        LeaveType leaveTypeList = leaveTypeService.getLeave(Id);
         return BaseApi.builder()
                 .status(true)
                 .code(HttpStatus.OK.value())
@@ -69,7 +70,6 @@ public class LeaveTypeController {
                 .data(leaveTypeList)
                 .build();
     }
-
 
 
 //    @PutMapping("/updateLeaveBalance/{Id}/{newValue}")
@@ -87,9 +87,9 @@ public class LeaveTypeController {
     // This controller will delete all the leave type with both tblLeave and tblLeaveBalance
     @Transactional
     @DeleteMapping("/deleteLeaveType/{Id}")
-    public BaseApi<?> deleteLeaveType(@PathVariable String Id ) {
-       // LeaveType leaveTypeList = leaveTypeService.getLeave(Id);
-        List <LeaveBalance> leaveBalance = leaveBalanceRepo.findByLeaveType_Id(Id);
+    public BaseApi<?> deleteLeaveType(@PathVariable String Id) {
+        // LeaveType leaveTypeList = leaveTypeService.getLeave(Id);
+        List<LeaveBalance> leaveBalance = leaveBalanceRepo.findByLeaveType_Id(Id);
 
         if (leaveBalance.isEmpty()) {
             leaveTypeService.delete(Id);

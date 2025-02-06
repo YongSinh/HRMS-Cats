@@ -6,7 +6,9 @@ import com.cats.payrollservice.dto.request.EmployeeAllowancesReqDto;
 import com.cats.payrollservice.dto.request.EmployeeAllowancesReqDto2;
 import com.cats.payrollservice.dto.request.EmployeeAllowancesReqDto3;
 import com.cats.payrollservice.dto.response.EmployeeAllowancesRepDto;
-import com.cats.payrollservice.model.*;
+import com.cats.payrollservice.model.Allowances;
+import com.cats.payrollservice.model.EmployeeAllowances;
+import com.cats.payrollservice.model.Payslip;
 import com.cats.payrollservice.repository.EmployeeAllowancesRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Lazy;
@@ -79,24 +81,24 @@ public class EmployeeAllowancesServiceImp implements EmployeeAllowancesService {
         if (employeeAllowancesReqDto.getAllowances() == null || employeeAllowancesReqDto.getAllowances().isEmpty()) {
             throw new IllegalArgumentException("Allowances list cannot be null or empty.");
         }
-            List<String> allowanceList = new ArrayList<>();
-            Payslip payslip = payslipService.getListPaySlipByeEmIdAndCreateDate(emId,employeeAllowancesReqDto.getPaySlipDate());
-            for (Long allowance:employeeAllowancesReqDto.getAllowances()){
-                EmployeeAllowances employeeAllowances = new EmployeeAllowances();
-                employeeAllowances.setEmpId(emId);
-                employeeAllowances.setType(employeeAllowancesReqDto.getType());
-                employeeAllowances.setAmount(employeeAllowancesReqDto.getAmount());
-                employeeAllowances.setEffectiveDate(employeeAllowancesReqDto.getEffectiveDate());
-                employeeAllowances.setDateCreated(employeeAllowancesReqDto.getDateCreated());
-                Allowances allowances = allowancesService.getAllowancesBytId(allowance);
-                allowanceList.add(allowances.getAllowances());
-                employeeAllowances.setAllowances(allowances);
-                employeeAllowancesArrayList.add(employeeAllowances);
-                employeeAllowances.setPaySlipId(payslip.getId());
-            }
-            totalAmount += employeeAllowancesReqDto.getAmount();
-            payslipService.addAllowanceToPaySlipMore(id,totalAmount,allowanceList);
-            employeeAllowancesRepo.saveAll(employeeAllowancesArrayList);
+        List<String> allowanceList = new ArrayList<>();
+        Payslip payslip = payslipService.getListPaySlipByeEmIdAndCreateDate(emId, employeeAllowancesReqDto.getPaySlipDate());
+        for (Long allowance : employeeAllowancesReqDto.getAllowances()) {
+            EmployeeAllowances employeeAllowances = new EmployeeAllowances();
+            employeeAllowances.setEmpId(emId);
+            employeeAllowances.setType(employeeAllowancesReqDto.getType());
+            employeeAllowances.setAmount(employeeAllowancesReqDto.getAmount());
+            employeeAllowances.setEffectiveDate(employeeAllowancesReqDto.getEffectiveDate());
+            employeeAllowances.setDateCreated(employeeAllowancesReqDto.getDateCreated());
+            Allowances allowances = allowancesService.getAllowancesBytId(allowance);
+            allowanceList.add(allowances.getAllowances());
+            employeeAllowances.setAllowances(allowances);
+            employeeAllowancesArrayList.add(employeeAllowances);
+            employeeAllowances.setPaySlipId(payslip.getId());
+        }
+        totalAmount += employeeAllowancesReqDto.getAmount();
+        payslipService.addAllowanceToPaySlipMore(id, totalAmount, allowanceList);
+        employeeAllowancesRepo.saveAll(employeeAllowancesArrayList);
         return mapper.employeeAllowancesToEmployeeAllowancesResponseDtos(employeeAllowancesArrayList);
     }
 
@@ -108,10 +110,10 @@ public class EmployeeAllowancesServiceImp implements EmployeeAllowancesService {
         if (employeeAllowancesReqDto.getAllowances() == null || employeeAllowancesReqDto.getAllowances().isEmpty()) {
             throw new IllegalArgumentException("Allowances list cannot be null or empty.");
         }
-        for (Long emIds : emId){
+        for (Long emIds : emId) {
             List<String> allowanceList = new ArrayList<>();
-            Payslip payslip = payslipService.getListPaySlipByeEmIdAndCreateDate(emIds,employeeAllowancesReqDto.getPaySlipDate());
-            for (Long allowance:employeeAllowancesReqDto.getAllowances()){
+            Payslip payslip = payslipService.getListPaySlipByeEmIdAndCreateDate(emIds, employeeAllowancesReqDto.getPaySlipDate());
+            for (Long allowance : employeeAllowancesReqDto.getAllowances()) {
                 EmployeeAllowances employeeAllowances = new EmployeeAllowances();
                 employeeAllowances.setEmpId(emIds);
                 employeeAllowances.setType(employeeAllowancesReqDto.getType());
@@ -125,7 +127,7 @@ public class EmployeeAllowancesServiceImp implements EmployeeAllowancesService {
                 employeeAllowances.setPaySlipId(payslip.getId());
             }
             totalAmount += employeeAllowancesReqDto.getAmount();
-            payslipService.addAllowanceToPaySlip(emIds,employeeAllowancesReqDto.getPaySlipDate(), totalAmount, allowanceList);
+            payslipService.addAllowanceToPaySlip(emIds, employeeAllowancesReqDto.getPaySlipDate(), totalAmount, allowanceList);
         }
 
         employeeAllowancesRepo.saveAll(employeeAllowancesArrayList);
@@ -134,7 +136,7 @@ public class EmployeeAllowancesServiceImp implements EmployeeAllowancesService {
 
     @Override
     public EmployeeAllowancesRepDto addAllowances(EmployeeAllowancesReqDto2 employeeAllowancesReqDto) {
-        if (employeeAllowancesReqDto.getAllowances() == null ) {
+        if (employeeAllowancesReqDto.getAllowances() == null) {
             throw new IllegalArgumentException("Allowances list cannot be null or empty.");
         }
 
@@ -158,7 +160,7 @@ public class EmployeeAllowancesServiceImp implements EmployeeAllowancesService {
         YearMonth currentMonth = YearMonth.now(); // Get current month
         LocalDate startOfMonth = currentMonth.atDay(1); // First day of the month
         LocalDate endOfMonth = currentMonth.atEndOfMonth(); // Last day of the month
-        return mapper.employeeAllowancesToEmployeeAllowancesResponseDtos(employeeAllowancesRepo.findByEffectiveDateForCurrentMonth(startOfMonth,endOfMonth,emId));
+        return mapper.employeeAllowancesToEmployeeAllowancesResponseDtos(employeeAllowancesRepo.findByEffectiveDateForCurrentMonth(startOfMonth, endOfMonth, emId));
     }
 
     @Override
@@ -166,7 +168,7 @@ public class EmployeeAllowancesServiceImp implements EmployeeAllowancesService {
         EmployeeAllowances employeeAllowances = getEmpAllowancesById(id);
         String allowance = employeeAllowances.getAllowances().getAllowances();
         double allowanceAmount = employeeAllowances.getAmount();
-        payslipService.removeAllowanceFromPaySlip(employeeAllowances.getPaySlipId(), allowance,allowanceAmount);
+        payslipService.removeAllowanceFromPaySlip(employeeAllowances.getPaySlipId(), allowance, allowanceAmount);
         employeeAllowancesRepo.delete(employeeAllowances);
     }
 
@@ -178,7 +180,7 @@ public class EmployeeAllowancesServiceImp implements EmployeeAllowancesService {
             if (delete != null && !delete.isEmpty()) {
                 employeeAllowancesRepo.deleteAll(delete);
             } else {
-                throw  new IllegalArgumentException("No employee allowance found for pay slip ID: " + id);
+                throw new IllegalArgumentException("No employee allowance found for pay slip ID: " + id);
             }
         } catch (Exception e) {
             throw e;  // Rethrow the exception if you want the caller to handle it
@@ -198,14 +200,14 @@ public class EmployeeAllowancesServiceImp implements EmployeeAllowancesService {
         update.setDateCreated(employeeAllowancesReqDto.getDateCreated());
         String oldAllowance = update.getAllowances().getAllowances();
         String allowance = null;
-        if(employeeAllowancesReqDto.getAllowances() != null){
-                Allowances allowances = allowancesService.getAllowancesBytId(employeeAllowancesReqDto.getAllowances() );
-                //allowanceList.add(allowances.getAllowances());
-                allowance = allowances.getAllowances();
-                update.setAllowances(allowances);
+        if (employeeAllowancesReqDto.getAllowances() != null) {
+            Allowances allowances = allowancesService.getAllowancesBytId(employeeAllowancesReqDto.getAllowances());
+            //allowanceList.add(allowances.getAllowances());
+            allowance = allowances.getAllowances();
+            update.setAllowances(allowances);
         }
         employeeAllowancesRepo.save(update);
-        payslipService.updateAllowanceToPaySlip2(update.getPaySlipId(),newAmount, oldAmount, allowance, oldAllowance);
+        payslipService.updateAllowanceToPaySlip2(update.getPaySlipId(), newAmount, oldAmount, allowance, oldAllowance);
         return mapper.employeeAllowancesToEmployeeAllowancesResponseDto(update);
     }
 

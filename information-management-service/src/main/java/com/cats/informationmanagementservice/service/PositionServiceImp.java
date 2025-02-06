@@ -6,8 +6,6 @@ import com.cats.informationmanagementservice.Dto.mapper;
 import com.cats.informationmanagementservice.model.Department;
 import com.cats.informationmanagementservice.model.Position;
 import com.cats.informationmanagementservice.repository.PositionRepo;
-import jakarta.persistence.EntityManager;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +13,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class PositionServiceImp implements  PositionService{
+public class PositionServiceImp implements PositionService {
     private final PositionRepo positionRepo;
     private final DepartmentService departmentService;
 
@@ -33,7 +31,7 @@ public class PositionServiceImp implements  PositionService{
         position.setPosName(positionDtoReq.getPosName());
         position.setPoSection(positionDtoReq.getPoSection());
         position.setPoLevel(positionDtoReq.getPoLevel());
-        if(positionDtoReq.getDepId() == null){
+        if (positionDtoReq.getDepId() == null) {
             throw new IllegalArgumentException("Position at least on Department ");
         }
         Department department = departmentService.getDepById(positionDtoReq.getDepId());
@@ -71,5 +69,5 @@ public class PositionServiceImp implements  PositionService{
         Position editPosition = getPositionById(Id);
         positionRepo.delete(editPosition);
         return mapper.PosToPositionResponseDto(editPosition);
-  }
+    }
 }

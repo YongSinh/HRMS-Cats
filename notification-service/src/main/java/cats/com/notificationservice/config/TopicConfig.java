@@ -1,4 +1,5 @@
 package cats.com.notificationservice.config;
+
 import org.apache.kafka.clients.admin.AdminClientConfig;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.springframework.beans.factory.annotation.Value;
@@ -41,8 +42,7 @@ public class TopicConfig {
     //If not using spring boot
 
     @Bean
-    public KafkaAdmin kafkaAdmin()
-    {
+    public KafkaAdmin kafkaAdmin() {
         Map<String, Object> configs = new HashMap<>();
         configs.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
         return new KafkaAdmin(configs);

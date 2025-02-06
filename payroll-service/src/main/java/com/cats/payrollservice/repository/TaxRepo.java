@@ -12,6 +12,7 @@ import java.util.List;
 public interface TaxRepo extends JpaRepository<Tax, Long> {
 
     List<Tax> findByUpperLimitGreaterThanEqualOrderByLowerLimitAsc(Double salary);
+
     @Query(value = "select * from Tax where :salary BETWEEN lowerLimit AND upperLimit", nativeQuery = true)
     Tax findRateBySalary(@Param("salary") Double salary);
 

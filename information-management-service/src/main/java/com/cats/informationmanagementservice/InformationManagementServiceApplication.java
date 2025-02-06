@@ -7,8 +7,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 public class InformationManagementServiceApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(InformationManagementServiceApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(InformationManagementServiceApplication.class, args);
+    }
 
 }

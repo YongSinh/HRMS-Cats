@@ -1,11 +1,9 @@
 package com.cats.payrollservice.controller;
 
 import com.cats.payrollservice.base.BaseApi;
-import com.cats.payrollservice.dto.request.EmployeeAllowancesReqDto;
 import com.cats.payrollservice.dto.request.EmployeeDeductionsDto5;
 import com.cats.payrollservice.dto.request.EmployeeDeductionsReqDto;
 import com.cats.payrollservice.dto.request.EmployeeDeductionsReqDto2;
-import com.cats.payrollservice.dto.response.EmployeeAllowancesRepDto;
 import com.cats.payrollservice.dto.response.EmployeeDeductionsRepDto;
 import com.cats.payrollservice.model.EmployeeDeductions;
 import com.cats.payrollservice.service.EmployeeDeductionsService;
@@ -33,6 +31,7 @@ public class EmpDeductionController {
                 .data(employeeDeductions)
                 .build();
     }
+
     @GetMapping("/getEmpDeduction")
     public BaseApi<?> getEmpDeduction() {
         List<EmployeeDeductions> employeeDeductions = employeeDeductionsService.getListEmployeeDeductions();
@@ -69,6 +68,7 @@ public class EmpDeductionController {
                 .data(employeeDeductions)
                 .build();
     }
+
     @PostMapping("/empDeduction/addDeduction")
     public BaseApi<?> createEmpDeduction(@RequestBody EmployeeDeductionsReqDto2 employeeDeductionsReqDto) {
         EmployeeDeductions employeeDeductions = employeeDeductionsService.addDeductions(employeeDeductionsReqDto);
@@ -95,7 +95,7 @@ public class EmpDeductionController {
 
     @PostMapping("/empDeduction/addDeductionMore")
     public BaseApi<?> createEmpDeductionMore(
-            @RequestPart(name = "body")EmployeeDeductionsReqDto employeeDeductionsReqDto,
+            @RequestPart(name = "body") EmployeeDeductionsReqDto employeeDeductionsReqDto,
             @RequestPart(name = "emId") Long emId,
             @RequestPart(name = "id") Long id
     ) {

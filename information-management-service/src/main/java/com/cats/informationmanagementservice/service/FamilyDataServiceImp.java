@@ -5,7 +5,6 @@ import com.cats.informationmanagementservice.model.Employee;
 import com.cats.informationmanagementservice.model.FamilyData;
 import com.cats.informationmanagementservice.repository.FamilyDataRepo;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,10 +12,11 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class FamilyDataServiceImp implements FamilyDataService{
+public class FamilyDataServiceImp implements FamilyDataService {
 
     private final FamilyDataRepo familyDataRepo;
     private final EmployeeService employeeService;
+
     @Override
     public FamilyData create(FamilyDataDtoReq familyDataDtoReq) {
         FamilyData familyData = new FamilyData();
@@ -28,7 +28,7 @@ public class FamilyDataServiceImp implements FamilyDataService{
         familyData.setMotherAddress(familyDataDtoReq.getMotherAddress());
         familyData.setMotherOccupation(familyDataDtoReq.getMotherOccupation());
         familyData.setMotherPhoneNum(familyDataDtoReq.getMotherPhoneNum());
-        if(familyDataDtoReq.getEmId() == null){
+        if (familyDataDtoReq.getEmId() == null) {
             throw new IllegalArgumentException("Employee at least");
         }
         Employee employee = employeeService.getPersonalDataById(familyDataDtoReq.getEmId());
@@ -47,7 +47,7 @@ public class FamilyDataServiceImp implements FamilyDataService{
         familyData.setMotherAddress(familyDataDtoReq.getMotherAddress());
         familyData.setMotherOccupation(familyDataDtoReq.getMotherOccupation());
         familyData.setMotherPhoneNum(familyDataDtoReq.getMotherPhoneNum());
-        if(familyDataDtoReq.getEmId() != null){
+        if (familyDataDtoReq.getEmId() != null) {
             Employee employee = employeeService.getPersonalDataById(familyDataDtoReq.getEmId());
             familyData.setEmployee(employee);
         }

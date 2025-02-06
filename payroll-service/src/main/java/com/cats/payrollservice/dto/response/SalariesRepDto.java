@@ -1,6 +1,9 @@
 package com.cats.payrollservice.dto.response;
-import com.cats.payrollservice.model.Tax;
-import lombok.*;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDate;
 

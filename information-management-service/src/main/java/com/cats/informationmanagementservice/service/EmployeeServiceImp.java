@@ -91,6 +91,7 @@ public class EmployeeServiceImp implements EmployeeService {
         kafKaProducerService.senGendMessage(messageFull);
         return employeeRepo.save(emp);
     }
+
     @Transactional
     @Override
     public Employee userUpdateInfo(EmployeeDtoReqEdit employee, MultipartFile file) throws IOException {

@@ -8,9 +8,9 @@ import java.time.LocalDate;
 @Getter
 @Setter
 public class OverTime {
-   private Long overTimeId;
-   private Long emId;
-   private LocalDate overTimeDate;
-   private Integer overtimeHour;
-   private Integer rate;
+    private Long overTimeId;
+    private Long emId;
+    private LocalDate overTimeDate;
+    private Integer overtimeHour;
+    private Integer rate;
 }

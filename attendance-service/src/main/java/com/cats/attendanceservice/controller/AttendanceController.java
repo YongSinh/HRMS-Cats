@@ -7,11 +7,7 @@ import com.cats.attendanceservice.dto.TimeInReqDto;
 import com.cats.attendanceservice.dto.TimeOutReqDto;
 import com.cats.attendanceservice.model.Attendance;
 import com.cats.attendanceservice.service.AttendanceService;
-import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
-import io.github.resilience4j.retry.annotation.Retry;
-import io.github.resilience4j.timelimiter.annotation.TimeLimiter;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,12 +22,13 @@ import java.util.concurrent.CompletableFuture;
 @RequiredArgsConstructor
 public class AttendanceController {
     private final AttendanceService attendanceService;
+
     /**
      * listAttendance
      * ListAttendanceOrderByDate
      * listAttendanceByEmId
      * manualAsync TimeIn and TimeOut
-     * */
+     */
     @GetMapping("/attendance/listAttendance")
     public BaseApi<?> listAttendance() {
         List<AttendanceRepDto> getList = attendanceService.getListAttendance();
@@ -67,6 +64,7 @@ public class AttendanceController {
                 .data(getList)
                 .build();
     }
+
     @GetMapping("/attendance/listAttendanceByEmId/{emId}")
     public BaseApi<?> listAttendanceByEmId(@PathVariable Long emId) {
         List<AttendanceRepDto> getList = attendanceService.getListAttendanceByEmId(emId);
@@ -82,9 +80,9 @@ public class AttendanceController {
     @GetMapping("/attendance/listAttendanceDateInBetweenAndEmId")
     public BaseApi<?> listAttendanceDateInBetweenAndEmId(
             @RequestParam(name = "dateIn") LocalDate dateIn,
-            @RequestParam(name = "dateIn2")  LocalDate dateIn2,
-            @RequestParam(name = "emId")  Long emId) {
-        List<AttendanceRepDto> getList = attendanceService.findByDateInBetweenAndEmId(dateIn, dateIn2,emId);
+            @RequestParam(name = "dateIn2") LocalDate dateIn2,
+            @RequestParam(name = "emId") Long emId) {
+        List<AttendanceRepDto> getList = attendanceService.findByDateInBetweenAndEmId(dateIn, dateIn2, emId);
         return BaseApi.builder()
                 .status(true)
                 .code(HttpStatus.OK.value())
@@ -112,7 +110,7 @@ public class AttendanceController {
 //    }
 
     @GetMapping("/attendance/getListAttendanceForManagement")
-    public BaseApi<?>getListAttendanceForManagement(@RequestParam Long emId) {
+    public BaseApi<?> getListAttendanceForManagement(@RequestParam Long emId) {
         List<AttendanceRepDto> getList = attendanceService.getListAttendanceForManger(emId);
         return BaseApi.builder()
                 .status(true)
@@ -144,6 +142,7 @@ public class AttendanceController {
                 .data(getList)
                 .build();
     }
+
     @PostMapping("/attendance/manualAsyncTimeIn")
     public BaseApi<?> manualAsyncTimeIn() {
         String manualAsyncTimeIn = attendanceService.manualAsyncTimeIn();

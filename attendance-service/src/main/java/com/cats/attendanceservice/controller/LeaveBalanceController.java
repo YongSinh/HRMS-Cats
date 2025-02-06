@@ -18,6 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class LeaveBalanceController {
     private final LeaveBalanceService leaveBalanceService;
+
     @PostMapping("/LeaveBalance/add")
     public BaseApi<?> addLeaveBalance(@RequestBody LeaveBalanceListDtoReq leaveBalanceListDtoReq) {
         List<LeaveBalance> leaveBalance = leaveBalanceService.create(leaveBalanceListDtoReq);
@@ -66,6 +67,7 @@ public class LeaveBalanceController {
                 .data(leaveBalanceList)
                 .build();
     }
+
     @GetMapping("/getLeaveBalanceByEmId")
     public BaseApi<?> getLeaveBalanceByEmId(@RequestParam Long emId) {
         List<LeaveBalanceDtoRep> leaveBalanceList = leaveBalanceService.getLeaveBalanceByEmId(emId);
@@ -91,7 +93,7 @@ public class LeaveBalanceController {
     }
 
     @DeleteMapping("/LeaveBalance/delete/{Id}")
-    public BaseApi<?> deleteLeaveBalance( @PathVariable Long Id) {
+    public BaseApi<?> deleteLeaveBalance(@PathVariable Long Id) {
         leaveBalanceService.delete(Id);
         return BaseApi.builder()
                 .status(true)

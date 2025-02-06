@@ -1,13 +1,11 @@
 package com.cats.informationmanagementservice.controller;
 
-import com.cats.informationmanagementservice.Dto.DepartmentDtoRep;
 import com.cats.informationmanagementservice.Dto.DepartmentDtoReq;
 import com.cats.informationmanagementservice.base.BaseApi;
 import com.cats.informationmanagementservice.model.Department;
 import com.cats.informationmanagementservice.service.DepartmentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -18,6 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class DepartmentController {
     private final DepartmentService departmentService;
+
     @PostMapping("/addDepartment")
     public BaseApi<?> addDepartment(@RequestBody DepartmentDtoReq departmentDtoReq) {
         Department department = departmentService.addDepartment(departmentDtoReq);
@@ -29,9 +28,10 @@ public class DepartmentController {
                 .data(department)
                 .build();
     }
-    @PutMapping ("/editDepartment/{id}")
+
+    @PutMapping("/editDepartment/{id}")
     public BaseApi<?> editDepartment(@RequestBody DepartmentDtoReq departmentDtoReq, @PathVariable Long id) {
-        Department department = departmentService.editDepartment(id,departmentDtoReq);
+        Department department = departmentService.editDepartment(id, departmentDtoReq);
         return BaseApi.builder()
                 .status(true)
                 .code(HttpStatus.OK.value())
@@ -40,6 +40,7 @@ public class DepartmentController {
                 .data(department)
                 .build();
     }
+
     @GetMapping("/department")
     public BaseApi<?> listDepartment() {
         List<Department> department = departmentService.getListDepartment();

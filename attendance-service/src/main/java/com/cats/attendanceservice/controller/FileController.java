@@ -3,7 +3,6 @@ package com.cats.attendanceservice.controller;
 import com.cats.attendanceservice.dto.RequestFile;
 import com.cats.attendanceservice.dto.RequestFileUpdate;
 import com.cats.attendanceservice.dto.ResponseFile;
-import com.cats.attendanceservice.model.FileInfo;
 import com.cats.attendanceservice.service.FileService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +17,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,54 +28,56 @@ import java.util.stream.Collectors;
 public class FileController {
 
     private final FileService fileService;
+
     public static String convertToString(List<String> list) {
         return list.stream()
                 .map(String::trim) // Trim each email address
                 .collect(Collectors.joining(", "));
     }
-    @RequestMapping(value = "/files/upload", method = RequestMethod.POST, consumes = { "multipart/form-data"})
-    public ResponseEntity<?> uploadFile(@RequestPart("file") @Valid MultipartFile file, @RequestPart("body")  @Valid RequestFile requestFile){
+
+    @RequestMapping(value = "/files/upload", method = RequestMethod.POST, consumes = {"multipart/form-data"})
+    public ResponseEntity<?> uploadFile(@RequestPart("file") @Valid MultipartFile file, @RequestPart("body") @Valid RequestFile requestFile) {
         try {
-            fileService.store(file,requestFile.getEmId(), requestFile.getType(), requestFile.getDateCreated(), requestFile.getServiceType());
+            fileService.store(file, requestFile.getEmId(), requestFile.getType(), requestFile.getDateCreated(), requestFile.getServiceType());
             String message = "Uploaded the file successfully: " + file.getOriginalFilename();
             return ResponseEntity.status(HttpStatus.OK).body(message);
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
             String message = "Could not upload the file: " + file.getOriginalFilename() + "!";
             return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(message);
         }
     }
 
-    @RequestMapping(value = "/files/updateFile", method = RequestMethod.POST, consumes = { "multipart/form-data"})
-    public ResponseEntity<?> uploadUpdateFile(@RequestPart("file") @Valid MultipartFile file, @RequestPart("body")  @Valid RequestFileUpdate requestFile){
+    @RequestMapping(value = "/files/updateFile", method = RequestMethod.POST, consumes = {"multipart/form-data"})
+    public ResponseEntity<?> uploadUpdateFile(@RequestPart("file") @Valid MultipartFile file, @RequestPart("body") @Valid RequestFileUpdate requestFile) {
         try {
-            fileService.updateStore(file,requestFile.getEmId(), requestFile.getType(), requestFile.getDateCreated(), requestFile.getServiceType(), requestFile.getId());
+            fileService.updateStore(file, requestFile.getEmId(), requestFile.getType(), requestFile.getDateCreated(), requestFile.getServiceType(), requestFile.getId());
             String message = "Uploaded the file successfully: " + file.getOriginalFilename();
             return ResponseEntity.status(HttpStatus.OK).body(message);
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
             String message = "Could not upload the file: " + file.getOriginalFilename() + "!";
             return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(message);
         }
     }
 
-    @RequestMapping(value = "/files/uploadMultiple", method = RequestMethod.POST, consumes = { "multipart/form-data"})
-    public ResponseEntity<?> uploadFileMultipart(@RequestPart("file") @Valid MultipartFile[] files, @RequestPart("body")  @Valid RequestFile requestFile){
+    @RequestMapping(value = "/files/uploadMultiple", method = RequestMethod.POST, consumes = {"multipart/form-data"})
+    public ResponseEntity<?> uploadFileMultipart(@RequestPart("file") @Valid MultipartFile[] files, @RequestPart("body") @Valid RequestFile requestFile) {
         List<String> fileNames = new ArrayList<>();
         try {
             for (MultipartFile file : files) {
                 String fileName = file.getOriginalFilename();
-                fileService.store(file,requestFile.getEmId(), requestFile.getType(), requestFile.getDateCreated(), requestFile.getServiceType());
+                fileService.store(file, requestFile.getEmId(), requestFile.getType(), requestFile.getDateCreated(), requestFile.getServiceType());
                 fileNames.add(fileName);
             }
-            String message = "Uploaded the files successfully: " +  convertToString(fileNames);
+            String message = "Uploaded the files successfully: " + convertToString(fileNames);
             return ResponseEntity.status(HttpStatus.OK).body(message);
-        }catch (Exception e){
+        } catch (Exception e) {
             for (MultipartFile file : files) {
                 String fileName = file.getOriginalFilename();
                 fileNames.add(fileName);
             }
-            String message = "Could not upload the files: " +  convertToString(fileNames) + "!";
+            String message = "Could not upload the files: " + convertToString(fileNames) + "!";
             return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(message);
         }
     }
@@ -96,7 +96,7 @@ public class FileController {
 //            }
 //        }
 
-    
+
 //        // Set Content-Disposition to inline for browser preview
 //        return ResponseEntity.ok()
 //                .contentType(MediaType.parseMediaType(contentType))
@@ -172,11 +172,11 @@ public class FileController {
     }
 
     @GetMapping("/files/ByEmId")
-    public ResponseEntity<?> getListFilesByEmId(@RequestParam("emId")  Long emId) {
+    public ResponseEntity<?> getListFilesByEmId(@RequestParam("emId") Long emId) {
         List<ResponseFile> files = fileService.getAllFileByEmId(emId).map(dbFile -> {
             String fileDownloadUri = ServletUriComponentsBuilder
                     .fromCurrentContextPath()
-                   .path("/api/files/view/")
+                    .path("/api/files/view/")
                     .path(dbFile.getFileName())
                     .toUriString();
             String filePreviewUri = ServletUriComponentsBuilder
@@ -190,7 +190,7 @@ public class FileController {
                     fileDownloadUri,
                     filePreviewUri,
                     dbFile.getType(),
-                      dbFile.getFileSize(),
+                    dbFile.getFileSize(),
                     dbFile.getEmId(),
                     dbFile.getFileType(),
                     dbFile.getDateCreated(),
@@ -205,7 +205,7 @@ public class FileController {
         List<ResponseFile> files = fileService.getListFileByEmIdAndType(emId, type).map(dbFile -> {
             String fileDownloadUri = ServletUriComponentsBuilder
                     .fromCurrentContextPath()
-                   .path("/api/files/view/")
+                    .path("/api/files/view/")
                     .path(dbFile.getFileName())
                     .toUriString();
             String filePreviewUri = ServletUriComponentsBuilder
@@ -219,7 +219,7 @@ public class FileController {
                     fileDownloadUri,
                     filePreviewUri,
                     dbFile.getType(),
-                      dbFile.getFileSize(),
+                    dbFile.getFileSize(),
                     dbFile.getEmId(),
                     dbFile.getFileType(),
                     dbFile.getDateCreated(),
@@ -234,7 +234,7 @@ public class FileController {
         List<ResponseFile> files = fileService.getListFileByEmIdWithServiceType(emId, type, service).map(dbFile -> {
             String fileDownloadUri = ServletUriComponentsBuilder
                     .fromCurrentContextPath()
-                   .path("/api/files/view/")
+                    .path("/api/files/view/")
                     .path(dbFile.getFileName())
                     .toUriString();
             String filePreviewUri = ServletUriComponentsBuilder
@@ -259,17 +259,16 @@ public class FileController {
     }
 
 
-
     @GetMapping("/files/ByEmIdAndTypeServiceDate")
     public ResponseEntity<?> getListFilesByEmIdAndTypeAndDate(@RequestParam("emId") Long emId,
                                                               @RequestParam("type") Integer type,
                                                               @RequestParam("date") LocalDate date,
                                                               @RequestParam("service") Integer service
-                                                              ) {
+    ) {
         List<ResponseFile> files = fileService.getListFileByEmIdAndTypeServiceAndDate(date, emId, type, service).map(dbFile -> {
             String fileDownloadUri = ServletUriComponentsBuilder
                     .fromCurrentContextPath()
-                   .path("/api/files/view/")
+                    .path("/api/files/view/")
                     .path(dbFile.getFileName())
                     .toUriString();
             String filePreviewUri = ServletUriComponentsBuilder

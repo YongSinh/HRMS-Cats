@@ -7,9 +7,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Entity
 @Table(name = "siblings_data")
 @Getter
@@ -18,28 +15,28 @@ import java.util.List;
 @NoArgsConstructor
 public class SiblingData {
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private Long id;
-    @Column(name ="firstName" )
+    @Column(name = "firstName")
     private String firstName;
-    @Column(name ="lastName" )
+    @Column(name = "lastName")
     private String lastName;
-    @Column(name ="age" )
+    @Column(name = "age")
     private Long age;
-    @Column(name ="sex" )
+    @Column(name = "sex")
     private String sex;
-    @Column(name ="education" )
+    @Column(name = "education")
     private String education;
-    @Column(name ="occupation" )
+    @Column(name = "occupation")
     private String occupation;
-    @Column(name ="position" )
+    @Column(name = "position")
     private String position;
-    @Column(name ="office" )
+    @Column(name = "office")
     private String office;
     @Column(name = "marital_stats")
     private String maritalStats;
-    @ManyToOne( fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "empId")
     @JsonBackReference
     private Employee employee;

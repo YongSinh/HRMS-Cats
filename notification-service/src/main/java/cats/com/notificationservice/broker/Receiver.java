@@ -17,6 +17,7 @@ public class Receiver {
     private static final Logger logger = LoggerFactory.getLogger(Receiver.class);
     private final SimpMessageSendingOperations messagingTemplate;
     private final SimpUserRegistry userRegistry;
+
     @KafkaListener(topics = "messaging", groupId = "chat", containerFactory = "messageKafkaListenerContainerFactory")
     public void consume(Message chatMessage) {
         logger.info("Received message from Kafka: " + chatMessage);

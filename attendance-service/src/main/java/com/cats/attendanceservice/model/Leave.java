@@ -8,10 +8,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 
-@Table (name = "leave")
+@Table(name = "leave")
 @Entity
 @Setter
 @Getter
@@ -19,7 +18,7 @@ import java.time.LocalTime;
 @RequiredArgsConstructor
 public class Leave {
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private Long leaveId;
     @Column(name = "empid")
@@ -33,7 +32,7 @@ public class Leave {
     @Column(name = "reason")
     private String reason;
 
-    @ManyToOne( fetch = FetchType.EAGER, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JsonBackReference
     @JoinColumn(name = "leave_type_id")
     private LeaveType leaveType;
@@ -51,7 +50,7 @@ public class Leave {
     private Boolean approvedByHr;
     @Column(name = "remark")
     private String remark;
-    @Column(name = "day" )
+    @Column(name = "day")
     private Integer dayOfLeave;
     @Column(name = "created_at")
     private LocalDate createdAt;

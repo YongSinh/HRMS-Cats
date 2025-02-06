@@ -21,7 +21,8 @@ public class SpringFoxConfig {
     @Value("${openapi.service.version}")
     private String serviceVersion;
     @Value("${openapi.service.url}")
-    private  String url;
+    private String url;
+
     @Bean
     public OpenAPI customOpenAPI() {
         final String securitySchemeName = "bearerAuth";

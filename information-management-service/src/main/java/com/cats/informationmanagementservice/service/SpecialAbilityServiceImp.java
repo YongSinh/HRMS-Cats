@@ -4,7 +4,6 @@ import com.cats.informationmanagementservice.Dto.SpecialAbilityDtoReq;
 import com.cats.informationmanagementservice.model.Employee;
 import com.cats.informationmanagementservice.model.SpecialAbility;
 import com.cats.informationmanagementservice.repository.SpecialAbilityRepo;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +11,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class SpecialAbilityServiceImp implements SpecialAbilityService{
+public class SpecialAbilityServiceImp implements SpecialAbilityService {
     private final SpecialAbilityRepo specialAbilityRepo;
     private final EmployeeService employeeService;
 
@@ -24,7 +23,7 @@ public class SpecialAbilityServiceImp implements SpecialAbilityService{
         specialAbility.setWriting(specialAbilityDtoReq.getWriting());
         specialAbility.setListening(specialAbilityDtoReq.getListening());
         specialAbility.setReading(specialAbilityDtoReq.getReading());
-        if (specialAbilityDtoReq.getEmpId() ==null){
+        if (specialAbilityDtoReq.getEmpId() == null) {
             throw new IllegalArgumentException("Employee at least");
         }
         Employee employee = employeeService.getPersonalDataById(specialAbilityDtoReq.getEmpId());
@@ -40,7 +39,7 @@ public class SpecialAbilityServiceImp implements SpecialAbilityService{
         specialAbility.setWriting(specialAbilityDtoReq.getWriting());
         specialAbility.setListening(specialAbilityDtoReq.getListening());
         specialAbility.setReading(specialAbilityDtoReq.getReading());
-        if (specialAbilityDtoReq.getEmpId() !=null){
+        if (specialAbilityDtoReq.getEmpId() != null) {
             Employee employee = employeeService.getPersonalDataById(specialAbilityDtoReq.getEmpId());
             specialAbility.setEmployee(employee);
         }
@@ -58,6 +57,7 @@ public class SpecialAbilityServiceImp implements SpecialAbilityService{
         SpecialAbility specialAbility = getSpecialAbilityById(id);
         specialAbilityRepo.delete(specialAbility);
     }
+
     @Override
     public List<SpecialAbility> getListSpecialAbility() {
         return specialAbilityRepo.findAll();

@@ -15,26 +15,22 @@ import org.springframework.web.cors.reactive.CorsConfigurationSource;
 import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 
 @RequiredArgsConstructor
 @Configuration
 @EnableWebFluxSecurity
 public class SecurityConfiguration {
+    private static final Logger LOG = LoggerFactory.getLogger(SecurityConfig.class);
+    private final JwtAuthConverter jwtAuthConverter;
     @Value("${role.admin}")
     private String admin;
     @Value("${role.hr}")
     private String hr;
     @Value("${role.user}")
     private String user;
-
     @Value("${allowed.origins}")
     private String[] origin;
 
-
-    private final JwtAuthConverter jwtAuthConverter;
-    private static final Logger LOG = LoggerFactory.getLogger(SecurityConfig.class);
     @Bean
     public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
         LOG.info("Configuring Security Web Filter Chain");
@@ -58,7 +54,7 @@ public class SecurityConfiguration {
                     exchanges
                             .pathMatchers("/actuator/**").hasRole(admin.toUpperCase())
                             .pathMatchers(AUTH_WHITELIST).permitAll()
-                            .pathMatchers("/api/files/**", "/api/payrolls/report/**","/api/attendanceLeave/test/**","/api/info/test/**", "/api/attendanceLeave/report/**", "/api/notification/**","/fallback").permitAll()
+                            .pathMatchers("/api/files/**", "/api/payrolls/report/**", "/api/attendanceLeave/test/**", "/api/info/test/**", "/api/attendanceLeave/report/**", "/api/notification/**", "/fallback").permitAll()
                             .pathMatchers("/eureka/**", "/actuator/**", "/swagger-ui.html", "/v3/api-docs/**", "/swagger-ui/**").permitAll()
                             .anyExchange().permitAll();
                 })

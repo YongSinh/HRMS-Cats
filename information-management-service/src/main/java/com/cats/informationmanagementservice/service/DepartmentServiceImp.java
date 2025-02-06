@@ -12,8 +12,9 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class DepartmentServiceImp implements DepartmentService{
+public class DepartmentServiceImp implements DepartmentService {
     private final DepartmentRepo departmentRepo;
+
     @Override
     public Department getDepById(Long Id) {
         return departmentRepo.findById(Id).orElseThrow(() ->

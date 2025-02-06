@@ -28,7 +28,7 @@ public class GlobalException {
 
     @ExceptionHandler(AccessDeniedException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)
-    public BaseError<?> handleServiceException(AccessDeniedException  e) {
+    public BaseError<?> handleServiceException(AccessDeniedException e) {
         return BaseError.builder()
                 .status(false)
                 .code(HttpStatus.FORBIDDEN.value())
@@ -80,7 +80,7 @@ public class GlobalException {
         return BaseError.builder().status(false).code(HttpStatus.BAD_REQUEST.value())
                 .message(e.getMessage())
                 .timestamp(LocalDateTime.now())
-                .error("SQLError: "+ e.getSQLState()).build();
+                .error("SQLError: " + e.getSQLState()).build();
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
@@ -93,6 +93,7 @@ public class GlobalException {
                 .error(e.getMessage())
                 .build();
     }
+
     @ExceptionHandler(NullPointerException.class)
     public BaseError<?> NullPointerException(NullPointerException e) {
         return BaseError.builder()
@@ -103,6 +104,7 @@ public class GlobalException {
                 .error(e.getLocalizedMessage())
                 .build();
     }
+
     @ExceptionHandler(HttpClientErrorException.NotFound.class)
     public BaseError<?> NotFound(HttpClientErrorException.NotFound e) {
         return BaseError.builder()

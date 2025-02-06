@@ -71,8 +71,8 @@ public class PayslipServiceImp implements PayslipService {
             }
             Payroll payroll = payrollService.getPayrollsForCurrentMonth(emIds);
             payslip.setPayroll(payroll);
-            List<EmployeeAllowances> allowances = employeeAllowancesRepo.findByEffectiveDateForCurrentMonth(startOfMonth,endOfMonth,emIds);
-            List<EmployeeDeductions> deductions = employeeDeductionsRepo.findByEffectiveDateForCurrentMonth(startOfMonth,endOfMonth,emIds);
+            List<EmployeeAllowances> allowances = employeeAllowancesRepo.findByEffectiveDateForCurrentMonth(startOfMonth, endOfMonth, emIds);
+            List<EmployeeDeductions> deductions = employeeDeductionsRepo.findByEffectiveDateForCurrentMonth(startOfMonth, endOfMonth, emIds);
             String allowanceNames = allowances.stream()
                     .map(employeeAllowances -> employeeAllowances.getAllowances().getAllowances())
                     .collect(Collectors.joining(", "));
@@ -110,9 +110,9 @@ public class PayslipServiceImp implements PayslipService {
             payslipList.add(payslip);
             payslipRepo.save(payslip);
 
-            if (payrollDate.isBefore(twentyFifth) || payrollDate.equals(twentyFifth)){
+            if (payrollDate.isBefore(twentyFifth) || payrollDate.equals(twentyFifth)) {
                 List<EmployeeAllowances> employeeAllowancesList = new ArrayList<>();
-                for (EmployeeAllowances allowances1 : allowances){
+                for (EmployeeAllowances allowances1 : allowances) {
                     allowances1.setPaySlipId(payslip.getId());
                     System.out.println(payslip.getId());
                     employeeAllowancesList.add(allowances1);
@@ -120,7 +120,7 @@ public class PayslipServiceImp implements PayslipService {
                 employeeAllowancesRepo.saveAll(employeeAllowancesList);
 
                 List<EmployeeDeductions> employeeDeductionsList = new ArrayList<>();
-                for (EmployeeDeductions deductions1 : deductions){
+                for (EmployeeDeductions deductions1 : deductions) {
                     System.out.println(payslip.getId());
                     deductions1.setPaySlipId(payslip.getId());
                     employeeDeductionsList.add(deductions1);

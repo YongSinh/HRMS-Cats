@@ -1,10 +1,7 @@
 package com.cats.informationmanagementservice.controller;
 
-import com.cats.informationmanagementservice.Dto.DepartmentDtoRep;
-import com.cats.informationmanagementservice.Dto.DepartmentDtoReq;
 import com.cats.informationmanagementservice.Dto.FamilyDataDtoReq;
 import com.cats.informationmanagementservice.base.BaseApi;
-import com.cats.informationmanagementservice.model.Department;
 import com.cats.informationmanagementservice.model.FamilyData;
 import com.cats.informationmanagementservice.service.FamilyDataService;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +30,7 @@ public class FamilyDataController {
                 .data(familyData)
                 .build();
     }
+
     @PutMapping("/editFamilyData/{Id}")
     public BaseApi<?> editFamilyData(@RequestBody FamilyDataDtoReq familyDataDtoReq, @PathVariable Long Id) {
         FamilyData familyData = familyDataService.edit(familyDataDtoReq, Id);
@@ -44,6 +42,7 @@ public class FamilyDataController {
                 .data(familyData)
                 .build();
     }
+
     @GetMapping("/getListFamilyData")
     public BaseApi<?> getListFamilyData() {
         List<FamilyData> familyData = familyDataService.getListFamilyData();
@@ -85,7 +84,7 @@ public class FamilyDataController {
     @ResponseBody
     public ResponseEntity<?> getFamilyData(@PathVariable Long id) {
         familyDataService.delete(id);
-        return new ResponseEntity<>("You have been delete the family data Id: "+ id, HttpStatus.OK);
+        return new ResponseEntity<>("You have been delete the family data Id: " + id, HttpStatus.OK);
     }
 
 }

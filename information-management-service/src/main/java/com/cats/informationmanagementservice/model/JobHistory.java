@@ -13,7 +13,7 @@ import java.time.LocalDate;
 @Table(name = "job_history")
 public class JobHistory {
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private Long id;
     @Column(name = "start_date")
@@ -25,7 +25,7 @@ public class JobHistory {
     @Column(name = "department")
     private String department;
 
-    @ManyToOne( fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "emid")
     @JsonBackReference
     private Employee employee;

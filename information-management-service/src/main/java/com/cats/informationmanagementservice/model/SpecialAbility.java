@@ -9,9 +9,9 @@ import lombok.Setter;
 @Table(name = "special_ability")
 @Getter
 @Setter
-public class  SpecialAbility {
+public class SpecialAbility {
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private Long id;
     @Column(name = "foreign_langauges")
@@ -24,7 +24,7 @@ public class  SpecialAbility {
     private String writing;
     @Column(name = "reading")
     private String reading;
-    @ManyToOne( fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "empId")
     @JsonBackReference
     private Employee employee;

@@ -1,9 +1,7 @@
 package com.cats.payrollservice.controller;
 
 import com.cats.payrollservice.base.BaseApi;
-import com.cats.payrollservice.dto.request.AllowancesReqDto;
 import com.cats.payrollservice.dto.request.DeductionsReqDto;
-import com.cats.payrollservice.model.Allowances;
 import com.cats.payrollservice.model.Deductions;
 import com.cats.payrollservice.service.DeductionsService;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class DeductionController {
     private final DeductionsService deductionsService;
+
     @PostMapping("/deductions/addDeduction")
     public BaseApi<?> addDeduction(@RequestBody DeductionsReqDto deductionsReqDto) {
         Deductions deductions = deductionsService.create(deductionsReqDto);
@@ -41,8 +40,9 @@ public class DeductionController {
                 .data(deductions)
                 .build();
     }
+
     @DeleteMapping("/deductions/deleteDeductionById")
-    public BaseApi<?> deleteDeductionById( @RequestParam Long id) {
+    public BaseApi<?> deleteDeductionById(@RequestParam Long id) {
         deductionsService.delete(id);
         return BaseApi.builder()
                 .status(true)
@@ -52,8 +52,9 @@ public class DeductionController {
                 .data("deductions have been delete")
                 .build();
     }
+
     @GetMapping("/deductions/getDeductionById")
-    public BaseApi<?> getDeductionById( @RequestParam Long id) {
+    public BaseApi<?> getDeductionById(@RequestParam Long id) {
         Deductions deductions = deductionsService.getDeductionsById(id);
         return BaseApi.builder()
                 .status(true)

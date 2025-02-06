@@ -1,8 +1,6 @@
 package com.cats.informationmanagementservice.service;
 
-import com.cats.informationmanagementservice.Dto.EducationDtoReq;
 import com.cats.informationmanagementservice.Dto.EmergencyContactDtoReq;
-import com.cats.informationmanagementservice.model.Education;
 import com.cats.informationmanagementservice.model.EmergencyContact;
 import com.cats.informationmanagementservice.model.Employee;
 import com.cats.informationmanagementservice.repository.EmergencyContactRepo;
@@ -16,6 +14,7 @@ import java.util.List;
 public class EmergencyServiceImp implements EmergencyService {
     private final EmergencyContactRepo emergencyContactRepo;
     private final EmployeeService employeeService;
+
     @Override
     public EmergencyContact create(EmergencyContactDtoReq emergencyContactDtoReq) {
         EmergencyContact emergencyContact = new EmergencyContact();
@@ -25,7 +24,7 @@ public class EmergencyServiceImp implements EmergencyService {
         emergencyContact.setTel(emergencyContactDtoReq.getTel());
         emergencyContact.setOfficeAddress(emergencyContactDtoReq.getOfficeAddress());
         emergencyContact.setOfficeTel(emergencyContactDtoReq.getOfficeTel());
-        if(emergencyContactDtoReq.getEmpId() == null){
+        if (emergencyContactDtoReq.getEmpId() == null) {
             throw new IllegalArgumentException("Employee at least");
         }
         Employee employee = employeeService.getPersonalDataById(emergencyContactDtoReq.getEmpId());
@@ -43,7 +42,7 @@ public class EmergencyServiceImp implements EmergencyService {
         emergencyContact.setTel(emergencyContactDtoReq.getTel());
         emergencyContact.setOfficeAddress(emergencyContactDtoReq.getOfficeAddress());
         emergencyContact.setOfficeTel(emergencyContactDtoReq.getOfficeTel());
-        if(emergencyContactDtoReq.getEmpId() != null){
+        if (emergencyContactDtoReq.getEmpId() != null) {
             Employee employee = employeeService.getPersonalDataById(emergencyContactDtoReq.getEmpId());
             emergencyContact.setEmployee(employee);
         }

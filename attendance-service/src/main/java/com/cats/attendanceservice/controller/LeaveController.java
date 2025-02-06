@@ -1,14 +1,15 @@
 package com.cats.attendanceservice.controller;
 
 import com.cats.attendanceservice.base.BaseApi;
-import com.cats.attendanceservice.dto.*;
+import com.cats.attendanceservice.dto.LeaveApplyDtoReq;
+import com.cats.attendanceservice.dto.LeaveDtoRep;
+import com.cats.attendanceservice.dto.LeaveDtoReq;
+import com.cats.attendanceservice.dto.LeaveDtoReqEdit;
 import com.cats.attendanceservice.model.Leave;
-import com.cats.attendanceservice.model.LeaveBalance;
 import com.cats.attendanceservice.service.LeaveSerivce;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import io.github.resilience4j.retry.annotation.Retry;
 import io.github.resilience4j.timelimiter.annotation.TimeLimiter;
-import jakarta.websocket.server.PathParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -71,7 +72,7 @@ public class LeaveController {
     }
 
     @PutMapping(value = "/leave/edit", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
-    public BaseApi<?> editLeave(@RequestPart("body") LeaveDtoReqEdit leaveDtoReq,  @RequestPart(value = "file", required = false) MultipartFile file) throws IOException {
+    public BaseApi<?> editLeave(@RequestPart("body") LeaveDtoReqEdit leaveDtoReq, @RequestPart(value = "file", required = false) MultipartFile file) throws IOException {
         LeaveDtoRep leave = leaveSerivce.editLeave(leaveDtoReq, file);
         return BaseApi.builder()
                 .status(true)
@@ -93,6 +94,7 @@ public class LeaveController {
                 .data(leave)
                 .build();
     }
+
     @PutMapping("/leave/approveOrRejectByManger")
     public BaseApi<?> approveOrRejectByManger(@RequestParam Long id, @RequestParam Boolean reject) {
         LeaveDtoRep leave = reject ? leaveSerivce.rejectByManger(id) : leaveSerivce.ApprovedByManger(id);
@@ -120,8 +122,6 @@ public class LeaveController {
     }
 
 
-
-
     @PutMapping("/leave/approveOrRejectByHr")
     public BaseApi<?> approveOrRejectByHr(@RequestParam Long id, @RequestParam Boolean reject) {
         LeaveDtoRep leave = reject ? leaveSerivce.rejectByHr(id) : leaveSerivce.ApprovedByHr(id);
@@ -134,7 +134,6 @@ public class LeaveController {
                 .data(leave)
                 .build();
     }
-
 
 
     @GetMapping("/leave/getAll")
@@ -150,9 +149,9 @@ public class LeaveController {
     }
 
     @GetMapping("/leave/getLeaveByDateAndEmId")
-    public  BaseApi<?> getLeaveByDateAndEmId(@RequestParam(name = "emId") Long emId,
-                                             @RequestParam(name = "date") LocalDate date
-    ){
+    public BaseApi<?> getLeaveByDateAndEmId(@RequestParam(name = "emId") Long emId,
+                                            @RequestParam(name = "date") LocalDate date
+    ) {
         List<LeaveDtoRep> leaveDtoRep = leaveSerivce.getLeaveByEmIdAndDate(date, emId);
         return BaseApi.builder()
                 .status(true)
@@ -164,7 +163,7 @@ public class LeaveController {
     }
 
     @GetMapping("/leave/getLeaveByEmId/{emId}")
-    public  BaseApi<?> getLeaveByEmId(@PathVariable Long emId){
+    public BaseApi<?> getLeaveByEmId(@PathVariable Long emId) {
         List<LeaveDtoRep> leaveDtoRep = leaveSerivce.getLeaveByEmId(emId);
         return BaseApi.builder()
                 .status(true)
@@ -176,11 +175,11 @@ public class LeaveController {
     }
 
     @GetMapping("/leave/getLeaveByDateBetweenAndEmId")
-    public  BaseApi<?> getLeaveByDateBetweenAndEmId(@RequestParam(name = "emId") Long emId,
-                                                    @RequestParam(name = "startDate") LocalDate startDate,
-                                                    @RequestParam(name = "endDate") LocalDate endDate
-    ){
-        List<LeaveDtoRep> leaveDtoRep = leaveSerivce.getListByEmIdAndDateBetween(startDate,endDate, emId);
+    public BaseApi<?> getLeaveByDateBetweenAndEmId(@RequestParam(name = "emId") Long emId,
+                                                   @RequestParam(name = "startDate") LocalDate startDate,
+                                                   @RequestParam(name = "endDate") LocalDate endDate
+    ) {
+        List<LeaveDtoRep> leaveDtoRep = leaveSerivce.getListByEmIdAndDateBetween(startDate, endDate, emId);
         return BaseApi.builder()
                 .status(true)
                 .code(HttpStatus.OK.value())
@@ -191,8 +190,8 @@ public class LeaveController {
     }
 
     @GetMapping("/leave/getLeaveByDate")
-    public  BaseApi<?> getLeaveByDate(@RequestParam(name = "date") LocalDate date
-    ){
+    public BaseApi<?> getLeaveByDate(@RequestParam(name = "date") LocalDate date
+    ) {
         List<LeaveDtoRep> leaveDtoRep = leaveSerivce.getLeaveByDate(date);
         return BaseApi.builder()
                 .status(true)
@@ -204,10 +203,10 @@ public class LeaveController {
     }
 
     @GetMapping("/leave/getLeaveByDateBetween")
-    public  BaseApi<?> getLeaveByDateBetween(@RequestParam(name = "startDate") LocalDate startDate,
-                                             @RequestParam(name = "endDate") LocalDate endDate
-    ){
-        List<LeaveDtoRep> leaveDtoRep = leaveSerivce.getLeaveByDateBetween(startDate,endDate);
+    public BaseApi<?> getLeaveByDateBetween(@RequestParam(name = "startDate") LocalDate startDate,
+                                            @RequestParam(name = "endDate") LocalDate endDate
+    ) {
+        List<LeaveDtoRep> leaveDtoRep = leaveSerivce.getLeaveByDateBetween(startDate, endDate);
         return BaseApi.builder()
                 .status(true)
                 .code(HttpStatus.OK.value())
@@ -247,11 +246,12 @@ public class LeaveController {
         return BaseApi.builder()
                 .status(true)
                 .code(HttpStatus.OK.value())
-                .message("leave by employee id "+ emId +" have been found ")
+                .message("leave by employee id " + emId + " have been found ")
                 .timestamp(LocalDateTime.now())
                 .data(leave)
                 .build();
     }
+
     @CircuitBreaker(name = "management", fallbackMethod = "fallbackMethod")
     @TimeLimiter(name = "management")
     @Retry(name = "management")
@@ -287,7 +287,7 @@ public class LeaveController {
         return BaseApi.builder()
                 .status(true)
                 .code(HttpStatus.OK.value())
-                .message("leave have been delete by id "+ id )
+                .message("leave have been delete by id " + id)
                 .timestamp(LocalDateTime.now())
                 .data(leave)
                 .build();
@@ -300,7 +300,7 @@ public class LeaveController {
         return BaseApi.builder()
                 .status(true)
                 .code(HttpStatus.OK.value())
-                .message("leave have been delete by id "+ id )
+                .message("leave have been delete by id " + id)
                 .timestamp(LocalDateTime.now())
                 .data(leave)
                 .build();

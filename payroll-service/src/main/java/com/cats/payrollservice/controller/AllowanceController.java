@@ -2,9 +2,7 @@ package com.cats.payrollservice.controller;
 
 import com.cats.payrollservice.base.BaseApi;
 import com.cats.payrollservice.dto.request.AllowancesReqDto;
-import com.cats.payrollservice.dto.request.TaxReqDto;
 import com.cats.payrollservice.model.Allowances;
-import com.cats.payrollservice.model.Tax;
 import com.cats.payrollservice.service.AllowancesService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,6 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AllowanceController {
     private final AllowancesService allowancesService;
+
     @PostMapping("/allowances/addAllowances")
     public BaseApi<?> addAllowances(@RequestBody AllowancesReqDto allowancesReqDto) {
         Allowances allowances = allowancesService.create(allowancesReqDto);
@@ -29,6 +28,7 @@ public class AllowanceController {
                 .data(allowances)
                 .build();
     }
+
     @PutMapping("/allowances/updateAllowances")
     public BaseApi<?> updateAllowances(@RequestBody AllowancesReqDto allowancesReqDto, @RequestParam Long id) {
         Allowances allowances = allowancesService.update(allowancesReqDto, id);

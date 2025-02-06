@@ -25,12 +25,12 @@ public class Position {
     @Column(name = "poLevel")
     private String poLevel;
 
-    @ManyToOne( fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "department_id")
     @JsonBackReference
     private Department department;
 
-    @OneToMany(mappedBy = "position", cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "position", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
     private List<Employee> employees = new ArrayList<>();
 
 }

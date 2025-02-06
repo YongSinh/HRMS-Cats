@@ -1,6 +1,9 @@
 package com.cats.attendanceservice.service;
 
-import com.cats.attendanceservice.dto.*;
+import com.cats.attendanceservice.dto.LeaveBalanceDtoRep;
+import com.cats.attendanceservice.dto.LeaveBalanceListDtoReq;
+import com.cats.attendanceservice.dto.LeaveBalanceRepDto;
+import com.cats.attendanceservice.dto.mapper;
 import com.cats.attendanceservice.model.LeaveBalance;
 import com.cats.attendanceservice.model.LeaveType;
 import com.cats.attendanceservice.repository.LeaveBalanceRepo;
@@ -9,40 +12,39 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class LeaveBalanceServiceImp implements LeaveBalanceService{
+public class LeaveBalanceServiceImp implements LeaveBalanceService {
     private final LeaveBalanceRepo leaveBalanceRepo;
-    private final  LeaveTypeService leaveTypeService;
+    private final LeaveTypeService leaveTypeService;
 
     @Override
-    public  List<LeaveBalance> create(LeaveBalanceListDtoReq leaveBalanceListDtoReq) {
+    public List<LeaveBalance> create(LeaveBalanceListDtoReq leaveBalanceListDtoReq) {
         List<LeaveBalance> leaveBalances = new ArrayList<>();
         System.out.println(leaveBalanceListDtoReq.getLeaveType());
-        if(leaveBalanceListDtoReq.getLeaveType().isEmpty()){
+        if (leaveBalanceListDtoReq.getLeaveType().isEmpty()) {
             throw new IllegalArgumentException("leave type is empty latest on leave Balances");
         }
-        for (String typeId : leaveBalanceListDtoReq.getLeaveType()){
-        for (Long emId : leaveBalanceListDtoReq.getEmpId()){
-            LeaveBalance leaveBalance = new LeaveBalance();
-            leaveBalance.setEmpId(emId);
-            leaveBalance.setLastUpdateDate(leaveBalanceListDtoReq.getLastUpdateDate());
-            LeaveType leaveType2 = leaveTypeService.getLeave(typeId);
-            leaveBalance.setLeaveType(leaveType2);
-            leaveBalance.setBalanceAmount(leaveType2.getLeaveDayPerYear());
-            leaveBalances.add(leaveBalance);
-        }
+        for (String typeId : leaveBalanceListDtoReq.getLeaveType()) {
+            for (Long emId : leaveBalanceListDtoReq.getEmpId()) {
+                LeaveBalance leaveBalance = new LeaveBalance();
+                leaveBalance.setEmpId(emId);
+                leaveBalance.setLastUpdateDate(leaveBalanceListDtoReq.getLastUpdateDate());
+                LeaveType leaveType2 = leaveTypeService.getLeave(typeId);
+                leaveBalance.setLeaveType(leaveType2);
+                leaveBalance.setBalanceAmount(leaveType2.getLeaveDayPerYear());
+                leaveBalances.add(leaveBalance);
             }
-
-            return leaveBalanceRepo.saveAll(leaveBalances);
         }
+
+        return leaveBalanceRepo.saveAll(leaveBalances);
+    }
 
     @Override
     public LeaveBalance edit(LeaveBalanceRepDto leaveBalanceRepDto, Long Id) {
         LeaveBalance leaveBalance = getLeaveBalance(Id);
-       // leaveBalance.setEmpId(leaveBalanceRepDto.getEmpId());
+        // leaveBalance.setEmpId(leaveBalanceRepDto.getEmpId());
         leaveBalance.setLastUpdateDate(leaveBalanceRepDto.getLastUpdateDate());
         leaveBalance.setBalanceAmount(leaveBalanceRepDto.getBalanceAmount());
 //        if (leaveBalanceRepDto.getLeaveType() != null){
@@ -61,7 +63,7 @@ public class LeaveBalanceServiceImp implements LeaveBalanceService{
 
     @Override
     public LeaveBalanceDtoRep getLeaveBalanceById(Long Id) {
-        LeaveBalance leaveBalance =getLeaveBalance(Id);
+        LeaveBalance leaveBalance = getLeaveBalance(Id);
         return mapper.leaveBalanceToBookResponseDto(leaveBalance);
     }
 

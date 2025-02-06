@@ -119,7 +119,6 @@ public class EmployeeController {
     }
 
 
-
     @GetMapping("/listEmployeeByDepAndPosOnlyEmId")
     public BaseApi<?> listEmployeeByDepAndPosOnlyEmId(@RequestParam Long depId, @RequestParam String posId) {
         List<Long> employee = employeeService.getEmployeeByDepAndPosId(depId, posId);

@@ -3,12 +3,7 @@ package com.cats.payrollservice.controller;
 import com.cats.payrollservice.base.BaseApi;
 import com.cats.payrollservice.dto.response.EmployeeAllowancesRepDto;
 import com.cats.payrollservice.dto.response.EmployeeDeductionsRepDto;
-import com.cats.payrollservice.model.EmployeeAllowances;
-import com.cats.payrollservice.model.EmployeeDeductions;
-import com.cats.payrollservice.model.Payroll;
 import com.cats.payrollservice.non_entity_POJO.PaySlipReportDto;
-import com.cats.payrollservice.non_entity_POJO.PayrollAndPaySlip;
-import com.cats.payrollservice.repository.PayrollAndPayRepo;
 import com.cats.payrollservice.repository.PayslipReprotRepo;
 import com.cats.payrollservice.service.*;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
@@ -17,12 +12,14 @@ import io.github.resilience4j.timelimiter.annotation.TimeLimiter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
@@ -40,7 +37,7 @@ public class testController {
 
     @Transactional
     @GetMapping("/test3")
-    public BaseApi<?> hello2(@RequestParam String ref)  {
+    public BaseApi<?> hello2(@RequestParam String ref) {
         List<PaySlipReportDto> payroll = payslipReprotRepo.getFirstAndSecondPayments(ref);
         Map<String, List<PaySlipReportDto>> groupedPayroll = payroll.stream()
                 .collect(Collectors.groupingBy(PaySlipReportDto::getPayment_sequence));
@@ -62,7 +59,7 @@ public class testController {
     }
 
     @GetMapping("/test4")
-    public BaseApi<?> hello3(@RequestParam Long emId)  {
+    public BaseApi<?> hello3(@RequestParam Long emId) {
         List<EmployeeAllowancesRepDto> allowances = employeeAllowancesService.getAllowancesForCurrentMonth(emId);
         List<EmployeeDeductionsRepDto> deductions = employeeDeductionsService.getDeductionsForCurrentMonth(emId);
 

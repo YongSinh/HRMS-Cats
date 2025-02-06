@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface JobHistoryRepo extends JpaRepository<JobHistory,Long> {
+public interface JobHistoryRepo extends JpaRepository<JobHistory, Long> {
     List<JobHistory> findByEmployee(Employee employee);
 }

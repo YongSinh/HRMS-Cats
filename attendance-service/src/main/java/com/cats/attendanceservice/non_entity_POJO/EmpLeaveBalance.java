@@ -3,6 +3,7 @@ package com.cats.attendanceservice.non_entity_POJO;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 @Entity
 @NamedStoredProcedureQueries({
         @NamedStoredProcedureQuery(

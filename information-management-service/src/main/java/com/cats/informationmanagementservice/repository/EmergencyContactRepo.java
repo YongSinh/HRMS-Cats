@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface EmergencyContactRepo  extends JpaRepository<EmergencyContact, Long> {
+public interface EmergencyContactRepo extends JpaRepository<EmergencyContact, Long> {
     List<EmergencyContact> findByEmployee(Employee employee);
 }

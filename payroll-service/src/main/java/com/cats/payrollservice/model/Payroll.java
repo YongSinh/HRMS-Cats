@@ -19,24 +19,24 @@ import java.util.List;
 @RequiredArgsConstructor
 public class Payroll {
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
-    @Column(name ="id")
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
     private Long Id;
-    @Column(name ="empId")
+    @Column(name = "empId")
     private Long empId;
-    @Column(name ="ref_no", columnDefinition = "varchar(50)")
+    @Column(name = "ref_no", columnDefinition = "varchar(50)")
     private String refNo;
-    @Column(name ="date_from")
+    @Column(name = "date_from")
     private LocalDate dateFrom;
-    @Column(name ="date_to")
+    @Column(name = "date_to")
     private LocalDate dateTo;
-    @Column(name ="type")
+    @Column(name = "type")
     private Integer type;
-    @Column(name ="status")
+    @Column(name = "status")
     private Integer status;
-    @Column(name ="date_created")
+    @Column(name = "date_created")
     private LocalDate dateCreate;
     @JsonManagedReference
-    @OneToMany(mappedBy = "payroll", cascade = {CascadeType.REMOVE }, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "payroll", cascade = {CascadeType.REMOVE}, fetch = FetchType.EAGER)
     private List<Payslip> payslips = new ArrayList<>();
 }

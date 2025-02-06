@@ -16,34 +16,34 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @RequiredArgsConstructor
 public class Payslip {
-        @Id
-        @GeneratedValue(strategy= GenerationType.AUTO)
-        @Column(name ="id")
-        private Long Id;
-    @ManyToOne( fetch = FetchType.LAZY, optional = false)
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
+    private Long Id;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JsonBackReference
-    @JoinColumn( name ="payroll_id")
+    @JoinColumn(name = "payroll_id")
     private Payroll payroll;
-    @Column(name ="employee_id")
+    @Column(name = "employee_id")
     private Long empId;
-    @Column(name ="present")
+    @Column(name = "present")
     private Integer present;
-    @Column(name ="absent")
+    @Column(name = "absent")
     private Integer absent;
-    @Column(name ="payType")
+    @Column(name = "payType")
     private Integer payType;
-    @Column(name ="salary")
+    @Column(name = "salary")
     private Double salary;
-    @Column(name ="net")
+    @Column(name = "net")
     private Double net;
-    @Column(name ="allowance_amount")
+    @Column(name = "allowance_amount")
     private Double allowanceAmount;
-    @Column(name ="allowances",columnDefinition = "text")
+    @Column(name = "allowances", columnDefinition = "text")
     private String allowances;
-    @Column(name ="deduction_amount")
+    @Column(name = "deduction_amount")
     private Double deductionAmount;
-    @Column(name ="deductions",columnDefinition = "text")
+    @Column(name = "deductions", columnDefinition = "text")
     private String deductions;
-    @Column(name ="date_created")
+    @Column(name = "date_created")
     private LocalDateTime dateCreated;
 }

@@ -1,16 +1,12 @@
 package com.cats.informationmanagementservice.controller;
 
-import com.cats.informationmanagementservice.Dto.DepartmentDtoReq;
 import com.cats.informationmanagementservice.Dto.PositionDtoRep;
 import com.cats.informationmanagementservice.Dto.PositionDtoReq;
 import com.cats.informationmanagementservice.base.BaseApi;
-import com.cats.informationmanagementservice.model.Department;
 import com.cats.informationmanagementservice.model.Position;
-import com.cats.informationmanagementservice.service.DepartmentService;
 import com.cats.informationmanagementservice.service.PositionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -21,6 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PositionController {
     private final PositionService positionService;
+
     @PostMapping("/addPosition")
     public BaseApi<?> addPosition(@RequestBody PositionDtoReq positionDtoReq) {
         Position position = positionService.addPosition(positionDtoReq);
@@ -32,6 +29,7 @@ public class PositionController {
                 .data(position)
                 .build();
     }
+
     @GetMapping("/position")
     public BaseApi<?> Position() {
         List<PositionDtoRep> position = positionService.getListPosition();
@@ -43,8 +41,9 @@ public class PositionController {
                 .data(position)
                 .build();
     }
+
     @GetMapping("/getPositionById/{id}")
-    public BaseApi<?> getPositionById( @PathVariable String id) {
+    public BaseApi<?> getPositionById(@PathVariable String id) {
         Position position = positionService.getPositionById(id);
         return BaseApi.builder()
                 .status(true)

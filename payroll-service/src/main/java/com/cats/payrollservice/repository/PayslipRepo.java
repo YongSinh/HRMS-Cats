@@ -1,6 +1,5 @@
 package com.cats.payrollservice.repository;
 
-import com.cats.payrollservice.model.EmployeeDeductions;
 import com.cats.payrollservice.model.Payslip;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -15,8 +14,11 @@ import java.util.List;
 @Repository
 public interface PayslipRepo extends JpaRepository<Payslip, Long> {
     List<Payslip> findByEmpId(Long emId);
+
     List<Payslip> findByEmpIdIn(Collection<Long> empId);
+
     List<Payslip> findByDateCreatedBetween(LocalDateTime startDateTime, LocalDateTime endDateTime);
+
     List<Payslip> findByOrderByIdDesc();
 
     boolean existsByEmpIdAndPayTypeAndDateCreatedBetween(

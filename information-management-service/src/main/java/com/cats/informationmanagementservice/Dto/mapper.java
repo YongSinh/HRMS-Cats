@@ -3,9 +3,7 @@ package com.cats.informationmanagementservice.Dto;
 import com.cats.informationmanagementservice.model.*;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 public class mapper {
@@ -19,43 +17,44 @@ public class mapper {
         positionDtoRep.setDepName(position.getDepartment().getDepName());
         return positionDtoRep;
     }
+
     public static List<PositionDtoRep> PosToPositionResponseDtos(List<Position> positions) {
         List<PositionDtoRep> positionDtoReps = new ArrayList<>();
-        for (Position position: positions) {
+        for (Position position : positions) {
             positionDtoReps.add(PosToPositionResponseDto(position));
         }
         return positionDtoReps;
     }
 
-    public static DepartmentDtoRep DepToDepartmentDtoRep(Department department){
+    public static DepartmentDtoRep DepToDepartmentDtoRep(Department department) {
         DepartmentDtoRep departmentDtoRep = new DepartmentDtoRep();
         departmentDtoRep.setId(department.getDepId());
         departmentDtoRep.setDepName(department.getDepName());
-        return  departmentDtoRep;
+        return departmentDtoRep;
     }
 
-    public static EmployeeInfo employeeToEmployeeInfoDto(Employee employee){
+    public static EmployeeInfo employeeToEmployeeInfoDto(Employee employee) {
         EmployeeInfo employeeInfo = new EmployeeInfo();
         employeeInfo.setEmId(employee.getEmpId());
-        employeeInfo.setFullName(employee.getFirstName()+" "+employee.getLastName());
+        employeeInfo.setFullName(employee.getFirstName() + " " + employee.getLastName());
         employeeInfo.setDepartment(employee.getDepartment().getDepName());
         employeeInfo.setSection(employee.getPosition().getPoSection());
         employeeInfo.setEmail(employee.getEmail());
         employeeInfo.setPosition(employee.getPosition().getPosName());
         employeeInfo.setLocation(employee.getLocation());
-        return  employeeInfo;
+        return employeeInfo;
     }
 
-    public static List<EmployeeInfo> employeeToEmployeeInfoDtos(List<Employee> employees){
+    public static List<EmployeeInfo> employeeToEmployeeInfoDtos(List<Employee> employees) {
         List<EmployeeInfo> employeeInfo = new ArrayList<>();
-        for (Employee employee: employees) {
+        for (Employee employee : employees) {
             employeeInfo.add(employeeToEmployeeInfoDto(employee));
         }
-        return  employeeInfo;
+        return employeeInfo;
     }
 
 
-    public static EmployeeDtoRep EmployeeDtoRepToEmployeeDtoRep(Employee employee){
+    public static EmployeeDtoRep EmployeeDtoRepToEmployeeDtoRep(Employee employee) {
         EmployeeDtoRep emp = new EmployeeDtoRep();
         emp.setEmpId(employee.getEmpId());
         emp.setFirstName(employee.getFirstName());
@@ -115,9 +114,10 @@ public class mapper {
 
         return emp;
     }
+
     public static List<EmployeeDtoRep> EmployeeDtoRepToEmployeeDtoReps(List<Employee> employees) {
         List<EmployeeDtoRep> employeeDtoReps = new ArrayList<>();
-        for (Employee employee: employees) {
+        for (Employee employee : employees) {
             employeeDtoReps.add(EmployeeDtoRepToEmployeeDtoRep(employee));
         }
         return employeeDtoReps;

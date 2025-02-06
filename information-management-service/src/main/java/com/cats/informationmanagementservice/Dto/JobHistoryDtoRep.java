@@ -12,7 +12,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 public class JobHistoryDtoRep {
-    private  Long Id;
+    private Long Id;
     private LocalDate startDate;
     private LocalDate endDate;
     private String jobTitle;

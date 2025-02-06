@@ -1,9 +1,7 @@
 package com.cats.informationmanagementservice.controller;
 
-import com.cats.informationmanagementservice.Dto.SiblingDataDtoReq;
 import com.cats.informationmanagementservice.Dto.SpecialAbilityDtoReq;
 import com.cats.informationmanagementservice.base.BaseApi;
-import com.cats.informationmanagementservice.model.SiblingData;
 import com.cats.informationmanagementservice.model.SpecialAbility;
 import com.cats.informationmanagementservice.service.SpecialAbilityService;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SpecialAbilityController {
     private final SpecialAbilityService specialAbilityService;
+
     @PostMapping("/add")
     public BaseApi<?> addSpecialAbility(@RequestBody SpecialAbilityDtoReq specialAbilityDtoReq) {
         SpecialAbility specialAbility = specialAbilityService.create(specialAbilityDtoReq);
@@ -43,8 +42,8 @@ public class SpecialAbilityController {
     }
 
     @GetMapping("/getSpecialAbilityById")
-    public BaseApi<?> getSpecialAbilityById( @RequestParam Long Id) {
-        SpecialAbility specialAbility = specialAbilityService.getSpecialAbilityById( Id);
+    public BaseApi<?> getSpecialAbilityById(@RequestParam Long Id) {
+        SpecialAbility specialAbility = specialAbilityService.getSpecialAbilityById(Id);
         return BaseApi.builder()
                 .status(true)
                 .code(HttpStatus.OK.value())
@@ -77,6 +76,7 @@ public class SpecialAbilityController {
                 .data(specialAbilityList)
                 .build();
     }
+
     @DeleteMapping("/delete")
     public BaseApi<?> deleteSpecialAbility(@RequestParam Long spId) {
         specialAbilityService.delete(spId);

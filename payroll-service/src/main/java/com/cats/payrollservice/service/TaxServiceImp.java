@@ -1,19 +1,19 @@
 package com.cats.payrollservice.service;
 
 import com.cats.payrollservice.dto.request.TaxReqDto;
-import com.cats.payrollservice.dto.response.SalariesRepDto;
-import com.cats.payrollservice.model.Salaries;
 import com.cats.payrollservice.model.Tax;
 import com.cats.payrollservice.repository.TaxRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
 @Service
 @RequiredArgsConstructor
-public class TaxServiceImp implements TaxService{
+public class TaxServiceImp implements TaxService {
     private final TaxRepo taxRepo;
-   // private final  SalariesService salariesService;
+
+    // private final  SalariesService salariesService;
     @Override
     public Tax addTax(TaxReqDto tax) {
         Tax add = new Tax();
@@ -26,7 +26,7 @@ public class TaxServiceImp implements TaxService{
     }
 
     @Override
-    public Double taxCalculator( Double salary) {
+    public Double taxCalculator(Double salary) {
         List<Tax> taxes = taxRepo.findByUpperLimitGreaterThanEqualOrderByLowerLimitAsc(salary);
         double tax = 0.0;
         double prevUpperLimit = 0.0;

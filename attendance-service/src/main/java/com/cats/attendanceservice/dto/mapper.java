@@ -4,12 +4,11 @@ import com.cats.attendanceservice.model.Attendance;
 import com.cats.attendanceservice.model.Leave;
 import com.cats.attendanceservice.model.LeaveBalance;
 import com.cats.attendanceservice.service.ApiService;
-import com.fasterxml.jackson.databind.JsonNode;
 import lombok.RequiredArgsConstructor;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+
 @RequiredArgsConstructor
 public class mapper {
 
@@ -23,11 +22,12 @@ public class mapper {
 
         return leaveBalanceDtoRep;
     }
+
     public static List<LeaveBalanceDtoRep> leaveBalanceToBookResponseDtos(List<LeaveBalance> leaveBalances) {
         List<LeaveBalanceDtoRep> leaveBalanceDtoRep = new ArrayList<>();
 
-        for (LeaveBalance leaveBalance: leaveBalances) {
-           leaveBalanceDtoRep.add(leaveBalanceToBookResponseDto(leaveBalance));
+        for (LeaveBalance leaveBalance : leaveBalances) {
+            leaveBalanceDtoRep.add(leaveBalanceToBookResponseDto(leaveBalance));
         }
         return leaveBalanceDtoRep;
     }
@@ -60,9 +60,7 @@ public class mapper {
     }
 
 
-
-
-    public static LeaveDtoRep leaveToLeaveResponseDto(Leave leave){
+    public static LeaveDtoRep leaveToLeaveResponseDto(Leave leave) {
         LeaveDtoRep leaveDtoRep = new LeaveDtoRep();
         leaveDtoRep.setId(leave.getLeaveId());
         leaveDtoRep.setEmpId(leave.getEmpId());
@@ -83,16 +81,17 @@ public class mapper {
         leaveDtoRep.setTimeOfHaftDay(leave.getTimeOfHaftDay());
         return leaveDtoRep;
     }
-    public static List<LeaveDtoRep> leaveToLeaveResponseDtos(List<Leave> leaves) {
-        List<LeaveDtoRep>  leaveDtoReps = new ArrayList<>();
 
-        for (Leave leave: leaves) {
+    public static List<LeaveDtoRep> leaveToLeaveResponseDtos(List<Leave> leaves) {
+        List<LeaveDtoRep> leaveDtoReps = new ArrayList<>();
+
+        for (Leave leave : leaves) {
             leaveDtoReps.add(leaveToLeaveResponseDto(leave));
         }
         return leaveDtoReps;
     }
 
-    public static LeaveDtoRep leaveToLeaveResponseDto2(Leave leave, ApiService apiService){
+    public static LeaveDtoRep leaveToLeaveResponseDto2(Leave leave, ApiService apiService) {
         LeaveDtoRep leaveDtoRep = new LeaveDtoRep();
         leaveDtoRep.setId(leave.getLeaveId());
         leaveDtoRep.setEmpId(leave.getEmpId());
@@ -115,15 +114,15 @@ public class mapper {
         leaveDtoRep.setEmployeeName(employeeName);
         return leaveDtoRep;
     }
-    public static List<LeaveDtoRep> leaveToLeaveResponseDtos2(List<Leave> leaves, ApiService apiService) {
-        List<LeaveDtoRep>  leaveDtoReps = new ArrayList<>();
 
-        for (Leave leave: leaves) {
-            leaveDtoReps.add(leaveToLeaveResponseDto2(leave,apiService));
+    public static List<LeaveDtoRep> leaveToLeaveResponseDtos2(List<Leave> leaves, ApiService apiService) {
+        List<LeaveDtoRep> leaveDtoReps = new ArrayList<>();
+
+        for (Leave leave : leaves) {
+            leaveDtoReps.add(leaveToLeaveResponseDto2(leave, apiService));
         }
         return leaveDtoReps;
     }
-
 
 
 }

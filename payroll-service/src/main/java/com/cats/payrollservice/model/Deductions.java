@@ -18,16 +18,16 @@ import java.util.List;
 @RequiredArgsConstructor
 public class Deductions {
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
-    @Column(name ="id")
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
     private Long deId;
-    @Column(name ="deduction")
+    @Column(name = "deduction")
     private String deduction;
-    @Column(name ="description")
+    @Column(name = "description")
     private String description;
     @JsonManagedReference
     @OneToMany(mappedBy = "deductions",
-            cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE },
+            cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE},
             fetch = FetchType.LAZY)
     private List<EmployeeDeductions> employeeDeductions = new ArrayList<>();
 }

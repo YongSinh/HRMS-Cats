@@ -32,19 +32,19 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 @EnableScheduling
-public class AttendanceServiceImp implements AttendanceService  {
+public class AttendanceServiceImp implements AttendanceService {
     private final AttendanceRepo attendanceRepo;
     private final ApiService apiService;
+    private final ApplicationEventPublisher applicationEventPublisher;
+    private final SimpleDateFormat dateFormat = new SimpleDateFormat("M/dd/yyyy h:mm a", Locale.ENGLISH);
     @Value("${file.attendance.path}")
     private String attendanceText;
     @Value("${file.attendanceFinished.path}")
     private String attendanceFinished;
 
-    private final ApplicationEventPublisher applicationEventPublisher;
-    private final SimpleDateFormat dateFormat = new SimpleDateFormat("M/dd/yyyy h:mm a", Locale.ENGLISH);
     @Override
     public List<AttendanceRepDto> getListAttendance() {
-        return  mapper.AttendanceRepToAttendanceRepDtos( attendanceRepo.findAllByOrderByIdDesc(),apiService);
+        return mapper.AttendanceRepToAttendanceRepDtos(attendanceRepo.findAllByOrderByIdDesc(), apiService);
     }
 
     @Override
@@ -54,18 +54,18 @@ public class AttendanceServiceImp implements AttendanceService  {
 
     @Override
     public List<AttendanceRepDto> getListAttendanceByEmId(Long emId) {
-        return  mapper.AttendanceRepToAttendanceRepDtos( attendanceRepo.findByEmId(emId),apiService);
+        return mapper.AttendanceRepToAttendanceRepDtos(attendanceRepo.findByEmId(emId), apiService);
     }
 
     @Override
-    public List<AttendanceRepDto>  findByDateInBetweenAndEmId(LocalDate dateIn, LocalDate dateIn2, Long emId) {
-        return mapper.AttendanceRepToAttendanceRepDtos( attendanceRepo.findByDateInBetweenAndEmId(dateIn,dateIn2,emId), apiService);
+    public List<AttendanceRepDto> findByDateInBetweenAndEmId(LocalDate dateIn, LocalDate dateIn2, Long emId) {
+        return mapper.AttendanceRepToAttendanceRepDtos(attendanceRepo.findByDateInBetweenAndEmId(dateIn, dateIn2, emId), apiService);
     }
 
     @Override
     public List<AttendanceRepDto> getListAttendanceForManger(Long emId) {
         Collection<Long> emIDs = apiService.getEmployeeByUnderMangerOnlyEmId(emId);
-        return mapper.AttendanceRepToAttendanceRepDtos( attendanceRepo.findByEmIdIn(emIDs), apiService) ;
+        return mapper.AttendanceRepToAttendanceRepDtos(attendanceRepo.findByEmIdIn(emIDs), apiService);
     }
 
     @Override
@@ -158,11 +158,11 @@ public class AttendanceServiceImp implements AttendanceService  {
 
     @Override
     public List<ReportAttendanceDto> getReportByDateInBetweenAndEmId(LocalDate dateIn, LocalDate dateIn2, Long emId) throws IOException {
-        List<Attendance> attendances = attendanceRepo.findByDateInBetweenAndEmId(dateIn,dateIn2,emId);
-        return reportAttendanceDtoList(attendances,emId);
+        List<Attendance> attendances = attendanceRepo.findByDateInBetweenAndEmId(dateIn, dateIn2, emId);
+        return reportAttendanceDtoList(attendances, emId);
     }
 
-    public List<ReportAttendanceDto> reportAttendanceDtoList( List<Attendance> attendanceList, Long emId) throws IOException {
+    public List<ReportAttendanceDto> reportAttendanceDtoList(List<Attendance> attendanceList, Long emId) throws IOException {
         JsonNode employeeInfo = apiService.getEmployeeInFoByEmId(emId);
         if (employeeInfo == null) {
             throw new IOException("Employee information not found for ID: " + emId);
@@ -197,7 +197,6 @@ public class AttendanceServiceImp implements AttendanceService  {
                 })
                 .collect(Collectors.toList());
     }
-
 
 
     @Override
@@ -335,7 +334,7 @@ public class AttendanceServiceImp implements AttendanceService  {
                 // Retrieve the last timeOut for the given emId
                 Optional<Attendance> lastAttendanceOpt = attendanceRepo.findLastTimeOutByEmId(emId, latestDateIn);
                 if (lastAttendanceOpt.isPresent()) {
-                    if (lastAttendanceOpt.get().getTimeOut() != null){
+                    if (lastAttendanceOpt.get().getTimeOut() != null) {
                         LocalTime lastTimeOut = lastAttendanceOpt.get().getTimeOut();
                         if (!latestTimeOut.isAfter(lastTimeOut)) {
                             System.out.println("Duplicate or out-of-order entry found for Ac-No: " + emId + " and Time Out: " + latestTimeOut);
@@ -345,7 +344,7 @@ public class AttendanceServiceImp implements AttendanceService  {
 
                     // Retrieve the attendance record for the given emId and dateIn
                     LocalDate localDate = lastAttendanceOpt.get().getDateIn(); // Assuming the current date is used
-                    Attendance attendance = getAttendanceByEmIdAndDateIn(localDate,emId);
+                    Attendance attendance = getAttendanceByEmIdAndDateIn(localDate, emId);
                     if (attendance != null) {
                         attendance.setDateOut(localDate);
                         attendance.setTimeOut(latestTimeOut);
@@ -354,8 +353,8 @@ public class AttendanceServiceImp implements AttendanceService  {
                     } else {
                         System.err.println("No matching attendance record found for Ac-No: " + emId + " on Date: " + localDate);
                     }
-                }else {
-                    throw  new IllegalArgumentException("Is empty");
+                } else {
+                    throw new IllegalArgumentException("Is empty");
                 }
 
             }
@@ -374,6 +373,7 @@ public class AttendanceServiceImp implements AttendanceService  {
         Path destinationPath = Paths.get(attendanceFinished, file.getName());
         Files.move(sourcePath, destinationPath);
     }
+
     @Override
     public String manualAsyncTimeOut() {
         // Create a File object representing the directory
@@ -391,6 +391,7 @@ public class AttendanceServiceImp implements AttendanceService  {
             return "Attendance file is empty or does not exist.";
         }
     }
+
     @Scheduled(cron = "0 0 22 * * FRI")
     @Override
     public void createWeekendAttendance() throws IOException {

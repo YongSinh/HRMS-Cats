@@ -9,13 +9,17 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
 import java.util.stream.StreamSupport;
 
 @RequiredArgsConstructor
 @Service
 public class ApiService {
     private final WebClient.Builder webClientBuilder;
+
     public Flux<Long> getListAllEmployeeOnlyEmIdTest() {
         return webClientBuilder.build().get()
                 .uri("http://information-management-service/api/info/employee/listEmployee")
@@ -130,7 +134,7 @@ public class ApiService {
 //        return idList;
 //    }
 
-    public Collection<Long> getEmployeeByDepId(Long depId)  {
+    public Collection<Long> getEmployeeByDepId(Long depId) {
         Flux<WebFluxResponse> responseFlux = webClientBuilder.build().get()
                 .uri("http://information-management-service/api/info/employee/listEmployeeByDep",
                         uriBuilder -> uriBuilder.queryParam("depId", depId).build()

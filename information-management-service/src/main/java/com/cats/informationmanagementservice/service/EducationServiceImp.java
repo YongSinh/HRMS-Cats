@@ -3,17 +3,15 @@ package com.cats.informationmanagementservice.service;
 import com.cats.informationmanagementservice.Dto.EducationDtoReq;
 import com.cats.informationmanagementservice.model.Education;
 import com.cats.informationmanagementservice.model.Employee;
-import com.cats.informationmanagementservice.model.JobHistory;
 import com.cats.informationmanagementservice.repository.EducationRepo;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class EducationServiceImp implements EducationService{
+public class EducationServiceImp implements EducationService {
     private final EducationRepo educationRepo;
     private final EmployeeService employeeService;
 
@@ -25,7 +23,7 @@ public class EducationServiceImp implements EducationService{
         education.setEduInstitution(educationDtoReq.getEduInstitution());
         education.setMajor(educationDtoReq.getMajor());
         education.setYearEnd(educationDtoReq.getYearEnd());
-        if(educationDtoReq.getEmID() == null){
+        if (educationDtoReq.getEmID() == null) {
             throw new IllegalArgumentException("Employee at least");
         }
         Employee employee = employeeService.getPersonalDataById(educationDtoReq.getEmID());
@@ -42,7 +40,7 @@ public class EducationServiceImp implements EducationService{
         education.setEduInstitution(educationDtoReq.getEduInstitution());
         education.setMajor(educationDtoReq.getMajor());
         education.setYearEnd(educationDtoReq.getYearEnd());
-        if(educationDtoReq.getEmID() != null){
+        if (educationDtoReq.getEmID() != null) {
             Employee employee = employeeService.getPersonalDataById(educationDtoReq.getEmID());
             education.setEmployee(employee);
         }

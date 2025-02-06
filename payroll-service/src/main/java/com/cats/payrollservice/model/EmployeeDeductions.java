@@ -9,6 +9,7 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+
 @Table(name = "employee_deductions")
 @Entity
 @Setter
@@ -17,23 +18,23 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class EmployeeDeductions {
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
-    @Column(name ="id")
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
     private Long empDedId;
-    @Column(name ="employee_id")
+    @Column(name = "employee_id")
     private Long empId;
-    @Column(name ="paySlipId")
+    @Column(name = "paySlipId")
     private Long paySlipId;
-    @ManyToOne( fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JsonBackReference
     @JoinColumn(name = "deductions_id")
     private Deductions deductions;
-    @Column(name ="type")
+    @Column(name = "type")
     private Integer type;
-    @Column(name ="amount")
+    @Column(name = "amount")
     private Double amount;
-    @Column(name ="effective_date")
+    @Column(name = "effective_date")
     private LocalDate effectiveDate;
-    @Column(name ="date_created")
+    @Column(name = "date_created")
     private LocalDateTime dateCreated;
 }

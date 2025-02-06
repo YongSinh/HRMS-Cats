@@ -40,7 +40,6 @@ public class KafkaProducerConfig {
     }
 
 
-
     @Bean
     public ProducerFactory<String, MessageFull> messageFullproducerFactory() {
         Map<String, Object> configProps = new HashMap<>();

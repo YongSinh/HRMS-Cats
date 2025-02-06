@@ -22,12 +22,13 @@ import java.time.LocalDate;
 public class ReportController {
 
     private final ReportService reportService;
+
     @GetMapping("/report/userAttendance")
     public ResponseEntity<?> getUserAttendanceReport(@RequestParam(name = "startDate") LocalDate startDate,
                                                      @RequestParam(name = "endDate") LocalDate endDate,
                                                      @RequestParam(name = "emId") Long emId
-                                                     ) throws JRException, IOException {
-        byte[] reportContent = reportService.getAttendanceReportByEmId(startDate,endDate,emId);
+    ) throws JRException, IOException {
+        byte[] reportContent = reportService.getAttendanceReportByEmId(startDate, endDate, emId);
 
         ByteArrayResource arrayResource = new ByteArrayResource(reportContent);
 
@@ -44,11 +45,11 @@ public class ReportController {
 
     @GetMapping("/report/leaveListDateBetween")
     public ResponseEntity<?> getLeaveAndDateBetween(@RequestParam(name = "startDate") LocalDate startDate,
-                                                     @RequestParam(name = "endDate") LocalDate endDate,
-                                                     @RequestParam(name = "emId") Long emId
+                                                    @RequestParam(name = "endDate") LocalDate endDate,
+                                                    @RequestParam(name = "emId") Long emId
     ) throws JRException, IOException {
         LocalDate localDate = LocalDate.now();
-        byte[] reportContent = reportService.getLeaveAndDateBetween(startDate,endDate,emId);
+        byte[] reportContent = reportService.getLeaveAndDateBetween(startDate, endDate, emId);
 
         ByteArrayResource arrayResource = new ByteArrayResource(reportContent);
 

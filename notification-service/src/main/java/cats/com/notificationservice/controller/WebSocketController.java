@@ -19,6 +19,7 @@ public class WebSocketController {
 
     @Value("${general.topic.name}")
     private String topic;
+
     @PostMapping("/send/kafkaMessages")
     public void sendKafkaMessage(@RequestBody Message message) {
         kafkaTemplate.send("messaging", message);

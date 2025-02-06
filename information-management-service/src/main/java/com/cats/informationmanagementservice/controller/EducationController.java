@@ -1,13 +1,9 @@
 package com.cats.informationmanagementservice.controller;
 
 import com.cats.informationmanagementservice.Dto.EducationDtoReq;
-import com.cats.informationmanagementservice.Dto.JobHistoryDtoReq;
 import com.cats.informationmanagementservice.base.BaseApi;
 import com.cats.informationmanagementservice.model.Education;
-import com.cats.informationmanagementservice.model.JobHistory;
-import com.cats.informationmanagementservice.model.SpecialAbility;
 import com.cats.informationmanagementservice.service.EducationService;
-import com.cats.informationmanagementservice.service.JobHistoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,9 +18,10 @@ import java.util.List;
 public class EducationController {
 
     private final EducationService educationService;
+
     @PostMapping("/addEducation")
-    public BaseApi<?> addEducation(@RequestBody EducationDtoReq educationDtoReq ) {
-      Education education = educationService.create(educationDtoReq);
+    public BaseApi<?> addEducation(@RequestBody EducationDtoReq educationDtoReq) {
+        Education education = educationService.create(educationDtoReq);
         return BaseApi.builder()
                 .status(true)
                 .code(HttpStatus.OK.value())
@@ -36,7 +33,7 @@ public class EducationController {
 
 
     @PutMapping("/editEducation/{Id}")
-    public BaseApi<?> editJobHistory(@RequestBody EducationDtoReq educationDtoReq , @PathVariable Long Id) {
+    public BaseApi<?> editJobHistory(@RequestBody EducationDtoReq educationDtoReq, @PathVariable Long Id) {
         Education education = educationService.edit(educationDtoReq, Id);
         return BaseApi.builder()
                 .status(true)
@@ -63,8 +60,9 @@ public class EducationController {
     @ResponseBody
     public ResponseEntity<?> deleteEducation(@PathVariable Long id) {
         educationService.delete(id);
-        return new ResponseEntity<>("This Education with Id: "+id +" have been deleted", HttpStatus.OK);
+        return new ResponseEntity<>("This Education with Id: " + id + " have been deleted", HttpStatus.OK);
     }
+
     @GetMapping("/getEducationById/{Id}")
     public BaseApi<?> educationById(@PathVariable Long Id) {
         Education education = educationService.getEducationById(Id);
@@ -76,6 +74,7 @@ public class EducationController {
                 .data(education)
                 .build();
     }
+
     @GetMapping("/getListEducationByEmId")
     public BaseApi<?> getListEducationByEmId(@RequestParam Long emId) {
         List<Education> educations = educationService.getEducationByEmId(emId);

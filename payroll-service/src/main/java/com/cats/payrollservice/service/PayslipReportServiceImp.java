@@ -23,18 +23,19 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 
-public class PayslipReportServiceImp implements PayslipReportService{
+public class PayslipReportServiceImp implements PayslipReportService {
     private final PayrollAndPayRepo payrollAndPayRepo;
-    @Value(value = "${file.image-path-cats.logo}")
-    private String catsLogo_path;
-    @Value(value = "${file.report-path}")
-    private String report_path;
     private final ApiService apiService;
     private final PayslipReprotRepo payslipReprotRepo;
     private final TaxService taxService;
     private final ServiceCalculate serviceCalculate;
-    public JasperReport jasperReport (String filePath) throws JRException {
-        return  JasperCompileManager.compileReport(filePath);
+    @Value(value = "${file.image-path-cats.logo}")
+    private String catsLogo_path;
+    @Value(value = "${file.report-path}")
+    private String report_path;
+
+    public JasperReport jasperReport(String filePath) throws JRException {
+        return JasperCompileManager.compileReport(filePath);
     }
 
     public JsonNode employeeInfo(Long emId) throws IOException {
@@ -45,9 +46,11 @@ public class PayslipReportServiceImp implements PayslipReportService{
         }
         return employeeInfo;
     }
-    private JRBeanCollectionDataSource beanCollectionDataSource (List<?> objects){
-        return  new JRBeanCollectionDataSource(objects);
+
+    private JRBeanCollectionDataSource beanCollectionDataSource(List<?> objects) {
+        return new JRBeanCollectionDataSource(objects);
     }
+
     @Transactional
     @Override
     public byte[] getPayslipForEmp(String refNo) throws IOException, JRException {
@@ -60,20 +63,21 @@ public class PayslipReportServiceImp implements PayslipReportService{
         String employeeName = employeeInfo.get("fullName").asText();
         String department = employeeInfo.get("department").asText();
         String section = employeeInfo.get("section").asText();
-        String filePath = report_path+ "report/PaySlip.jrxml";
+        String filePath = report_path + "report/PaySlip.jrxml";
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("catsLogo", catsLogo_path);
-        parameters.put("emId",paySlip.getEmpId());
+        parameters.put("emId", paySlip.getEmpId());
         parameters.put("username", employeeName);
         parameters.put("department", department);
-        parameters.put("section",section);
-        parameters.put("refNo",refNo);
-        parameters.put("date",paySlip.getDate().toString());
+        parameters.put("section", section);
+        parameters.put("refNo", refNo);
+        parameters.put("date", paySlip.getDate().toString());
         parameters.put("payPeriod", paySlip.getType());
-        parameters.put("tax_rate",paySlip.getTax_rate());
-        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport(filePath),parameters, beanCollectionDataSource(Collections.singletonList(paySlip)));
+        parameters.put("tax_rate", paySlip.getTax_rate());
+        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport(filePath), parameters, beanCollectionDataSource(Collections.singletonList(paySlip)));
         return JasperExportManager.exportReportToPdf(jasperPrint);
     }
+
     @Transactional
     @Override
     public byte[] getPayslipForFirstAndSecondPayments(String refNo) throws IOException, JRException {
@@ -83,36 +87,36 @@ public class PayslipReportServiceImp implements PayslipReportService{
         List<PaySlipReportDto> firstPayments = groupedPayroll.getOrDefault("First Payment", List.of());
         List<PaySlipReportDto> secondPayments = groupedPayroll.getOrDefault("Second Payment", List.of());
         double tax = 0;
-        if(!secondPayments.isEmpty()){
+        if (!secondPayments.isEmpty()) {
             Double khMoney = payroll.get(0).getSalary() * 4000D;
             tax = taxService.taxCalculator(khMoney) / 4000D;
         }
         JsonNode employeeInfo = apiService.getEmployeeInFoByEmId(payroll.get(0).getEmpId());
         if (employeeInfo == null) {
-            throw new IOException("Employee information not found for ID: " +payroll.get(0).getEmpId());
+            throw new IOException("Employee information not found for ID: " + payroll.get(0).getEmpId());
         }
         double totalEarn = payroll.stream().mapToDouble(PaySlipReportDto::getTotal_earning).sum();
         String employeeName = employeeInfo.get("fullName").asText();
         String department = employeeInfo.get("department").asText();
         String section = employeeInfo.get("section").asText();
-        String filePath = report_path+ "report/PaySlip2.jrxml";
+        String filePath = report_path + "report/PaySlip2.jrxml";
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("catsLogo", catsLogo_path);
-        parameters.put("emId",payroll.get(0).getEmpId());
+        parameters.put("emId", payroll.get(0).getEmpId());
         parameters.put("username", employeeName);
         parameters.put("department", department);
-        parameters.put("section",section);
-        parameters.put("refNo",refNo);
-        parameters.put("date",payroll.get(0).getDate());
-        parameters.put("payPeriod",payroll.get(0).getType());
-        parameters.put("tax_rate",payroll.get(0).getTax_rate());
-        parameters.put("datasetFirst",beanCollectionDataSource(firstPayments));
-        parameters.put("datasetSecond",beanCollectionDataSource(secondPayments));
-        parameters.put("net",serviceCalculate.roundUp(totalEarn));
-        parameters.put("tax",serviceCalculate.roundUp(tax));
-        parameters.put("salary",payroll.get(0).getSalary());
-        parameters.put("secondDataSetIsNull",secondPayments.isEmpty());
-        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport(filePath),parameters, new JREmptyDataSource());
+        parameters.put("section", section);
+        parameters.put("refNo", refNo);
+        parameters.put("date", payroll.get(0).getDate());
+        parameters.put("payPeriod", payroll.get(0).getType());
+        parameters.put("tax_rate", payroll.get(0).getTax_rate());
+        parameters.put("datasetFirst", beanCollectionDataSource(firstPayments));
+        parameters.put("datasetSecond", beanCollectionDataSource(secondPayments));
+        parameters.put("net", serviceCalculate.roundUp(totalEarn));
+        parameters.put("tax", serviceCalculate.roundUp(tax));
+        parameters.put("salary", payroll.get(0).getSalary());
+        parameters.put("secondDataSetIsNull", secondPayments.isEmpty());
+        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport(filePath), parameters, new JREmptyDataSource());
         return JasperExportManager.exportReportToPdf(jasperPrint);
     }
 
@@ -122,15 +126,15 @@ public class PayslipReportServiceImp implements PayslipReportService{
         String employeeName = employeeInfo(emId).get("fullName").asText();
         String department = employeeInfo(emId).get("department").asText();
         String section = employeeInfo(emId).get("section").asText();
-        String filePath = report_path+ "report/payrollList.jrxml";
+        String filePath = report_path + "report/payrollList.jrxml";
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("catsLogo", catsLogo_path);
-        parameters.put("emId",emId);
+        parameters.put("emId", emId);
         parameters.put("username", employeeName);
         parameters.put("department", department);
-        parameters.put("section",section);
+        parameters.put("section", section);
         parameters.put("payslipDataset", beanCollectionDataSource(getListPaySlip()));
-        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport(filePath),parameters, new JREmptyDataSource());
+        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport(filePath), parameters, new JREmptyDataSource());
         return JasperExportManager.exportReportToPdf(jasperPrint);
     }
 
@@ -141,15 +145,15 @@ public class PayslipReportServiceImp implements PayslipReportService{
         String employeeName = employeeInfo(emId).get("fullName").asText();
         String department = employeeInfo(emId).get("department").asText();
         String section = employeeInfo(emId).get("section").asText();
-        String filePath = report_path+ "report/payrollList.jrxml";
+        String filePath = report_path + "report/payrollList.jrxml";
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("catsLogo", catsLogo_path);
-        parameters.put("emId",emId);
+        parameters.put("emId", emId);
         parameters.put("username", employeeName);
         parameters.put("department", department);
-        parameters.put("section",section);
+        parameters.put("section", section);
         parameters.put("payslipDataset", beanCollectionDataSource(getPayrollByCreateDate(date)));
-        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport(filePath),parameters, new JREmptyDataSource());
+        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport(filePath), parameters, new JREmptyDataSource());
         return JasperExportManager.exportReportToPdf(jasperPrint);
 
     }

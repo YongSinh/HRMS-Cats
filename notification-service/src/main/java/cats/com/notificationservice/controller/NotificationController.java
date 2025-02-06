@@ -38,11 +38,11 @@ public class NotificationController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<MessageFull> pagedMessages = messageService.getNotificationsForUser(userId, type ,pageable);
+        Page<MessageFull> pagedMessages = messageService.getNotificationsForUser(userId, type, pageable);
         return BaseApi.builder()
                 .status(true)
                 .code(HttpStatus.OK.value())
-                .message("List All the notification for userId: "+ userId)
+                .message("List All the notification for userId: " + userId)
                 .timestamp(LocalDateTime.now())
                 .data(buildPagedResponse(pagedMessages))
                 .build();
@@ -79,7 +79,7 @@ public class NotificationController {
         return BaseApi.builder()
                 .status(true)
                 .code(HttpStatus.OK.value())
-                .message("List All the notification unread count for userId: "+ userId)
+                .message("List All the notification unread count for userId: " + userId)
                 .timestamp(LocalDateTime.now())
                 .data(unreadCount)
                 .build();
@@ -91,7 +91,7 @@ public class NotificationController {
         return BaseApi.builder()
                 .status(true)
                 .code(HttpStatus.OK.value())
-                .message("List the notification have been mark as read for userId: "+ userId)
+                .message("List the notification have been mark as read for userId: " + userId)
                 .timestamp(LocalDateTime.now())
                 .data(null)
                 .build();

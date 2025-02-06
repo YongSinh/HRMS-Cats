@@ -4,7 +4,6 @@ import cats.com.notificationservice.broker.Sender;
 import cats.com.notificationservice.message.Message;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
@@ -14,9 +13,9 @@ import org.springframework.stereotype.Controller;
 
 @Controller
 public class MessageController {
+    private static final Logger logger = LoggerFactory.getLogger(MessageController.class);
     private final Sender sender;
     private final SimpMessageSendingOperations messagingTemplate;
-    private static final Logger logger = LoggerFactory.getLogger(MessageController.class);
 
     public MessageController(Sender sender, SimpMessageSendingOperations messagingTemplate) {
         this.sender = sender;

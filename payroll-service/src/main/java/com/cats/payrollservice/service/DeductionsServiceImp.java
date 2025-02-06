@@ -1,7 +1,6 @@
 package com.cats.payrollservice.service;
 
 import com.cats.payrollservice.dto.request.DeductionsReqDto;
-import com.cats.payrollservice.model.Allowances;
 import com.cats.payrollservice.model.Deductions;
 import com.cats.payrollservice.repository.DeductionsRepo;
 import lombok.RequiredArgsConstructor;
@@ -11,8 +10,9 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class DeductionsServiceImp implements DeductionsService{
+public class DeductionsServiceImp implements DeductionsService {
     private final DeductionsRepo deductionsRepo;
+
     @Override
     public Deductions create(DeductionsReqDto deductionsReqDto) {
         Deductions deductions = new Deductions();
@@ -33,9 +33,9 @@ public class DeductionsServiceImp implements DeductionsService{
 
     @Override
     public Deductions getDeductionsById(Long Id) {
-            return deductionsRepo.findById(Id).orElseThrow(() ->
-                    new IllegalArgumentException(
-                            "Deductions with id: " + Id + " could not be found"));
+        return deductionsRepo.findById(Id).orElseThrow(() ->
+                new IllegalArgumentException(
+                        "Deductions with id: " + Id + " could not be found"));
 
 
     }

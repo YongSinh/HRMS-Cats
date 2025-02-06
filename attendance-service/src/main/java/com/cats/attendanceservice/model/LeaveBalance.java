@@ -15,19 +15,19 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Getter
 @Setter
-public class LeaveBalance  {
-        @Id
-        @GeneratedValue(strategy= GenerationType.AUTO)
-        @Column(name = "id")
-        private Long id;
-        @Column(name = "empid")
-        private Long empId;
-        @Column(name = "balance_amount")
-        private Long balanceAmount;
-        @Column(name = "last_update_date")
-        private LocalDateTime lastUpdateDate;
-        @ManyToOne( fetch = FetchType.LAZY, optional = false)
-        @JsonBackReference
-        @JoinColumn(name = "leave_type_id")
-        private LeaveType leaveType;
+public class LeaveBalance {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
+    private Long id;
+    @Column(name = "empid")
+    private Long empId;
+    @Column(name = "balance_amount")
+    private Long balanceAmount;
+    @Column(name = "last_update_date")
+    private LocalDateTime lastUpdateDate;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JsonBackReference
+    @JoinColumn(name = "leave_type_id")
+    private LeaveType leaveType;
 }

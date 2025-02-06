@@ -17,6 +17,7 @@ import java.util.List;
 public class TaxController {
 
     private final TaxService taxService;
+
     @PostMapping("/addTax")
     public BaseApi<?> addTax(@RequestBody TaxReqDto tax) {
         Tax tax1 = taxService.addTax(tax);
@@ -28,6 +29,7 @@ public class TaxController {
                 .data(tax1)
                 .build();
     }
+
     @PutMapping("/editTax/{id}")
     public BaseApi<?> editTax(@RequestBody TaxReqDto tax, @PathVariable Long id) {
         Tax tax1 = taxService.updateTax(tax, id);
@@ -87,6 +89,7 @@ public class TaxController {
                 .data(tax1)
                 .build();
     }
+
     @DeleteMapping("/deleteTax/{id}")
     public BaseApi<?> deleteTax(@PathVariable Long id) {
         taxService.deleteTax(id);

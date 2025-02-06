@@ -8,10 +8,10 @@ import lombok.Setter;
 @Setter
 @Getter
 @Entity
-@Table(name ="emergency_contact" )
+@Table(name = "emergency_contact")
 public class EmergencyContact {
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private Long id;
 
@@ -28,7 +28,7 @@ public class EmergencyContact {
     @Column(name = "office_tel")
     private String officeTel;
 
-    @ManyToOne( fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "empid")
     @JsonBackReference
     private Employee employee;

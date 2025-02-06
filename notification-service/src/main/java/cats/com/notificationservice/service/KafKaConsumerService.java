@@ -10,7 +10,6 @@ import io.micrometer.observation.ObservationRegistry;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -26,7 +25,8 @@ public class KafKaConsumerService {
     private final CommandController commandController;
     private final MessageService messageService;
     private final ApiService apiService;
-	@KafkaListener(topics = "${notification.topic.name}", groupId = "${notification.topic.group.id}", containerFactory = "notificationMessageKafkaListenerContainerFactory")
+
+    @KafkaListener(topics = "${notification.topic.name}", groupId = "${notification.topic.group.id}", containerFactory = "notificationMessageKafkaListenerContainerFactory")
     public void consume(NotificationMessage notificationMessage) {
         log.info("Message received -> {}", notificationMessage.getMessage());
 
@@ -50,14 +50,14 @@ public class KafKaConsumerService {
     @KafkaListener(topics = "${general.topic.name}", groupId = "${general.topic.group.id}", containerFactory = "messageFullKafkaListenerContainerFactory")
     public void consumeGen(MessageFull message) {
         webSocketController.sendGenMessage(message);
-       // messageService.saveMessage(messageFull);
-        System.out.println("Sent message: {} with test offset: {}"+ message.getEnglishText());
+        // messageService.saveMessage(messageFull);
+        System.out.println("Sent message: {} with test offset: {}" + message.getEnglishText());
     }
 
     @KafkaListener(topics = "messageGen", groupId = "${general.topic.group.id}", containerFactory = "messageFullKafkaListenerContainerFactory")
     public void consumeGen2(MessageFull message) throws IOException {
         Collection<Long> emIds = apiService.getListEmId();
-        for (Long emId : emIds){
+        for (Long emId : emIds) {
             MessageFull messageFull = new MessageFull();
             messageFull.setEnglishText(message.getEnglishText());
             messageFull.setSender(message.getSender());

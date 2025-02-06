@@ -4,7 +4,6 @@ import com.cats.attendanceservice.model.MessageFull;
 import com.cats.attendanceservice.model.NotificationMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
@@ -20,15 +19,12 @@ public class KafKaProducerService {
 
     //1. General topic with string payload
 
+    private final KafkaTemplate<String, NotificationMessage> kafkaTemplate;
+    private final KafkaTemplate<String, MessageFull> messageFullKafkaTemplate;
     @Value(value = "${general.topic.name}")
     private String topicName;
 
-
-    private final  KafkaTemplate<String, NotificationMessage> kafkaTemplate;
-    private final  KafkaTemplate<String, MessageFull> messageFullKafkaTemplate;
-
     //2. Topic with user object payload
-
     @Value(value = "${user.topic.name}")
     private String userTopicName;
 

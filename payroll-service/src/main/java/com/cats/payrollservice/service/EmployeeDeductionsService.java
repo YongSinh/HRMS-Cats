@@ -12,15 +12,26 @@ import java.util.List;
 public interface EmployeeDeductionsService {
 
     List<EmployeeDeductions> createMultiple(EmployeeDeductionsReqDto employeeDeductionsReqDto, List<Long> emIds);
+
     EmployeeDeductions addDeductions(EmployeeDeductionsReqDto2 employeeDeductionsReqDto);
+
     List<EmployeeDeductions> addMoreToPaySlip(EmployeeDeductionsReqDto employeeDeductionsReqDto, Long emId, Long id);
+
     EmployeeDeductions update(EmployeeDeductionsReqDto2 employeeDeductionsReqDto, Long Id);
+
     EmployeeDeductions getEmployeeDeductionsById(Long id);
+
     List<EmployeeDeductions> getListEmployeeDeductions();
+
     List<EmployeeDeductions> getListEmployeeDeductionsByEmId(Long emId);
+
     List<EmployeeDeductionsRepDto> getListEmployeeDeductionsByPaySlipId(Long id);
+
     void deleteEmployeeDeductions(Long id);
+
     void deleteEmpDeductionsByPlaySlip(Long id);
+
     List<EmployeeDeductionsRepDto> getDeductionsForCurrentMonth(Long emId);
+
     List<EmployeeDeductions> createEmployeeDeductions(List<EmployeeDeductionsDto5> deductionsDtos);
 }

@@ -16,6 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SiblingDataController {
     private final SiblingDataService siblingDataService;
+
     @PostMapping("/addSiblingData")
     public BaseApi<?> addSiblingData(@RequestBody SiblingDataDtoReq siblingDataDtoReq) {
         SiblingData siblingData = siblingDataService.create(siblingDataDtoReq);
@@ -27,9 +28,10 @@ public class SiblingDataController {
                 .data(siblingData)
                 .build();
     }
+
     @GetMapping("/getListSiblingData")
     public BaseApi<?> getListSiblingData() {
-       List<SiblingData> siblingData = siblingDataService.getListSiblingData();
+        List<SiblingData> siblingData = siblingDataService.getListSiblingData();
         return BaseApi.builder()
                 .status(true)
                 .code(HttpStatus.OK.value())
@@ -38,6 +40,7 @@ public class SiblingDataController {
                 .data(siblingData)
                 .build();
     }
+
     @GetMapping("/getListSiblingDataByEmId")
     public BaseApi<?> getListSiblingDataByEmId(@RequestParam Long emId) {
         List<SiblingData> siblingData = siblingDataService.getListSiblingDataByEmId(emId);
@@ -49,6 +52,7 @@ public class SiblingDataController {
                 .data(siblingData)
                 .build();
     }
+
     @GetMapping("/getSiblingDataById/{id}")
     public BaseApi<?> getListSiblingDataById(@PathVariable Long id) {
         SiblingData siblingData = siblingDataService.getSiblingData(id);
@@ -62,8 +66,8 @@ public class SiblingDataController {
     }
 
     @PutMapping("/editSiblingData/{id}")
-    public BaseApi<?> editSiblingData(@PathVariable Long id, @RequestBody  SiblingDataDtoReq siblingDataDtoReq) {
-        SiblingData siblingData = siblingDataService.edit(siblingDataDtoReq,id);
+    public BaseApi<?> editSiblingData(@PathVariable Long id, @RequestBody SiblingDataDtoReq siblingDataDtoReq) {
+        SiblingData siblingData = siblingDataService.edit(siblingDataDtoReq, id);
         return BaseApi.builder()
                 .status(true)
                 .code(HttpStatus.OK.value())
@@ -72,6 +76,7 @@ public class SiblingDataController {
                 .data(siblingData)
                 .build();
     }
+
     @DeleteMapping("/deleteSiblingData/{id}")
     public BaseApi<?> deleteSiblingData(@PathVariable Long id) {
         SiblingData siblingData = siblingDataService.getSiblingData(id);

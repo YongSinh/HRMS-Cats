@@ -21,6 +21,7 @@ class PayrollServiceApplicationTests {
         // Combine date and random parts
         return datePart + "-" + String.format("%06d", randomPart);
     }
+
     @Test
     void contextLoads() {
         String payrollReference = generatePayrollReference();

@@ -3,7 +3,6 @@ package com.cats.attendanceservice.service;
 import com.cats.attendanceservice.dto.WebFluxResponse;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -22,6 +21,7 @@ import java.util.List;
 @Slf4j
 public class ApiService {
     private final WebClient.Builder webClientBuilder;
+
     public Collection<Long> getEmployeeByUnderMangerOnlyEmId(Long emId) {
         // Send message to Kafka
         //kafKaProducerService.sendMessage(emId.toString());
@@ -79,6 +79,7 @@ public class ApiService {
             return Collections.emptyList();
         }
     }
+
     public String getEmpName(Long emId) {
         // Asynchronously retrieve the employee name
         Mono<String> nameMono = webClientBuilder.build().get()
@@ -106,7 +107,7 @@ public class ApiService {
         WebFluxResponse response = webClientBuilder.build().get()
                 .uri("http://information-management-service/api/info/employee/getEmpInfoById",
                         uriBuilder -> uriBuilder.queryParam("emId", emId).build()
-                        )
+                )
                 .retrieve()
                 .bodyToMono(WebFluxResponse.class)
                 .block();

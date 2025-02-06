@@ -1,4 +1,5 @@
 package com.cats.payrollservice.dto.request;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

@@ -3,7 +3,6 @@ package com.cats.attendanceservice.service;
 import com.cats.attendanceservice.dto.*;
 import com.cats.attendanceservice.model.Attendance;
 import com.cats.attendanceservice.model.Leave;
-import com.cats.attendanceservice.model.LeaveBalance;
 import com.cats.attendanceservice.model.LeaveType;
 import com.cats.attendanceservice.repository.AttendanceRepo;
 import com.cats.attendanceservice.repository.LeaveRepo;
@@ -14,20 +13,19 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class LeaveServiceImp implements LeaveSerivce{
+public class LeaveServiceImp implements LeaveSerivce {
     private final LeaveRepo leaveRepo;
     private final LeaveBalanceService leaveBalanceService;
     private final LeaveTypeService leaveTypeService;
     private final AttendanceRepo attendanceRepo;
     private final FileService fileService;
     private final ApiService apiService;
+
     @Override
     public List<LeaveDtoRep> getListLeave() {
         return mapper.leaveToLeaveResponseDtos2(leaveRepo.findAllByOrderByCreatedAtDescLeaveIdDesc(), apiService);
@@ -45,7 +43,7 @@ public class LeaveServiceImp implements LeaveSerivce{
 
     @Override
     public List<LeaveDtoRep> getLeaveByEmIdAndDate(LocalDate date, Long emId) {
-        return mapper.leaveToLeaveResponseDtos2(leaveRepo.findByEmpIdAndCreatedAtOrderByCreatedAtDesc(emId,date), apiService);
+        return mapper.leaveToLeaveResponseDtos2(leaveRepo.findByEmpIdAndCreatedAtOrderByCreatedAtDesc(emId, date), apiService);
     }
 
     @Override
@@ -78,7 +76,7 @@ public class LeaveServiceImp implements LeaveSerivce{
         if (isLeaveApplied) {
             throw new IllegalArgumentException("Leave has already been applied for the specified date range.");
         }
-        if(leaveDtoReq.getLeaveTypeId() == null){
+        if (leaveDtoReq.getLeaveTypeId() == null) {
             throw new IllegalArgumentException("Please select the leave type");
         }
         LeaveType leaveType = leaveTypeService.getLeave(leaveDtoReq.getLeaveTypeId());
@@ -109,8 +107,8 @@ public class LeaveServiceImp implements LeaveSerivce{
         leave.setDayOfLeave(leaveDtoReq.getDayOfLeave());
         leave.setCreatedAt(leaveDtoReq.getCreatedAt());
         leave.setTimeOfHaftDay(leaveDtoReq.getTimeOfHaftDay());
-        if (file != null){
-            fileService.store(file,leaveDtoReq.getEmpId(),2, leaveDtoReq.getCreatedAt(), 2);
+        if (file != null) {
+            fileService.store(file, leaveDtoReq.getEmpId(), 2, leaveDtoReq.getCreatedAt(), 2);
         }
         return mapper.leaveToLeaveResponseDto(leaveRepo.save(leave));
     }
@@ -142,7 +140,7 @@ public class LeaveServiceImp implements LeaveSerivce{
         Leave leave = getLeaveById(Id);
         leave.setStartDate(leaveDtoReq.getStartDate());
         leave.setEndDate(leaveDtoReq.getEndDate());
-        if(leaveDtoReq.getLeaveTypeId() != null){
+        if (leaveDtoReq.getLeaveTypeId() != null) {
             LeaveType leaveType = leaveTypeService.getLeave(leaveDtoReq.getLeaveTypeId());
             leave.setLeaveType(leaveType);
         }
@@ -157,7 +155,7 @@ public class LeaveServiceImp implements LeaveSerivce{
         leave.setDayOfLeave(leaveDtoReq.getDayOfLeave());
         leave.setCreatedAt(leaveDtoReq.getCreatedAt());
         leave.setTimeOfHaftDay(leaveDtoReq.getTimeOfHaftDay());
-        if(leave.getApprovedByHr()){
+        if (leave.getApprovedByHr()) {
             leaveBalanceService.editLeaveBalance(leaveDtoReq.getLeaveTypeId(), leaveDtoReq.getEmpId(), Long.valueOf(leaveDtoReq.getDayOfLeave()));
         }
         return mapper.leaveToLeaveResponseDto(leaveRepo.save(leave));
@@ -165,14 +163,14 @@ public class LeaveServiceImp implements LeaveSerivce{
 
     @Transactional
     @Override
-    public LeaveDtoRep editLeave(LeaveDtoReqEdit leaveDtoReq, MultipartFile file ) throws IOException {
+    public LeaveDtoRep editLeave(LeaveDtoReqEdit leaveDtoReq, MultipartFile file) throws IOException {
         Leave leave = getLeaveById(leaveDtoReq.getLeaveId());
         if (leave.getStatus()) {
             throw new IllegalArgumentException("Changes cannot be made because the leave has already been submitted.");
         }
         leave.setStartDate(leaveDtoReq.getStartDate());
         leave.setEndDate(leaveDtoReq.getEndDate());
-        if(leaveDtoReq.getLeaveTypeId() != null){
+        if (leaveDtoReq.getLeaveTypeId() != null) {
             LeaveType leaveType = leaveTypeService.getLeave(leaveDtoReq.getLeaveTypeId());
             leave.setLeaveType(leaveType);
         }
@@ -181,11 +179,11 @@ public class LeaveServiceImp implements LeaveSerivce{
         leave.setDayOfLeave(leaveDtoReq.getDayOfLeave());
         leave.setCreatedAt(leaveDtoReq.getCreatedAt());
         leave.setTimeOfHaftDay(leaveDtoReq.getTimeOfHaftDay());
-        if (file != null){
-            if(leaveDtoReq.getFileId().isEmpty()){
-                fileService.store(file,leaveDtoReq.getEmpId(),2, leaveDtoReq.getCreatedAt(), 2);
-            }else {
-                fileService.updateStore(file,leaveDtoReq.getEmpId(),2, leaveDtoReq.getCreatedAt(), 2, leaveDtoReq.getFileId());
+        if (file != null) {
+            if (leaveDtoReq.getFileId().isEmpty()) {
+                fileService.store(file, leaveDtoReq.getEmpId(), 2, leaveDtoReq.getCreatedAt(), 2);
+            } else {
+                fileService.updateStore(file, leaveDtoReq.getEmpId(), 2, leaveDtoReq.getCreatedAt(), 2, leaveDtoReq.getFileId());
             }
 
         }
@@ -195,27 +193,29 @@ public class LeaveServiceImp implements LeaveSerivce{
     //for manger to approved
     @Override
     public LeaveDtoRep ApprovedByManger(Long Id) {
-            Leave leave = getLeaveById(Id);
-            leave.setApprovedByManger(true);
+        Leave leave = getLeaveById(Id);
+        leave.setApprovedByManger(true);
         return mapper.leaveToLeaveResponseDto(leaveRepo.save(leave));
     }
+
     //for Head of department to approved
     @Override
     public LeaveDtoRep ApprovedByHead(Long Id) {
-            Leave leave = getLeaveById(Id);
-            leave.setApprovedByManger(true);
-            leave.setApprovedByHead(true);
+        Leave leave = getLeaveById(Id);
+        leave.setApprovedByManger(true);
+        leave.setApprovedByHead(true);
         return mapper.leaveToLeaveResponseDto(leaveRepo.save(leave));
     }
+
     @Transactional
     @Override
     public LeaveDtoRep ApprovedByHr(Long Id) {
-            Leave leave = getLeaveById(Id);
-            leave.setApprovedByManger(true);
-            leave.setApprovedByHead(true);
-            leave.setApprovedByHr(true);
-            leave.setApproved(true);
-            leaveBalanceService.editLeaveBalance(leave.getLeaveType().getId(), leave.getEmpId(), Long.valueOf(leave.getDayOfLeave()));
+        Leave leave = getLeaveById(Id);
+        leave.setApprovedByManger(true);
+        leave.setApprovedByHead(true);
+        leave.setApprovedByHr(true);
+        leave.setApproved(true);
+        leaveBalanceService.editLeaveBalance(leave.getLeaveType().getId(), leave.getEmpId(), Long.valueOf(leave.getDayOfLeave()));
         return mapper.leaveToLeaveResponseDto(leaveRepo.save(leave));
     }
 
@@ -263,6 +263,7 @@ public class LeaveServiceImp implements LeaveSerivce{
         leave.setStatus(false);
         return mapper.leaveToLeaveResponseDto(leaveRepo.save(leave));
     }
+
     @Transactional
     @Override
     public List<LeaveDtoRep> getListLeaveForMangement(Long emId) {
@@ -294,7 +295,7 @@ public class LeaveServiceImp implements LeaveSerivce{
     @Override
     public void delete(Long Id) {
         Leave leave = getLeaveById(Id);
-        if(!leave.getStatus()){
+        if (!leave.getStatus()) {
             leaveRepo.delete(leave);
         }
         throw new IllegalArgumentException("You can not delete leave!");

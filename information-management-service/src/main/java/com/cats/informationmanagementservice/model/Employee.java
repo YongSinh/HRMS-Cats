@@ -4,7 +4,10 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -20,91 +23,91 @@ import java.util.List;
 @Table(name = "employee")
 public class Employee {
     @Id
-    @Column(name ="empid" )
+    @Column(name = "empid")
     private Long empId;
-    @Column(name ="firstName" )
+    @Column(name = "firstName")
     private String firstName;
-    @Column(name ="lastName" )
+    @Column(name = "lastName")
     private String lastName;
-    @Column(name ="email")
+    @Column(name = "email")
     private String email;
-    @Column(name ="phone")
+    @Column(name = "phone")
     private String phone;
-    @Column(name ="birthDate")
+    @Column(name = "birthDate")
     private LocalDate birthDate;
-    @Column(name ="placeOfBirth")
+    @Column(name = "placeOfBirth")
     private String placeOfBirth;
-    @Column(name ="age")
+    @Column(name = "age")
     private Long age;
-    @Column(name ="sex")
+    @Column(name = "sex")
     private String sex;
-    @Column(name ="Height")
+    @Column(name = "Height")
     private Double height;
-    @Column(name ="Weight")
+    @Column(name = "Weight")
     private Double Weight;
-    @Column(name ="address")
+    @Column(name = "address")
     private String address;
-    @Column(name ="empDate")
+    @Column(name = "empDate")
     private LocalDate empDate;
-    @Column(name ="joingDate")
+    @Column(name = "joingDate")
     private LocalDate joinDate;
-    @Column(name ="manager_id")
+    @Column(name = "manager_id")
     private Long mangerId;
-    @Column(name ="location")
-    private String  location;
-    @Column(name ="marital_stats")
+    @Column(name = "location")
+    private String location;
+    @Column(name = "marital_stats")
     private String maritalStats;
-    @Column(name ="nationality")
-    private String  nationality;
-    @Column(name ="workType")
+    @Column(name = "nationality")
+    private String nationality;
+    @Column(name = "workType")
     private String workType;
-    @Column(name ="religion")
-    private String  religion;
-    @Column(name ="id_card")
-    private String  idCard;
-    @Column(name ="passport_id")
-    private String  passport;
-    @Column(name ="remark")
-    private String  remark;
-    @Column(name ="gov_Officer")
-    private String  govOfficer;
-    @Column(name ="gov_tel")
-    private String  govTel;
-    @Column(name ="gov_officer_address")
-    private String  govAddress;
-    @Column(name ="gov_postion")
-    private String  govPosition;
+    @Column(name = "religion")
+    private String religion;
+    @Column(name = "id_card")
+    private String idCard;
+    @Column(name = "passport_id")
+    private String passport;
+    @Column(name = "remark")
+    private String remark;
+    @Column(name = "gov_Officer")
+    private String govOfficer;
+    @Column(name = "gov_tel")
+    private String govTel;
+    @Column(name = "gov_officer_address")
+    private String govAddress;
+    @Column(name = "gov_postion")
+    private String govPosition;
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonBackReference
-    @ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "department_id")
     private Department department;
 
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonBackReference
-    @ManyToOne(fetch = FetchType.LAZY , optional = false, cascade = { CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "positionid")
     private Position position;
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "employee", cascade = { CascadeType.PERSIST, CascadeType.MERGE ,CascadeType.REMOVE}, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "employee", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, fetch = FetchType.LAZY)
     private List<JobHistory> jobHistories = new ArrayList<>();
 
     @JsonManagedReference
     @JsonIgnore
-    @OneToMany(mappedBy = "employee", cascade = { CascadeType.PERSIST, CascadeType.MERGE,CascadeType.REMOVE }, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "employee", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, fetch = FetchType.LAZY)
     private List<Education> educations = new ArrayList<>();
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "employee", cascade = { CascadeType.PERSIST, CascadeType.MERGE , CascadeType.REMOVE}, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "employee", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, fetch = FetchType.LAZY)
     private List<EmergencyContact> emergencyContacts = new ArrayList<>();
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "employee", cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE }, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "employee", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, fetch = FetchType.LAZY)
     private List<SiblingData> siblingData = new ArrayList<>();
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "employee", cascade = { CascadeType.PERSIST, CascadeType.MERGE , CascadeType.REMOVE}, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "employee", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, fetch = FetchType.LAZY)
     private List<SpecialAbility> specialAbilities = new ArrayList<>();
 
 

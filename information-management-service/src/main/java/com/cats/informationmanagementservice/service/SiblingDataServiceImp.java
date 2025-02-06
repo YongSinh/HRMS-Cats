@@ -5,16 +5,16 @@ import com.cats.informationmanagementservice.model.Employee;
 import com.cats.informationmanagementservice.model.SiblingData;
 import com.cats.informationmanagementservice.repository.SiblingDataRepo;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class SiblingDataServiceImp implements SiblingDataService{
+public class SiblingDataServiceImp implements SiblingDataService {
     private final SiblingDataRepo siblingDataRepo;
     private final EmployeeService employeeService;
+
     @Override
     public List<SiblingData> getListSiblingData() {
         return siblingDataRepo.findAll();
@@ -44,7 +44,7 @@ public class SiblingDataServiceImp implements SiblingDataService{
         siblingData.setPosition(siblingDataDtoReq.getPosition());
         siblingData.setOffice(siblingDataDtoReq.getOffice());
         siblingData.setMaritalStats(siblingDataDtoReq.getMaritalStats());
-        if(siblingDataDtoReq.getEmpId() == null){
+        if (siblingDataDtoReq.getEmpId() == null) {
             throw new IllegalArgumentException("Employee at least");
         }
         Employee employee = employeeService.getPersonalDataById(siblingDataDtoReq.getEmpId());
@@ -64,7 +64,7 @@ public class SiblingDataServiceImp implements SiblingDataService{
         siblingData.setPosition(siblingDataDtoReq.getPosition());
         siblingData.setOffice(siblingDataDtoReq.getOffice());
         siblingData.setMaritalStats(siblingDataDtoReq.getMaritalStats());
-        if(siblingDataDtoReq.getEmpId() != null){
+        if (siblingDataDtoReq.getEmpId() != null) {
             Employee employee = employeeService.getPersonalDataById(siblingDataDtoReq.getEmpId());
             siblingData.setEmployee(employee);
         }

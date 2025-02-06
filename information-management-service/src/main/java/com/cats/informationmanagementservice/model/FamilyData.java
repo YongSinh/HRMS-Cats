@@ -2,7 +2,6 @@ package com.cats.informationmanagementservice.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import jdk.jfr.Enabled;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,9 +13,9 @@ import lombok.Setter;
 @Table(name = "family_data")
 @NoArgsConstructor
 @AllArgsConstructor
-public class  FamilyData {
+public class FamilyData {
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private Long id;
     @Column(name = "father_name")
@@ -35,7 +34,7 @@ public class  FamilyData {
     private String motherOccupation;
     @Column(name = "mother_phoneNum")
     private String motherPhoneNum;
-    @OneToOne ( fetch = FetchType.LAZY, optional = false)
+    @OneToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "empid")
     @JsonBackReference
     private Employee employee;

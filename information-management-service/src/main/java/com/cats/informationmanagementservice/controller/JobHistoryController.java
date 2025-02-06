@@ -1,12 +1,8 @@
 package com.cats.informationmanagementservice.controller;
 
-import com.cats.informationmanagementservice.Dto.DepartmentDtoRep;
 import com.cats.informationmanagementservice.Dto.JobHistoryDtoReq;
-import com.cats.informationmanagementservice.Dto.PositionDtoReq;
 import com.cats.informationmanagementservice.base.BaseApi;
-import com.cats.informationmanagementservice.model.FamilyData;
 import com.cats.informationmanagementservice.model.JobHistory;
-import com.cats.informationmanagementservice.model.Position;
 import com.cats.informationmanagementservice.service.JobHistoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -22,9 +18,10 @@ import java.util.List;
 public class JobHistoryController {
 
     private final JobHistoryService jobHistoryService;
+
     @PostMapping("/addJobHistory")
     public BaseApi<?> addJobHistory(@RequestBody JobHistoryDtoReq jobHistoryDtoReq) {
-      JobHistory jobHistory = jobHistoryService.create(jobHistoryDtoReq);
+        JobHistory jobHistory = jobHistoryService.create(jobHistoryDtoReq);
         return BaseApi.builder()
                 .status(true)
                 .code(HttpStatus.OK.value())
@@ -45,6 +42,7 @@ public class JobHistoryController {
                 .data(jobHistory)
                 .build();
     }
+
     @GetMapping("/getListJobHistoryByEmId")
     public BaseApi<?> getListJobHistoryByEmId(@RequestParam Long emId) {
         List<JobHistory> jobHistories = jobHistoryService.getListJobHistoryBy(emId);
@@ -68,12 +66,14 @@ public class JobHistoryController {
                 .data(jobHistories)
                 .build();
     }
+
     @DeleteMapping("/deleteJobHistory/{id}")
     @ResponseBody
     public ResponseEntity<?> deleteJobHistory(@PathVariable Long id) {
         jobHistoryService.delete(id);
-        return new ResponseEntity<>("This Job History with Id: "+id +" have been deleted", HttpStatus.OK);
+        return new ResponseEntity<>("This Job History with Id: " + id + " have been deleted", HttpStatus.OK);
     }
+
     @GetMapping("/getJobHistoryById/{Id}")
     public BaseApi<?> jobHistoryById(@PathVariable Long Id) {
         JobHistory jobHistories = jobHistoryService.getById(Id);

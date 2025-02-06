@@ -1,249 +1,262 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.21.3.final using JasperReports Library version 6.21.3-4a3078d20785ebe464f18037d738d12fc98c13cf  -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="PaySlip" pageWidth="595" pageHeight="586" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="ad9d158f-8e02-471a-b031-032c6a2e3b25">
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
-	<subDataset name="payslipDataset" uuid="58f66269-a6e6-4c07-a4f8-c894a16b1b62">
-		<queryString>
-			<![CDATA[]]>
-		</queryString>
-	</subDataset>
-	<parameter name="username" class="java.lang.String"/>
-	<parameter name="department" class="java.lang.String"/>
-	<parameter name="section" class="java.lang.String"/>
-	<parameter name="emId" class="java.lang.Long"/>
-	<parameter name="date" class="java.lang.String"/>
-	<parameter name="payPeriod" class="java.lang.String"/>
-	<parameter name="catsLogo" class="java.lang.String"/>
-	<parameter name="payslipDataset" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource"/>
-	<parameter name="refNo" class="java.lang.String"/>
-	<parameter name="Parameter1" class="java.lang.String"/>
-	<parameter name="tax_rate" class="java.lang.Double"/>
-	<queryString>
-		<![CDATA[]]>
-	</queryString>
-	<field name="salary" class="java.lang.Double"/>
-	<field name="allowances" class="java.lang.String"/>
-	<field name="total_allowances" class="java.lang.Double"/>
-	<field name="deductions" class="java.lang.String"/>
-	<field name="total_deductions" class="java.lang.Double"/>
-	<field name="net" class="java.lang.Double"/>
-	<field name="total_earning" class="java.lang.Double"/>
-	<background>
-		<band splitType="Stretch"/>
-	</background>
-	<title>
-		<band height="199" splitType="Stretch">
-			<staticText>
-				<reportElement x="0" y="0" width="180" height="40" uuid="f4f1ceb3-6f58-410e-8641-6c7d3ab2f966"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font fontName="Arial" size="22" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Payslip]]></text>
-			</staticText>
-			<image>
-				<reportElement x="435" y="0" width="119" height="49" uuid="93dda83a-a58a-4b73-b523-9309ca152198"/>
-				<imageExpression><![CDATA[$P{catsLogo}]]></imageExpression>
-			</image>
-			<line>
-				<reportElement x="0" y="96" width="250" height="1" forecolor="#6B6B6B" uuid="92041358-5c3d-449a-94ca-a8d9ec8b86e3">
-					<property name="com.jaspersoft.studio.unit.height" value="px"/>
-					<property name="com.jaspersoft.studio.unit.width" value="px"/>
-				</reportElement>
-			</line>
-			<staticText>
-				<reportElement x="0" y="97" width="100" height="20" uuid="0ebcfe00-b35c-4766-b8e2-c57c6cc358ef"/>
-				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Payaroll Date]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="130" y="97" width="120" height="20" uuid="cd7e2f38-cae2-4c6f-9c55-0a7f08e7f9b9"/>
-				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Ref No.]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="0" y="141" width="100" height="20" uuid="63b16585-04fe-4083-8116-5fab8db5799e"/>
-				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Payment Period]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="130" y="141" width="100" height="20" uuid="97e678f5-d8c8-4bcf-a1a7-92abe19e1f38"/>
-				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Tax]]></text>
-			</staticText>
-			<textField>
-				<reportElement x="0" y="155" width="100" height="20" uuid="a63be7f1-8eb3-456f-932e-eddb2ff66ad3"/>
-				<textElement verticalAlignment="Middle">
-					<font fontName="Arial"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{payPeriod}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="0" y="110" width="100" height="20" uuid="fcba8e88-2e9b-4cd7-a952-cce9bfdb5fe1"/>
-				<textElement verticalAlignment="Middle">
-					<font fontName="Arial"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{date}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="130" y="110" width="120" height="20" uuid="7409bd7b-aa94-4882-ae57-d4fbf128fa89"/>
-				<textElement verticalAlignment="Middle">
-					<font fontName="Arial"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{refNo}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="0" y="36" width="100" height="20" uuid="e6dff49b-8754-49e2-935f-a2360076c02e"/>
-				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{username}]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement x="0" y="57" width="250" height="40" uuid="f043d5d7-5ae7-41cd-b9fd-a2f38f5b0f90"/>
-				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="10" isBold="false"/>
-				</textElement>
-				<text><![CDATA[Russian Federation Blvd, Phum Kbal Domrey, Sankat Kakab, Khan Posenchey, Phnom Penh]]></text>
-			</staticText>
-			<line>
-				<reportElement x="0" y="140" width="250" height="1" forecolor="#6B6B6B" uuid="9e221f2a-b3a7-498e-a2f4-23fde2467922">
-					<property name="com.jaspersoft.studio.unit.height" value="px"/>
-					<property name="com.jaspersoft.studio.unit.width" value="px"/>
-				</reportElement>
-			</line>
-			<staticText>
-				<reportElement x="454" y="122" width="100" height="20" uuid="7713bb0d-0979-4ccc-b3d1-402b61ffeda5"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font fontName="Arial" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Department]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="454" y="79" width="100" height="20" uuid="847ff472-0466-497c-baa2-1220fb0ab9bf"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font fontName="Arial" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Section:]]></text>
-			</staticText>
-			<textField>
-				<reportElement x="454" y="141" width="100" height="20" uuid="954a322f-38fb-46f8-9249-28235c99bf9b"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font fontName="Arial"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{department}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="454" y="98" width="100" height="20" uuid="01d74b4c-e64f-42f1-b9ab-2cbbc19fe9ca"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font fontName="Arial"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{section}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="130" y="155" width="100" height="20" uuid="92d570c2-9fe8-4c49-91ad-b7513ed243cf"/>
-				<textElement verticalAlignment="Middle">
-					<font fontName="Arial"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{tax_rate}]]></textFieldExpression>
-			</textField>
-		</band>
-	</title>
-	<detail>
-		<band height="252" splitType="Stretch">
-			<staticText>
-				<reportElement x="0" y="0" width="180" height="22" uuid="535b122b-d36a-44e3-8366-9e76de4a48db"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font fontName="Arial" size="13" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Earnings]]></text>
-			</staticText>
-			<line>
-				<reportElement x="1" y="22" width="557" height="1" uuid="b0d7daca-6357-467c-be2e-8c289e033472"/>
-			</line>
-			<staticText>
-				<reportElement x="0" y="22" width="100" height="20" uuid="1c407bbb-2d8c-40a1-bda3-202270057b58"/>
-				<textElement verticalAlignment="Middle"/>
-				<text><![CDATA[Basic]]></text>
-			</staticText>
-			<textField textAdjust="StretchHeight">
-				<reportElement x="0" y="42" width="370" height="18" uuid="586c8336-4beb-461a-a1af-b5005ad3e33b"/>
-				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{allowances}== null || $F{allowances}.trim().isEmpty() ? " " : $F{allowances}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="457" y="23" width="100" height="19" uuid="b4ff0beb-15ba-4296-b920-e7a90414c827"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{salary}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="457" y="42" width="100" height="18" uuid="4576d09d-625d-4a4d-a65b-2d399ba26058"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{total_allowances} == null  ?  0.0  : $F{total_allowances} ]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement x="0" y="114" width="180" height="22" uuid="da204ad0-c008-4910-82b9-b3f0771527db"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font fontName="Arial" size="13" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Deduction]]></text>
-			</staticText>
-			<line>
-				<reportElement x="1" y="136" width="557" height="1" uuid="6e2a306b-1770-4834-ac64-01b9eca36950"/>
-			</line>
-			<textField textAdjust="StretchHeight">
-				<reportElement x="0" y="144" width="370" height="18" uuid="6d96fe10-15de-4698-a561-4c413e080fd8"/>
-				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{deductions}== null || $F{deductions}.trim().isEmpty() ? " " : $F{deductions}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="457" y="144" width="100" height="18" uuid="10520514-0695-4d5b-b305-ae327170940f"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{total_deductions}== null  ?  0.0  : $F{total_deductions}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="457" y="82" width="100" height="18" uuid="3f23e2ca-167c-48b2-a945-376de4ae05df"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{total_earning} == null  ?  0.0  : $F{total_earning}]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement x="330" y="82" width="100" height="18" uuid="6f05fdb5-9992-4a4e-9310-42d01452052d">
-					<property name="com.jaspersoft.studio.unit.height" value="px"/>
-				</reportElement>
-				<textElement textAlignment="Right" verticalAlignment="Middle"/>
-				<text><![CDATA[Total Earnings]]></text>
-			</staticText>
-			<textField>
-				<reportElement x="454" y="207" width="100" height="18" uuid="e39de515-3bd8-40a6-9fbf-3a3f5984a6b0"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{total_deductions}== null  ?  0.0  : $F{total_deductions}]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement x="327" y="207" width="100" height="18" uuid="1520d8f2-4794-4dfa-ad8d-d93a3ce1d39f">
-					<property name="com.jaspersoft.studio.unit.height" value="px"/>
-				</reportElement>
-				<textElement textAlignment="Right" verticalAlignment="Middle"/>
-				<text><![CDATA[Total Deduction]]></text>
-			</staticText>
-			<textField>
-				<reportElement x="454" y="234" width="100" height="18" uuid="1768e1ed-1a77-4946-9ed6-8f6c0e5a4ae4"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{net}]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement x="327" y="234" width="100" height="18" uuid="b295f934-59ed-4c05-8463-7279c0498ce4">
-					<property name="com.jaspersoft.studio.unit.height" value="px"/>
-				</reportElement>
-				<textElement textAlignment="Right" verticalAlignment="Middle"/>
-				<text><![CDATA[Net Pay]]></text>
-			</staticText>
-		</band>
-	</detail>
+<jasperReport xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xmlns="http://jasperreports.sourceforge.net/jasperreports"
+              xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd"
+              name="PaySlip" pageWidth="595" pageHeight="586" columnWidth="555" leftMargin="20" rightMargin="20"
+              topMargin="20" bottomMargin="20" uuid="ad9d158f-8e02-471a-b031-032c6a2e3b25">
+    <property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+    <subDataset name="payslipDataset" uuid="58f66269-a6e6-4c07-a4f8-c894a16b1b62">
+        <queryString>
+            <![CDATA[]]>
+        </queryString>
+    </subDataset>
+    <parameter name="username" class="java.lang.String"/>
+    <parameter name="department" class="java.lang.String"/>
+    <parameter name="section" class="java.lang.String"/>
+    <parameter name="emId" class="java.lang.Long"/>
+    <parameter name="date" class="java.lang.String"/>
+    <parameter name="payPeriod" class="java.lang.String"/>
+    <parameter name="catsLogo" class="java.lang.String"/>
+    <parameter name="payslipDataset" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource"/>
+    <parameter name="refNo" class="java.lang.String"/>
+    <parameter name="Parameter1" class="java.lang.String"/>
+    <parameter name="tax_rate" class="java.lang.Double"/>
+    <queryString>
+        <![CDATA[]]>
+    </queryString>
+    <field name="salary" class="java.lang.Double"/>
+    <field name="allowances" class="java.lang.String"/>
+    <field name="total_allowances" class="java.lang.Double"/>
+    <field name="deductions" class="java.lang.String"/>
+    <field name="total_deductions" class="java.lang.Double"/>
+    <field name="net" class="java.lang.Double"/>
+    <field name="total_earning" class="java.lang.Double"/>
+    <background>
+        <band splitType="Stretch"/>
+    </background>
+    <title>
+        <band height="199" splitType="Stretch">
+            <staticText>
+                <reportElement x="0" y="0" width="180" height="40" uuid="f4f1ceb3-6f58-410e-8641-6c7d3ab2f966"/>
+                <textElement textAlignment="Left" verticalAlignment="Middle">
+                    <font fontName="Arial" size="22" isBold="true"/>
+                </textElement>
+                <text><![CDATA[Payslip]]></text>
+            </staticText>
+            <image>
+                <reportElement x="435" y="0" width="119" height="49" uuid="93dda83a-a58a-4b73-b523-9309ca152198"/>
+                <imageExpression><![CDATA[$P{catsLogo}]]></imageExpression>
+            </image>
+            <line>
+                <reportElement x="0" y="96" width="250" height="1" forecolor="#6B6B6B"
+                               uuid="92041358-5c3d-449a-94ca-a8d9ec8b86e3">
+                    <property name="com.jaspersoft.studio.unit.height" value="px"/>
+                    <property name="com.jaspersoft.studio.unit.width" value="px"/>
+                </reportElement>
+            </line>
+            <staticText>
+                <reportElement x="0" y="97" width="100" height="20" uuid="0ebcfe00-b35c-4766-b8e2-c57c6cc358ef"/>
+                <textElement verticalAlignment="Middle">
+                    <font fontName="Arial" isBold="true"/>
+                </textElement>
+                <text><![CDATA[Payaroll Date]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="130" y="97" width="120" height="20" uuid="cd7e2f38-cae2-4c6f-9c55-0a7f08e7f9b9"/>
+                <textElement verticalAlignment="Middle">
+                    <font fontName="Arial" isBold="true"/>
+                </textElement>
+                <text><![CDATA[Ref No.]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="0" y="141" width="100" height="20" uuid="63b16585-04fe-4083-8116-5fab8db5799e"/>
+                <textElement verticalAlignment="Middle">
+                    <font fontName="Arial" isBold="true"/>
+                </textElement>
+                <text><![CDATA[Payment Period]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="130" y="141" width="100" height="20" uuid="97e678f5-d8c8-4bcf-a1a7-92abe19e1f38"/>
+                <textElement verticalAlignment="Middle">
+                    <font fontName="Arial" isBold="true"/>
+                </textElement>
+                <text><![CDATA[Tax]]></text>
+            </staticText>
+            <textField>
+                <reportElement x="0" y="155" width="100" height="20" uuid="a63be7f1-8eb3-456f-932e-eddb2ff66ad3"/>
+                <textElement verticalAlignment="Middle">
+                    <font fontName="Arial"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$P{payPeriod}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="0" y="110" width="100" height="20" uuid="fcba8e88-2e9b-4cd7-a952-cce9bfdb5fe1"/>
+                <textElement verticalAlignment="Middle">
+                    <font fontName="Arial"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$P{date}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="130" y="110" width="120" height="20" uuid="7409bd7b-aa94-4882-ae57-d4fbf128fa89"/>
+                <textElement verticalAlignment="Middle">
+                    <font fontName="Arial"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$P{refNo}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="0" y="36" width="100" height="20" uuid="e6dff49b-8754-49e2-935f-a2360076c02e"/>
+                <textElement verticalAlignment="Middle">
+                    <font fontName="Arial" isBold="true"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$P{username}]]></textFieldExpression>
+            </textField>
+            <staticText>
+                <reportElement x="0" y="57" width="250" height="40" uuid="f043d5d7-5ae7-41cd-b9fd-a2f38f5b0f90"/>
+                <textElement verticalAlignment="Middle">
+                    <font fontName="Arial" size="10" isBold="false"/>
+                </textElement>
+                <text>
+                    <![CDATA[Russian Federation Blvd, Phum Kbal Domrey, Sankat Kakab, Khan Posenchey, Phnom Penh]]></text>
+            </staticText>
+            <line>
+                <reportElement x="0" y="140" width="250" height="1" forecolor="#6B6B6B"
+                               uuid="9e221f2a-b3a7-498e-a2f4-23fde2467922">
+                    <property name="com.jaspersoft.studio.unit.height" value="px"/>
+                    <property name="com.jaspersoft.studio.unit.width" value="px"/>
+                </reportElement>
+            </line>
+            <staticText>
+                <reportElement x="454" y="122" width="100" height="20" uuid="7713bb0d-0979-4ccc-b3d1-402b61ffeda5"/>
+                <textElement textAlignment="Right" verticalAlignment="Middle">
+                    <font fontName="Arial" isBold="true"/>
+                </textElement>
+                <text><![CDATA[Department]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="454" y="79" width="100" height="20" uuid="847ff472-0466-497c-baa2-1220fb0ab9bf"/>
+                <textElement textAlignment="Right" verticalAlignment="Middle">
+                    <font fontName="Arial" isBold="true"/>
+                </textElement>
+                <text><![CDATA[Section:]]></text>
+            </staticText>
+            <textField>
+                <reportElement x="454" y="141" width="100" height="20" uuid="954a322f-38fb-46f8-9249-28235c99bf9b"/>
+                <textElement textAlignment="Right" verticalAlignment="Middle">
+                    <font fontName="Arial"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$P{department}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="454" y="98" width="100" height="20" uuid="01d74b4c-e64f-42f1-b9ab-2cbbc19fe9ca"/>
+                <textElement textAlignment="Right" verticalAlignment="Middle">
+                    <font fontName="Arial"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$P{section}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="130" y="155" width="100" height="20" uuid="92d570c2-9fe8-4c49-91ad-b7513ed243cf"/>
+                <textElement verticalAlignment="Middle">
+                    <font fontName="Arial"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$P{tax_rate}]]></textFieldExpression>
+            </textField>
+        </band>
+    </title>
+    <detail>
+        <band height="252" splitType="Stretch">
+            <staticText>
+                <reportElement x="0" y="0" width="180" height="22" uuid="535b122b-d36a-44e3-8366-9e76de4a48db"/>
+                <textElement textAlignment="Left" verticalAlignment="Middle">
+                    <font fontName="Arial" size="13" isBold="true"/>
+                </textElement>
+                <text><![CDATA[Earnings]]></text>
+            </staticText>
+            <line>
+                <reportElement x="1" y="22" width="557" height="1" uuid="b0d7daca-6357-467c-be2e-8c289e033472"/>
+            </line>
+            <staticText>
+                <reportElement x="0" y="22" width="100" height="20" uuid="1c407bbb-2d8c-40a1-bda3-202270057b58"/>
+                <textElement verticalAlignment="Middle"/>
+                <text><![CDATA[Basic]]></text>
+            </staticText>
+            <textField textAdjust="StretchHeight">
+                <reportElement x="0" y="42" width="370" height="18" uuid="586c8336-4beb-461a-a1af-b5005ad3e33b"/>
+                <textElement verticalAlignment="Middle"/>
+                <textFieldExpression>
+                    <![CDATA[$F{allowances}== null || $F{allowances}.trim().isEmpty() ? " " : $F{allowances}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="457" y="23" width="100" height="19" uuid="b4ff0beb-15ba-4296-b920-e7a90414c827"/>
+                <textElement textAlignment="Right" verticalAlignment="Middle"/>
+                <textFieldExpression><![CDATA[$F{salary}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="457" y="42" width="100" height="18" uuid="4576d09d-625d-4a4d-a65b-2d399ba26058"/>
+                <textElement textAlignment="Right" verticalAlignment="Middle"/>
+                <textFieldExpression>
+                    <![CDATA[$F{total_allowances} == null  ?  0.0  : $F{total_allowances} ]]></textFieldExpression>
+            </textField>
+            <staticText>
+                <reportElement x="0" y="114" width="180" height="22" uuid="da204ad0-c008-4910-82b9-b3f0771527db"/>
+                <textElement textAlignment="Left" verticalAlignment="Middle">
+                    <font fontName="Arial" size="13" isBold="true"/>
+                </textElement>
+                <text><![CDATA[Deduction]]></text>
+            </staticText>
+            <line>
+                <reportElement x="1" y="136" width="557" height="1" uuid="6e2a306b-1770-4834-ac64-01b9eca36950"/>
+            </line>
+            <textField textAdjust="StretchHeight">
+                <reportElement x="0" y="144" width="370" height="18" uuid="6d96fe10-15de-4698-a561-4c413e080fd8"/>
+                <textElement verticalAlignment="Middle"/>
+                <textFieldExpression>
+                    <![CDATA[$F{deductions}== null || $F{deductions}.trim().isEmpty() ? " " : $F{deductions}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="457" y="144" width="100" height="18" uuid="10520514-0695-4d5b-b305-ae327170940f"/>
+                <textElement textAlignment="Right" verticalAlignment="Middle"/>
+                <textFieldExpression>
+                    <![CDATA[$F{total_deductions}== null  ?  0.0  : $F{total_deductions}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="457" y="82" width="100" height="18" uuid="3f23e2ca-167c-48b2-a945-376de4ae05df"/>
+                <textElement textAlignment="Right" verticalAlignment="Middle"/>
+                <textFieldExpression>
+                    <![CDATA[$F{total_earning} == null  ?  0.0  : $F{total_earning}]]></textFieldExpression>
+            </textField>
+            <staticText>
+                <reportElement x="330" y="82" width="100" height="18" uuid="6f05fdb5-9992-4a4e-9310-42d01452052d">
+                    <property name="com.jaspersoft.studio.unit.height" value="px"/>
+                </reportElement>
+                <textElement textAlignment="Right" verticalAlignment="Middle"/>
+                <text><![CDATA[Total Earnings]]></text>
+            </staticText>
+            <textField>
+                <reportElement x="454" y="207" width="100" height="18" uuid="e39de515-3bd8-40a6-9fbf-3a3f5984a6b0"/>
+                <textElement textAlignment="Right" verticalAlignment="Middle"/>
+                <textFieldExpression>
+                    <![CDATA[$F{total_deductions}== null  ?  0.0  : $F{total_deductions}]]></textFieldExpression>
+            </textField>
+            <staticText>
+                <reportElement x="327" y="207" width="100" height="18" uuid="1520d8f2-4794-4dfa-ad8d-d93a3ce1d39f">
+                    <property name="com.jaspersoft.studio.unit.height" value="px"/>
+                </reportElement>
+                <textElement textAlignment="Right" verticalAlignment="Middle"/>
+                <text><![CDATA[Total Deduction]]></text>
+            </staticText>
+            <textField>
+                <reportElement x="454" y="234" width="100" height="18" uuid="1768e1ed-1a77-4946-9ed6-8f6c0e5a4ae4"/>
+                <textElement textAlignment="Right" verticalAlignment="Middle"/>
+                <textFieldExpression><![CDATA[$F{net}]]></textFieldExpression>
+            </textField>
+            <staticText>
+                <reportElement x="327" y="234" width="100" height="18" uuid="b295f934-59ed-4c05-8463-7279c0498ce4">
+                    <property name="com.jaspersoft.studio.unit.height" value="px"/>
+                </reportElement>
+                <textElement textAlignment="Right" verticalAlignment="Middle"/>
+                <text><![CDATA[Net Pay]]></text>
+            </staticText>
+        </band>
+    </detail>
 </jasperReport>

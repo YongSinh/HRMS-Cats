@@ -14,11 +14,14 @@ import java.util.Optional;
 @Repository
 public interface EmployeeRepo extends JpaRepository<Employee, Long> {
     List<Employee> findByDepartment(Department department);
+
     Optional<Employee> findByEmpId(Long empId);
+
     @Query(nativeQuery = true, value = "CALL GetEmployeeHierarchy(:manId, :depId)")
     List<Employee> callGetEmployeeHierarchyProcedure(@Param("manId") Long manId, @Param("depId") Long depId);
 
     List<Employee> findByDepartmentAndPosition(Department department, Position position);
+
     @Query("select a.empId from Employee as a")
     List<Long> findEmployeeId();
 

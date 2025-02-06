@@ -2,7 +2,6 @@ package com.cats.payrollservice.controller;
 
 import com.cats.payrollservice.base.BaseApi;
 import com.cats.payrollservice.dto.request.PayrollReqDto;
-import com.cats.payrollservice.model.Allowances;
 import com.cats.payrollservice.model.Payroll;
 import com.cats.payrollservice.non_entity_POJO.PayrollAndPaySlip;
 import com.cats.payrollservice.service.PayrollService;
@@ -11,7 +10,6 @@ import io.github.resilience4j.retry.annotation.Retry;
 import io.github.resilience4j.timelimiter.annotation.TimeLimiter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -26,6 +24,7 @@ import java.util.concurrent.CompletableFuture;
 public class PayrollController {
 
     private final PayrollService payrollService;
+
     @GetMapping("/payroll")
     public BaseApi<?> getListPayrollById() {
         List<Payroll> payrollList = payrollService.getListPayrollByDesc();
@@ -140,7 +139,7 @@ public class PayrollController {
             @RequestParam(name = "emId") Long emId
 
     ) {
-        List<Payroll> payrollList = payrollService.getListPayrollByEmIdAndDateBetween(emId,date, date2);
+        List<Payroll> payrollList = payrollService.getListPayrollByEmIdAndDateBetween(emId, date, date2);
         return BaseApi.builder()
                 .status(true)
                 .code(HttpStatus.OK.value())
@@ -151,8 +150,8 @@ public class PayrollController {
     }
 
     @GetMapping("/payrollByCreateDate")
-    public BaseApi<?> getListPayrollByCreateDate( @RequestParam LocalDate date) {
-        List <Payroll> payrollList = payrollService.getListPayrollByDate(date);
+    public BaseApi<?> getListPayrollByCreateDate(@RequestParam LocalDate date) {
+        List<Payroll> payrollList = payrollService.getListPayrollByDate(date);
         return BaseApi.builder()
                 .status(true)
                 .code(HttpStatus.OK.value())
@@ -165,7 +164,7 @@ public class PayrollController {
 
     @GetMapping("/fetchEmployeeIds")
     public BaseApi<?> fetchEmployeeIds(@RequestParam Long depId) {
-        List<Payroll> payrollList =  payrollService.findPayRollByDepEmId(depId);
+        List<Payroll> payrollList = payrollService.findPayRollByDepEmId(depId);
         return BaseApi.builder()
                 .status(true)
                 .code(HttpStatus.OK.value())
@@ -174,9 +173,10 @@ public class PayrollController {
                 .data(payrollList)
                 .build();
     }
+
     @PostMapping(value = "/addPayroll")
-    public BaseApi<?> addPayroll(@RequestBody PayrollReqDto payrollReqDto ) {
-        List<Payroll> payrollList =  payrollService.create(payrollReqDto);
+    public BaseApi<?> addPayroll(@RequestBody PayrollReqDto payrollReqDto) {
+        List<Payroll> payrollList = payrollService.create(payrollReqDto);
         return BaseApi.builder()
                 .status(true)
                 .code(HttpStatus.OK.value())
@@ -185,15 +185,16 @@ public class PayrollController {
                 .data(payrollList)
                 .build();
     }
+
     @CircuitBreaker(name = "management", fallbackMethod = "fallbackMethod")
     @TimeLimiter(name = "management")
     @Retry(name = "management")
     @PostMapping("/addPayrollAll")
-    public CompletableFuture<BaseApi<?>> addPayrollAll(@RequestPart("body") PayrollReqDto payrollReqDto)  {
+    public CompletableFuture<BaseApi<?>> addPayrollAll(@RequestPart("body") PayrollReqDto payrollReqDto) {
         return CompletableFuture.supplyAsync(() -> {
             List<Payroll> payrollList;
             try {
-                 payrollList =  payrollService.createAllEmp(payrollReqDto);
+                payrollList = payrollService.createAllEmp(payrollReqDto);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -217,8 +218,8 @@ public class PayrollController {
     }
 
     @PutMapping("/updatePayroll")
-    public BaseApi<?> updatePayroll(@RequestBody PayrollReqDto payrollReqDto, @RequestParam Long id ) {
-        Payroll payrollList =  payrollService.update(id, payrollReqDto);
+    public BaseApi<?> updatePayroll(@RequestBody PayrollReqDto payrollReqDto, @RequestParam Long id) {
+        Payroll payrollList = payrollService.update(id, payrollReqDto);
         return BaseApi.builder()
                 .status(true)
                 .code(HttpStatus.OK.value())

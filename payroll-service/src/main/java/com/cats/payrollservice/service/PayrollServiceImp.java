@@ -27,7 +27,7 @@ public class PayrollServiceImp implements PayrollService {
     private final TaxService taxService;
     private final SalariesService salariesService;
     private final WebClient.Builder webClientBuilder;
-    private final  ApiService apiService;
+    private final ApiService apiService;
     private final PayrollAndPayRepo payrollAndPayRepo;
 
     @Override
@@ -35,7 +35,6 @@ public class PayrollServiceImp implements PayrollService {
     public PayrollAndPaySlip getPayrollByRefNo2(String ref_no) {
         return payrollAndPayRepo.GetPayrollByRefNo2(ref_no);
     }
-
 
 
     @Override
@@ -47,11 +46,11 @@ public class PayrollServiceImp implements PayrollService {
 
     @Override
     public Payroll update(Long id, PayrollReqDto payrollReqDto) {
-            Payroll payroll = getPayrollById(id);
-            payroll.setDateCreate(LocalDate.now());
-            payroll.setType(1);
-            payroll.setStatus(payrollReqDto.getStatus());
-            return payrollRepo.save(payroll);
+        Payroll payroll = getPayrollById(id);
+        payroll.setDateCreate(LocalDate.now());
+        payroll.setType(1);
+        payroll.setStatus(payrollReqDto.getStatus());
+        return payrollRepo.save(payroll);
     }
 
 
@@ -61,7 +60,7 @@ public class PayrollServiceImp implements PayrollService {
         YearMonth currentMonth = YearMonth.now(); // Get current month
         LocalDate startOfMonth = currentMonth.atDay(1); // First day of the month
         LocalDate endOfMonth = currentMonth.atEndOfMonth(); // Last day of the month
-        for (Long emId : payrollReqDto.getEmpIds()){
+        for (Long emId : payrollReqDto.getEmpIds()) {
             existsByEmpIdAndDateCreateBetween(emId, startOfMonth, endOfMonth);
             Payroll payroll = new Payroll();
             String payrollReference = generatePayrollReference();
@@ -85,7 +84,7 @@ public class PayrollServiceImp implements PayrollService {
         YearMonth currentMonth = YearMonth.now(); // Get current month
         LocalDate startOfMonth = currentMonth.atDay(1); // First day of the month
         LocalDate endOfMonth = currentMonth.atEndOfMonth(); // Last day of the month
-        for (Long emId :emIds){
+        for (Long emId : emIds) {
             existsByEmpIdAndDateCreateBetween(emId, startOfMonth, endOfMonth);
             Payroll payroll = new Payroll();
             String payrollReference = generatePayrollReference();
@@ -124,7 +123,6 @@ public class PayrollServiceImp implements PayrollService {
 
         // Combine date and random parts
         return datePart + "-" + String.format("%06d", randomPart);
-
 
 
     }
@@ -169,7 +167,7 @@ public class PayrollServiceImp implements PayrollService {
                 .uri("http://information-management-service/api/info/employee/listEmployeeByDepOnlyEmId",
                         uriBuilder -> uriBuilder.queryParam("depId", depId).build())
                 .retrieve()
-                    .bodyToMono(WebFluxResponse.class)
+                .bodyToMono(WebFluxResponse.class)
                 .block();
         if (response != null && response.getCode() == 200) {
             JsonNode emIdList = response.getData();
@@ -190,12 +188,12 @@ public class PayrollServiceImp implements PayrollService {
 
     @Override
     public List<Payroll> getListPayrollByDateBetween(LocalDate start, LocalDate end) {
-        return payrollRepo.findByDateCreateBetween(start,end);
+        return payrollRepo.findByDateCreateBetween(start, end);
     }
 
     @Override
     public List<Payroll> getListPayrollByEmIdAndDateBetween(Long emId, LocalDate start, LocalDate end) {
-        return payrollRepo.findByEmpIdAndDateCreateBetween(emId,start,end);
+        return payrollRepo.findByEmpIdAndDateCreateBetween(emId, start, end);
     }
 
     @Override
@@ -203,6 +201,7 @@ public class PayrollServiceImp implements PayrollService {
         Payroll delete = getPayrollById(id);
         payrollRepo.delete(delete);
     }
+
     @Transactional
     @Override
     public void updateStatusByDate(LocalDate localDate) {
@@ -211,8 +210,8 @@ public class PayrollServiceImp implements PayrollService {
 
     @Override
     public void existsByEmpIdAndDateCreateBetween(Long empId, LocalDate dateCreate, LocalDate dateCreate2) {
-        if (payrollRepo.existsByEmpIdAndDateCreateBetween(empId,dateCreate,dateCreate2)) {
-            throw new IllegalArgumentException("Duplicate Payroll entry exists for the employee ID "+empId+" .");
+        if (payrollRepo.existsByEmpIdAndDateCreateBetween(empId, dateCreate, dateCreate2)) {
+            throw new IllegalArgumentException("Duplicate Payroll entry exists for the employee ID " + empId + " .");
         }
     }
 }

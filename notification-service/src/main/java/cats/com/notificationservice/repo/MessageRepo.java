@@ -11,14 +11,23 @@ import java.util.List;
 @Repository
 public interface MessageRepo extends JpaRepository<MessageFull, Integer> {
     List<MessageFull> findAllByOrderByDateTimeDesc();
+
     List<MessageFull> findBySenderAndServiceTypeOrderByDateTimeDesc(String sender, String serviceType);
+
     List<MessageFull> findBySenderOrderByDateTimeDesc(String sender);
+
     List<MessageFull> findByMessageTypeOrderByDateTimeDesc(String messageType);
+
     Page<MessageFull> findByMessageTypeOrderByDateTimeDesc(String messageType, Pageable pageable);
+
     List<MessageFull> findByReceiverAndIsRead(String receiver, Boolean isRead);
+
     Page<MessageFull> findAllByOrderByDateTimeDesc(Pageable pageable);
+
     List<MessageFull> findAllByReceiverAndIsReadFalse(String receiver, Pageable pageable);
+
     long countByReceiverAndIsReadFalse(String receiver);
+
     Page<MessageFull> findByMessageTypeAndReceiverOrderByDateTimeDesc(String messageType, String receiver, Pageable pageable);
 
 }

@@ -14,7 +14,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @EnableScheduling
-public class  LeaveBalanceResetTask {
+public class LeaveBalanceResetTask {
     private final LeaveTypeRepo leaveTypeRepo;
     private final LeaveBalanceRepo leaveBalanceRepo;
 

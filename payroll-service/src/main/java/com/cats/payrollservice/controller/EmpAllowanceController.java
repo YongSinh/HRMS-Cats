@@ -8,11 +8,9 @@ import com.cats.payrollservice.dto.response.EmployeeAllowancesRepDto;
 import com.cats.payrollservice.model.EmployeeAllowances;
 import com.cats.payrollservice.service.EmployeeAllowancesService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -22,6 +20,7 @@ import java.util.List;
 public class EmpAllowanceController {
 
     private final EmployeeAllowancesService employeeAllowancesService;
+
     @GetMapping("/empAllowances/getById")
     public BaseApi<?> getEmpAllowancesById(@RequestParam Long id) {
         EmployeeAllowancesRepDto employeeAllowances = employeeAllowancesService.getEmpAllowances(id);
@@ -108,7 +107,7 @@ public class EmpAllowanceController {
 
     @PutMapping("/empAllowances/addMore")
     public BaseApi<?> addMoreEmpAllowances(@RequestPart(name = "body") EmployeeAllowancesReqDto employeeAllowancesReqDto, @RequestPart(name = "emId") Long emId, @RequestParam(name = "id") Long id) {
-        List<EmployeeAllowancesRepDto> employeeAllowances = employeeAllowancesService.addMoreToPaySlip(employeeAllowancesReqDto,emId,id);
+        List<EmployeeAllowancesRepDto> employeeAllowances = employeeAllowancesService.addMoreToPaySlip(employeeAllowancesReqDto, emId, id);
         return BaseApi.builder()
                 .status(true)
                 .code(HttpStatus.OK.value())
@@ -120,7 +119,7 @@ public class EmpAllowanceController {
 
     @PutMapping("/empAllowances/update")
     public BaseApi<?> updateEmpAllowances(@RequestBody EmployeeAllowancesReqDto2 employeeAllowancesReqDto, @RequestParam(name = "id") Long id) {
-        EmployeeAllowancesRepDto employeeAllowances = employeeAllowancesService.update(employeeAllowancesReqDto,id);
+        EmployeeAllowancesRepDto employeeAllowances = employeeAllowancesService.update(employeeAllowancesReqDto, id);
         return BaseApi.builder()
                 .status(true)
                 .code(HttpStatus.OK.value())

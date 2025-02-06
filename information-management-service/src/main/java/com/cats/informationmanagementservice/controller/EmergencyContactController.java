@@ -18,11 +18,12 @@ import java.util.List;
 public class EmergencyContactController {
 
     private final EmergencyService emergencyService;
+
     @PostMapping("/add")
     public BaseApi<?> addEmergencyContact(@RequestBody EmergencyContactDtoReq emergencyContactDtoReq) {
 
         EmergencyContact emergencyContact = emergencyService.create(emergencyContactDtoReq);
-      return BaseApi.builder()
+        return BaseApi.builder()
                 .status(true)
                 .code(HttpStatus.OK.value())
                 .message("Emergency Contact have been created")
@@ -42,6 +43,7 @@ public class EmergencyContactController {
                 .data(emergencyContacts)
                 .build();
     }
+
     @PutMapping("/edit")
     public BaseApi<?> edit(@RequestBody EmergencyContactDtoReq emergencyContactDtoReq, @RequestParam Long Id) {
         EmergencyContact emergencyContact = emergencyService.edit(emergencyContactDtoReq, Id);
@@ -65,12 +67,14 @@ public class EmergencyContactController {
                 .data(emergencyContacts)
                 .build();
     }
+
     @DeleteMapping("/delete")
     @ResponseBody
     public ResponseEntity<?> deleteEmergencyContact(@RequestParam Long id) {
         emergencyService.delete(id);
-        return new ResponseEntity<>("This Emergency Contact  with Id: "+id +" have been deleted", HttpStatus.OK);
+        return new ResponseEntity<>("This Emergency Contact  with Id: " + id + " have been deleted", HttpStatus.OK);
     }
+
     @GetMapping("/getEmergencyContactById")
     public BaseApi<?> getEmergencyContactById(@RequestParam Long Id) {
         EmergencyContact emergencyContact = emergencyService.getEmergencyContactById(Id);

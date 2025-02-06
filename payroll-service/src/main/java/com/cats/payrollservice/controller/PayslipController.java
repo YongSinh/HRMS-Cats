@@ -2,12 +2,13 @@ package com.cats.payrollservice.controller;
 
 import com.cats.payrollservice.base.BaseApi;
 import com.cats.payrollservice.dto.request.PayslipReqDto;
-import com.cats.payrollservice.model.Payroll;
 import com.cats.payrollservice.model.Payslip;
 import com.cats.payrollservice.non_entity_POJO.PayrollAndPaySlip;
-import com.cats.payrollservice.service.*;
+import com.cats.payrollservice.service.EmployeeAllowancesService;
+import com.cats.payrollservice.service.EmployeeDeductionsService;
+import com.cats.payrollservice.service.PayslipReportService;
+import com.cats.payrollservice.service.PayslipService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,8 +21,9 @@ import java.util.List;
 public class PayslipController {
     private final PayslipService payslipService;
     private final PayslipReportService payslipReportService;
-   private final EmployeeAllowancesService employeeAllowancesService;
-   private final EmployeeDeductionsService employeeDeductionsService;
+    private final EmployeeAllowancesService employeeAllowancesService;
+    private final EmployeeDeductionsService employeeDeductionsService;
+
     @GetMapping("/payslips")
     public BaseApi<?> getListPayroll() {
         List<Payslip> payslips = payslipService.getListPaySlip();
@@ -99,7 +101,7 @@ public class PayslipController {
 
     @PutMapping("/payslips/update")
     public BaseApi<?> updatePaySlip(@RequestPart("body") PayslipReqDto payslipReqDto, @RequestPart("id") Long id) {
-        Payslip payslips = payslipService.update(payslipReqDto,id);
+        Payslip payslips = payslipService.update(payslipReqDto, id);
         return BaseApi.builder()
                 .status(true)
                 .code(HttpStatus.OK.value())

@@ -1,8 +1,5 @@
 package com.cats.informationmanagementservice.Dto;
 
-import com.cats.informationmanagementservice.model.Employee;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,10 +12,10 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class EducationDtoReq {
-    private String  eduLevel;
-    private String  eduInstitution;
+    private String eduLevel;
+    private String eduInstitution;
     private LocalDate yearEnd;
-    private String  major;
-    private Double  GPA;
+    private String major;
+    private Double GPA;
     private Long emID;
 }

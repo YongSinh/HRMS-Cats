@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class mapper {
-    public static TaxRepDto taxToTaxResponseDto(Tax tax){
+    public static TaxRepDto taxToTaxResponseDto(Tax tax) {
         TaxRepDto taxRepDto = new TaxRepDto();
         taxRepDto.setId(tax.getId());
         taxRepDto.setTaxableSalary(tax.getTaxableSalary());
@@ -26,13 +26,13 @@ public class mapper {
 
     public static List<TaxRepDto> taxToTaxResponseDtos(List<Tax> taxes) {
         List<TaxRepDto> taxRepDto = new ArrayList<>();
-        for (Tax tax: taxes) {
+        for (Tax tax : taxes) {
             taxRepDto.add(taxToTaxResponseDto(tax));
         }
         return taxRepDto;
     }
 
-    public static SalariesRepDto salariesToSalariesResponseDto(Salaries salaries){
+    public static SalariesRepDto salariesToSalariesResponseDto(Salaries salaries) {
         SalariesRepDto salariesRepDto = new SalariesRepDto();
         salariesRepDto.setSalary(salaries.getSalary());
         salariesRepDto.setFromDate(salaries.getFromDate());
@@ -45,13 +45,13 @@ public class mapper {
 
     public static List<SalariesRepDto> salariesToSalariesResponseDtos(List<Salaries> salariesList) {
         List<SalariesRepDto> salariesRepDtoList = new ArrayList<>();
-        for (Salaries salaries: salariesList) {
+        for (Salaries salaries : salariesList) {
             salariesRepDtoList.add(salariesToSalariesResponseDto(salaries));
         }
         return salariesRepDtoList;
     }
 
-    public static EmployeeAllowancesRepDto employeeAllowancesToEmployeeAllowancesResponseDto(EmployeeAllowances employeeAllowances){
+    public static EmployeeAllowancesRepDto employeeAllowancesToEmployeeAllowancesResponseDto(EmployeeAllowances employeeAllowances) {
         EmployeeAllowancesRepDto employeeAllowancesRepDto = new EmployeeAllowancesRepDto();
         employeeAllowancesRepDto.setEmpAllId(employeeAllowances.getEmpAllId());
         employeeAllowancesRepDto.setEmpId(employeeAllowances.getEmpId());
@@ -65,15 +65,15 @@ public class mapper {
         return employeeAllowancesRepDto;
     }
 
-    public static List<EmployeeAllowancesRepDto> employeeAllowancesToEmployeeAllowancesResponseDtos(List<EmployeeAllowances> employeeAllowancesList){
+    public static List<EmployeeAllowancesRepDto> employeeAllowancesToEmployeeAllowancesResponseDtos(List<EmployeeAllowances> employeeAllowancesList) {
         List<EmployeeAllowancesRepDto> employeeAllowancesRepDtos = new ArrayList<>();
-        for (EmployeeAllowances employeeAllowances : employeeAllowancesList){
+        for (EmployeeAllowances employeeAllowances : employeeAllowancesList) {
             employeeAllowancesRepDtos.add(employeeAllowancesToEmployeeAllowancesResponseDto(employeeAllowances));
         }
         return employeeAllowancesRepDtos;
     }
 
-    public static EmployeeDeductionsRepDto empDeductionsToEmpDeductionsResponseDto(EmployeeDeductions deductions){
+    public static EmployeeDeductionsRepDto empDeductionsToEmpDeductionsResponseDto(EmployeeDeductions deductions) {
         EmployeeDeductionsRepDto employeeDeductionsRepDto = new EmployeeDeductionsRepDto();
         employeeDeductionsRepDto.setEmpDedId(deductions.getEmpDedId());
         employeeDeductionsRepDto.setEmpId(deductions.getEmpId());
@@ -86,14 +86,13 @@ public class mapper {
         return employeeDeductionsRepDto;
     }
 
-    public static List<EmployeeDeductionsRepDto> empDeductionsToEmpDeductionsResponseDtos(List<EmployeeDeductions> deductions){
+    public static List<EmployeeDeductionsRepDto> empDeductionsToEmpDeductionsResponseDtos(List<EmployeeDeductions> deductions) {
         List<EmployeeDeductionsRepDto> employeeDeductionsRepDto = new ArrayList<>();
-        for (EmployeeDeductions employeeDeductions : deductions){
+        for (EmployeeDeductions employeeDeductions : deductions) {
             employeeDeductionsRepDto.add(empDeductionsToEmpDeductionsResponseDto(employeeDeductions));
         }
         return employeeDeductionsRepDto;
     }
-
 
 
 }

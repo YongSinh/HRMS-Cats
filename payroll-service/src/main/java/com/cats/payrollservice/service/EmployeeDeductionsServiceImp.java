@@ -5,7 +5,9 @@ import com.cats.payrollservice.dto.request.EmployeeDeductionsDto5;
 import com.cats.payrollservice.dto.request.EmployeeDeductionsReqDto;
 import com.cats.payrollservice.dto.request.EmployeeDeductionsReqDto2;
 import com.cats.payrollservice.dto.response.EmployeeDeductionsRepDto;
-import com.cats.payrollservice.model.*;
+import com.cats.payrollservice.model.Deductions;
+import com.cats.payrollservice.model.EmployeeDeductions;
+import com.cats.payrollservice.model.Payslip;
 import com.cats.payrollservice.repository.EmployeeDeductionsRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,7 +24,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 @EnableTransactionManagement
-public class EmployeeDeductionsServiceImp implements EmployeeDeductionsService{
+public class EmployeeDeductionsServiceImp implements EmployeeDeductionsService {
     private final EmployeeDeductionsRepo employeeDeductionsRepo;
     private final DeductionsService deductionsService;
     private final PayslipService payslipService;
@@ -32,13 +34,13 @@ public class EmployeeDeductionsServiceImp implements EmployeeDeductionsService{
     public List<EmployeeDeductions> createMultiple(EmployeeDeductionsReqDto employeeDeductionsReqDto, List<Long> emIds) {
         List<EmployeeDeductions> employeeDeductionsList = new ArrayList<>();
         double totalAmount = 0.0;
-        if (employeeDeductionsReqDto.getDeductions() == null ||employeeDeductionsReqDto.getDeductions().isEmpty()) {
+        if (employeeDeductionsReqDto.getDeductions() == null || employeeDeductionsReqDto.getDeductions().isEmpty()) {
             throw new IllegalArgumentException("Deductions list cannot be null or empty.");
         }
-        for (Long emId : emIds){
+        for (Long emId : emIds) {
             List<String> deductionList = new ArrayList<>();
-            Payslip payslip = payslipService.getListPaySlipByeEmIdAndCreateDate(emId,employeeDeductionsReqDto.getPaySlipDate());
-            for(Long deduction: employeeDeductionsReqDto.getDeductions()){
+            Payslip payslip = payslipService.getListPaySlipByeEmIdAndCreateDate(emId, employeeDeductionsReqDto.getPaySlipDate());
+            for (Long deduction : employeeDeductionsReqDto.getDeductions()) {
                 EmployeeDeductions employeeDeductions = new EmployeeDeductions();
                 employeeDeductions.setEmpId(emId);
                 employeeDeductions.setType(employeeDeductionsReqDto.getType());
@@ -50,8 +52,8 @@ public class EmployeeDeductionsServiceImp implements EmployeeDeductionsService{
                 deductionList.add(deductions.getDeduction());
                 employeeDeductions.setDeductions(deductions);
             }
-            totalAmount+= employeeDeductionsReqDto.getAmount();
-            payslipService.addDeductionsToPaySlip(emId,employeeDeductionsReqDto.getPaySlipDate(),totalAmount,deductionList);
+            totalAmount += employeeDeductionsReqDto.getAmount();
+            payslipService.addDeductionsToPaySlip(emId, employeeDeductionsReqDto.getPaySlipDate(), totalAmount, deductionList);
 
         }
         return employeeDeductionsRepo.saveAll(employeeDeductionsList);
@@ -81,25 +83,25 @@ public class EmployeeDeductionsServiceImp implements EmployeeDeductionsService{
     public List<EmployeeDeductions> addMoreToPaySlip(EmployeeDeductionsReqDto employeeDeductionsReqDto, Long emId, Long id) {
         List<EmployeeDeductions> employeeDeductionsList = new ArrayList<>();
         double totalAmount = 0.0;
-        if (employeeDeductionsReqDto.getDeductions() == null ||employeeDeductionsReqDto.getDeductions().isEmpty()) {
+        if (employeeDeductionsReqDto.getDeductions() == null || employeeDeductionsReqDto.getDeductions().isEmpty()) {
             throw new IllegalArgumentException("Deductions list cannot be null or empty.");
         }
-            List<String> deductionList = new ArrayList<>();
-            Payslip payslip = payslipService.getListPaySlipByeEmIdAndCreateDate(emId,employeeDeductionsReqDto.getPaySlipDate());
-            for(Long deduction: employeeDeductionsReqDto.getDeductions()){
-                EmployeeDeductions employeeDeductions = new EmployeeDeductions();
-                employeeDeductions.setEmpId(emId);
-                employeeDeductions.setType(employeeDeductionsReqDto.getType());
-                employeeDeductions.setAmount(employeeDeductionsReqDto.getAmount());
-                employeeDeductions.setEffectiveDate(employeeDeductionsReqDto.getEffectiveDate());
-                employeeDeductions.setDateCreated(employeeDeductionsReqDto.getDateCreated());
-                employeeDeductions.setPaySlipId(payslip.getId());
-                Deductions deductions = deductionsService.getDeductionsById(deduction);
-                deductionList.add(deductions.getDeduction());
-                employeeDeductions.setDeductions(deductions);
-            }
-            totalAmount+= employeeDeductionsReqDto.getAmount();
-            payslipService.addDeductionsToPaySlipMore(id,totalAmount,deductionList);
+        List<String> deductionList = new ArrayList<>();
+        Payslip payslip = payslipService.getListPaySlipByeEmIdAndCreateDate(emId, employeeDeductionsReqDto.getPaySlipDate());
+        for (Long deduction : employeeDeductionsReqDto.getDeductions()) {
+            EmployeeDeductions employeeDeductions = new EmployeeDeductions();
+            employeeDeductions.setEmpId(emId);
+            employeeDeductions.setType(employeeDeductionsReqDto.getType());
+            employeeDeductions.setAmount(employeeDeductionsReqDto.getAmount());
+            employeeDeductions.setEffectiveDate(employeeDeductionsReqDto.getEffectiveDate());
+            employeeDeductions.setDateCreated(employeeDeductionsReqDto.getDateCreated());
+            employeeDeductions.setPaySlipId(payslip.getId());
+            Deductions deductions = deductionsService.getDeductionsById(deduction);
+            deductionList.add(deductions.getDeduction());
+            employeeDeductions.setDeductions(deductions);
+        }
+        totalAmount += employeeDeductionsReqDto.getAmount();
+        payslipService.addDeductionsToPaySlipMore(id, totalAmount, deductionList);
 
         return employeeDeductionsRepo.saveAll(employeeDeductionsList);
     }
@@ -116,13 +118,13 @@ public class EmployeeDeductionsServiceImp implements EmployeeDeductionsService{
         employeeDeductions.setDateCreated(employeeDeductionsReqDto.getDateCreated());
         String oldDeduction = employeeDeductions.getDeductions().getDeduction();
         String deduction = null;
-        if(employeeDeductionsReqDto.getDeductions() != null){
+        if (employeeDeductionsReqDto.getDeductions() != null) {
             Deductions deductions = deductionsService.getDeductionsById(employeeDeductionsReqDto.getDeductions());
             deduction = deductions.getDeduction();
             employeeDeductions.setDeductions(deductions);
         }
         employeeDeductionsRepo.save(employeeDeductions);
-        payslipService.updateDeductionsToPaySlip2(employeeDeductions.getPaySlipId(),newAmount,oldAmount,deduction,oldDeduction);
+        payslipService.updateDeductionsToPaySlip2(employeeDeductions.getPaySlipId(), newAmount, oldAmount, deduction, oldDeduction);
         return employeeDeductionsRepo.save(employeeDeductions);
     }
 
@@ -153,7 +155,7 @@ public class EmployeeDeductionsServiceImp implements EmployeeDeductionsService{
         EmployeeDeductions delete = getEmployeeDeductionsById(id);
         String deduction = delete.getDeductions().getDeduction();
         double deductionAmount = delete.getAmount();
-        payslipService.removeDeductionFromPaySlip(delete.getPaySlipId(),deduction,deductionAmount);
+        payslipService.removeDeductionFromPaySlip(delete.getPaySlipId(), deduction, deductionAmount);
         employeeDeductionsRepo.delete(delete);
     }
 
@@ -165,7 +167,7 @@ public class EmployeeDeductionsServiceImp implements EmployeeDeductionsService{
             if (deductions != null && !deductions.isEmpty()) {
                 employeeDeductionsRepo.deleteAll(deductions);
             } else {
-                throw  new IllegalArgumentException("No employee deductions found for pay slip ID: " + id);
+                throw new IllegalArgumentException("No employee deductions found for pay slip ID: " + id);
             }
         } catch (Exception e) {
             throw e;  // Rethrow the exception if you want the caller to handle it

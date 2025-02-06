@@ -10,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
 
 @Data
 @AllArgsConstructor
@@ -31,18 +30,18 @@ public class EmployeeDtoRep {
     private LocalDate empDate;
     private LocalDate joinDate;
     private Long mangerId;
-    private String  location;
+    private String location;
     private String maritalStats;
-    private String  nationality;
+    private String nationality;
     private String workType;
-    private String  religion;
-    private String  idCard;
-    private String  passport;
-    private String  remark;
-    private String  govOfficer;
-    private String  govTel;
-    private String  govAddress;
-    private String  govPosition;
+    private String religion;
+    private String idCard;
+    private String passport;
+    private String remark;
+    private String govOfficer;
+    private String govTel;
+    private String govAddress;
+    private String govPosition;
     private String depId;
     private String posId;
     private String section;

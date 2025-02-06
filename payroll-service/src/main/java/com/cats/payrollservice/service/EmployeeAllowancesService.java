@@ -12,19 +12,30 @@ import java.util.List;
 
 public interface EmployeeAllowancesService {
     List<EmployeeAllowancesRepDto> addAllowancesThatSame(EmployeeAllowancesReqDto3 employeeAllowancesReqDto);
+
     List<EmployeeAllowancesRepDto> addMoreToPaySlip(EmployeeAllowancesReqDto employeeAllowancesReqDto, Long emId, Long id);
+
     List<EmployeeAllowancesRepDto> createMultiple(EmployeeAllowancesReqDto employeeAllowancesReqDto, List<Long> emId);
+
     EmployeeAllowancesRepDto addAllowances(EmployeeAllowancesReqDto2 employeeAllowancesReqDto);
 
     List<EmployeeAllowancesRepDto> getAllowancesForCurrentMonth(Long emId);
 
     void delete(Long id);
+
     void deleteEmpAllowanceByPaySlipId(Long id);
+
     EmployeeAllowancesRepDto update(EmployeeAllowancesReqDto2 employeeAllowancesReqDto, Long Id);
+
     EmployeeAllowances getEmpAllowancesById(Long id);
+
     EmployeeAllowancesRepDto getEmpAllowances(Long id);
+
     List<EmployeeAllowancesRepDto> getListEmpAllowances();
+
     List<EmployeeAllowancesRepDto> getListEmpAllowancesByPaySlip(Long id);
+
     List<EmployeeAllowancesRepDto> getListEmpAllowancesByEmId(Long emId);
+
     List<EmployeeAllowances> createEmployeeAllowances(List<EmployeeAllowancesDto5> employeeAllowancesReqDto);
 }

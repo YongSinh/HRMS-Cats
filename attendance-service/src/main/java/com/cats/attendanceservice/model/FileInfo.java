@@ -15,26 +15,26 @@ import java.time.LocalDate;
 @Getter
 @AllArgsConstructor
 @RequiredArgsConstructor
-public class    FileInfo {
+public class FileInfo {
     @Id
     @GeneratedValue(generator = "uuid")
-    @GenericGenerator(name = "uuid",strategy = "uuid2")
-    @Column(name ="id")
+    @GenericGenerator(name = "uuid", strategy = "uuid2")
+    @Column(name = "id")
     private String fileId;
 
     @Column(name = "empid")
     private Long emId;
 
-    @Column(name = "type" )
+    @Column(name = "type")
     private Integer type;
 
-    @Column(name = "serviceType" )
+    @Column(name = "serviceType")
     private Integer serviceType;
 
-    @Column(name = "file_name" , columnDefinition = "varchar(50)")
+    @Column(name = "file_name", columnDefinition = "varchar(50)")
     private String fileName;
 
-    @Column(name = "file_type" , columnDefinition = "varchar(50)")
+    @Column(name = "file_type", columnDefinition = "varchar(50)")
     private String fileType;
 
     @Column(name = "dateCreated")

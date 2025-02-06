@@ -3,7 +3,6 @@ package com.cats.attendanceservice.service;
 import com.cats.attendanceservice.model.FileInfo;
 import com.cats.attendanceservice.repository.AttachmentRepo;
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -28,6 +27,7 @@ public class FileServiceImp implements FileService {
     private final AttachmentRepo attachmentRepo;
     @Value("${filePath}")
     private String basePath;
+
     @Override
     public void store(MultipartFile file, Long emId, Integer type, LocalDate dateCreated, Integer serviceType) throws IOException {
         FileInfo fileInfo = new FileInfo();
@@ -93,12 +93,12 @@ public class FileServiceImp implements FileService {
 
     @Override
     public Stream<FileInfo> getListFileByEmIdAndType(Long emId, Integer type) {
-        return attachmentRepo.findByEmIdAndType(emId,type).stream();
+        return attachmentRepo.findByEmIdAndType(emId, type).stream();
     }
 
     @Override
     public Stream<FileInfo> getListFileByEmIdAndTypeAndDate(LocalDate date, Long emId, Integer type) {
-        return attachmentRepo.findByDateCreatedAndEmIdAndType(date,emId,type).stream();
+        return attachmentRepo.findByDateCreatedAndEmIdAndType(date, emId, type).stream();
     }
 
     @Override
@@ -123,7 +123,7 @@ public class FileServiceImp implements FileService {
 
     @Override
     public String uploadFileDir(MultipartFile file) {
-        File dir = new File(basePath+ file.getOriginalFilename());
+        File dir = new File(basePath + file.getOriginalFilename());
 
         if (dir.exists()) {
             return "EXIST";
@@ -150,6 +150,6 @@ public class FileServiceImp implements FileService {
 
     @Override
     public Stream<FileInfo> getListFileByEmIdAndTypeServiceAndDate(LocalDate date, Long emId, Integer type, Integer service) {
-        return attachmentRepo.findAllByDateCreatedAndEmIdAndTypeAndServiceTypeOrderByDateCreatedDesc(date,emId,type,service).stream();
+        return attachmentRepo.findAllByDateCreatedAndEmIdAndTypeAndServiceTypeOrderByDateCreatedDesc(date, emId, type, service).stream();
     }
 }

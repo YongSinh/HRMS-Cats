@@ -13,9 +13,9 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class EducationDtoRep {
     private Long id;
-    private String  eduLevel;
-    private String  eduInstitution;
+    private String eduLevel;
+    private String eduInstitution;
     private LocalDate yearEnd;
-    private String  major;
-    private Double  GPA;
+    private String major;
+    private Double GPA;
 }

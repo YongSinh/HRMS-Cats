@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 
@@ -30,6 +29,6 @@ public class LeaveDtoRep {
     private Boolean approvedByHead;
     private Boolean approvedByHr;
     private String remark;
-        private Integer dayOfLeave;
+    private Integer dayOfLeave;
     private LocalDate createdAt;
 }

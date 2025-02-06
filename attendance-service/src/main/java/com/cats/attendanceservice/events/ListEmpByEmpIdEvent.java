@@ -1,11 +1,9 @@
 package com.cats.attendanceservice.events;
 
 import com.cats.attendanceservice.service.ApiService;
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.context.ApplicationEvent;
-
-import java.time.Clock;
-import java.util.Collection;
 
 @Getter
 @Setter

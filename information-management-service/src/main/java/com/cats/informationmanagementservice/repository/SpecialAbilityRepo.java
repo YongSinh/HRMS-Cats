@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface SpecialAbilityRepo extends JpaRepository<SpecialAbility,Long> {
+public interface SpecialAbilityRepo extends JpaRepository<SpecialAbility, Long> {
 
     List<SpecialAbility> findByEmployee(Employee employee);
 }

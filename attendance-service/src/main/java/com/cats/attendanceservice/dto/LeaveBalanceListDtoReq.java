@@ -14,8 +14,8 @@ import java.util.List;
 @Getter
 @Setter
 public class LeaveBalanceListDtoReq {
-        private List<Long> empId;
-        private Long balanceAmount;
-        private LocalDateTime lastUpdateDate;
-        private List<String> leaveType;
+    private List<Long> empId;
+    private Long balanceAmount;
+    private LocalDateTime lastUpdateDate;
+    private List<String> leaveType;
 }

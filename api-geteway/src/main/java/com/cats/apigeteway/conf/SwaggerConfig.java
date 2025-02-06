@@ -11,8 +11,9 @@ import org.springframework.http.HttpMethod;
 @RequiredArgsConstructor
 public class SwaggerConfig {
     private final RouteLocatorBuilder builder;
+
     @Bean
-    public RouteLocator routeLocator(){
+    public RouteLocator routeLocator() {
         return builder
                 .routes()
                 .route(r -> r.path("/attendance-service/v3/api-docs").and().method(HttpMethod.GET).uri("lb://attendance-service"))

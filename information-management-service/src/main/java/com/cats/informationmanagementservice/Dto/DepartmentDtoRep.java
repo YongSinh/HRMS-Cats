@@ -1,4 +1,5 @@
 package com.cats.informationmanagementservice.Dto;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

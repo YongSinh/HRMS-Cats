@@ -13,9 +13,9 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 public class LeaveBalanceDtoRep {
-        private Long Id;
-        private Long empId;
-        private Long balanceAmount;
-        private LocalDateTime lastUpdateDate;
-        private String leaveType;
+    private Long Id;
+    private Long empId;
+    private Long balanceAmount;
+    private LocalDateTime lastUpdateDate;
+    private String leaveType;
 }

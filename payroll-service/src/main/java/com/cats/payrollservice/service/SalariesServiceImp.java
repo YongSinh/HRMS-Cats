@@ -8,18 +8,18 @@ import com.cats.payrollservice.model.Tax;
 import com.cats.payrollservice.repository.SalariesRepo;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.sql.ast.tree.expression.Collation;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class SalariesServiceImp implements SalariesService {
     private final SalariesRepo salariesRepo;
     private final TaxService taxService;
-    private final  ApiService apiService;
+    private final ApiService apiService;
 
     @Transactional
     @Override
@@ -46,7 +46,7 @@ public class SalariesServiceImp implements SalariesService {
     @Override
     public List<SalariesRepDto> addSalaryList(SalariesReqDto salariesReqDto, List<Long> emId) {
         List<Salaries> salariesList = new ArrayList<>();
-        for (Long emIds : emId){
+        for (Long emIds : emId) {
             Salaries salaries = new Salaries();
             salaries.setSalary(salariesReqDto.getSalary());
             salaries.setFromDate(salariesReqDto.getFromDate());
@@ -74,7 +74,7 @@ public class SalariesServiceImp implements SalariesService {
             Tax tax = taxService.getTaxById(salariesReqDto.getTaxId());
             update.setTax(tax);
         }
-        return  mapper.salariesToSalariesResponseDto(salariesRepo.save(update));
+        return mapper.salariesToSalariesResponseDto(salariesRepo.save(update));
     }
 
     @Override
@@ -92,7 +92,7 @@ public class SalariesServiceImp implements SalariesService {
     public List<SalariesRepDto> getListSalaryDepId(Long depId) {
         Collection<Long> emIds = apiService.getEmployeeByDepId(depId);
         System.out.println(emIds.isEmpty());
-        if (emIds.isEmpty()){
+        if (emIds.isEmpty()) {
             return null;
         }
         return mapper.salariesToSalariesResponseDtos(salariesRepo.findByEmpIdIn(emIds));
