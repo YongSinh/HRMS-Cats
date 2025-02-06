@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 03, 2025 at 05:20 PM
+-- Generation Time: Feb 06, 2025 at 01:07 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -571,6 +571,7 @@ INSERT INTO `allowances_seq` (`next_val`) VALUES
 (1),
 (1),
 (1),
+(1),
 (1);
 
 -- --------------------------------------------------------
@@ -602,9 +603,9 @@ INSERT INTO `attachment` (`id`, `empid`, `file_name`, `file_type`, `file`, `type
 INSERT INTO `attachment` (`id`, `empid`, `file_name`, `file_type`, `file`, `type`, `dateCreated`, `serviceType`, `fileSize`) VALUES
 ('4e12b336-7781-4dd7-94fc-8e241cb3bf17', 2432, '6024190.png', 'image/png', NULL, 1, '2024-10-31', 1, 16272),
 ('ae700df4-b4f8-402b-9e31-7e72aee6a7ac', 1006, 'Untitled Diagram-Copy of Page-6 (1).jpg', 'image/jpeg', NULL, 2, '2024-10-05', 2, 189827),
-('52a5e77d-e261-47c1-9fb7-2ce27841b9ed', 2431, '234916513_351264923310487_8442376350912879750_n.jpg', 'image/jpeg', NULL, 1, '2024-10-12', 1, 32556),
+('52a5e77d-e261-47c1-9fb7-2ce27841b9ed', 2431, 'images.jpeg', 'image/jpeg', NULL, 1, NULL, 1, 6323),
 ('44aa2181-b287-4b73-a3af-c1eca2d3efd6', 1006, '1_-K1CkNCrENJXNrPg2PTETw.webp', 'image/webp', NULL, 2, '2024-10-12', 2, 22606),
-('69614a93-cc81-4012-a08c-1f6728e438ba', 2431, '001MBL-8oz-Cup-Med-Blue-scaled.jpg', 'image/jpeg', NULL, 1, '2024-10-12', 1, 78844),
+('69614a93-cc81-4012-a08c-1f6728e438ba', 2431, 'images.jpeg', 'image/jpeg', NULL, 1, NULL, 1, 6323),
 ('2eef926f-6023-4ddb-903a-b69a78577b77', 1006, 'docker2.jpg', 'image/jpeg', NULL, 2, '2024-10-13', 2, 651540),
 ('7ed1d908-68ec-485e-9f77-ebf08729e9ed', 2431, '1_-K1CkNCrENJXNrPg2PTETw.webp', 'image/webp', NULL, 1, '2024-10-13', 1, 22606),
 ('e16a0f5a-1c3a-419d-9052-a85766228a31', 2433, '360_F_152642226_DAPxCGmUdfvCMjpoc6JNk6rAeoPwcd0g.jpg', 'image/jpeg', NULL, 1, '2024-10-26', 1, 15463),
@@ -617,6 +618,7 @@ INSERT INTO `attachment` (`id`, `empid`, `file_name`, `file_type`, `file`, `type
 ('0b75ed5e-dd6a-469e-b29b-5c7f3b26161f', 1006, 'highly-recommended-rubber-stamp-grunge-design-dust-scratches-effects-can-be-easily-removed-clean-crisp-look-color-87939183.jpeg', 'image/jpeg', NULL, 2, '2024-10-22', 2, 71991),
 ('09cbe64a-1a91-40ed-b6c3-d2f554fc8e52', 1086, '235463330_351264976643815_7108366236206677607_n.jpg', 'image/jpeg', NULL, 1, '2024-10-20', 1, 42365),
 ('f465f41d-e085-4c5e-ab97-504d616e5db0', 2434, 'download.jpg', 'image/jpeg', NULL, 1, '2024-10-19', 1, 3647),
+('5cb48f37-74e0-48bc-8699-0a30999b3530', 2431, 'images.jpeg', 'image/jpeg', NULL, 1, NULL, 1, 6323),
 ('019dcb3e-dbba-4742-ad6f-3043542bab1a', 1000, 'photo_2024-10-28_09-32-31.jpg', 'image/jpeg', NULL, 1, '2024-06-17', 1, 4932),
 ('85487a3e-ce2b-4046-8708-020c3205140f', 1000, 'photo_2024-10-28_09-32-31.jpg', 'image/jpeg', NULL, 1, '2024-06-17', 1, 4932),
 ('47527979-eb4b-4e65-9993-477bfe34fe2c', 1000, 'Screenshot 2024-05-19 225845.png', 'image/png', NULL, 2, '2024-10-28', 2, 20652),
@@ -625,6 +627,9 @@ INSERT INTO `attachment` (`id`, `empid`, `file_name`, `file_type`, `file`, `type
 ('511b0a13-6b55-4697-98a7-fc2783ac471e', 2222, 'account_avatar_human_male_man_men_people_person_profile_user_users_icon_318585.png', 'image/png', NULL, 1, '2025-03-31', 1, 28652),
 ('79693127-ba11-44e1-8ed1-7e2268b9382f', 2431, 'digital-digital-art-artwork-fantasy-art-drawing-hd-wallpaper-preview.jpg', 'image/jpeg', NULL, 2, '2024-11-26', 2, 51667),
 ('e5c94d11-22e7-460e-8436-0f90ec19b69e', 2501, 'account_avatar_human_male_man_men_people_person_profile_user_users_icon_318585.png', 'image/png', NULL, 1, '2099-11-26', 1, 28652),
+('ec3fcbc4-210a-4d40-8688-611c91f06ab1', 2431, 'images.jpeg', 'image/jpeg', NULL, 1, NULL, 1, 6323),
+('74148573-e36e-4327-b19f-cc0c9c337788', 2431, 'IMG_7658.jpg', 'image/jpeg', NULL, 1, NULL, 1, 222160),
+('31317681-0a56-4a8e-862b-b93abb0359e4', 2431, 'pexels-photo-2379005.jpeg', 'image/jpeg', NULL, 1, '2024-10-12', 1, 41702),
 ('ee60ea09-bbf0-4741-b21f-d698cc2e229d', 2432, 'bst_skills_banner_jasper_report.jpg', 'image/jpeg', NULL, 2, '2024-10-26', 2, 26343),
 ('e9741f6e-40ab-4471-9cca-530a2f7ac644', 1006, 'DockerBuild-Sample.txt', 'text/plain', NULL, 2, '2024-09-23', 2, 2393),
 ('5d7b920c-5a79-4d0d-a415-69ddbf63f0bd', 1006, 'docker2.jpg', 'image/jpeg', NULL, 2, '2024-09-29', 2, 651540);
@@ -768,6 +773,7 @@ INSERT INTO `attendance` (`id`, `emId`, `timeInDate`, `timeOutDate`, `remark`, `
 (1605, 2435, '02:31:44', '09:40:44', ' ', '2024-11-23', '2024-11-23', 0),
 (1802, 2431, '06:52:03', '06:52:14', ' ', '2024-11-26', '2024-11-26', 0),
 (1607, 2435, '02:34:10', '09:40:50', ' ', '2024-11-23', '2024-11-23', 0),
+(2052, 2431, '02:35:02', '02:35:10', 'Saturday', '2025-01-18', '2025-01-18', 0),
 (1852, 1005, NULL, NULL, 'al', '2024-12-14', '2024-12-14', 1),
 (1902, 2431, NULL, NULL, 'Test', '2024-12-15', '2024-12-15', 1),
 (1952, 1006, NULL, NULL, 'Home town', '2024-12-15', '2024-12-15', 1),
@@ -788,7 +794,7 @@ CREATE TABLE `attendance_seq` (
 --
 
 INSERT INTO `attendance_seq` (`next_val`) VALUES
-(2101),
+(2151),
 (1),
 (1),
 (1),
@@ -985,6 +991,7 @@ INSERT INTO `deductions_seq` (`next_val`) VALUES
 (1),
 (1),
 (1),
+(1),
 (1);
 
 -- --------------------------------------------------------
@@ -1016,7 +1023,8 @@ INSERT INTO `department` (`depId`, `depName`, `depFullName`, `authAction`, `auth
 (7, 'ENG', 'Enginering', '', '0000-00-00 00:00:00', ''),
 (8, 'OPR', NULL, '', '0000-00-00 00:00:00', ''),
 (9, 'OSP', NULL, '', '0000-00-00 00:00:00', ''),
-(352, 'DNA', 'Data Analysis', NULL, NULL, NULL);
+(352, 'DNA', 'Data Analysis', NULL, NULL, NULL),
+(452, 'Cyber Security', 'Cyber Security', NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -1033,7 +1041,7 @@ CREATE TABLE `department_seq` (
 --
 
 INSERT INTO `department_seq` (`next_val`) VALUES
-(501);
+(551);
 
 -- --------------------------------------------------------
 
@@ -1064,7 +1072,8 @@ INSERT INTO `education` (`id`, `empid`, `education_level`, `education_institutio
 (302, 2501, 'Master', 'norton', '2024-11-26', 'CS', NULL, NULL, NULL, NULL),
 (153, 1010, 'Master', 'sala', '2024-11-30', 'CS', 3.85, NULL, NULL, NULL),
 (202, 2433, 'bachelor degree', 'NU', '2024-10-27', 'computer science', 4, NULL, NULL, NULL),
-(252, 1000, '12', 'Baktouk Highschool', '2025-01-01', 'Highschool', 4, NULL, NULL, NULL);
+(252, 1000, '12', 'Baktouk Highschool', '2025-01-01', 'Highschool', 4, NULL, NULL, NULL),
+(352, 2438, 'Master', 'Norton University', '2025-01-18', 'Computer Science', 4, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -1081,7 +1090,7 @@ CREATE TABLE `education_seq` (
 --
 
 INSERT INTO `education_seq` (`next_val`) VALUES
-(401);
+(451);
 
 -- --------------------------------------------------------
 
@@ -1189,7 +1198,7 @@ INSERT INTO `employee` (`empid`, `firstName`, `lastName`, `email`, `positionid`,
 (1013, 'Luis', 'Urman', 'luis@mail.com', 'MIS06', 202, '1997-09-30', 40, 'Male', 1.7, 70, 'Phnom Penh Cambodia', '2024-06-17', '2024-06-17', 9, 'VDPP', 'N', 'Khmer', '10138626AB4', '', '', 'M', 'buddhist', '', '', '', '', '', '0000-00-00 00:00:00', '', NULL, NULL),
 (1002, 'Lex', 'De Haan', 'lex@mail.com', 'MIS06', 202, '1987-06-17', 40, 'Male', 1.7, 80, 'Siem Reap Cambodia', '2024-06-17', '2024-06-17', 9, 'VDPP', 'N', 'Khmer', '10028626AB4', '', '', 'M', 'buddhist', '', '', '', '', '', '0000-00-00 00:00:00', '', NULL, NULL),
 (1016, 'Shelli', 'Baida', 'ahelli@mail.com', 'ENG01', 7, '1997-09-30', 40, 'Male', 1.7, 70, 'Phnom Penh Cambodia', '2024-06-17', '2024-06-17', 4, 'VDPP', 'N', 'Khmer', '10168626AB4', '', '', 'M', 'buddhist', '', '', '', '', '', '0000-00-00 00:00:00', '', NULL, NULL),
-(2431, 'sinh yong', 'so', 'sing@gmail.com', 'MIS02', 202, '2024-10-12', 20, 'male', 180, 80, 'wat bo village, sala kamroek, siem reap cambodia', '2024-10-12', '2024-10-12', 6, 'VDPP', 'Single', 'Canada', NULL, NULL, NULL, 'Day work', 'Khmer', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '017373988', 'Toronto, canada'),
+(2431, 'yongsinh', 'so', 'yongsinh@gmail.com', 'MIS02', 202, '2000-10-12', 20, 'male', 180, 75, 'wat bo village, sala kamroek, siem reap cambodia', '2024-10-12', '2024-10-12', 6, 'VDPP', 'Single', 'Canada', NULL, NULL, '', 'Day work', 'Khmer', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '017373988', 'Cambodia'),
 (1018, 'Maria', 'Green', 'maria@mail.com', 'HRD04', 3, '1990-05-12', 34, 'Female', 1.6, 55, 'Battambang Cambodia', '2024-06-17', '2024-06-17', 5, 'VDSA', 'Y', 'Khmer', '10178626AB4', '', '', 'F', 'christian', '', '', '', '', '', '0000-00-00 00:00:00', '', NULL, NULL),
 (2501, 'visal', 'kim', 'visal@gmail.com', 'MISN07', 202, '2024-11-26', 23, 'male', 190, 60, 'Phnom Penh', '2099-11-26', '2024-11-26', 11, 'VDPP', 'Single', 'Khmer', NULL, NULL, NULL, 'WorkDay', 'Khmer', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0192222999', 'Khmer'),
 (1020, 'Sophia', 'Lee', 'sophia@mail.com', 'FAD04', 2, '1992-07-25', 32, 'Female', 1.65, 60, 'Kampong Thom Cambodia', '2024-06-17', '2024-06-17', 7, 'VDSA', 'Y', 'Khmer', '10208626AB4', '', '', 'F', 'buddhist', '', '', '', '', '', '0000-00-00 00:00:00', '', NULL, NULL),
@@ -1199,7 +1208,8 @@ INSERT INTO `employee` (`empid`, `firstName`, `lastName`, `email`, `positionid`,
 (2434, 'Sokmeng', 'mork', 'sokmeng@gmail.com', 'MIS05', 202, '2024-10-19', 20, 'female', 150, 80, 'wat bo village, sala kamroek, siem reap cambodia', '2024-10-19', '2024-10-19', 11, 'VDPP', 'Married', 'cambodia', NULL, NULL, NULL, 'Day work', 'khmer', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '01289877', 'wat bo village, sala kamroek, siem reap cambodia'),
 (1086, 'So', 'Thea', 'y.chanthon.it@gmail.com', 'MISN06', 202, '2000-08-15', 25, 'male', 170, 55, 'phnom penh', '2024-10-20', '2024-10-20', 11, 'VDPP', 'Single', 'Khmer', NULL, NULL, NULL, 'It', 'Khmer', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '+85586922327', 'Prey Veng'),
 (2436, 'kim', 'asa', 'sokmeng@gmail.com', 'FAD03', 2, '2002-11-20', 18, 'male', 180, 55, 'wat bo village, sala kamroek, siem reap cambodia', '2024-11-20', '2024-11-20', 6, 'VDPP', 'Single', 'Japan', NULL, NULL, NULL, 'Day work', 'Japan', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '01289877', 'Japan'),
-(2433, 'sok', 'ka', 'sadboy@gmail.com', 'MIS06', 202, '2000-10-26', 25, 'male', 170, 65, 'phnom penh', '2024-10-26', '2024-10-26', 5, 'VDPP', 'Single', 'Khmer', NULL, NULL, NULL, 'developer', 'Khmer', 'IT', '085000888', 'phnom penh', 'IT', NULL, NULL, NULL, '+8558692200', 'Prey Veng');
+(2433, 'sok', 'ka', 'sadboy@gmail.com', 'MIS06', 202, '2000-10-26', 25, 'male', 170, 65, 'phnom penh', '2024-10-26', '2024-10-26', 5, 'VDPP', 'Single', 'Khmer', NULL, NULL, NULL, 'developer', 'Khmer', 'IT', '085000888', 'phnom penh', 'IT', NULL, NULL, NULL, '+8558692200', 'Prey Veng'),
+(2438, 'Jonh', 'Kim', 'jonh@gmail.com', 'CYS01', 452, '2025-01-18', 25, 'male', NULL, NULL, 'Phnom Penh', '2027-01-31', '2025-01-18', 4, 'VDPP', 'Single', 'Khmer', NULL, NULL, NULL, 'Fulltime', 'Budsim', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0192222999', 'Phnom Penh');
 
 -- --------------------------------------------------------
 
@@ -1247,7 +1257,11 @@ INSERT INTO `employee_allowances` (`id`, `employee_id`, `allowance_id`, `type`, 
 (652, 1005, 2, 2, 5, NULL, '2024-11-24 07:51:17', 602, NULL, NULL, NULL),
 (752, 2501, 1, 1, 60, NULL, '2024-11-26 12:12:43', 652, NULL, NULL, NULL),
 (802, 2431, 1, 1, 60, NULL, '2024-12-24 13:46:31', 709, NULL, NULL, NULL),
-(852, 2222, 1, 1, 60, NULL, '2024-12-25 14:56:00', 710, NULL, NULL, NULL);
+(852, 2222, 1, 1, 60, NULL, '2024-12-25 14:56:00', 710, NULL, NULL, NULL),
+(902, 2436, 1, 1, 60, '2025-01-05', '2025-01-05 22:00:40', NULL, NULL, NULL, NULL),
+(952, 2438, 1, 1, 60, '2025-01-18', '2025-01-18 14:54:18', NULL, NULL, NULL, NULL),
+(953, 2435, 2, 1, 60, '2025-01-18', '2025-01-18 14:58:49', 1202, NULL, NULL, NULL),
+(954, 2435, 1, 1, 60, '2025-01-18', '2025-01-18 14:58:49', 1202, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -1264,7 +1278,8 @@ CREATE TABLE `employee_allowances_seq` (
 --
 
 INSERT INTO `employee_allowances_seq` (`next_val`) VALUES
-(951),
+(1051),
+(1),
 (1),
 (1),
 (1),
@@ -1360,7 +1375,10 @@ INSERT INTO `employee_deductions` (`id`, `employee_id`, `deductions_id`, `type`,
 (252, 2432, 1, 1, 5, NULL, '2024-10-26 10:25:54', 402, NULL, NULL, NULL),
 (302, 2501, 1, 1, 10, NULL, '2024-11-26 12:12:59', 652, NULL, NULL, NULL),
 (352, 2431, 1, 1, 3, NULL, '2024-12-24 13:55:19', 709, NULL, NULL, NULL),
-(402, 2222, 1, 1, 5, NULL, '2024-12-25 14:56:18', 710, NULL, NULL, NULL);
+(402, 2222, 1, 1, 5, NULL, '2024-12-25 14:56:18', 710, NULL, NULL, NULL),
+(452, 2436, 1, 1, 5.5, '2025-01-05', '2025-01-05 22:00:40', NULL, NULL, NULL, NULL),
+(502, 2438, 1, 1, 5, '2025-01-18', '2025-01-18 14:54:18', NULL, NULL, NULL, NULL),
+(503, 2435, 1, 1, 5, '2025-01-18', '2025-01-18 14:58:49', 1202, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -1377,67 +1395,68 @@ CREATE TABLE `employee_deductions_seq` (
 --
 
 INSERT INTO `employee_deductions_seq` (`next_val`) VALUES
-(501),
-(501),
-(501),
-(501),
-(501),
-(501),
-(501),
-(501),
-(501),
-(501),
-(501),
-(501),
-(501),
-(501),
-(501),
-(501),
-(501),
-(501),
-(501),
-(501),
-(501),
-(501),
-(501),
-(501),
-(501),
-(501),
-(501),
-(501),
-(501),
-(501),
-(501),
-(501),
-(501),
-(501),
-(501),
-(501),
-(501),
-(501),
-(501),
-(501),
-(501),
-(501),
-(501),
-(501),
-(501),
-(501),
-(501),
-(501),
-(501),
-(501),
-(501),
-(501),
-(501),
-(501),
-(501),
-(501),
-(501),
-(501),
-(501),
-(501),
-(501);
+(601),
+(601),
+(601),
+(601),
+(601),
+(601),
+(601),
+(601),
+(601),
+(601),
+(601),
+(601),
+(601),
+(601),
+(601),
+(601),
+(601),
+(601),
+(601),
+(601),
+(601),
+(601),
+(601),
+(601),
+(601),
+(601),
+(601),
+(601),
+(601),
+(601),
+(601),
+(601),
+(601),
+(601),
+(601),
+(601),
+(601),
+(601),
+(601),
+(601),
+(601),
+(601),
+(601),
+(601),
+(601),
+(601),
+(601),
+(601),
+(601),
+(601),
+(601),
+(601),
+(601),
+(601),
+(601),
+(601),
+(601),
+(601),
+(601),
+(601),
+(601),
+(1);
 
 -- --------------------------------------------------------
 
@@ -1503,7 +1522,8 @@ INSERT INTO `family_data` (`id`, `empid`, `father_name`, `father_address`, `fath
 (52, 2432, 'test', 'test', 'test', 'test', 'test', 'test', 'test', 'test'),
 (102, 2433, 'Oppa', 'Phnom Penh', 'Coding', '0969916417', 'Yuu', 'Phnom Penh', 'Super Star', '0869916517'),
 (152, 1000, 'Sok Heng', 'Phnom Penh', 'Worker', '078912345', 'Thida', 'Kampong Cham', 'Housewife', '099114455'),
-(202, 2501, 'soksang', 'Phom penh', 'worker', '01299998888', 'samet', 'Phom penh', 'seller', '01299998888');
+(202, 2501, 'soksang', 'Phom penh', 'worker', '01299998888', 'samet', 'Phom penh', 'seller', '01299998888'),
+(252, 2438, 'Windy Sim', 'Phom penh', 'Worker', NULL, 'Jannie Van', 'Phom penh', 'housewife', NULL);
 
 -- --------------------------------------------------------
 
@@ -1520,7 +1540,7 @@ CREATE TABLE `family_data_seq` (
 --
 
 INSERT INTO `family_data_seq` (`next_val`) VALUES
-(301);
+(351);
 
 -- --------------------------------------------------------
 
@@ -1636,7 +1656,9 @@ INSERT INTO `job_history` (`id`, `emid`, `start_date`, `end_date`, `jobTitle`, `
 (202, 2501, '2024-11-26', '2024-11-26', 'Data Analysis officer', 'MIS'),
 (103, 1010, '2024-10-26', '2024-10-26', 'Human Resource Offcer', 'HRD'),
 (104, 2433, '2024-10-26', '2025-10-26', 'developer', 'system development'),
-(152, 1000, '2024-10-28', '2025-10-28', 'IT Support', 'MIS');
+(152, 1000, '2024-10-28', '2025-10-28', 'IT Support', 'MIS'),
+(252, 2431, '2024-10-16', '2025-01-08', 'Integration', 'IT Development'),
+(302, 2438, '2025-01-18', '2027-01-31', 'Head of Cyber Security', 'Cyber Security');
 
 -- --------------------------------------------------------
 
@@ -1653,7 +1675,7 @@ CREATE TABLE `job_history_seq` (
 --
 
 INSERT INTO `job_history_seq` (`next_val`) VALUES
-(301);
+(401);
 
 -- --------------------------------------------------------
 
@@ -1705,7 +1727,7 @@ INSERT INTO `leave` (`id`, `empId`, `start_date`, `end_date`, `reason`, `status`
 (752, 1000, '2024-10-20', '2024-10-21', 'sick', 1, 1, 0, 1, 1, 1, 'hi', 1, '2024-10-20', '00:00:00', 'SI_L'),
 (852, 2432, '2024-10-26', '2024-11-01', 'test', 1, 1, 0, 1, 1, 1, '12233', 1, '2024-10-26', '00:00:00', 'SI_L'),
 (902, 2434, '2024-10-28', '2024-10-29', 'Kmean nk sl ', 1, 0, 0, 1, 1, 0, 'cher besdong ', 1, '2024-10-27', '00:00:00', 'SP_L'),
-(1303, 1006, '2024-12-15', '2024-12-16', 'Home town', 1, 0, 0, 0, 0, 0, '', 1, '2024-12-15', '00:00:00', 'AN_L'),
+(1303, 1006, '2024-12-15', '2024-12-16', 'Home town', 1, 0, 0, 1, 0, 0, '', 1, '2024-12-15', '00:00:00', 'AN_L'),
 (952, 1000, '2024-10-28', '2024-10-29', 'Defend Thesis', 1, 0, 1, 0, 0, 0, 'Defend Thesis', 1, '2024-10-28', '00:00:00', 'AN_L'),
 (953, 1000, '2024-10-28', '2024-10-29', 'testing', 1, 0, 1, 0, 0, 0, 'Testing', 1, '2024-10-28', '00:00:00', 'SP_L'),
 (954, 1000, '2024-10-28', '2024-10-30', 'test', 0, 0, 0, 1, 1, 0, '', 0, '2024-10-28', '11:47:17', 'MT_L'),
@@ -1715,7 +1737,8 @@ INSERT INTO `leave` (`id`, `empId`, `start_date`, `end_date`, `reason`, `status`
 (1152, 2431, '2024-11-29', '2024-11-30', 'al', 0, 0, 1, 0, 1, 0, '', 1, '2024-11-24', '00:00:00', 'AN_L'),
 (1302, 2431, '2024-12-15', '2024-12-16', 'Test', 1, 0, 0, 0, 0, 0, '', 1, '2024-12-15', '00:00:00', 'SI_L'),
 (1202, 2431, '2024-11-26', '2024-11-27', 'vist home', 1, 1, 0, 1, 1, 1, 'vist home', 1, '2024-11-26', '00:00:00', 'AN_L'),
-(1252, 1005, '2024-12-14', '2024-12-15', 'al', 1, 1, 0, 1, 1, 1, '', 1, '2024-12-14', '00:00:00', 'AN_L');
+(1252, 1005, '2024-12-14', '2024-12-15', 'al', 1, 1, 0, 1, 1, 1, '', 1, '2024-12-14', '00:00:00', 'AN_L'),
+(1352, 2431, '2025-01-18', '2025-01-20', 'not well', 0, 0, 0, 0, 0, 0, '', 2, '2025-01-18', '00:00:00', 'SI_L');
 
 -- --------------------------------------------------------
 
@@ -1779,7 +1802,11 @@ INSERT INTO `leave_balance` (`id`, `empid`, `leave_type_id`, `balance_amount`, `
 (553, 2435, 'SP_L', 7, '2024-11-24 00:00:00.000000'),
 (554, 2435, 'AN_L', 18, '2024-11-24 00:00:00.000000'),
 (555, 2435, 'MT_L', 90, '2024-11-24 00:00:00.000000'),
-(602, 1000, 'AN_L', 18, '2024-11-26 18:56:59.000000');
+(602, 1000, 'AN_L', 18, '2024-11-26 18:56:59.000000'),
+(652, 2438, 'SI_L', 30, '2025-01-18 14:50:29.000000'),
+(653, 2438, 'SP_L', 7, '2025-01-18 14:50:29.000000'),
+(654, 2438, 'AN_L', 18, '2025-01-18 14:50:29.000000'),
+(655, 2438, 'MT_L', 90, '2025-01-18 14:50:29.000000');
 
 -- --------------------------------------------------------
 
@@ -1796,7 +1823,7 @@ CREATE TABLE `leave_balance_seq` (
 --
 
 INSERT INTO `leave_balance_seq` (`next_val`) VALUES
-(701),
+(751),
 (1),
 (1),
 (1),
@@ -1909,103 +1936,103 @@ CREATE TABLE `leave_seq` (
 --
 
 INSERT INTO `leave_seq` (`next_val`) VALUES
-(1401),
-(1401),
-(1401),
-(1401),
-(1401),
-(1401),
-(1401),
-(1401),
-(1401),
-(1401),
-(1401),
-(1401),
-(1401),
-(1401),
-(1401),
-(1401),
-(1401),
-(1401),
-(1401),
-(1401),
-(1401),
-(1401),
-(1401),
-(1401),
-(1401),
-(1401),
-(1401),
-(1401),
-(1401),
-(1401),
-(1401),
-(1401),
-(1401),
-(1401),
-(1401),
-(1401),
-(1401),
-(1401),
-(1401),
-(1401),
-(1401),
-(1401),
-(1401),
-(1401),
-(1401),
-(1401),
-(1401),
-(1401),
-(1401),
-(1401),
-(1401),
-(1401),
-(1401),
-(1401),
-(1401),
-(1401),
-(1401),
-(1401),
-(1401),
-(1401),
-(1401),
-(1401),
-(1401),
-(1401),
-(1401),
-(1401),
-(1401),
-(1401),
-(1401),
-(1401),
-(1401),
-(1401),
-(1401),
-(1401),
-(1401),
-(1401),
-(1401),
-(1401),
-(1401),
-(1401),
-(1401),
-(1401),
-(1401),
-(1401),
-(1401),
-(1401),
-(1401),
-(1401),
-(1401),
-(1401),
-(1401),
-(1401),
-(1401),
-(1401),
-(1401),
-(1401),
-(1401);
+(1451),
+(1451),
+(1451),
+(1451),
+(1451),
+(1451),
+(1451),
+(1451),
+(1451),
+(1451),
+(1451),
+(1451),
+(1451),
+(1451),
+(1451),
+(1451),
+(1451),
+(1451),
+(1451),
+(1451),
+(1451),
+(1451),
+(1451),
+(1451),
+(1451),
+(1451),
+(1451),
+(1451),
+(1451),
+(1451),
+(1451),
+(1451),
+(1451),
+(1451),
+(1451),
+(1451),
+(1451),
+(1451),
+(1451),
+(1451),
+(1451),
+(1451),
+(1451),
+(1451),
+(1451),
+(1451),
+(1451),
+(1451),
+(1451),
+(1451),
+(1451),
+(1451),
+(1451),
+(1451),
+(1451),
+(1451),
+(1451),
+(1451),
+(1451),
+(1451),
+(1451),
+(1451),
+(1451),
+(1451),
+(1451),
+(1451),
+(1451),
+(1451),
+(1451),
+(1451),
+(1451),
+(1451),
+(1451),
+(1451),
+(1451),
+(1451),
+(1451),
+(1451),
+(1451),
+(1451),
+(1451),
+(1451),
+(1451),
+(1451),
+(1451),
+(1451),
+(1451),
+(1451),
+(1451),
+(1451),
+(1451),
+(1451),
+(1451),
+(1451),
+(1451),
+(1451),
+(1451);
 
 -- --------------------------------------------------------
 
@@ -2107,6 +2134,7 @@ CREATE TABLE `payroll` (
 
 INSERT INTO `payroll` (`id`, `empId`, `ref_no`, `date_from`, `date_to`, `type`, `status`, `date_created`, `authAction`, `authDate`, `authUser`) VALUES
 (807, 2431, '20250103203710-818196', '2025-01-01', '2025-01-31', 1, 1, '2025-01-03', NULL, NULL, NULL),
+(852, 2436, '20250105220040-803547', '2025-01-01', '2025-01-31', 1, 1, '2025-01-05', NULL, NULL, NULL),
 (752, 1000, '20241226105100-052311', '2024-12-01', '2024-12-31', 1, 1, '2024-12-26', NULL, NULL, NULL),
 (703, 2222, '20241224201544-101240', '2024-12-01', '2024-12-31', 1, 2, '2024-12-24', NULL, NULL, NULL),
 (207, 1015, '20240911165323-538138', '2024-09-11', '2024-09-26', 1, 2, '2024-09-11', NULL, NULL, NULL),
@@ -2118,12 +2146,16 @@ INSERT INTO `payroll` (`id`, `empId`, `ref_no`, `date_from`, `date_to`, `type`, 
 (257, 1015, '20241008214434-108678', '2024-10-08', '2024-10-08', 1, 2, '2024-10-08', NULL, NULL, NULL),
 (302, 1000, '20241013180441-298291', '2024-10-13', '2024-10-31', 1, 2, '2024-10-13', NULL, NULL, NULL),
 (352, 2431, '20241024202700-453021', '2024-10-24', '2024-10-24', 1, 2, '2024-10-24', NULL, NULL, NULL),
+(952, 1002, '20250105232417-308548', '2025-01-01', '2025-01-31', 1, 1, '2025-01-05', NULL, NULL, NULL),
 (753, 1017, '20241226105100-419442', '2024-12-01', '2024-12-31', 1, 1, '2024-12-26', NULL, NULL, NULL),
 (802, 1000, '20250103203710-678059', '2025-01-01', '2025-01-31', 1, 1, '2025-01-03', NULL, NULL, NULL),
 (803, 1017, '20250103203710-094435', '2025-01-01', '2025-01-31', 1, 1, '2025-01-03', NULL, NULL, NULL),
 (702, 1000, '20241224201544-281015', '2024-12-01', '2024-12-31', 1, 2, '2024-12-24', NULL, NULL, NULL),
 (602, 2222, '20241124143214-826120', '2024-11-24', '2024-11-30', 2, 2, '2024-11-24', NULL, NULL, NULL),
-(652, 2501, '20241126191116-635845', '2024-11-26', '2024-12-04', 1, 2, '2024-11-26', NULL, NULL, NULL);
+(652, 2501, '20241126191116-635845', '2024-11-26', '2024-12-04', 1, 2, '2024-11-26', NULL, NULL, NULL),
+(1002, 2222, '20250105232618-692145', '2025-01-01', '2025-01-31', 1, 1, '2025-01-05', NULL, NULL, NULL),
+(1052, 2438, '20250118145418-479108', '2025-01-01', '2025-01-31', 1, 1, '2025-01-18', NULL, NULL, NULL),
+(1053, 2435, '20250118145849-705752', '2025-01-01', '2025-01-31', 1, 1, '2025-01-18', NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -2135,7 +2167,7 @@ CREATE TABLE `PayrollAndPaySlip` (
   `ref_no` varchar(255) NOT NULL,
   `allowance_amount` double DEFAULT NULL,
   `allowances` varchar(255) DEFAULT NULL,
-  `date` date DEFAULT NULL,
+  `date` varchar(255) DEFAULT NULL,
   `deductions` varchar(255) DEFAULT NULL,
   `deductions_amount` double DEFAULT NULL,
   `emId` bigint(20) DEFAULT NULL,
@@ -2143,7 +2175,11 @@ CREATE TABLE `PayrollAndPaySlip` (
   `salary` double DEFAULT NULL,
   `status` varchar(255) DEFAULT NULL,
   `tax_rate` double DEFAULT NULL,
-  `type` varchar(255) DEFAULT NULL
+  `type` varchar(255) DEFAULT NULL,
+  `empId` bigint(20) DEFAULT NULL,
+  `total_allowances` double DEFAULT NULL,
+  `total_deductions` double DEFAULT NULL,
+  `total_earning` double DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -2161,7 +2197,8 @@ CREATE TABLE `payroll_seq` (
 --
 
 INSERT INTO `payroll_seq` (`next_val`) VALUES
-(901),
+(1151),
+(1),
 (1),
 (1),
 (1),
@@ -2253,6 +2290,7 @@ INSERT INTO `payslip` (`id`, `payroll_id`, `employee_id`, `present`, `absent`, `
 (753, 807, 2431, NULL, NULL, 500, NULL, NULL, NULL, NULL, '2025-01-03 20:51:17', 250, 1),
 (754, 803, 1017, NULL, NULL, 600, NULL, NULL, NULL, NULL, '2025-01-03 20:54:19', 300, 1),
 (704, 703, 2222, NULL, NULL, 700, NULL, NULL, NULL, NULL, '2024-12-24 13:17:34', 350, 1),
+(902, 1002, 2222, NULL, NULL, 700, NULL, NULL, NULL, NULL, '2025-01-05 23:27:14', 350, 1),
 (702, 702, 1000, NULL, NULL, 5000, NULL, NULL, NULL, NULL, '2024-12-24 13:17:34', 2500, 1),
 (652, 652, 2501, NULL, NULL, 600, 60, 'lunch allowances', 10, 'NFFS', '2024-11-26 12:12:16', 341.34, 1),
 (752, 802, 1000, NULL, NULL, 5000, NULL, NULL, NULL, NULL, '2025-01-03 20:51:17', 2500, 1),
@@ -2262,8 +2300,39 @@ INSERT INTO `payslip` (`id`, `payroll_id`, `employee_id`, `present`, `absent`, `
 (302, 302, 1000, NULL, NULL, 5000, 50, 'lunch allowances', 5, 'insurance', '2024-10-13 11:06:18', 2243.17, 1),
 (352, 352, 2431, NULL, NULL, 500, 100, 'lunch allowances,  Car allowances', 5, 'NFFS', '2024-10-24 13:27:23', 341.34, 1),
 (710, 703, 2222, NULL, NULL, 700, 60, 'lunch allowances', 5, 'NFFS', '2024-12-31 13:17:34', 391.34, 2),
+(852, 852, 2436, NULL, NULL, 580, NULL, NULL, NULL, NULL, '2025-01-05 23:06:00', 290, 1),
 (755, 804, 1014, NULL, NULL, 650, NULL, NULL, NULL, NULL, '2025-01-03 20:54:19', 325, 1),
-(802, 805, 1013, NULL, NULL, 900, NULL, NULL, NULL, NULL, '2025-01-03 21:08:00', 450, 1);
+(802, 805, 1013, NULL, NULL, 900, NULL, NULL, NULL, NULL, '2025-01-03 21:08:00', 450, 1),
+(1052, 852, 2436, NULL, NULL, 580, 60, 'lunch allowances', 5.5, 'NFFS', '2025-01-10 20:57:11', 337.38, 2),
+(1053, 805, 1013, NULL, NULL, 900, 0, '', 0, '', '2025-01-10 21:37:10', 426.88, 2),
+(1054, 803, 1017, NULL, NULL, 600, 0, '', 0, '', '2025-01-10 21:37:10', 291.88, 2),
+(1055, 1002, 2222, NULL, NULL, 700, 0, '', 0, '', '2025-01-10 21:37:10', 336.88, 2),
+(1056, 802, 1000, NULL, NULL, 5000, 0, '', 0, '', '2025-01-10 22:22:26', 2153.13, 2),
+(1102, 1052, 2438, NULL, NULL, 1000, 60, 'lunch allowances', 5, 'NFFS', '2025-01-18 14:54:43', 526.88, 2),
+(1202, 1053, 2435, NULL, NULL, 1000, 120, ' Car allowances, lunch allowances', 5, 'NFFS', '2025-01-18 15:21:50', 586.88, 2);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `PaySlipReportDto`
+--
+
+CREATE TABLE `PaySlipReportDto` (
+  `payment_sequence` varchar(255) NOT NULL,
+  `allowances` varchar(255) DEFAULT NULL,
+  `date` varchar(255) DEFAULT NULL,
+  `deductions` varchar(255) DEFAULT NULL,
+  `empId` bigint(20) DEFAULT NULL,
+  `net` double DEFAULT NULL,
+  `ref_no` varchar(255) DEFAULT NULL,
+  `salary` double DEFAULT NULL,
+  `status` varchar(255) DEFAULT NULL,
+  `tax_rate` double DEFAULT NULL,
+  `total_allowances` double DEFAULT NULL,
+  `total_deductions` double DEFAULT NULL,
+  `total_earning` double DEFAULT NULL,
+  `type` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -2280,7 +2349,8 @@ CREATE TABLE `payslip_seq` (
 --
 
 INSERT INTO `payslip_seq` (`next_val`) VALUES
-(901),
+(1301),
+(1),
 (1),
 (1),
 (1),
@@ -2380,7 +2450,8 @@ INSERT INTO `position` (`positionid`, `positionName`, `department_id`, `poSectio
 ('MISN07', 'Data Analysis officer', 202, NULL, '11'),
 ('MISN06', 'IT support', 202, 'NFS', '11'),
 ('MIS06', 'System programming officer', 202, 'ASS', '11'),
-('FAD07', 'Intern Accountant', 2, NULL, '12');
+('FAD07', 'Intern Accountant', 2, NULL, '12'),
+('CYS01', 'Head of Cyber Security', 452, NULL, '4');
 
 -- --------------------------------------------------------
 
@@ -2478,6 +2549,7 @@ INSERT INTO `salaries` (`id`, `empId`, `tax_id`, `salary`, `from_date`, `to_date
 (152, 1003, 3, 500, '2024-09-14', '2050-09-14', NULL, NULL, NULL),
 (102, 1013, 3, 900, '2024-09-14', '2040-09-10', NULL, NULL, NULL),
 (552, 1001, 3, 2000, '2024-10-27', '2024-10-31', NULL, NULL, NULL),
+(902, 2436, 3, 580, '2025-01-05', '2025-01-05', NULL, NULL, NULL),
 (253, 1015, 3, 540, '2024-10-08', '2024-10-08', NULL, NULL, NULL),
 (302, 2431, 3, 500, '2024-10-13', '2024-10-16', NULL, NULL, NULL),
 (352, 1006, 3, 700, '2024-10-16', '2060-10-16', NULL, NULL, NULL),
@@ -2490,7 +2562,20 @@ INSERT INTO `salaries` (`id`, `empId`, `tax_id`, `salary`, `from_date`, `to_date
 (702, 2501, 3, 600, '2024-11-26', '2024-11-26', NULL, NULL, NULL),
 (752, 2435, 3, 1000, '2024-12-16', '2025-12-31', NULL, NULL, NULL),
 (852, 1017, 3, 600, '2025-01-03', '2025-01-03', NULL, NULL, NULL),
-(803, 1014, 3, 650, '2025-01-03', '2025-01-03', NULL, NULL, NULL);
+(803, 1014, 3, 650, '2025-01-03', '2025-01-03', NULL, NULL, NULL),
+(804, 1004, 5, 500, '2025-01-01', '2025-01-31', '', '2025-01-10 20:24:22', ''),
+(805, 1008, 5, 500, '2025-01-01', '2025-01-31', '', '2025-01-10 20:24:22', ''),
+(806, 1009, 5, 500, '2025-01-01', '2025-01-31', '', '2025-01-10 20:24:22', ''),
+(807, 1012, 5, 500, '2025-01-01', '2025-01-31', '', '2025-01-10 20:24:22', ''),
+(808, 1011, 5, 500, '2025-01-01', '2025-01-31', '', '2025-01-10 20:24:22', ''),
+(809, 1016, 5, 500, '2025-01-01', '2025-01-31', '', '2025-01-10 20:24:22', ''),
+(810, 1018, 5, 500, '2025-01-01', '2025-01-31', '', '2025-01-10 20:24:22', ''),
+(811, 1020, 5, 500, '2025-01-01', '2025-01-31', '', '2025-01-10 20:24:22', ''),
+(812, 1021, 5, 500, '2025-01-01', '2025-01-31', '', '2025-01-10 20:24:22', ''),
+(813, 1022, 5, 500, '2025-01-01', '2025-01-31', '', '2025-01-10 20:24:22', ''),
+(814, 1086, 5, 500, '2025-01-01', '2025-01-31', '', '2025-01-10 20:24:22', ''),
+(854, 3000, 5, 500, '2025-01-10', '2025-01-10', NULL, NULL, NULL),
+(904, 2438, 3, 1000, '2025-01-18', '2027-01-31', NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -2507,66 +2592,67 @@ CREATE TABLE `salaries_seq` (
 --
 
 INSERT INTO `salaries_seq` (`next_val`) VALUES
-(951),
-(1),
-(1),
-(1),
-(1),
-(1),
-(1),
-(1),
-(1),
-(1),
-(1),
-(1),
-(1),
-(1),
-(1),
-(1),
-(1),
-(1),
-(1),
-(1),
-(1),
-(1),
-(1),
-(1),
-(1),
-(1),
-(1),
-(1),
-(1),
-(1),
-(1),
-(1),
-(1),
-(1),
-(1),
-(1),
-(1),
-(1),
-(1),
-(1),
-(1),
-(1),
-(1),
-(1),
-(1),
-(1),
-(1),
-(1),
-(1),
-(1),
-(1),
-(1),
-(1),
-(1),
-(1),
-(1),
-(1),
-(1),
-(1),
-(1),
+(1003),
+(1003),
+(1003),
+(1003),
+(1003),
+(1003),
+(1003),
+(1003),
+(1003),
+(1003),
+(1003),
+(1003),
+(1003),
+(1003),
+(1003),
+(1003),
+(1003),
+(1003),
+(1003),
+(1003),
+(1003),
+(1003),
+(1003),
+(1003),
+(1003),
+(1003),
+(1003),
+(1003),
+(1003),
+(1003),
+(1003),
+(1003),
+(1003),
+(1003),
+(1003),
+(1003),
+(1003),
+(1003),
+(1003),
+(1003),
+(1003),
+(1003),
+(1003),
+(1003),
+(1003),
+(1003),
+(1003),
+(1003),
+(1003),
+(1003),
+(1003),
+(1003),
+(1003),
+(1003),
+(1003),
+(1003),
+(1003),
+(1003),
+(1003),
+(1003),
+(1003),
 (1);
 
 -- --------------------------------------------------------
@@ -2703,6 +2789,7 @@ CREATE TABLE `tax_seq` (
 
 INSERT INTO `tax_seq` (`next_val`) VALUES
 (101),
+(1),
 (1),
 (1),
 (1),
@@ -2931,6 +3018,12 @@ ALTER TABLE `PayrollAndPaySlip`
 ALTER TABLE `payslip`
   ADD PRIMARY KEY (`id`),
   ADD KEY `FKchu7hncvenf62pdwn1ovragsu` (`payroll_id`);
+
+--
+-- Indexes for table `PaySlipReportDto`
+--
+ALTER TABLE `PaySlipReportDto`
+  ADD PRIMARY KEY (`payment_sequence`);
 
 --
 -- Indexes for table `position`
